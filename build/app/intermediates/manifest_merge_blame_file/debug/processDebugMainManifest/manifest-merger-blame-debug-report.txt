@@ -1,0 +1,449 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.my_di_card"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="34" />
+10    <!--
+11         The INTERNET permission is required for development. Specifically,
+12         the Flutter tool needs it to communicate with the running application
+13         to allow setting breakpoints, to provide hot reload, etc.
+14    -->
+15    <uses-permission android:name="android.permission.INTERNET" />
+15-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:3:9-70
+15-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:3:26-68
+16    <uses-permission android:name="android.permission.CAMERA" />
+16-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:4:9-68
+16-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:4:26-66
+17    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+17-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:5:9-85
+17-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:5:26-82
+18    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+18-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:6:9-84
+18-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:6:26-81
+19    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+19-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:7:9-86
+19-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:7:26-83
+20
+21    <uses-feature
+21-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:8:9-88
+22        android:name="android.hardware.camera"
+22-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:8:23-61
+23        android:required="true" />
+23-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:8:62-85
+24
+25    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+25-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:9:9-80
+25-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:9:26-77
+26
+27    <queries>
+27-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:48:5-53:15
+28        <intent>
+28-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:49:9-52:18
+29            <action android:name="android.intent.action.PROCESS_TEXT" />
+29-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:50:13-72
+29-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:50:21-70
+30
+31            <data android:mimeType="text/plain" />
+31-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:51:13-50
+31-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:51:19-48
+32        </intent>
+33        <intent>
+33-->[:file_picker] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:18
+34            <action android:name="android.intent.action.GET_CONTENT" />
+34-->[:file_picker] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-72
+34-->[:file_picker] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:21-69
+35
+36            <data android:mimeType="*/*" />
+36-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:51:13-50
+36-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:51:19-48
+37        </intent>
+38    </queries>
+39
+40    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+40-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:26:5-79
+40-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:26:22-76
+41    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+41-->[com.google.android.recaptcha:recaptcha:18.5.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/2049e8f782217dc994f6fcaf0953fecf/transformed/jetified-recaptcha-18.5.1/AndroidManifest.xml:9:5-98
+41-->[com.google.android.recaptcha:recaptcha:18.5.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/2049e8f782217dc994f6fcaf0953fecf/transformed/jetified-recaptcha-18.5.1/AndroidManifest.xml:9:22-95
+42
+43    <permission
+43-->[androidx.core:core:1.13.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/147aebb61ff88314abcc085fb7c6d8e5/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+44        android:name="com.example.my_di_card.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+44-->[androidx.core:core:1.13.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/147aebb61ff88314abcc085fb7c6d8e5/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+45        android:protectionLevel="signature" />
+45-->[androidx.core:core:1.13.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/147aebb61ff88314abcc085fb7c6d8e5/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+46
+47    <uses-permission android:name="com.example.my_di_card.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+47-->[androidx.core:core:1.13.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/147aebb61ff88314abcc085fb7c6d8e5/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+47-->[androidx.core:core:1.13.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/147aebb61ff88314abcc085fb7c6d8e5/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+48
+49    <application
+50        android:name="android.app.Application"
+51        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+51-->[androidx.core:core:1.13.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/147aebb61ff88314abcc085fb7c6d8e5/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+52        android:debuggable="true"
+53        android:extractNativeLibs="false"
+54        android:icon="@mipmap/ic_launcher"
+55        android:label="MyDICard" >
+56        <activity
+57            android:name="com.example.my_di_card.MainActivity"
+58            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+59            android:exported="true"
+60            android:hardwareAccelerated="true"
+61            android:launchMode="singleTop"
+62            android:taskAffinity=""
+63            android:theme="@style/LaunchTheme"
+64            android:windowSoftInputMode="adjustResize" >
+65            <meta-data
+66                android:name="io.flutter.embedding.android.NormalTheme"
+67                android:resource="@style/NormalTheme" />
+68            <meta-data
+69                android:name="com.google.android.gms.client_id"
+70                android:value="1026288895623-vptcpp82na7qhicqk3ho6socecsbs07j.apps.googleusercontent.com" />
+71
+72            <intent-filter>
+73                <action android:name="android.intent.action.MAIN" />
+74
+75                <category android:name="android.intent.category.LAUNCHER" />
+76            </intent-filter>
+77        </activity>
+78        <activity
+79            android:name="com.yalantis.ucrop.UCropActivity"
+80            android:screenOrientation="portrait" />
+81
+82        <meta-data
+83            android:name="flutterEmbedding"
+84            android:value="2" />
+85
+86        <service
+86-->[:firebase_auth] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_auth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:19
+87            android:name="com.google.firebase.components.ComponentDiscoveryService"
+87-->[:firebase_auth] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_auth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:18-89
+88            android:directBootAware="true"
+88-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:32:13-43
+89            android:exported="false" >
+89-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:68:13-37
+90            <meta-data
+90-->[:firebase_auth] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_auth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-11:85
+91                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
+91-->[:firebase_auth] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_auth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:17-124
+92                android:value="com.google.firebase.components.ComponentRegistrar" />
+92-->[:firebase_auth] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_auth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:17-82
+93            <meta-data
+93-->[:firebase_core] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-11:85
+94                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+94-->[:firebase_core] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:17-124
+95                android:value="com.google.firebase.components.ComponentRegistrar" />
+95-->[:firebase_core] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:17-82
+96            <meta-data
+96-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:69:13-71:85
+97                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+97-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:70:17-109
+98                android:value="com.google.firebase.components.ComponentRegistrar" />
+98-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:71:17-82
+99            <meta-data
+99-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/7ca053742d966a390b657ca1b310cb13/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
+100                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+100-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/7ca053742d966a390b657ca1b310cb13/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
+101                android:value="com.google.firebase.components.ComponentRegistrar" />
+101-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/7ca053742d966a390b657ca1b310cb13/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
+102            <meta-data
+102-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
+103                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+103-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:36:17-109
+104                android:value="com.google.firebase.components.ComponentRegistrar" />
+104-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:37:17-82
+105        </service>
+106
+107        <provider
+107-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:9-17:20
+108            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+108-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-82
+109            android:authorities="com.example.my_di_card.flutter.image_provider"
+109-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-74
+110            android:exported="false"
+110-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-37
+111            android:grantUriPermissions="true" >
+111-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-47
+112            <meta-data
+112-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:13-16:75
+113                android:name="android.support.FILE_PROVIDER_PATHS"
+113-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:17-67
+114                android:resource="@xml/flutter_image_picker_file_paths" />
+114-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:16:17-72
+115        </provider> <!-- Trigger Google Play services to install the backported photo picker module. -->
+116        <service
+116-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:19:9-31:19
+117            android:name="com.google.android.gms.metadata.ModuleDependencies"
+117-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:20:13-78
+118            android:enabled="false"
+118-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:21:13-36
+119            android:exported="false" >
+119-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:22:13-37
+120            <intent-filter>
+120-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:24:13-26:29
+121                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+121-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:25:17-94
+121-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:25:25-91
+122            </intent-filter>
+123
+124            <meta-data
+124-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:28:13-30:36
+125                android:name="photopicker_activity:0:required"
+125-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:29:17-63
+126                android:value="" />
+126-->[:image_picker_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/image_picker_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:30:17-33
+127        </service>
+128
+129        <activity
+129-->[:url_launcher_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/url_launcher_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-11:74
+130            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+130-->[:url_launcher_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/url_launcher_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-74
+131            android:exported="false"
+131-->[:url_launcher_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/url_launcher_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-37
+132            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+132-->[:url_launcher_android] /Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/build/url_launcher_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-71
+133        <activity
+133-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:29:9-46:20
+134            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+134-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:30:13-80
+135            android:excludeFromRecents="true"
+135-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:31:13-46
+136            android:exported="true"
+136-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:32:13-36
+137            android:launchMode="singleTask"
+137-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:33:13-44
+138            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+138-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:34:13-72
+139            <intent-filter>
+139-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:35:13-45:29
+140                <action android:name="android.intent.action.VIEW" />
+140-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:36:17-69
+140-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:36:25-66
+141
+142                <category android:name="android.intent.category.DEFAULT" />
+142-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:38:17-76
+142-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:38:27-73
+143                <category android:name="android.intent.category.BROWSABLE" />
+143-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:39:17-78
+143-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:39:27-75
+144
+145                <data
+145-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:51:13-50
+146                    android:host="firebase.auth"
+147                    android:path="/"
+148                    android:scheme="genericidp" />
+149            </intent-filter>
+150        </activity>
+151        <activity
+151-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:47:9-64:20
+152            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+152-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:48:13-79
+153            android:excludeFromRecents="true"
+153-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:49:13-46
+154            android:exported="true"
+154-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:50:13-36
+155            android:launchMode="singleTask"
+155-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:51:13-44
+156            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+156-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:52:13-72
+157            <intent-filter>
+157-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:53:13-63:29
+158                <action android:name="android.intent.action.VIEW" />
+158-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:36:17-69
+158-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:36:25-66
+159
+160                <category android:name="android.intent.category.DEFAULT" />
+160-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:38:17-76
+160-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:38:27-73
+161                <category android:name="android.intent.category.BROWSABLE" />
+161-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:39:17-78
+161-->[com.google.firebase:firebase-auth:23.1.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/cc03bb6cf4ceb9d82ecd0ea1dccb648c/transformed/jetified-firebase-auth-23.1.0/AndroidManifest.xml:39:27-75
+162
+163                <data
+163-->/Users/sharadvyas/Documents/flutter/AmitSir/MyDiCard-Frontend-features-bug-fixes/android/app/src/main/AndroidManifest.xml:51:13-50
+164                    android:host="firebase.auth"
+165                    android:path="/"
+166                    android:scheme="recaptcha" />
+167            </intent-filter>
+168        </activity>
+169
+170        <service
+170-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:24:9-32:19
+171            android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder"
+171-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:25:13-94
+172            android:enabled="true"
+172-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:26:13-35
+173            android:exported="false" >
+173-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:27:13-37
+174            <meta-data
+174-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:29:13-31:104
+175                android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
+175-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:30:17-76
+176                android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl" />
+176-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:31:17-101
+177        </service>
+178
+179        <activity
+179-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:34:9-41:20
+180            android:name="androidx.credentials.playservices.HiddenActivity"
+180-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:35:13-76
+181            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+181-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:36:13-87
+182            android:enabled="true"
+182-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:37:13-35
+183            android:exported="false"
+183-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:38:13-37
+184            android:fitsSystemWindows="true"
+184-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:39:13-45
+185            android:theme="@style/Theme.Hidden" >
+185-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/0464d3d7d25cea185224708e4cf7be68/transformed/jetified-credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:40:13-48
+186        </activity>
+187        <activity
+187-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:23:9-27:75
+188            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+188-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:24:13-93
+189            android:excludeFromRecents="true"
+189-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:25:13-46
+190            android:exported="false"
+190-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:26:13-37
+191            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+191-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:27:13-72
+192        <!--
+193            Service handling Google Sign-In user revocation. For apps that do not integrate with
+194            Google Sign-In, this service will never be started.
+195        -->
+196        <service
+196-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:33:9-37:51
+197            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+197-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:34:13-89
+198            android:exported="true"
+198-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:35:13-36
+199            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+199-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:36:13-107
+200            android:visibleToInstantApps="true" />
+200-->[com.google.android.gms:play-services-auth:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/4f165d0a6e76113350a55f57a5164b90/transformed/jetified-play-services-auth-21.0.0/AndroidManifest.xml:37:13-48
+201
+202        <activity
+202-->[com.google.android.gms:play-services-base:18.0.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/9a43b7fa49bad8abaf4b2eb2da5021b8/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
+203            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+203-->[com.google.android.gms:play-services-base:18.0.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/9a43b7fa49bad8abaf4b2eb2da5021b8/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:19-85
+204            android:exported="false"
+204-->[com.google.android.gms:play-services-base:18.0.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/9a43b7fa49bad8abaf4b2eb2da5021b8/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:22:19-43
+205            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+205-->[com.google.android.gms:play-services-base:18.0.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/9a43b7fa49bad8abaf4b2eb2da5021b8/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:21:19-78
+206
+207        <provider
+207-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
+208            android:name="com.google.firebase.provider.FirebaseInitProvider"
+208-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:24:13-77
+209            android:authorities="com.example.my_di_card.firebaseinitprovider"
+209-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:25:13-72
+210            android:directBootAware="true"
+210-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:26:13-43
+211            android:exported="false"
+211-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:27:13-37
+212            android:initOrder="100" />
+212-->[com.google.firebase:firebase-common:21.0.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/961d1020caf87530a8fe2f3b01f9c252/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:28:13-36
+213        <provider
+213-->[androidx.emoji2:emoji2:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/3cd23256800a02a3e58c3d1a89fa99a7/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+214            android:name="androidx.startup.InitializationProvider"
+214-->[androidx.emoji2:emoji2:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/3cd23256800a02a3e58c3d1a89fa99a7/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:25:13-67
+215            android:authorities="com.example.my_di_card.androidx-startup"
+215-->[androidx.emoji2:emoji2:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/3cd23256800a02a3e58c3d1a89fa99a7/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:26:13-68
+216            android:exported="false" >
+216-->[androidx.emoji2:emoji2:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/3cd23256800a02a3e58c3d1a89fa99a7/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:27:13-37
+217            <meta-data
+217-->[androidx.emoji2:emoji2:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/3cd23256800a02a3e58c3d1a89fa99a7/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+218                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+218-->[androidx.emoji2:emoji2:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/3cd23256800a02a3e58c3d1a89fa99a7/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:30:17-75
+219                android:value="androidx.startup" />
+219-->[androidx.emoji2:emoji2:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/3cd23256800a02a3e58c3d1a89fa99a7/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:31:17-49
+220            <meta-data
+220-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/6425456dc6b10677dc43260fde77842d/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+221                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+221-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/6425456dc6b10677dc43260fde77842d/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+222                android:value="androidx.startup" />
+222-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/6425456dc6b10677dc43260fde77842d/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+223            <meta-data
+223-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+224                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+224-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+225                android:value="androidx.startup" />
+225-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+226        </provider>
+227
+228        <uses-library
+228-->[androidx.window:window:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/19292b72a98d5e543390541f725f8748/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
+229            android:name="androidx.window.extensions"
+229-->[androidx.window:window:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/19292b72a98d5e543390541f725f8748/transformed/jetified-window-1.2.0/AndroidManifest.xml:24:13-54
+230            android:required="false" />
+230-->[androidx.window:window:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/19292b72a98d5e543390541f725f8748/transformed/jetified-window-1.2.0/AndroidManifest.xml:25:13-37
+231        <uses-library
+231-->[androidx.window:window:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/19292b72a98d5e543390541f725f8748/transformed/jetified-window-1.2.0/AndroidManifest.xml:26:9-28:40
+232            android:name="androidx.window.sidecar"
+232-->[androidx.window:window:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/19292b72a98d5e543390541f725f8748/transformed/jetified-window-1.2.0/AndroidManifest.xml:27:13-51
+233            android:required="false" />
+233-->[androidx.window:window:1.2.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/19292b72a98d5e543390541f725f8748/transformed/jetified-window-1.2.0/AndroidManifest.xml:28:13-37
+234
+235        <meta-data
+235-->[com.google.android.gms:play-services-basement:18.4.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/abcf5ee64f33f0c74b1f8d1779394ed4/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
+236            android:name="com.google.android.gms.version"
+236-->[com.google.android.gms:play-services-basement:18.4.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/abcf5ee64f33f0c74b1f8d1779394ed4/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
+237            android:value="@integer/google_play_services_version" />
+237-->[com.google.android.gms:play-services-basement:18.4.0] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/abcf5ee64f33f0c74b1f8d1779394ed4/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
+238
+239        <receiver
+239-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+240            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+240-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+241            android:directBootAware="false"
+241-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+242            android:enabled="true"
+242-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+243            android:exported="true"
+243-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+244            android:permission="android.permission.DUMP" >
+244-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+245            <intent-filter>
+245-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+246                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+246-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+246-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+247            </intent-filter>
+248            <intent-filter>
+248-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+249                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+249-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+249-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+250            </intent-filter>
+251            <intent-filter>
+251-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+252                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+252-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+252-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+253            </intent-filter>
+254            <intent-filter>
+254-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+255                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+255-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+255-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/c0394746f8989bc580e6c2a6c91617a4/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+256            </intent-filter>
+257        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
+258        <activity
+258-->[com.google.android.play:core-common:2.0.3] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/a167673f8481ed2844eef411c35168c4/transformed/jetified-core-common-2.0.3/AndroidManifest.xml:14:9-18:65
+259            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+259-->[com.google.android.play:core-common:2.0.3] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/a167673f8481ed2844eef411c35168c4/transformed/jetified-core-common-2.0.3/AndroidManifest.xml:15:13-93
+260            android:exported="false"
+260-->[com.google.android.play:core-common:2.0.3] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/a167673f8481ed2844eef411c35168c4/transformed/jetified-core-common-2.0.3/AndroidManifest.xml:16:13-37
+261            android:stateNotNeeded="true"
+261-->[com.google.android.play:core-common:2.0.3] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/a167673f8481ed2844eef411c35168c4/transformed/jetified-core-common-2.0.3/AndroidManifest.xml:17:13-42
+262            android:theme="@style/Theme.PlayCore.Transparent" />
+262-->[com.google.android.play:core-common:2.0.3] /Users/sharadvyas/.gradle/caches/8.10.2/transforms/a167673f8481ed2844eef411c35168c4/transformed/jetified-core-common-2.0.3/AndroidManifest.xml:18:13-62
+263    </application>
+264
+265</manifest>

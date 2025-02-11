@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="FakeAttributeFix">
+        <attr name="lStar" format="float" />
+    </declare-styleable>
+</resources>
