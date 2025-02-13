@@ -50,10 +50,14 @@ class _EditTeamPageState extends State<EditTeamPage> {
       final response = await http.get(Uri.parse(apiUrlTeam), headers: {
         'Authorization': 'Bearer $token', // Add your authorization token
       });
-
+      // JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+      // String prettyprint = encoder.convert(response.body);
+      // print(prettyprint);
+      // context.loaderOverlay.hide();
       if (response.statusCode == 200) {
         // Parse the response body
-        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+         final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
         setState(() {
           isLoading = false;
 
@@ -65,7 +69,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
           if (teamResponse != null &&
               teamResponse!.data.teamLogo != null) {
             _selectedImage = File(teamResponse!.data.teamLogo);
-            getTeamMembers(1, "");
+            getTeamMembers(0, "");
           }
         });
       } else {
@@ -110,7 +114,10 @@ class _EditTeamPageState extends State<EditTeamPage> {
       final teamMembersResponse = await fetchTeamMembers(page, keyword);
 
       if (teamMembersResponse.status) {
-        debugPrint("Current Page: ${teamMembersResponse.data.currentPage}");
+        debugPrint("Current Page: ${teamMembersResponse.data}");
+        JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+        String prettyprint = encoder.convert(teamMembersResponse);
+        print(prettyprint);
         setState(() {
           isLoadingTeam = false;
           teamMember.clear();
@@ -482,7 +489,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
     required String description,
     required File cardImage, // Card image file
   }) async {
-    context.loaderOverlay.show();
+    // context.loaderOverlay.show();
 
     var token = await Storage().getToken();
 
@@ -518,18 +525,20 @@ class _EditTeamPageState extends State<EditTeamPage> {
 
       // Handle the response
       if (response.statusCode == 200) {
-        context.loaderOverlay.hide();
+        // context.loaderOverlay.hide();
 
         final responseData = await response.stream.bytesToString();
         final data = jsonDecode(responseData);
-        context.loaderOverlay.hide();
+        // context.loaderOverlay.hide();
         Navigator.pop(context);
         debugPrint("Data submitted successfully: $data");
       } else {
-        debugPrint("Failed to submit data. Status Code: ${response.statusCode}");
+        final responseData = await response.stream.bytesToString();
+
+        debugPrint("Failed to submit data. Status Code: ${responseData }");
       }
     } catch (error) {
-      context.loaderOverlay.hide();
+      // context.loaderOverlay.hide();
 
       debugPrint("An error occurred: $error");
     }

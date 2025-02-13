@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../createCard/create_card_user_screen.dart';
 import '../../localStorage/storage.dart';
+import '../../models/card_list.dart' as card;
 import '../../models/my_card_get.dart';
 import '../../utils/widgets/network.dart';
 import 'main_home_page.dart';
@@ -18,27 +19,6 @@ class FirstCardScreen extends StatefulWidget {
 }
 
 class _FirstCardScreenState extends State<FirstCardScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    if (widget.cardData == null) {
-      Storage().removeTokenFromPreferences();
-    }
-    super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    if (widget.cardData == null) {
-      Storage().removeTokenFromPreferences();
-    }
-    super.deactivate();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,98 +44,98 @@ class _FirstCardScreenState extends State<FirstCardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   widget.cardData != null &&
-                          widget.cardData!.backgroungImage != null
+                      widget.cardData!.backgroungImage != null
                       ? Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(18),
-                                  topRight: Radius.circular(18)),
-                              child: CachedNetworkImage(
-                                height: 100,
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(18),
+                            topRight: Radius.circular(18)),
+                        child: CachedNetworkImage(
+                          height: 100,
+                          width: double.infinity,
+                          fit: BoxFit.fitWidth,
+                          imageUrl:
+                          "${Network.imgUrl}${widget.cardData?.backgroungImage}",
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Image.asset(
+                                "assets/images/card_header.png",
+                                height: 80,
+                                fit: BoxFit.fill,
                                 width: double.infinity,
-                                fit: BoxFit.fitWidth,
-                                imageUrl:
-                                    "${Network.imgUrl}${widget.cardData?.backgroungImage}",
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) => Center(
+                              ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                        const EdgeInsets.only(top: 14.0, left: 12),
+                        child: ClipRRect(
+                          borderRadius:
+                          const BorderRadius.all(Radius.circular(50)),
+                          child: CachedNetworkImage(
+                            height: 55,
+                            width: 55,
+                            fit: BoxFit.fitWidth,
+                            imageUrl:
+                            "${Network.imgUrl}${widget.cardData?.cardImage}",
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                Center(
                                   child: CircularProgressIndicator(
                                       value: downloadProgress.progress),
                                 ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
+                            errorWidget: (context, url, error) =>
+                                Image.asset(
                                   "assets/images/card_header.png",
                                   height: 80,
                                   fit: BoxFit.fill,
                                   width: double.infinity,
                                 ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 14.0, left: 12),
-                              child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(50)),
-                                child: CachedNetworkImage(
-                                  height: 55,
-                                  width: 55,
-                                  fit: BoxFit.fitWidth,
-                                  imageUrl:
-                                      "${Network.imgUrl}${widget.cardData?.cardImage}",
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          Center(
-                                    child: CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(
-                                    "assets/images/card_header.png",
-                                    height: 80,
-                                    fit: BoxFit.fill,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                       : Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(18),
-                                  topRight: Radius.circular(18)),
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(18),
+                            topRight: Radius.circular(18)),
+                        child: Image.asset(
+                          "assets/logo/Top with a picture.png",
+                          height: 100,
+                          width: double.infinity,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                            const EdgeInsets.only(top: 10.0, left: 8),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(50)),
                               child: Image.asset(
-                                "assets/logo/Top with a picture.png",
-                                height: 100,
-                                width: double.infinity,
+                                "assets/logo/Central icon.png",
+                                height: 55,
+                                width: 55,
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 10.0, left: 8),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(50)),
-                                    child: Image.asset(
-                                      "assets/logo/Central icon.png",
-                                      height: 55,
-                                      width: 55,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 12.0, horizontal: 20),
@@ -222,9 +202,9 @@ class _FirstCardScreenState extends State<FirstCardScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (builder) => const CreateCardScreen1(
-                              cardId: "",
-                              isEdit: false,
-                            )));
+                          cardId: "",
+                          isEdit: false,
+                        )));
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

@@ -61,7 +61,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
       request.fields.addAll({
         'first_name': firstName.toString().trim(),
         'last_name': lastName.toString(),
-        'team_code': ''
+        'team_code': teamCode.toString()
       });
       if (_selectedImage != null && _selectedImage!.path.isNotEmpty) {
         request.files
