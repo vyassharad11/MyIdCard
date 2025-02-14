@@ -125,6 +125,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+      String prettyprint = encoder.convert(jsonResponse);
+      print(prettyprint);
       setState(() {
         cardList = CardListModel.fromJson(json.decode(response.body));
       });

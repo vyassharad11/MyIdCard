@@ -195,7 +195,11 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         body: jsonEncode(
             {'idToken': idToken, "email": googleUser.email.toString()}),
       );
-
+      // final jsonResponse = jsonDecode(response.body);
+      //
+      // JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+      // String prettyprint = encoder.convert(jsonResponse);
+      // print(prettyprint);
       // Step 4: Handle the backend response
       if (response.statusCode == 200) {
         context.loaderOverlay.hide();

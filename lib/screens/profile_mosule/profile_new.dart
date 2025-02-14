@@ -160,11 +160,12 @@ class _AccountPageState extends State<AccountPage> {
               ),
               // Profile Picture and Name
               user != null && user!.avatar != null
-                  ? CircleAvatar(
-                      radius: 50,
+                  ? ClipRRect(
+                borderRadius: BorderRadius.circular(
+                    10000.0),
                       child: CachedNetworkImage(
-                        height: 80,
-                        width: double.infinity,
+                        height: 100,
+                        width: 100,
                         fit: BoxFit.fitWidth,
                         imageUrl: "${Network.imgUrl}${user!.avatar}",
                         progressIndicatorBuilder:
@@ -194,6 +195,7 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                     ),
+              
               const SizedBox(height: 10),
               Text(
                 user?.firstName ?? "",

@@ -307,7 +307,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                                   .contains("storage")
                                           ? ClipRRect(
                                               borderRadius: BorderRadius.circular(
-                                                  50), // Adjust the radius as needed
+                                                  20), // Adjust the radius as needed
                                               child: Image.file(
                                                 _selectedImage!,
                                                 fit: BoxFit.cover,
@@ -326,12 +326,15 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                               ? ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                          50), // Adjust the radius as needed
+                                                          20), // Adjust the radius as needed
                                                   child: Image.network(
                                                     "${Network.imgUrl}${_selectedImage!.path}",
                                                     fit: BoxFit.cover,
-                                                    width: 80,
-                                                    height: 80,
+                                                    width:
+                                                    MediaQuery.sizeOf(context)
+                                                        .width /
+                                                        1.1,
+                                                    height: 90,
                                                   ),
                                                 )
                                               : Center(
