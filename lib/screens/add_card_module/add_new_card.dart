@@ -324,7 +324,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                               height: 35,
                               width: 160,
                               child: ElevatedButton(
-                                iconAlignment: IconAlignment.start,
+                               // iconAlignment: IconAlignment.start,
                                 onPressed: () {
                                   // Handle button press
                                 },

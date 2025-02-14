@@ -411,7 +411,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                   height: 45,
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
-                    iconAlignment: IconAlignment.start,
+                   // iconAlignment: IconAlignment.start,
                     onPressed: () {
                       // Handle button press
                       setState(() {
@@ -456,7 +456,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                   height: 45,
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
-                    iconAlignment: IconAlignment.start,
+                   // iconAlignment: IconAlignment.start,
                     onPressed: () {
                       submitSocialLinks();
 

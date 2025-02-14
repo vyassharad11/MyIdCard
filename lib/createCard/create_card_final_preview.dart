@@ -753,7 +753,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                               height: 45,
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
-                                iconAlignment: IconAlignment.start,
+                               // iconAlignment: IconAlignment.start,
                                 onPressed: () {
                                   showDeleteDialog(context);
                                 },
@@ -789,7 +789,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                               height: 45,
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
-                                iconAlignment: IconAlignment.start,
+                               // iconAlignment: IconAlignment.start,
                                 onPressed: () {
                                   Navigator.push(
                                       context,

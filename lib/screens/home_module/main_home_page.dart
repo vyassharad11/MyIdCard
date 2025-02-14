@@ -412,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 35,
                                           width: 90,
                                           child: ElevatedButton(
-                                            iconAlignment: IconAlignment.start,
+                                           // iconAlignment: IconAlignment.start,
                                             onPressed: () {
                                               // Handle button press
                                             },

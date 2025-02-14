@@ -352,7 +352,7 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                     height: 45,
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      iconAlignment: IconAlignment.start,
+                     // iconAlignment: IconAlignment.start,
                       onPressed: () {
                         submitData(_selectedImage ?? File(""));
 

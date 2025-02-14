@@ -1,0 +1,1 @@
+/home/kapil/MyIdCard/build/app/intermediates/cxx/Debug/1xm4x296/obj/x86_64

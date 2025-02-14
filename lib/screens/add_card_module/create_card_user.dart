@@ -120,7 +120,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  iconAlignment: IconAlignment.start,
+                 // iconAlignment: IconAlignment.start,
                   onPressed: () {
                     // Handle button press
                   },
@@ -162,7 +162,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  iconAlignment: IconAlignment.start,
+                 // iconAlignment: IconAlignment.start,
                   onPressed: () {
                     // Handle button press
                   },
@@ -196,7 +196,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  iconAlignment: IconAlignment.start,
+                 // iconAlignment: IconAlignment.start,
                   onPressed: () {
                     // Handle button press
                   },

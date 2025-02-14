@@ -300,7 +300,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                     height: 45,
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      iconAlignment: IconAlignment.start,
+                     // iconAlignment: IconAlignment.start,
                       onPressed: () {
                         if (firstname.text.isNotEmpty) {
                           if (lastName.text.isNotEmpty) {
@@ -315,7 +315,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                                 languageId: _selectedLanguageId.toString(),
                               );
                             } else {
-                              context.loaderOverlay.show();
+                              // context.loaderOverlay.show();
 
                               getUserId(
                                   languageId: _selectedLanguageId.toString(),

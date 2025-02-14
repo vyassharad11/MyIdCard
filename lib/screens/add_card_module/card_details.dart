@@ -121,7 +121,7 @@ class _CardDetailsState extends State<CardDetails> {
                                   height: 35,
                                   width: 90,
                                   child: ElevatedButton(
-                                    iconAlignment: IconAlignment.start,
+                                   // iconAlignment: IconAlignment.start,
                                     onPressed: () {
                                       // Handle button press
                                     },

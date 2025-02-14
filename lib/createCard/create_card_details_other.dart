@@ -319,7 +319,7 @@ class _CreateCardScreenDetailsOtherState
                   height: 45,
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
-                    iconAlignment: IconAlignment.start,
+                   // iconAlignment: IconAlignment.start,
                     onPressed: () {
                       submitData();
                       // Handle button press

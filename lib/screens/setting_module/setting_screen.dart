@@ -280,7 +280,7 @@ class _SettingScreenState extends State<SettingScreen> {
               onPressed: () {
                 // Perform delete action here
 
-                clearSharedPreferences();
+                clearSharedPreferences(context);
                 // Close the dialog
               },
               child: Text('Logout'),
@@ -324,8 +324,8 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  Future<void> clearSharedPreferences() async {
-    context.loaderOverlay.show();
+  Future<void> clearSharedPreferences(context) async {
+    // context.loaderOverlay.show();
 
     bool success = await prefs.clear(); // Clears all key-value pairs
     if (success) {
@@ -337,7 +337,7 @@ class _SettingScreenState extends State<SettingScreen> {
             MaterialPageRoute(builder: (builder) => WelcomePage()),
             (route) => false,
           );
-          context.loaderOverlay.hide();
+          // context.loaderOverlay.hide();
         },
       );
 
