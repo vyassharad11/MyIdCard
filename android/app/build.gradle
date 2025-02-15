@@ -10,6 +10,11 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.3.1'  // or a version that matches your project
+    // Other dependencies
+}
+
 android {
     namespace = "com.example.my_di_card"
     compileSdk = 35

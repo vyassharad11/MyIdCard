@@ -4,17 +4,23 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/data/repository/team_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/card_cubit.dart';
+import '../../bloc/cubit/team_cubit.dart';
 import '../../models/team_member.dart';
 import '../../models/team_response.dart';
 import '../../utils/image_cropo.dart';
+import '../../utils/utility.dart';
 
 class EditTeamPage extends StatefulWidget {
   const EditTeamPage({super.key});
@@ -27,461 +33,453 @@ class _EditTeamPageState extends State<EditTeamPage> {
   String selecteValie = "Member";
   final title = TextEditingController();
   final description = TextEditingController();
-  final String apiUrlTeam = "${Network.baseUrl}team/get-my-team";
-  final String apiUrlTeamGetTeamMember =
-      "${Network.baseUrl}team/get-team-member";
   List<Member> teamMember = [];
+  TeamCubit? updateTeamCubit,getTeamCubit,_getTeamMember;
 
   @override
   void dispose() {
     title.clear();
     description.clear();
-
+    updateTeamCubit?.close();
+    getTeamCubit?.close();
+    _getTeamMember?.close();
+    updateTeamCubit = null;
+    _getTeamMember = null;
+    getTeamCubit = null;
     super.dispose();
   }
 
   bool isLoading = true;
   bool isLoadingTeam = true;
   TeamResponse? teamResponse;
+
+
   Future<void> fetchTeamData() async {
-    try {
-      String token = await Storage().getToken();
-      debugPrint("token---$token");
-      final response = await http.get(Uri.parse(apiUrlTeam), headers: {
-        'Authorization': 'Bearer $token', // Add your authorization token
-      });
-      // JsonEncoder encoder = new JsonEncoder.withIndent('  ');
-      // String prettyprint = encoder.convert(response.body);
-      // print(prettyprint);
-      // context.loaderOverlay.hide();
-      if (response.statusCode == 200) {
-        // Parse the response body
-         final Map<String, dynamic> jsonResponse = json.decode(response.body);
-
-        setState(() {
-          isLoading = false;
-
-          teamResponse = TeamResponse.fromJson(jsonResponse);
-          title.text = teamResponse?.data.teamName.toString() ?? "";
-          description.text =
-              teamResponse?.data.teamDescription.toString() ?? "";
-
-          if (teamResponse != null &&
-              teamResponse!.data.teamLogo != null) {
-            _selectedImage = File(teamResponse!.data.teamLogo);
-            getTeamMembers(0, "");
-          }
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-        throw Exception('Failed to load team data');
-      }
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      throw Exception('Error: $e');
-    }
+    getTeamCubit?.apiGetMyTeam();
   }
 
-  Future<TeamMembersResponse> fetchTeamMembers(page, keyword) async {
-    String token = await Storage().getToken();
-
-    try {
-      final response =
-          await http.post(Uri.parse(apiUrlTeamGetTeamMember), body: {
-        "key_word": keyword.toString(),
-        "page": page.toString(),
-      }, headers: {
-        'Authorization': 'Bearer $token', // Add your authorization token
-      });
-
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        return TeamMembersResponse.fromJson(jsonResponse);
-      } else {
-        throw Exception('Failed to load team members');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
-    }
-  }
 
   void getTeamMembers(int page, String keyword) async {
-    try {
-      final teamMembersResponse = await fetchTeamMembers(page, keyword);
-
-      if (teamMembersResponse.status) {
-        debugPrint("Current Page: ${teamMembersResponse.data}");
-        JsonEncoder encoder = new JsonEncoder.withIndent('  ');
-        String prettyprint = encoder.convert(teamMembersResponse);
-        print(prettyprint);
-        setState(() {
-          isLoadingTeam = false;
-          teamMember.clear();
-          teamMember.addAll(teamMembersResponse.data.members);
-        });
-        // for (var member in teamMembersResponse.data.members) {
-        //   debugPrint("Member Email: ${member.email}");
-        //   debugPrint("Member First Name: ${member.firstName}");
-        // }
-      } else {
-        setState(() {
-          isLoadingTeam = false;
-        });
-        debugPrint("Failed to fetch team members");
-      }
-    } catch (e) {
-      setState(() {
-        isLoadingTeam = false;
-      });
-      debugPrint("Exception: $e");
-    }
+    Map<String, dynamic> data = {
+      "key_word": keyword.toString(),
+      "page": page.toString(),
+    };
+    _getTeamMember?.apiGetTeamMember(data);
   }
 
   @override
   void initState() {
+    updateTeamCubit = TeamCubit(TeamRepository());
+    getTeamCubit = TeamCubit(TeamRepository());
+    _getTeamMember = TeamCubit(TeamRepository());
     fetchTeamData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColoursUtils.background,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        child: Column(
-          children: [
-            // Team Name Input
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () =>
-                      Navigator.pop(context), // Default action: Go back
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    elevation: 2,
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 20,
-                        color: Colors.black,
+    return MultiBlocListener(listeners: [
+        BlocListener<TeamCubit, ResponseState>(
+          bloc: updateTeamCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              Navigator.pop(context);
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<TeamCubit, ResponseState>(
+          bloc: getTeamCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as TeamResponse;
+              isLoading = false;
+              teamResponse = dto;
+              title.text = teamResponse?.data.teamName.toString() ?? "";
+              description.text =
+                  teamResponse?.data.teamDescription.toString() ?? "";
+
+              if (teamResponse != null &&
+                  teamResponse!.data.teamLogo != null) {
+                _selectedImage = File(teamResponse!.data.teamLogo);
+                getTeamMembers(0, "");
+              }
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<TeamCubit, ResponseState>(
+          bloc: _getTeamMember,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              isLoadingTeam = false;
+            } else if (state is ResponseStateNoInternet) {
+              isLoadingTeam = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              isLoadingTeam = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as TeamMembersResponse;
+              teamMember.clear();
+              teamMember.addAll(dto.data.members);
+              isLoadingTeam = false;
+            }
+            setState(() {});
+          },
+        ),
+      ],
+      child: Scaffold(
+        backgroundColor: ColoursUtils.background,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          child: Column(
+            children: [
+              // Team Name Input
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () =>
+                        Navigator.pop(context), // Default action: Go back
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      elevation: 2,
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Icon(
+                          Icons.arrow_back,
+                          size: 20,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Center(
-                  child: Text(
-                    "Edit Team",
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.w500),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Center(
+                    child: Text(
+                      "Edit Team",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(16), // Rounded corners
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              'Team Name',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          TextField(
-                            controller: title,
-                            decoration: InputDecoration(
-                              // labelText: 'Team Name',
-                              hintStyle:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
-                              filled: true,
-                              hintText: "Team Name",
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 12),
-                              fillColor: ColoursUtils.background,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
+                  const SizedBox(
+                    width: 12,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(16), // Rounded corners
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Team Name',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              'Description',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          // Description Input
-                          TextField(
-                            controller: description,
-                            maxLines: 3,
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 12),
-                              filled: true,
-                              hintText: "Description",
-                              alignLabelWithHint: false,
-                              fillColor: ColoursUtils.background,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
+                            TextField(
+                              controller: title,
+                              decoration: InputDecoration(
+                                // labelText: 'Team Name',
+                                hintStyle:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
+                                filled: true,
+                                hintText: "Team Name",
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 12),
+                                fillColor: ColoursUtils.background,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              'Logo',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
+                            const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Description',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
-                          ),
-                          // Logo Upload Section
-                          DottedBorder(
-                            color: Colors.grey.shade300,
-                            strokeWidth: 1,
-                            dashPattern: [6, 3], // Customize the dash pattern
-                            borderType: BorderType.RRect,
-                            radius: Radius.circular(8),
-                            child: SizedBox(
-                              height: 120,
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _showBottomSheet(context);
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      // Rounded user icon with grey background
-                                      _selectedImage != null &&
-                                              _selectedImage!.path.isNotEmpty &&
-                                              !_selectedImage!.path
-                                                  .contains("storage")
-                                          ? ClipRRect(
-                                              borderRadius: BorderRadius.circular(
-                                                  20), // Adjust the radius as needed
-                                              child: Image.file(
-                                                _selectedImage!,
-                                                fit: BoxFit.cover,
-                                                width:
-                                                    MediaQuery.sizeOf(context)
-                                                            .width /
-                                                        1.1,
-                                                height: 80,
-                                              ),
-                                            )
-                                          : _selectedImage != null &&
-                                                  _selectedImage!
-                                                      .path.isNotEmpty &&
-                                                  _selectedImage!.path
-                                                      .contains("storage")
-                                              ? ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20), // Adjust the radius as needed
-                                                  child: Image.network(
-                                                    "${Network.imgUrl}${_selectedImage!.path}",
-                                                    fit: BoxFit.cover,
-                                                    width:
-                                                    MediaQuery.sizeOf(context)
-                                                        .width /
-                                                        1.1,
-                                                    height: 90,
-                                                  ),
-                                                )
-                                              : Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Image.asset(
-                                                        "assets/images/upload.png",
-                                                        height: 45,
-                                                        width: 45,
-                                                      ),
-                                                      // Icon(Icons.cloud_upload, color: Colors.grey),
-                                                      SizedBox(height: 8),
-                                                      Text(
-                                                        'Upload Logo',
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      ),
-                                                    ],
-                                                  ),
+                            // Description Input
+                            TextField(
+                              controller: description,
+                              maxLines: 3,
+                              decoration: InputDecoration(
+                                hintStyle:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 12),
+                                filled: true,
+                                hintText: "Description",
+                                alignLabelWithHint: false,
+                                fillColor: ColoursUtils.background,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Logo',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            // Logo Upload Section
+                            DottedBorder(
+                              color: Colors.grey.shade300,
+                              strokeWidth: 1,
+                              dashPattern: [6, 3], // Customize the dash pattern
+                              borderType: BorderType.RRect,
+                              radius: Radius.circular(8),
+                              child: SizedBox(
+                                height: 120,
+                                child: Center(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _showBottomSheet(context);
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        // Rounded user icon with grey background
+                                        _selectedImage != null &&
+                                                _selectedImage!.path.isNotEmpty &&
+                                                !_selectedImage!.path
+                                                    .contains("storage")
+                                            ? ClipRRect(
+                                                borderRadius: BorderRadius.circular(
+                                                    20), // Adjust the radius as needed
+                                                child: Image.file(
+                                                  _selectedImage!,
+                                                  fit: BoxFit.cover,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width /
+                                                          1.1,
+                                                  height: 80,
                                                 ),
-                                    ],
+                                              )
+                                            : _selectedImage != null &&
+                                                    _selectedImage!
+                                                        .path.isNotEmpty &&
+                                                    _selectedImage!.path
+                                                        .contains("storage")
+                                                ? ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20), // Adjust the radius as needed
+                                                    child: Image.network(
+                                                      "${Network.imgUrl}${_selectedImage!.path}",
+                                                      fit: BoxFit.cover,
+                                                      width:
+                                                      MediaQuery.sizeOf(context)
+                                                          .width /
+                                                          1.1,
+                                                      height: 90,
+                                                    ),
+                                                  )
+                                                : Center(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                          "assets/images/upload.png",
+                                                          height: 45,
+                                                          width: 45,
+                                                        ),
+                                                        // Icon(Icons.cloud_upload, color: Colors.grey),
+                                                        SizedBox(height: 8),
+                                                        Text(
+                                                          'Upload Logo',
+                                                          style: TextStyle(
+                                                              color: Colors.grey),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    backgroundColor: Colors.grey.shade100,
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: Colors.grey.shade300,
-                                          width: 1),
-                                      borderRadius: BorderRadius.circular(16),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: Colors.grey.shade100,
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Colors.grey.shade300,
+                                            width: 1),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
                                     ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Cancel',
+                                        style: TextStyle(color: Colors.black)),
                                   ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('Cancel',
-                                      style: TextStyle(color: Colors.black)),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    backgroundColor: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
+                                SizedBox(
+                                  width: 12,
+                                ),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
                                     ),
+                                    onPressed: () {
+                                      submitData(
+                                          cardImage: _selectedImage ?? File(""),
+                                          description: description.text,
+                                          title: title.text);
+                                    },
+                                    child: const Text('Update'),
                                   ),
-                                  onPressed: () {
-                                    submitData(
-                                        cardImage: _selectedImage ?? File(""),
-                                        description: description.text,
-                                        title: title.text);
-                                  },
-                                  child: const Text('Update'),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                        ],
+                              ],
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+              const SizedBox(height: 14),
+              if (!isLoadingTeam)
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16), // Rounded corners
                   ),
-            const SizedBox(height: 14),
-            if (!isLoadingTeam)
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16), // Rounded corners
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Members & Roles',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Search Box
-                      TextField(
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 14, vertical: 1),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          filled: true,
-                          fillColor: ColoursUtils.background,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide.none,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Members & Roles',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
+                        const SizedBox(height: 16),
 
-                      // List of Members
-                      SizedBox(
-                        height: MediaQuery.sizeOf(context).height / 2,
-                        child: ListView.builder(
-                          itemCount: teamMember.length,
-                          padding: EdgeInsets.only(),
-                          itemBuilder: (ctx, index) {
-                            return CustomRowWidget(
-                              description: teamMember[index].lastName,
-                              imageUrl: teamMember[index].avatar,
-                              onDelete: () {},
-                              onRoleChanged: (value) {
-                                setState(() {
-                                  selecteValie = value;
-                                });
-                              },
-                              title: teamMember[index].firstName,
-                              initialRole: selecteValie,
-                            );
-                          },
-                          physics: AlwaysScrollableScrollPhysics(),
+                        // Search Box
+                        TextField(
+                          decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 14, vertical: 1),
+                            hintText: 'Search',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            filled: true,
+                            fillColor: ColoursUtils.background,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 10),
+
+                        // List of Members
+                        SizedBox(
+                          height: MediaQuery.sizeOf(context).height / 2,
+                          child: ListView.builder(
+                            itemCount: teamMember.length,
+                            padding: EdgeInsets.only(),
+                            shrinkWrap: true,
+                            itemBuilder: (ctx, index) {
+                              return CustomRowWidget(
+                                description: teamMember[index].lastName,
+                                imageUrl: teamMember[index].avatar,
+                                onDelete: () {},
+                                onRoleChanged: (value) {
+                                  setState(() {
+                                    selecteValie = value;
+                                  });
+                                },
+                                title: teamMember[index].firstName,
+                                initialRole: selecteValie,
+                              );
+                            },
+                            physics: NeverScrollableScrollPhysics(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-          ],
+                )
+            ],
+          ),
         ),
       ),
     );
@@ -492,59 +490,20 @@ class _EditTeamPageState extends State<EditTeamPage> {
     required String description,
     required File cardImage, // Card image file
   }) async {
-    // context.loaderOverlay.show();
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      'team_name': title,
+      'team_description': description,
+    };
+    updateTeamCubit?.apiCreateUpdateTeam(data,teamResponse?.data.id);
 
-    var token = await Storage().getToken();
-
-    String apiUrl =
-        "${Network.baseUrl}team/update/${teamResponse?.data.id.toString()}"; // Replace with your API endpoint
-
-    try {
-      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-
-      // Add fields to the request
-
-      request.fields['team_name'] = title;
-      request.fields['team_description'] = description;
 
       // Add the image to the request
-      if (!cardImage.path.contains("storage")) {
-        var file = await http.MultipartFile.fromPath(
-          'team_logo',
-          cardImage.path,
-        );
-
-        debugPrint("${cardImage.path}---");
-
-        request.files.add(file);
-      }
-
-      // Add headers, including Authorization token
-      request.headers.addAll({
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      });
-      var response = await request.send();
-
-      // Handle the response
-      if (response.statusCode == 200) {
-        // context.loaderOverlay.hide();
-
-        final responseData = await response.stream.bytesToString();
-        final data = jsonDecode(responseData);
-        // context.loaderOverlay.hide();
-        Navigator.pop(context);
-        debugPrint("Data submitted successfully: $data");
-      } else {
-        final responseData = await response.stream.bytesToString();
-
-        debugPrint("Failed to submit data. Status Code: ${responseData }");
-      }
-    } catch (error) {
-      // context.loaderOverlay.hide();
-
-      debugPrint("An error occurred: $error");
-    }
+      // if (!cardImage.path.contains("storage")) {
+        // var file = await http.MultipartFile.fromPath(
+        //   'team_logo',
+        //   cardImage.path,
+        // );
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -688,7 +647,7 @@ class CustomRowWidget extends StatelessWidget {
   final Function(String) onRoleChanged;
   final VoidCallback onDelete;
 
-  const CustomRowWidget({super.key, 
+  const CustomRowWidget({super.key,
     this.imageUrl,
     required this.title,
     required this.description,

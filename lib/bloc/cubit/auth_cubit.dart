@@ -28,6 +28,34 @@ class AuthCubit extends Cubit<ResponseState> {
     }
   }
 
+  Future<void> apiSignIn(body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    LoginDto dto;
+    try {
+      httpResponse = await authRepository.apiSignIn(body);
+      dto = httpResponse.data as LoginDto;
+      // await AppSession().storeAccessToken(dto.token ?? "");
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+  Future<void> apiUserProfile() async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    User dto;
+    try {
+      httpResponse = await authRepository.apiUserProfile();
+      dto = httpResponse.data as User;
+      // await AppSession().storeAccessToken(dto.token ?? "");
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
 
   Future<void> apiSignupGoogle(body) async {
     emit(ResponseStateLoading());
@@ -73,12 +101,12 @@ class AuthCubit extends Cubit<ResponseState> {
     }
   }
 
-  Future<void> otpResendApi() async {
+  Future<void> otpResendApi(body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     UtilityDto dto;
     try {
-      httpResponse = await authRepository.otpResendApi();
+      httpResponse = await authRepository.otpResendApi(body);
       dto = httpResponse.data as UtilityDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
@@ -88,12 +116,12 @@ class AuthCubit extends Cubit<ResponseState> {
 
 
 
-  Future<void> completeProfileApi(body,file) async {
+  Future<void> completeProfileApi(body,) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     LoginDto dto;
     try {
-      httpResponse = await authRepository.completeProfileApi(body,file);
+      httpResponse = await authRepository.completeProfileApi(body,);
       dto = httpResponse.data as LoginDto;
       // await AppSession().storeAccessToken(dto.token ?? "");
       emit(ResponseStateSuccess(dto));

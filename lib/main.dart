@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
       useDefaultLoading: true,
       
-      overlayColor: Colors.grey.withOpacity(0.8),
+      overlayColor: Colors.transparent,
    
       child: MaterialApp(
         title: 'Digital Card',

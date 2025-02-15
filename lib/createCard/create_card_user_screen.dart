@@ -19,6 +19,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../models/ard_id.dart';
 import '../models/card_get_model.dart';
+import '../utils/utility.dart';
 import 'create_card_company_screen.dart';
 
 class CreateCardScreen1 extends StatefulWidget {
@@ -305,7 +306,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                         if (firstname.text.isNotEmpty) {
                           if (lastName.text.isNotEmpty) {
                             if (widget.isEdit) {
-                              context.loaderOverlay.show();
+                              // Utility.showLoader(context);
 
                               submitData(
                                 cardId: widget.cardId.toString(),
@@ -315,7 +316,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                                 languageId: _selectedLanguageId.toString(),
                               );
                             } else {
-                              // context.loaderOverlay.show();
+                              // Utility.showLoader(context);
 
                               getUserId(
                                   languageId: _selectedLanguageId.toString(),
@@ -384,7 +385,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
       });
 
       if (response.statusCode == 200) {
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
 
         // Successfully fetched data
         final jsonResponse = jsonDecode(response.body);
@@ -402,14 +403,14 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
 
         debugPrint("Data fetched successfully: $getCardModel");
       } else {
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
 
         // Handle error response
         debugPrint("Failed to fetch data. Status Code: ${response.statusCode}");
         debugPrint("Error: ${response.body}");
       }
     } catch (error) {
-      context.loaderOverlay.hide();
+       Utility.hideLoader(context);
 
       // Handle any exceptions
       debugPrint("An error occurred: $error");
@@ -478,7 +479,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
       if (response.statusCode == 200) {
         // final responseData = await response.stream.bytesToString();
         // final data = jsonDecode(responseData);
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
         await Storage().setFirstCardSkip(false);
         debugPrint("Data submitted successfully:");
         Navigator.push(
@@ -491,12 +492,12 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
           ),
         );
       } else {
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
 
         debugPrint("Failed to submit data. Status Code: ${response.statusCode}");
       }
     } catch (error) {
-      context.loaderOverlay.hide();
+       Utility.hideLoader(context);
 
       debugPrint("An error occurred: $error");
     }
@@ -577,7 +578,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
 
   Future<void> deleteCardApiCalling() async {
     if (widget.cardId.isNotEmpty) {
-      context.loaderOverlay.show();
+      Utility.showLoader(context);
       var url =
           "${Network.baseUrl}card/destroy/${widget.cardId.toString()}"; // Replace with your API endpoint
 
@@ -595,7 +596,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
         if (response.statusCode == 200) {
           FocusManager.instance.primaryFocus?.unfocus();
 
-          context.loaderOverlay.hide();
+           Utility.hideLoader(context);
           Fluttertoast.showToast(
               msg: "Card Delection successfully",
               toastLength: Toast.LENGTH_LONG,
@@ -603,7 +604,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
               backgroundColor: Colors.green);
           Navigator.pop(context);
         } else {
-          context.loaderOverlay.hide();
+           Utility.hideLoader(context);
           Fluttertoast.showToast(
               msg: "Card Delection Failed",
               toastLength: Toast.LENGTH_LONG,
@@ -614,7 +615,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
           Navigator.of(context).pop();
         }
       } catch (e) {
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
         Fluttertoast.showToast(
             msg: "Card Delection Failed",
             toastLength: Toast.LENGTH_LONG,

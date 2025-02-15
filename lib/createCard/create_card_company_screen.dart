@@ -22,6 +22,7 @@ import '../models/company_model.dart';
 import '../models/company_type_model.dart';
 import '../utils/colors/colors.dart';
 import '../utils/image_cropo.dart';
+import '../utils/utility.dart';
 import '../utils/widgets/network.dart';
 import 'create_card_social.dart';
 
@@ -45,16 +46,19 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
   String token = "";
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
-  CardCubit? _updateCardCubit;
-  List<Company> companyList = []; // List to hold parsed data
-
+  CardCubit? _updateCardCubit,_getGetCompanyTypeCubit,_getCardCubit;
+  List<DataCompany> companyList = []; // List to hold parsed data
   String? selectedId = "1"; // Holds the selected ID
   String? selectedTitle; // Holds the selected title
 
   @override
   void dispose() {
     _updateCardCubit?.close();
+    _getCardCubit?.close();
+    _getGetCompanyTypeCubit?.close();
     _updateCardCubit = null;
+    _getCardCubit = null;
+    _getGetCompanyTypeCubit = null;
     companyAddress.dispose();
     companyName.dispose();
     jobTitle.dispose();
@@ -76,6 +80,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
   @override
   void initState() {
     _updateCardCubit = CardCubit(CardRepository());
+    _getGetCompanyTypeCubit = CardCubit(CardRepository());
+    _getCardCubit = CardCubit(CardRepository());
     getUserToken();
     if (widget.isEdit) {
       fetchEditData();
@@ -87,57 +93,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
   }
 
   Future<void> fetchEditData() async {
-    var token = await Storage().getToken();
-    String apiUrl =
-        "${Network.baseUrl}card/get/${widget.cardId}"; // Replace with your API endpoint
-
-    try {
-      final response = await http.get(Uri.parse(apiUrl), headers: {
-        'Authorization': 'Bearer $token',
-      });
-
-      if (response.statusCode == 200) {
-        // Successfully fetched data
-        final jsonResponse = jsonDecode(response.body);
-
-        GetCardModel getCardModel = GetCardModel.fromJson(jsonResponse);
-        setState(() {
-          if (getCardModel.data?.companyTypeId == "1") {
-            selectedTitle = "IT";
-            selectedId = "1";
-          } else {
-            selectedTitle = "Finance";
-            selectedId = "2";
-          }
-
-          companyName.text = getCardModel.data?.companyName ?? "";
-          jobTitle.text = getCardModel.data?.jobTitle ?? "";
-          companyAddress.text = getCardModel.data?.companyAddress ?? "";
-          companyWebsite.text = getCardModel.data?.companyWebsite ?? "";
-          workEmail.text = getCardModel.data?.workEmail ?? "";
-          workPhone.text = getCardModel.data?.phoneNo ?? "";
-
-          if (getCardModel.data?.company_logo != null) {
-            debugPrint("${getCardModel.data?.company_logo}");
-            _selectedImage = File(getCardModel.data?.company_logo);
-          }
-        });
-
-        debugPrint("Data fetched successfully: $getCardModel");
-        context.loaderOverlay.hide();
-      } else {
-        context.loaderOverlay.hide();
-
-        // Handle error response
-        debugPrint("Failed to fetch data. Status Code: ${response.statusCode}");
-        debugPrint("Error: ${response.body}");
-      }
-    } catch (error) {
-      context.loaderOverlay.hide();
-
-      // Handle any exceptions
-      debugPrint("An error occurred: $error");
-    }
+    _getCardCubit?.apiGetCard(widget.cardId);
   }
 
   String? validateFields({
@@ -201,7 +157,16 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
       return;
     }
 
-    context.loaderOverlay.show();
+    Utility.showLoader(context);
+    var   fileData;
+    if (_selectedImage != null &&
+              _selectedImage!.path != "" &&
+              !_selectedImage!.path.contains("storage")) {
+      fileData = await http.MultipartFile.fromPath(
+              'company_logo',
+              _selectedImage?.path ?? "",
+            );
+     }
     Map<String, dynamic> data = {
       'step_no' : "2",
       'company_name' : companyName.text.toString().trim(),
@@ -210,9 +175,10 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
       'company_address' : companyAddress.text.toString().trim(),
       'company_website' : companyWebsite.text.toString().trim(),
       'work_email' : workEmail.text.toString().trim(),
-      'phone_no' : workPhone.text.toString().trim()
+      'phone_no' : workPhone.text.toString().trim(),
+      'company_logo':fileData.toString()
     };
-    _updateCardCubit?.cardUpdateApi(data,widget.cardId);
+    _updateCardCubit?.cardUpdateApi(data,widget.cardId,);
 
 
 
@@ -250,16 +216,16 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
     //
     //   // Handle the response
     //   if (response.statusCode == 200) {
-    //     context.loaderOverlay.hide();
+    //      Utility.hideLoader(context);
     //
     //
     //   } else {
-    //     context.loaderOverlay.hide();
+    //      Utility.hideLoader(context);
     //     print(
     //         "Failed to submit data. Status Code: ${response.statusCode} \n $response");
     //   }
     // } catch (error) {
-    //   context.loaderOverlay.hide();
+    //    Utility.hideLoader(context);
     //
     //   debugPrint("An error occurred: $error");
     // }
@@ -267,461 +233,485 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
 
   CompanyTypeModel? companyTypeModel;
   Future<void> fetchData() async {
-    const String apiUrl =
-        "${Network.baseUrl}companytype/get"; // Replace with your API endpoint
-
-    try {
-      final response = await http.get(Uri.parse(apiUrl), headers: {
-        'Authorization': 'Bearer $token', // Add your authorization token
-      });
-
-      if (response.statusCode == 200) {
-        // Successfully fetched data
-        final data = jsonDecode(response.body);
-        debugPrint("Data fetched successfully: $data");
-
-        setState(() {
-          companyTypeModel = CompanyTypeModel.fromJson(data);
-          companyList = (data["data"] as List)
-              .map((item) => Company.fromJson(item))
-              .toList(); // Convert to a list of Company objects
-        });
-        context.loaderOverlay.hide();
-      } else {
-        context.loaderOverlay.hide();
-
-        // Handle error response
-        debugPrint("Failed to fetch data. Status Code: ${response.statusCode}");
-        debugPrint("Error: ${response.body}");
-      }
-    } catch (error) {
-      context.loaderOverlay.hide();
-
-      // Handle any exceptions
-      debugPrint("An error occurred: $error");
-    }
+    _getGetCompanyTypeCubit?.apiGetCompanyType();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CardCubit, ResponseState>(
-        bloc: _updateCardCubit,
-        listener: (context, state) {
-          if (state is ResponseStateLoading) {} else
-          if (state is ResponseStateEmpty) {} else
-          if (state is ResponseStateNoInternet) {
-            context.loaderOverlay.hide();
-          } else if (state is ResponseStateError) {
-            context.loaderOverlay.hide();
-          } else if (state is ResponseStateSuccess) {
-            context.loaderOverlay.hide();
-            var dto = state.data as UtilityDto;
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (builder) =>
-                        CreateCardScreenSocial(
-                          cardId: widget.cardId,
-                          isEdit: widget.isEdit,
-                        )));
-          }
-          setState(() {});
-        },
-      child: GestureDetector(
-        onTap: CommonUtils.closeKeyBoard,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: GestureDetector(
-                          onTap: () =>
-                              Navigator.pop(context), // Default action: Go back
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            elevation: 2,
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Icon(
-                                Icons.arrow_back,
-                                size: 20,
-                                color: Colors.black,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CardCubit, ResponseState>(
+          bloc: _updateCardCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (builder) => CreateCardScreenSocial(
+                            cardId: widget.cardId,
+                            isEdit: widget.isEdit,
+                          )));
+            }
+            setState(() {});
+          },
+        ) ,
+
+        BlocListener<CardCubit, ResponseState>(
+          bloc: _getGetCompanyTypeCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as CompanyTypeModel;
+              companyTypeModel = dto;
+              companyList = dto.data ?? [];
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<CardCubit, ResponseState>(
+          bloc: _getCardCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as GetCardModel;
+              if (dto.data?.companyTypeId == "1") {
+                selectedTitle = "IT";
+                selectedId = "1";
+              } else {
+                selectedTitle = "Finance";
+                selectedId = "2";
+              }
+
+              companyName.text = dto.data?.companyName ?? "";
+              jobTitle.text = dto.data?.jobTitle ?? "";
+              companyAddress.text = dto.data?.companyAddress ?? "";
+              companyWebsite.text = dto.data?.companyWebsite ?? "";
+              workEmail.text = dto.data?.workEmail ?? "";
+              workPhone.text = dto.data?.phoneNo ?? "";
+
+              if (dto.data?.company_logo != null) {
+                _selectedImage = File(dto.data?.company_logo);
+              }
+            }
+            setState(() {});
+          },
+        ),
+      ],
+        child: GestureDetector(
+          onTap: CommonUtils.closeKeyBoard,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: GestureDetector(
+                            onTap: () =>
+                                Navigator.pop(context), // Default action: Go back
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              elevation: 2,
+                              child: const Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Center(
-                        child: Text(
-                          AppLocalizations.of(context).translate('createCardOn'),
-                          style:
-                              TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                        Center(
+                          child: Text(
+                            AppLocalizations.of(context).translate('createCardOn'),
+                            style:
+                                TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 30,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Center(
-                    child: Text(
-                      "Company Details",
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        _showBottomSheet(context);
-                      },
-                      child: Stack(
-                        children: [
-                          _selectedImage != null &&
-                                  _selectedImage!.path.isNotEmpty &&
-                                  !_selectedImage!.path.contains("storage")
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      50), // Adjust the radius as needed
-                                  child: Image.file(
-                                    _selectedImage!,
-                                    fit: BoxFit.cover,
-                                    width: 80,
-                                    height: 80,
-                                  ),
-                                )
-                              : _selectedImage != null &&
-                                      _selectedImage!.path.isNotEmpty &&
-                                      _selectedImage!.path.contains("storage")
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          50), // Adjust the radius as needed
-                                      child: Image.network(
-                                        "${Network.imgUrl}${_selectedImage!.path}",
-                                        fit: BoxFit.cover,
-                                        width: 80,
-                                        height: 80,
-                                      ),
-                                    )
-                                  : Container(
-                                      width: 80, // Adjust the size as needed
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 30,
+                          height: 3,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Center(
+                      child: Text(
+                        "Company Details",
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          _showBottomSheet(context);
+                        },
+                        child: Stack(
+                          children: [
+                            _selectedImage != null &&
+                                    _selectedImage!.path.isNotEmpty &&
+                                    !_selectedImage!.path.contains("storage")
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        50), // Adjust the radius as needed
+                                    child: Image.file(
+                                      _selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: 80,
                                       height: 80,
-                                      decoration: BoxDecoration(
-                                        color: ColoursUtils
-                                            .background, // Grey background color
-                                        shape: BoxShape.circle, // Circular shape
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(22.0),
-                                        child: Image.asset(
-                                          "assets/images/image-01.png",
-                                          fit: BoxFit.contain,
+                                    ),
+                                  )
+                                : _selectedImage != null &&
+                                        _selectedImage!.path.isNotEmpty &&
+                                        _selectedImage!.path.contains("storage")
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            50), // Adjust the radius as needed
+                                        child: Image.network(
+                                          "${Network.imgUrl}${_selectedImage!.path}",
+                                          fit: BoxFit.cover,
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                      )
+                                    : Container(
+                                        width: 80, // Adjust the size as needed
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          color: ColoursUtils
+                                              .background, // Grey background color
+                                          shape: BoxShape.circle, // Circular shape
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Image.asset(
+                                            "assets/images/image-01.png",
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ),
-                                    ),
 
-                          // Positioned plus icon at the bottom right corner
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors
-                                    .blue, // Background color of the plus icon
-                                shape: BoxShape.circle,
-                                border: Border.all(
+                            // Positioned plus icon at the bottom right corner
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                decoration: BoxDecoration(
                                   color: Colors
-                                      .white, // White border around the plus icon
-                                  width: 3,
+                                      .blue, // Background color of the plus icon
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // White border around the plus icon
+                                    width: 3,
+                                  ),
                                 ),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(
-                                    4.0), // Padding around the plus icon
-                                child: Icon(
-                                  Icons.add, // Plus icon
-                                  size: 12, // Size of the plus icon
-                                  color: Colors.white, // Color of the plus icon
+                                child: const Padding(
+                                  padding: EdgeInsets.all(
+                                      4.0), // Padding around the plus icon
+                                  child: Icon(
+                                    Icons.add, // Plus icon
+                                    size: 12, // Size of the plus icon
+                                    color: Colors.white, // Color of the plus icon
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context).translate('companylogo'),
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(12),
+                    Center(
+                      child: Text(
+                        AppLocalizations.of(context).translate('companylogo'),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      controller: companyName,
-                      decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context).translate('companyname'),
-                        border: InputBorder.none,
-                        hintStyle: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            color: Colors.grey,
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        controller: companyName,
+                        decoration: InputDecoration(
+                          hintText:
+                              AppLocalizations.of(context).translate('companyname'),
+                          border: InputBorder.none,
+                          hintStyle: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  companyList.isEmpty
-                      ? SizedBox() // Show a loader until data is available
-                      : selectedTitle != null && selectedTitle!.isNotEmpty
-                          ? GestureDetector(
-                              onTap: () {
-                                showBottomSheetCompanyType();
-                              },
-                              child: titleShewoEdt())
-                          : companyTypeBottomSheet(context),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      controller: jobTitle,
-                      decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context).translate('jobtitle'),
-                        border: InputBorder.none,
-                        hintStyle: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            color: Colors.grey,
+                    const SizedBox(height: 20),
+                    companyList.isEmpty
+                        ? SizedBox() // Show a loader until data is available
+                        : selectedTitle != null && selectedTitle!.isNotEmpty
+                            ? GestureDetector(
+                                onTap: () {
+                                  showBottomSheetCompanyType();
+                                },
+                                child: titleShewoEdt())
+                            : companyTypeBottomSheet(context),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        controller: jobTitle,
+                        decoration: InputDecoration(
+                          hintText:
+                              AppLocalizations.of(context).translate('jobtitle'),
+                          border: InputBorder.none,
+                          hintStyle: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(12),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      controller: companyAddress,
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)
-                            .translate('companyaddress'),
-                        border: InputBorder.none,
-                        hintStyle: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            color: Colors.grey,
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        controller: companyAddress,
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)
+                              .translate('companyaddress'),
+                          border: InputBorder.none,
+                          hintStyle: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(12),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      controller: companyWebsite,
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)
-                            .translate('companyWebsite'),
-                        border: InputBorder.none,
-                        hintStyle: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            color: Colors.grey,
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        controller: companyWebsite,
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)
+                              .translate('companyWebsite'),
+                          border: InputBorder.none,
+                          hintStyle: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(12),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: workEmail,
-                      decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context).translate('workemail'),
-                        border: InputBorder.none,
-                        hintStyle: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            color: Colors.grey,
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        controller: workEmail,
+                        decoration: InputDecoration(
+                          hintText:
+                              AppLocalizations.of(context).translate('workemail'),
+                          border: InputBorder.none,
+                          hintStyle: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(12),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      controller: workPhone,
-                      decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context).translate('phoneumber'),
-                        border: InputBorder.none,
-                        hintStyle: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            color: Colors.grey,
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: workPhone,
+                        decoration: InputDecoration(
+                          hintText:
+                              AppLocalizations.of(context).translate('phoneumber'),
+                          border: InputBorder.none,
+                          hintStyle: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                     // iconAlignment: IconAlignment.start,
-                      onPressed: () {
-                        // Handle button press
-                        submitData();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue, // Background color
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(30), // Rounded corners
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                       // iconAlignment: IconAlignment.start,
+                        onPressed: () {
+                          // Handle button press
+                          submitData();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue, // Background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(30), // Rounded corners
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Continue", // Right side text
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ],
                         ),
                       ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Continue", // Right side text
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ],
-                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
     );
   }
 

@@ -7,6 +7,7 @@ import 'package:my_di_card/screens/team/create_team.dart';
 
 import '../../localStorage/storage.dart';
 import '../../utils/colors/colors.dart';
+import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../home_module/first_card.dart';
 import 'package:http/http.dart' as http;
@@ -37,16 +38,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         debugPrint("Data fetched successfully: ${response.body}");
         Navigator.push(context,
             CupertinoPageRoute(builder: (builder) => CreateTeamPage()));
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
       } else {
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
 
         // Handle error response
         debugPrint("Failed to fetch data. Status Code: ${response.statusCode}");
         debugPrint("Error: ${response.body}");
       }
     } catch (error) {
-      context.loaderOverlay.hide();
+       Utility.hideLoader(context);
 
       // Handle any exceptions
       debugPrint("An error occurred: $error");

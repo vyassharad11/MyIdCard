@@ -4,6 +4,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/utility.dart';
 import '../auth_module/welcome_screen.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -280,7 +281,7 @@ class _SettingScreenState extends State<SettingScreen> {
               onPressed: () {
                 // Perform delete action here
 
-                clearSharedPreferences(context);
+                clearSharedPreferences();
                 // Close the dialog
               },
               child: Text('Logout'),
@@ -324,8 +325,8 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  Future<void> clearSharedPreferences(context) async {
-    // context.loaderOverlay.show();
+  Future<void> clearSharedPreferences() async {
+    Utility.showLoader(context);
 
     bool success = await prefs.clear(); // Clears all key-value pairs
     if (success) {
@@ -337,7 +338,7 @@ class _SettingScreenState extends State<SettingScreen> {
             MaterialPageRoute(builder: (builder) => WelcomePage()),
             (route) => false,
           );
-          // context.loaderOverlay.hide();
+           Utility.hideLoader(context);
         },
       );
 

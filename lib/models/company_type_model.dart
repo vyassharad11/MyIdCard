@@ -1,15 +1,15 @@
 class CompanyTypeModel {
   bool? status;
-  List<Data>? data;
+  List<DataCompany>? data;
 
   CompanyTypeModel({this.status, this.data});
 
   CompanyTypeModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <DataCompany>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(DataCompany.fromJson(v));
       });
     }
   }
@@ -24,13 +24,13 @@ class CompanyTypeModel {
   }
 }
 
-class Data {
+class DataCompany {
   int? id;
   dynamic companyType;
 
-  Data({this.id, this.companyType});
+  DataCompany({this.id, this.companyType});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataCompany.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     companyType = json['company_type'];
   }

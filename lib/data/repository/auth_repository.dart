@@ -42,6 +42,18 @@ class AuthRepository {
     return _apiClient.apiSignUp(dto, body);
   }
 
+  Future<HttpResponse<LoginDto>> apiSignIn(body) async {
+    var dto = await Network.baseUrl;
+    return _apiClient.apiSignIn(dto, body);
+  }
+
+  Future<HttpResponse<User>> apiUserProfile() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiUserProfile(dto, token2);
+  }
+
 
   Future<HttpResponse<LoginDto>> apiSignupGoogle(body) async {
     var dto = await Network.baseUrl;
@@ -59,16 +71,16 @@ class AuthRepository {
     return _apiClient.otpRegisterApi(dto, body);
   }
 
-  Future<HttpResponse<UtilityDto>> otpResendApi() async {
+  Future<HttpResponse<UtilityDto>> otpResendApi(body) async {
     var dto = await Network.baseUrl;
-    return _apiClient.otpResendApi(dto);
+    return _apiClient.otpResendApi(dto,body);
   }
 
-  Future<HttpResponse<LoginDto>> completeProfileApi(body,file) async {
+  Future<HttpResponse<LoginDto>> completeProfileApi(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.completeProfileApi(dto,body,token2,file);
+    return _apiClient.completeProfileApi(dto,body,token2,);
   }
 
 

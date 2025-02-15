@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/bloc/cubit/auth_cubit.dart';
 import 'package:my_di_card/data/repository/auth_repository.dart';
+import 'package:my_di_card/utils/utility.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../bloc/api_resp_state.dart';
@@ -59,6 +60,10 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
 
   @override
   void dispose() {
+    _authCubit?.close();
+    _authCubit = null;
+    _googleLoginCubit?.close();
+    _appleLoginCubit?.close();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -74,7 +79,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
   }
 
   Future<void> registerVendor() async {
-    // context.loaderOverlay.show();
+      Utility.showLoader(context);
     Map<String, dynamic> data = {
       'language_id': '1',
       'email': _emailController.text.toString().trim(),
@@ -140,6 +145,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
 
 
   Future<void> loginWithGoogle() async {
+    Utility.showLoader(context);
     final GoogleSignIn googleSignIn = Platform.isAndroid
         ? GoogleSignIn(
       serverClientId: Network.googleKeyAndroid,
@@ -170,11 +176,13 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
       googleLogin(idToken);
 
     } catch (e) {
+      Utility.hideLoader(context);
       debugPrint("Google Login Error: $e");
     }
   }
 
   Future<void> loginWithApple() async {
+    Utility.showLoader(context);
     Storage().removeTokenFromPreferences();
 
     try {
@@ -204,6 +212,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
       _appleLoginCubit?.apiSignupApple(data);
 
     } catch (e) {
+      Utility.hideLoader(context);
       debugPrint("Apple Login Error: $e");
     }
   }
@@ -216,14 +225,14 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         bloc: _authCubit,
         listener: (context, state) {
           if (state is ResponseStateLoading) {
-          } else if (state is ResponseStateEmpty) {;
+          } else if (state is ResponseStateEmpty) {
           setState(() {});
           } else if (state is ResponseStateNoInternet) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateError) {
-            context.loaderOverlay.hide();
+           Utility.hideLoader(context);
           } else if (state is ResponseStateSuccess) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
             var dto = state.data as UtilityDto;
             Storage().saveToken(dto.token ?? "");
             showModalBottomSheet(
@@ -244,14 +253,14 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         bloc: _googleLoginCubit,
         listener: (context, state) {
           if (state is ResponseStateLoading) {
-          } else if (state is ResponseStateEmpty) {;
+          } else if (state is ResponseStateEmpty) {
           setState(() {});
           } else if (state is ResponseStateNoInternet) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateError) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateSuccess) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
             var dto = state.data as LoginDto;
             Storage().saveUserToPreferences(dto.user!);
             Storage().saveToken(dto.token ?? "");
@@ -270,14 +279,14 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         bloc: _appleLoginCubit,
         listener: (context, state) {
           if (state is ResponseStateLoading) {
-          } else if (state is ResponseStateEmpty) {;
+          } else if (state is ResponseStateEmpty) {
           setState(() {});
           } else if (state is ResponseStateNoInternet) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateError) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateSuccess) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
             var dto = state.data as LoginDto;
             Storage().saveUserToPreferences(dto.user!);
             Storage().saveToken(dto.token ?? "");

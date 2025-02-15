@@ -14,6 +14,7 @@ import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/registration_otp_model.dart';
 import '../../models/utility_dto.dart';
+import '../../utils/utility.dart';
 import '../../utils/widgets/button_primary.dart';
 import '../../utils/widgets/network.dart';
 import 'profile_bottom_sheet.dart';
@@ -53,7 +54,7 @@ class _EmailVerificationBottomSheetState
 
 
   Future<void> otpRegisterApiCalling() async {
-    context.loaderOverlay.show();
+    Utility.showLoader(context);
     Map<String, dynamic> data = {
       'email': widget.email.toString(),
       'email_verification_code': _otpController.text.toString().trim(),
@@ -62,8 +63,11 @@ class _EmailVerificationBottomSheetState
   }
 
   Future<void> otpResendApi() async {
-    context.loaderOverlay.show();
-    _otpResendApi?.otpResendApi();
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      'email': widget.email.toString(),
+    };
+    _otpResendApi?.otpResendApi(data);
   }
 
 
@@ -80,11 +84,11 @@ class _EmailVerificationBottomSheetState
           }
           else if (state is ResponseStateEmpty) {
           } else if (state is ResponseStateNoInternet) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateError) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateSuccess) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
             var dto = state.data as LoginDto;
             if (dto.user != null) {
               Storage().saveUserToPreferences(dto.user!);
@@ -108,11 +112,11 @@ class _EmailVerificationBottomSheetState
           }
           else if (state is ResponseStateEmpty) {
           } else if (state is ResponseStateNoInternet) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateError) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
           } else if (state is ResponseStateSuccess) {
-            context.loaderOverlay.hide();
+             Utility.hideLoader(context);
             var dto = state.data as UtilityDto;
           }
           setState(() {});

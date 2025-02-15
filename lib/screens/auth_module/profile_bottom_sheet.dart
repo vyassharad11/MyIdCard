@@ -24,6 +24,7 @@ import '../../models/login_dto.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/image_cropo.dart';
 import '../../utils/url_lancher.dart';
+import '../../utils/utility.dart';
 import '../../utils/widgets/button_primary.dart';
 import '../../utils/widgets/network.dart';
 import '../home_module/first_card.dart';
@@ -52,13 +53,13 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
     required String firstName,
     required String lastName,
     required File cardImage,}) async {
-    context.loaderOverlay.show();
+    Utility.showLoader(context);
     Map<String, dynamic> data = {
       'first_name': firstName.toString().trim(),
       'last_name': lastName.toString(),
       'team_code': teamCode.toString()
     };
-    _completeProfileCubit?.completeProfileApi(data,cardImage.path);
+    _completeProfileCubit?.completeProfileApi(data,);
   }
 
 
@@ -96,11 +97,11 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
         if (state is ResponseStateLoading) {
         } else if (state is ResponseStateEmpty) {
         } else if (state is ResponseStateNoInternet) {
-          context.loaderOverlay.hide();
+           Utility.hideLoader(context);
         } else if (state is ResponseStateError) {
-          context.loaderOverlay.hide();
+           Utility.hideLoader(context);
         } else if (state is ResponseStateSuccess) {
-          context.loaderOverlay.hide();
+           Utility.hideLoader(context);
           var dto = state.data as LoginDto;
           if(dto.user != null) {
             Storage().saveUserToPreferences(dto.user!);

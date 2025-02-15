@@ -15,5 +15,10 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
-
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here if needed -->
+        <item name="colorPrimary">?android:colorBackground</item>
+        <item name="colorPrimaryDark">?android:colorBackground</item>
+        <item name="colorAccent">?android:colorBackground</item>
+    </style>
 </resources>

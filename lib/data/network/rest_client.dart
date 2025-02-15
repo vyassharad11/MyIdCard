@@ -6,7 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../models/card_get_model.dart';
+import '../../models/card_list.dart';
+import '../../models/company_type_model.dart';
+import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/social_data.dart';
+import '../../models/team_member.dart';
+import '../../models/team_response.dart';
 import '../../models/user_data_model.dart';
 import '../../utils/widgets/network.dart';
 part 'rest_client.g.dart';
@@ -33,6 +40,21 @@ abstract class RestClient {
   @FormUrlEncoded()
   Future<HttpResponse<UtilityDto>> apiSignUp(@Path("url") url,
        @Body() body);
+
+  @POST("{url}auth/login")
+  @Header(headerValue)
+  @Header(headerContentType)
+  @FormUrlEncoded()
+  Future<HttpResponse<LoginDto>> apiSignIn(@Path("url") url,
+       @Body() body);
+
+
+@GET("{url}user")
+  @Header(headerValue)
+  @Header(headerContentType)
+  @FormUrlEncoded()
+  Future<HttpResponse<User>> apiUserProfile(@Path("url") url,
+    @Header(authorization) token);
 
 
   @POST("{url}oauth/google/login/callback")
@@ -62,7 +84,7 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   @FormUrlEncoded()
-  Future<HttpResponse<UtilityDto>> otpResendApi(@Path("url") url,);
+  Future<HttpResponse<UtilityDto>> otpResendApi(@Path("url") url,@Body() body);
 
 
   @POST("{url}user/complete-profile")
@@ -70,7 +92,7 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<LoginDto>> completeProfileApi(@Path("url") url,
-      @Body() body, @Header(authorization) token,@Part() File part);
+      @Body() body, @Header(authorization) token);
 
  @POST("{url}card/update/{id}")
   @Header(headerValue)
@@ -79,5 +101,85 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> cardUpdateApi(@Path("url") url,
       @Body() body, @Header(authorization) token,  @Path("id") id,);
 
+
+  @GET("{url}companytype/get")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<CompanyTypeModel>> apiGetCompanyType(@Path("url") url,
+      @Header(authorization) token);
+
+  @GET("{url}card/get/{cardId}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<GetCardModel>> apiGetCard(@Path("url") url,
+      @Header(authorization) token,@Path("cardId") id,);
+
+  @GET("{url}card/get-my-card")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<CardListModel>> apiGetMyCard(@Path("url") url,
+      @Header(authorization) token,);
+
+  @GET("{url}socials")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<Social>> apiGetSocials(@Path("url") url,
+      @Header(authorization) token);
+
+
+  @POST("{url}card/destroy/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteCard(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
+
+
+  @POST("{url}team/update/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiCreateUpdateTeam(@Path("url") url,
+      @Header(authorization) token,@Body() body,@Path("id") id,);
+
+  @GET("{url}team/get-my-team")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<TeamResponse>> apiGetMyTeam(@Path("url") url,
+      @Header(authorization) token);
+
+
+ @POST("{url}team/get-team-member")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<TeamMembersResponse>> apiGetTeamMember(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
+ @POST("{url}group/store")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiCreateGroup(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
+ @POST("{url}group/update/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiUpdateGroup(@Path("url") url,
+      @Header(authorization) token,@Body() body,@Path("id") id,);
+
+
+
+  @GET("{url}group/get/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<GroupDataModel>> apiGetGroupDetails(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
+
+
+  @GET("{url}get-my-group")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<GroupDataModel>> apiGetMyGroup(@Path("url") url,
+      @Header(authorization) token);
 
 }

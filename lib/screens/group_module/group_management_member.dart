@@ -11,6 +11,7 @@ import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import '../../utils/utility.dart';
 import '../contact/contact_home.dart';
 
 class GroupMemberPage extends StatefulWidget {
@@ -340,7 +341,7 @@ class _GroupMemberPageState extends State<GroupMemberPage> {
     required String description,
     required File cardImage, // Card image file
   }) async {
-    context.loaderOverlay.show();
+    Utility.showLoader(context);
 
     var token = await Storage().getToken();
 
@@ -376,18 +377,18 @@ class _GroupMemberPageState extends State<GroupMemberPage> {
 
       // Handle the response
       if (response.statusCode == 200) {
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
 
         final responseData = await response.stream.bytesToString();
         final data = jsonDecode(responseData);
-        context.loaderOverlay.hide();
+         Utility.hideLoader(context);
 
         debugPrint("Data submitted successfully: $data");
       } else {
         debugPrint("Failed to submit data. Status Code: ${response.statusCode}");
       }
     } catch (error) {
-      context.loaderOverlay.hide();
+       Utility.hideLoader(context);
 
       debugPrint("An error occurred: $error");
     }
