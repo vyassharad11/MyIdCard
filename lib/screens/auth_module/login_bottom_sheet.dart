@@ -225,11 +225,14 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
     listener: (context, state) {
       if (state is ResponseStateLoading) {
       } else if (state is ResponseStateEmpty) {
-      setState(() {});
+        Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.message,isError: true);
       } else if (state is ResponseStateNoInternet) {
         Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.message,isError: true);
       } else if (state is ResponseStateError) {
         Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
       } else if (state is ResponseStateSuccess) {
         Utility.hideLoader(context);
         var dto = state.data as LoginDto;
@@ -268,7 +271,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
             ),
           );
         }
-
+        Utility().showFlushBar(context: context, message: dto.message ?? "");
       } setState(() {});
     },),
       BlocListener<AuthCubit, ResponseState>(
@@ -276,11 +279,14 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
     listener: (context, state) {
       if (state is ResponseStateLoading) {
       } else if (state is ResponseStateEmpty) {
-      setState(() {});
+        Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.message,isError: true);
       } else if (state is ResponseStateNoInternet) {
         Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.message,isError: true);
       } else if (state is ResponseStateError) {
         Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
       } else if (state is ResponseStateSuccess) {
         Utility.hideLoader(context);
         var dto = state.data as LoginDto;
@@ -317,7 +323,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
               CupertinoPageRoute(
                   builder: (builder) => const FirstCardScreen()));
         }
-
+        Utility().showFlushBar(context: context, message: dto.message ?? "");
       } setState(() {});
     },),
       BlocListener<AuthCubit, ResponseState>(
@@ -325,11 +331,14 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
     listener: (context, state) {
       if (state is ResponseStateLoading) {
       } else if (state is ResponseStateEmpty) {
-      setState(() {});
+        Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.message,isError: true);
       } else if (state is ResponseStateNoInternet) {
         Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.message,isError: true);
       } else if (state is ResponseStateError) {
         Utility.hideLoader(context);
+        Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
       } else if (state is ResponseStateSuccess) {
         Utility.hideLoader(context);
         var dto = state.data as LoginDto;
@@ -366,6 +375,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
               CupertinoPageRoute(
                   builder: (builder) => const FirstCardScreen()));
         }
+        Utility().showFlushBar(context: context, message: dto.message ?? "");
       } setState(() {});
     },),
       ],

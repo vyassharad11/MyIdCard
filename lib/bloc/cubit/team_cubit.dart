@@ -63,4 +63,45 @@ class TeamCubit extends Cubit<ResponseState> {
     }
   }
 
+
+  Future<void> apiRemoveTeamMember(body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await teamRepository.apiRemoveTeamMember(body);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+  Future<void> apiApproveTeamMember(body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await teamRepository.apiApproveTeamMember(body);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+
+  Future<void> apiGetUnApproveTeamMember(body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await teamRepository.apiGetUnApproveTeamMember(body);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
 }

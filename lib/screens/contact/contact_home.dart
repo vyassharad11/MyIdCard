@@ -1,8 +1,14 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/screens/contact/contact_details_screen.dart';
 
+import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/group_cubit.dart';
+import '../../models/tag_model.dart';
+import '../../utils/utility.dart';
 import '../tag/tag_management_screen.dart';
 import 'contact_notes.dart';
 
@@ -14,64 +20,108 @@ class ContactHomeScreen extends StatefulWidget {
 }
 
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
-  final List<String> tags = ["English", "Personal", "Hidden", "Physical Card"];
+  GroupCubit? _getTagCubit;
+
+  List<TagDatum> tags = [];
+
+
+  @override
+  void initState() {
+    _getTagCubit = GroupCubit(GroupRepository());
+    apiTagList();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  dispose(){
+    _getTagCubit?.close();
+    _getTagCubit = null;
+    super.dispose();
+  }
+
+  Future<void> apiTagList() async {
+    _getTagCubit?.apiGetTeamTag();
+  }
 
   int selectIndec = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        centerTitle: false,
-        title: const Text(
-          'Contacts',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<GroupCubit, ResponseState>(
+          bloc: _getTagCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as TagModel;
+              tags = dto.data ?? [];
+            }
+            setState(() {});
+          },
         ),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 20, top: 6),
-            padding: const EdgeInsets.only(right: 0, top: 6, bottom: 6),
-            child: ClipOval(
-              child: Material(
-                color: Colors.blue, // Button color
-                child: InkWell(
-                  splashColor: Colors.blue, // Splash color
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (builder) => const ContactDetails(),
-                      ),
-                    );
-                  },
-                  child: const SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          centerTitle: false,
+          title: const Text(
+            'Contacts',
+            style: TextStyle(
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          actions: [
+            Container(
+              margin: const EdgeInsets.only(right: 20, top: 6),
+              padding: const EdgeInsets.only(right: 0, top: 6, bottom: 6),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.blue, // Button color
+                  child: InkWell(
+                    splashColor: Colors.blue, // Splash color
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (builder) => const ContactDetails(),
+                        ),
+                      );
+                    },
+                    child: const SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )),
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            tabBarWidget(context),
-            tabBarTile(selectIndec == 0 ? "Tags" : "Groups",
-                selectIndec == 0 ? true : false),
+            )
           ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              tabBarWidget(context),
+              tabBarTile(selectIndec == 0 ? "Tags" : "Groups",
+                  selectIndec == 0 ? true : false),
+            ],
+          ),
         ),
       ),
     );
@@ -178,7 +228,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      tags[index],
+                      tags[index].tag ?? "",
                       style: const TextStyle(
                         color: Colors.black, // Text color
                         fontSize: 14,

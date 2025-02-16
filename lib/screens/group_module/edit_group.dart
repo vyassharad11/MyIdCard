@@ -17,11 +17,16 @@ import 'package:http/http.dart' as http;
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
+import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
+import '../../models/team_member.dart';
+import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
+import 'add_group_member_bottom_sheet.dart';
 
 class EditGroupPage extends StatefulWidget {
-  const EditGroupPage({super.key});
+  final String? groupId;
+  const EditGroupPage({super.key,this.groupId});
 
   @override
   State<EditGroupPage> createState() => _EditGroupPageState();
@@ -29,17 +34,23 @@ class EditGroupPage extends StatefulWidget {
 
 class _EditGroupPageState extends State<EditGroupPage> {
   String selecteValie = "Member";
-  GroupCubit? _editGroup,getGroupCubit;
+  GroupCubit? _editGroup,getGroupCubit,_groupMemberCubit,_removeGroupMemberCubit ,_roleChangeCubit;
   GroupDataModel? groupDataModel;
-
+  bool isLoadingTeam =true;
+  int selectedIndex = 0;
+  List<MemberDatum> groupMember = [];
   final title = TextEditingController();
   final description = TextEditingController();
 
 @override
   void initState() {
   _editGroup = GroupCubit(GroupRepository());
+  _roleChangeCubit = GroupCubit(GroupRepository());
   getGroupCubit = GroupCubit(GroupRepository());
+  _groupMemberCubit = GroupCubit(GroupRepository());
+  _removeGroupMemberCubit = GroupCubit(GroupRepository());
   fetchGroupData();
+  fetchGroupMember();
     // TODO: implement initState
     super.initState();
   }
@@ -47,7 +58,11 @@ class _EditGroupPageState extends State<EditGroupPage> {
 
   Future<void> fetchGroupData() async {
   Utility.showLoader(context);
-    getGroupCubit?.apiGetGroupDetails("15");
+    getGroupCubit?.apiGetGroupDetails(widget.groupId ?? "");
+  }
+
+  Future<void> fetchGroupMember() async {
+    _groupMemberCubit?.apiGetGroupMember(widget.groupId ?? "");
   }
 
   Future<void> editGroup() async {
@@ -58,7 +73,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
       'group_description': description.text,
 
     };
-    _editGroup?.apiUpdateGroup(data,"15");
+    _editGroup?.apiUpdateGroup(data,widget.groupId ?? "");
   }
 
 
@@ -72,16 +87,42 @@ class _EditGroupPageState extends State<EditGroupPage> {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as GroupDataModel;
               groupDataModel = dto;
               title.text = groupDataModel?.data?.groupName ?? "";
               description.text = groupDataModel?.data?.groupDescription ?? "";
+              Utility().showFlushBar(context: context, message: "Group updated successfully");
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<GroupCubit, ResponseState>(
+          bloc: _groupMemberCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              isLoadingTeam = false;
+            } else if (state is ResponseStateNoInternet) {
+              isLoadingTeam = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              isLoadingTeam = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as GroupMember;
+              groupMember.clear();
+              groupMember.addAll(dto.data ?? []);
+              isLoadingTeam = false;
             }
             setState(() {});
           },
@@ -98,6 +139,42 @@ class _EditGroupPageState extends State<EditGroupPage> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
              Navigator.pop(context);
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<GroupCubit, ResponseState>(
+          bloc: _removeGroupMemberCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
+              groupMember.removeAt(selectedIndex);
+            }
+            setState(() {});
+          },
+        ),
+
+        BlocListener<GroupCubit, ResponseState>(
+          bloc: _roleChangeCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+            } else if (state is ResponseStateNoInternet) {
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
             }
             setState(() {});
           },
@@ -362,7 +439,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
               ),
               const SizedBox(height: 14),
 
-              Card(
+           if(!isLoadingTeam )   Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16), // Rounded corners
                 ),
@@ -371,12 +448,34 @@ class _EditGroupPageState extends State<EditGroupPage> {
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Members & Roles',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Members & Roles',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              showModalBottomSheet(
+                                context: context,
+                                isDismissible: true,
+                                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height -150,minHeight: 200),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                ),
+                                isScrollControlled: true,
+                                builder: (context) => AddGroupMemberBottomSheet(groupId: widget.groupId,)
+                              ).whenComplete(() {
+                                fetchGroupMember();
+                              },);
+                            },
+                              child:  Image.asset(
+                                "assets/images/add_icon.png",
+                                height: 34,
+                                width: 34,
+                              ),)
+                        ],
                       ),
                       const SizedBox(height: 16),
 
@@ -398,26 +497,42 @@ class _EditGroupPageState extends State<EditGroupPage> {
                       const SizedBox(height: 10),
 
                       // List of Members
-                      SizedBox(
+                    if(groupMember.isNotEmpty)  SizedBox(
                         height: MediaQuery.sizeOf(context).height / 2,
                         child: ListView.builder(
-                          itemCount: 10,
+                          itemCount: groupMember.length,
                           padding: EdgeInsets.only(),
+                          shrinkWrap: true,
                           itemBuilder: (ctx, index) {
                             return CustomRowWidget(
-                              description: "Product Manager with vialinms",
-                              imageUrl: "asd",
-                              onDelete: () {},
+                              description: groupMember[index].lastName ?? "",
+                              imageUrl: groupMember[index].avatar ?? "",
+                              onDelete: () {
+                                Utility.showLoader(context);
+                                selectedIndex = index;
+                                setState(() {
+
+                                });
+                                Map<String, dynamic> data = {
+                                  "user_id":groupMember[index].id.toString()
+                                };
+                                _removeGroupMemberCubit?.apiRemoveGroupMember(data);
+                              },
                               onRoleChanged: (value) {
                                 setState(() {
                                   selecteValie = value;
                                 });
+                                Map<String, dynamic> data = {
+                                  "user_id":groupMember[index].id.toString(),
+                                  "role": value == "member" ? "member": "gadmin"
+                                };
+                                _roleChangeCubit?.apiSwitchGroupMemberRole(data);
                               },
-                              title: "Delbert Wyman",
+                              title: groupMember[index].firstName ?? "",
                               initialRole: selecteValie,
                             );
                           },
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: NeverScrollableScrollPhysics(),
                         ),
                       ),
                     ],

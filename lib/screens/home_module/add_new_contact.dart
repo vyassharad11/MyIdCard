@@ -1,3 +1,4 @@
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 
@@ -6,10 +7,10 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height,
+    return Container(
+     constraints: BoxConstraints(minHeight: 500,maxHeight: MediaQuery.of(context).size.height - 100),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom,top: 16,left: 16,right: 16),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -72,11 +73,53 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              const Center(
-                child: Icon(
-                  Icons.qr_code_2, // QR Code Icon
-                  size: 120,
-                  color: Colors.black,
+              InkWell(       onTap:(){ Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => AiBarcodeScanner(
+                      onDispose: () {
+                  /// This is called when the barcode scanner is disposed.
+                  /// You can write your own logic here.
+                  debugPrint("Barcode scanner disposed!");
+              },
+                hideGalleryButton: false,
+                controller: MobileScannerController(
+                detectionSpeed: DetectionSpeed.noDuplicates,
+                ),
+                onDetect: (BarcodeCapture capture) {
+                /// The row string scanned barcode value
+                final String? scannedValue =
+                capture.barcodes.first.rawValue;
+                debugPrint("Barcode scanned: $scannedValue");
+
+                /// The `Uint8List` image is only available if `returnImage` is set to `true`.
+                // final Uint8List? image = capture.image;
+                // debugPrint("Barcode image: $image");
+
+                /// row data of the barcode
+                final Object? raw = capture.raw;
+                debugPrint("Barcode raw: $raw");
+
+                /// List of scanned barcodes if any
+                final List<Barcode> barcodes = capture.barcodes;
+                debugPrint("Barcode list: $barcodes");
+                },
+                validator: (value) {
+                if (value.barcodes.isEmpty) {
+                return false;
+                }
+                if (!(value.barcodes.first.rawValue
+                    ?.contains('flutter.dev') ??
+                false)) {
+                return false;
+                }
+                return true;
+                })));},
+                child: const Center(
+                  child: Icon(
+                    Icons.qr_code_2, // QR Code Icon
+                    size: 120,
+                    color: Colors.black,
+                  ),
                 ),
               ),
               const SizedBox(height: 8),

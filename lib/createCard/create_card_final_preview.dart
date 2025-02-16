@@ -15,6 +15,7 @@ import '../bloc/cubit/card_cubit.dart';
 import '../language/app_localizations.dart';
 import '../localStorage/storage.dart';
 import '../models/card_get_model.dart' as dataModel;
+import '../models/utility_dto.dart';
 import '../screens/home_module/main_home_page.dart';
 import '../utils/utility.dart';
 import '../utils/widgets/network.dart';
@@ -79,14 +80,19 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
             } else if (state is ResponseStateSuccess) {
+              var dto = state.data as UtilityDto;
               Utility.hideLoader(context);
               Navigator.push(context,
                   CupertinoPageRoute(builder: (builder) => BottomNavBarExample()));
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
             }
             setState(() {});
           },),

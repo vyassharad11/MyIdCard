@@ -22,6 +22,14 @@ packages:
     description: dart
     source: sdk
     version: "0.3.3"
+  ai_barcode_scanner:
+    dependency: "direct main"
+    description:
+      name: ai_barcode_scanner
+      sha256: beecc9b97d136e82318804a14bd2866fc6fdb26ac05979d23d46a3b3cf6659e9
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.1"
   analyzer:
     dependency: transitive
     description:
@@ -30,6 +38,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.11.0"
+  another_flushbar:
+    dependency: "direct main"
+    description:
+      name: another_flushbar
+      sha256: "19bf9520230ec40b300aaf9dd2a8fefcb277b25ecd1c4838f530566965befc2a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.12.30"
   args:
     dependency: transitive
     description:
@@ -850,6 +866,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  mobile_scanner:
+    dependency: transitive
+    description:
+      name: mobile_scanner
+      sha256: "91d28b825784e15572fdc39165c5733099ce0e69c6f6f0964ebdbf98a62130fd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.6"
   nested:
     dependency: transitive
     description:

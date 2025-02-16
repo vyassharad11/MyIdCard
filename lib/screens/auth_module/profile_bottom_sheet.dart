@@ -96,10 +96,14 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
       listener: (context, state) {
         if (state is ResponseStateLoading) {
         } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
         } else if (state is ResponseStateNoInternet) {
            Utility.hideLoader(context);
+           Utility().showFlushBar(context: context, message: state.message,isError: true);
         } else if (state is ResponseStateError) {
            Utility.hideLoader(context);
+           Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
         } else if (state is ResponseStateSuccess) {
            Utility.hideLoader(context);
           var dto = state.data as LoginDto;
@@ -108,6 +112,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
           }
           Navigator.push(context,
               CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+           Utility().showFlushBar(context: context, message: dto.message ?? "");
         }
         setState(() {});
       },

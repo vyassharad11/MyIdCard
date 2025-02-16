@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/utils/utility.dart';
 
 import 'language/app_localizations.dart';
 import 'language/locale_constant.dart';
@@ -59,6 +60,7 @@ class _MyAppState extends State<MyApp> {
    
       child: MaterialApp(
         title: 'Digital Card',
+          navigatorKey:navigatorKey,
         supportedLocales: const [
           Locale('en', ''), // English
           Locale('fr', ''), // French
