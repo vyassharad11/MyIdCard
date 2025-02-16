@@ -48,4 +48,26 @@ class TeamRepository {
     return _apiClient.apiGetTeamMember(dto,token2,body);
   }
 
+  Future<HttpResponse<UtilityDto>> apiRemoveTeamMember(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiRemoveTeamMember(dto,token2,body);
+  }
+
+
+  Future<HttpResponse<UtilityDto>> apiApproveTeamMember(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiApproveTeamMember(dto,token2,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiGetUnApproveTeamMember(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetUnApproveTeamMember(dto,token2,body);
+  }
+
 }

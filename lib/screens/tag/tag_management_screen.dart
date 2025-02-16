@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/screens/contact/contact_notes.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+
+import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/group_cubit.dart';
+import '../../utils/utility.dart';
 
 class TagManagementScreen extends StatefulWidget {
   const TagManagementScreen({super.key});
@@ -11,6 +17,8 @@ class TagManagementScreen extends StatefulWidget {
 }
 
 class _TagManagementScreenState extends State<TagManagementScreen> {
+  GroupCubit? _getTagCubit,addTagCubit,deleteTag,_updateTag;
+
   List<String> tags = [
     "Tag no.1",
     "Tag no.2",
@@ -23,137 +31,256 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColoursUtils.background,
-      appBar: AppBar(
-        elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: true,
-        centerTitle: false,
-        title: Text(
-          'Tags Management',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 10, top: 6),
-            padding: const EdgeInsets.only(right: 0, top: 6, bottom: 6),
-            child: ClipOval(
-              child: Material(
-                color: Colors.blue, // Button color
-                child: InkWell(
-                  splashColor: Colors.blue, // Splash color
-                  onTap: () {
-                    _showBottomSheet(context);
-                  },
-                  child: const SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-      body: Container(
-        height: MediaQuery.sizeOf(context).height / 1.5,
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          elevation: 0,
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0, top: 13),
-                child: Text(
-                  'Tags',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => Divider(
-                    thickness: 1,
-                    color: Colors.grey.withOpacity(0.7),
-                  ),
-                  itemCount: tags.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            padding: const EdgeInsets.all(
-                                10), // Add padding inside the container
+  void initState() {
+    Utility.showLoader(context);
+    _getTagCubit = GroupCubit(GroupRepository());
+    deleteTag = GroupCubit(GroupRepository());
+    _updateTag = GroupCubit(GroupRepository());
+    addTagCubit = GroupCubit(GroupRepository());
+    apiTagList();
+    // TODO: implement initState
+    super.initState();
+  }
 
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200], // Light background color
-                              borderRadius:
-                                  BorderRadius.circular(8), // Rounded corners
-                            ),
-                            child: Text(
-                              tags[index],
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.black, // Text color
-                                fontSize: 14,
+@override
+  void dispose() {
+  _getTagCubit?.close();
+  deleteTag?.close();
+  addTagCubit?.close();
+  _updateTag?.close();
+  _getTagCubit = null;
+  _updateTag = null;
+  deleteTag = null;
+  addTagCubit = null;
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  Future<void> apiTagList() async {
+    _getTagCubit?.apiGetTag("id");
+  }
+
+
+  Future<void> apiAddGroupMember(tagName) async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "tag":tagName,
+    };
+    addTagCubit?.apiAddTag(data);
+  }
+
+  Future<void> apiUpdateTag({tagName,id}) async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "tag":tagName,
+    };
+    _updateTag?.apiUpdateTag(data,id);
+  }
+
+
+ Future<void> apiDeleteTag({id}) async {
+    Utility.showLoader(context);
+    deleteTag?.apiDeleteTag(id);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      MultiBlocListener(
+        listeners: [
+        BlocListener<GroupCubit, ResponseState>(
+      bloc: _getTagCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+        }
+        setState(() {});
+      },),
+          BlocListener<GroupCubit, ResponseState>(
+      bloc: deleteTag,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+        }
+        setState(() {});
+      },),
+          BlocListener<GroupCubit, ResponseState>(
+      bloc: addTagCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+        }
+        setState(() {});
+      },
+      ),
+          BlocListener<GroupCubit, ResponseState>(
+      bloc: _updateTag,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+        }
+        setState(() {});
+      },
+      ),],
+      child: Scaffold(
+        backgroundColor: ColoursUtils.background,
+        appBar: AppBar(
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: true,
+          centerTitle: false,
+          title: Text(
+            'Tags Management',
+            style: TextStyle(
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          actions: [
+            Container(
+              margin: const EdgeInsets.only(right: 10, top: 6),
+              padding: const EdgeInsets.only(right: 0, top: 6, bottom: 6),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.blue, // Button color
+                  child: InkWell(
+                    splashColor: Colors.blue, // Splash color
+                    onTap: () {
+                      _showBottomSheet(context);
+                    },
+                    child: const SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+        body: Container(
+          height: MediaQuery.sizeOf(context).height / 1.5,
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            elevation: 0,
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 20.0, top: 13),
+                  child: Text(
+                    'Tags',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(
+                      thickness: 1,
+                      color: Colors.grey.withOpacity(0.7),
+                    ),
+                    itemCount: tags.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 100,
+                              padding: const EdgeInsets.all(
+                                  10), // Add padding inside the container
+
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200], // Light background color
+                                borderRadius:
+                                    BorderRadius.circular(8), // Rounded corners
                               ),
-                            ),
-                          ),
-                          PopupMenuButton<String>(
-                            onSelected: (String value) {
-                              switch (value) {
-                                case 'Edit':
-                                  _editTag(index);
-                                  break;
-                                case 'Delete':
-                                  _deleteTag(index);
-                                  break;
-                              }
-                            },
-                            itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry<String>>[
-                              const PopupMenuItem<String>(
-                                value: 'Edit',
-                                child: Text('Edit'),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'Delete',
-                                child: Text(
-                                  'Delete',
-                                  style: TextStyle(color: Colors.redAccent),
+                              child: Text(
+                                tags[index],
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.black, // Text color
+                                  fontSize: 14,
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                    // ListTile(
-                    //   title:
-                    //   // Text(tags[index]),
-                    //   trailing:
-                    // );
-                  },
+                            ),
+                            PopupMenuButton<String>(
+                              onSelected: (String value) {
+                                switch (value) {
+                                  case 'Edit':
+                                    _editTag(index);
+                                    break;
+                                  case 'Delete':
+                                    _deleteTag(index);
+                                    break;
+                                }
+                              },
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry<String>>[
+                                const PopupMenuItem<String>(
+                                  value: 'Edit',
+                                  child: Text('Edit'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Delete',
+                                  child: Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                      // ListTile(
+                      //   title:
+                      //   // Text(tags[index]),
+                      //   trailing:
+                      // );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -300,7 +427,9 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
           ),
         );
       },
-    );
+    ).whenComplete(() {
+      apiAddGroupMember("k");
+    },);
   }
 
   // Function to handle editing a tag
@@ -322,6 +451,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                 tags[index] = controller.text;
               });
               Navigator.pop(context);
+              apiUpdateTag(tagName: controller.text,id: "1");
             },
             child: const Text("Save"),
           ),

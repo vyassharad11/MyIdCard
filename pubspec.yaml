@@ -42,6 +42,8 @@ dependencies:
   equatable: ^2.0.7
   flutter_bloc: ^8.0.1
   dio: ^5.8.0+1
+  flutter_share: ^2.0.0
+  another_flushbar: ^1.10.26
 
 dev_dependencies:
   flutter_test:

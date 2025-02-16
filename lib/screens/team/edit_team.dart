@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/bloc/cubit/group_cubit.dart';
+import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/data/repository/team_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
@@ -35,15 +37,19 @@ class _EditTeamPageState extends State<EditTeamPage> {
   final description = TextEditingController();
   List<Member> teamMember = [];
   TeamCubit? updateTeamCubit,getTeamCubit,_getTeamMember;
+  GroupCubit? _roleChangeCubit;
 
   @override
   void dispose() {
     title.clear();
     description.clear();
+    description.clear();
     updateTeamCubit?.close();
+    _roleChangeCubit?.close();
     getTeamCubit?.close();
     _getTeamMember?.close();
     updateTeamCubit = null;
+    _roleChangeCubit = null;
     _getTeamMember = null;
     getTeamCubit = null;
     super.dispose();
@@ -72,6 +78,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
     updateTeamCubit = TeamCubit(TeamRepository());
     getTeamCubit = TeamCubit(TeamRepository());
     _getTeamMember = TeamCubit(TeamRepository());
+    _roleChangeCubit = GroupCubit(GroupRepository());
     fetchTeamData();
     super.initState();
   }
@@ -79,11 +86,25 @@ class _EditTeamPageState extends State<EditTeamPage> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(listeners: [
+      BlocListener<GroupCubit, ResponseState>(
+        bloc: _roleChangeCubit,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+          } else if (state is ResponseStateNoInternet) {
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateSuccess) {
+          }
+          setState(() {});
+        },
+      ),
         BlocListener<TeamCubit, ResponseState>(
           bloc: updateTeamCubit,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
@@ -100,6 +121,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
@@ -127,6 +149,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
               isLoadingTeam = false;
             } else if (state is ResponseStateNoInternet) {
               isLoadingTeam = false;
@@ -466,6 +489,11 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                   setState(() {
                                     selecteValie = value;
                                   });
+                                  Map<String, dynamic> data = {
+                                    "user_id":teamMember[index].id.toString(),
+                                    "role": value == "member" ? "member": "tadmin"
+                                  };
+                                  _roleChangeCubit?.apiSwitchGroupMemberRole(data);
                                 },
                                 title: teamMember[index].firstName,
                                 initialRole: selecteValie,

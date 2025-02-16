@@ -245,10 +245,14 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.errorMessage);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
@@ -259,6 +263,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                             cardId: widget.cardId,
                             isEdit: widget.isEdit,
                           )));
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
             }
             setState(() {});
           },
@@ -269,6 +274,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {

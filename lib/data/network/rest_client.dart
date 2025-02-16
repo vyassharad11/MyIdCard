@@ -9,6 +9,7 @@ import 'package:retrofit/retrofit.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
+import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
 import '../../models/social_data.dart';
@@ -154,6 +155,27 @@ abstract class RestClient {
       @Header(authorization) token,@Body() body,);
 
 
+ @POST("{url}team/remove-from-team-member")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiRemoveTeamMember(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
+ @POST("{url}team/approve-team-member")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiApproveTeamMember(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
+ @POST("{url}team/get-unapproved-team-member")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiGetUnApproveTeamMember(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
  @POST("{url}group/store")
   @Header(headerValue)
   @Header(headerContentType)
@@ -181,5 +203,70 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<GroupDataModel>> apiGetMyGroup(@Path("url") url,
       @Header(authorization) token);
+
+
+@GET("{url}group/get-group-member/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<GroupMember>> apiGetGroupMember(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
+
+
+@GET("{url}group/get-group-by-team/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<GroupDataModel>> apiGetGroupByTeam(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
+
+
+@POST("{url}team/get-available-member-to-add-in-group")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<GroupMember>> apiGetActiveMemberForGroup(@Path("url") url,
+      @Header(authorization) token,);
+
+
+@POST("{url}group/remove-member")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiRemoveGroupMember(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+@POST("{url}group/swirch-role")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiSwitchGroupMemberRole(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+@POST("{url}group/add-member")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiAddGroupMember(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+@POST("{url}tag/store")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiAddTag(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+  @GET("{url}tag/get/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiGetTag(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
+
+  @POST("{url}tag/update/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiUpdateTag(@Path("url") url,
+      @Header(authorization) token,@Body() body,@Path("id") id,);
+
+
+  @POST("{url}tag/destroy/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteTag(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
 
 }

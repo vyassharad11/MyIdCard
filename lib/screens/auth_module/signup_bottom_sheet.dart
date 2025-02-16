@@ -226,11 +226,14 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         listener: (context, state) {
           if (state is ResponseStateLoading) {
           } else if (state is ResponseStateEmpty) {
-          setState(() {});
+            Utility.hideLoader(context);
+            Utility().showFlushBar(context: context, message: state.message);
           } else if (state is ResponseStateNoInternet) {
              Utility.hideLoader(context);
+             Utility().showFlushBar(context: context, message: state.message);
           } else if (state is ResponseStateError) {
            Utility.hideLoader(context);
+           Utility().showFlushBar(context: context, message: state.errorMessage);
           } else if (state is ResponseStateSuccess) {
              Utility.hideLoader(context);
             var dto = state.data as UtilityDto;
@@ -247,6 +250,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
                 token: dto.token ?? "",
               ),
             );
+             Utility().showFlushBar(context: context, message: dto.message ?? "");
           } setState(() {});
         },),
        BlocListener<AuthCubit, ResponseState>(
@@ -254,11 +258,14 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         listener: (context, state) {
           if (state is ResponseStateLoading) {
           } else if (state is ResponseStateEmpty) {
-          setState(() {});
+            Utility.hideLoader(context);
+            Utility().showFlushBar(context: context, message: state.message);
           } else if (state is ResponseStateNoInternet) {
              Utility.hideLoader(context);
+             Utility().showFlushBar(context: context, message: state.message);
           } else if (state is ResponseStateError) {
              Utility.hideLoader(context);
+             Utility().showFlushBar(context: context, message: state.errorMessage);
           } else if (state is ResponseStateSuccess) {
              Utility.hideLoader(context);
             var dto = state.data as LoginDto;
@@ -273,6 +280,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
               Navigator.push(context,
                   CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
             }
+             Utility().showFlushBar(context: context, message: dto.message ?? "");
           } setState(() {});
         },),
        BlocListener<AuthCubit, ResponseState>(
@@ -280,11 +288,14 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         listener: (context, state) {
           if (state is ResponseStateLoading) {
           } else if (state is ResponseStateEmpty) {
-          setState(() {});
+            Utility.hideLoader(context);
+            Utility().showFlushBar(context: context, message: state.message);
           } else if (state is ResponseStateNoInternet) {
              Utility.hideLoader(context);
+             Utility().showFlushBar(context: context, message: state.message);
           } else if (state is ResponseStateError) {
              Utility.hideLoader(context);
+             Utility().showFlushBar(context: context, message: state.errorMessage);
           } else if (state is ResponseStateSuccess) {
              Utility.hideLoader(context);
             var dto = state.data as LoginDto;
@@ -299,6 +310,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
               Navigator.push(context,
                   CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
             }
+             Utility().showFlushBar(context: context, message: dto.message ?? "");
           } setState(() {});
         },),
         ],

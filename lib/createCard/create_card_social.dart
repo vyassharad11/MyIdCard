@@ -15,6 +15,7 @@ import '../bloc/api_resp_state.dart';
 import '../localStorage/storage.dart';
 import '../models/card_get_model.dart';
 import '../models/social_data.dart';
+import '../models/utility_dto.dart';
 import '../utils/utility.dart';
 import 'create_card_details.dart';
 
@@ -126,11 +127,15 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
               if (state is ResponseStateLoading) {
               } else if (state is ResponseStateEmpty) {
                 Utility.hideLoader(context);
+                Utility().showFlushBar(context: context, message: state.message);
               } else if (state is ResponseStateNoInternet) {
+                Utility().showFlushBar(context: context, message: state.message);
                 Utility.hideLoader(context);
               } else if (state is ResponseStateError) {
                 Utility.hideLoader(context);
+                Utility().showFlushBar(context: context, message: state.errorMessage);
               } else if (state is ResponseStateSuccess) {
+                var dto = state.data as UtilityDto;
                 Utility.hideLoader(context);
                 Navigator.push(
                     context,
@@ -139,6 +144,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                               cardId: widget.cardId,
                               isEdit: widget.isEdit,
                             )));
+                Utility().showFlushBar(context: context, message: dto.message ?? "");
                 setState(() {});
               }
             })

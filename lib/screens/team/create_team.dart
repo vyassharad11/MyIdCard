@@ -17,6 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import '../../bloc/api_resp_state.dart';
 import '../../localStorage/storage.dart';
+import '../../models/utility_dto.dart';
 import '../../utils/image_cropo.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -56,13 +57,19 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
       listener: (context, state) {
         if (state is ResponseStateLoading) {
         } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message);
         } else if (state is ResponseStateNoInternet) {
           Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message);
         } else if (state is ResponseStateError) {
           Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.errorMessage);
         } else if (state is ResponseStateSuccess) {
+          var dto = state.data as UtilityDto;
           Utility.hideLoader(context);
           Navigator.pop(context);
+          Utility().showFlushBar(context: context, message: dto.message ?? "");
         }
         setState(() {});
       },

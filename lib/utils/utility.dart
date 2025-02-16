@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io' as IO;
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class Utility {
   static String getDurationStr(Duration duration) {
@@ -114,6 +115,87 @@ class Utility {
   static void showLoader(BuildContext context) {
     context.loaderOverlay.show();
   }
+
+  static Flushbar? flushBar;
+
+
+  void showFlushBar({
+    required BuildContext context,
+    required String message,
+    bool isError = false,
+  }) {
+    //debugPrint("====isShowing()  ${flushBar?.isShowing()}");
+    if (flushBar?.isShowing() == true ||
+        flushBar?.isAppearing() == true ||
+        flushBar?.isHiding() == true) {
+      flushBar!.dismiss();
+      flushBar = null;
+      // return;
+    }
+    //debugPrint("====showFlushBar");
+    var color =  isError == true
+        ? Colors.redAccent
+        : Color(0xFF0983E1).withOpacity(0.8);
+    var icon = isError == true
+        ? Icons.cancel_outlined
+        : Icons.check_circle_outline_rounded;
+    flushBar = Flushbar(
+      flushbarPosition: FlushbarPosition.TOP,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      backgroundColor: color.withOpacity(0.16),
+      borderColor: color,
+      borderRadius: BorderRadius.circular(8),
+      margin: EdgeInsets.only(
+          left: 15, right: 15, top: MediaQuery.of(context).padding.top),
+      padding: const EdgeInsets.all(8),
+      barBlur: 20,
+      isDismissible: true,
+      duration: const Duration(seconds: 2),
+      messageText: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+           Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: Icon(icon, color: color, size: 20.0),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(
+              message,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize:14,
+                  fontWeight: FontWeight.w400),
+            ),
+          ),
+          InkWell(
+            child: const Padding(
+              padding: EdgeInsets.only(top: 3.0),
+              child: Icon(
+                Icons.clear,
+                color: Colors.black,
+                size: 20.0,
+              ),
+            ),
+            onTap: () {
+              flushBar?.dismiss();
+            },
+          ),
+        ],
+      ),
+      onStatusChanged: (status) {
+        // debugPrint("====status  $status");
+        if (status == FlushbarStatus.DISMISSED) flushBar = null;
+      },
+    );
+    flushBar?.show(context);
+  }
+
+
 
   static showConfirmAlertDialog(
       {required BuildContext context, required String title, required String msg,

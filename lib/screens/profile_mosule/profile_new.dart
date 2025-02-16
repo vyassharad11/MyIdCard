@@ -55,7 +55,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Future<void> fetchGroupData() async {
-    getGroupCubit?.apiGetGroupDetails("15");
+    getGroupCubit?.apiGetGroupDetails("20");
   }
 
 
@@ -277,61 +277,89 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.withOpacity(0.2)),
-                  child: ListTile(
-                    onTap: () {
-                      if (teamResponse == null) {
-                        Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (builder) => SubscriptionScreen()))
-                            .then((onValue) {
-                          fetchTeamData();
-                        });
-                      } else {
-                        Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (builder) => EditTeamPage()))
-                            .then((onValue) {
-                          fetchTeamData();
-                        });
-                      }
-                    },
-                    contentPadding: EdgeInsets.zero,
-                    leading: teamResponse != null &&
-                            teamResponse!.data.teamLogo != null
-                        ? SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image.network(
-                                "${Network.imgUrl}${teamResponse!.data.teamLogo}",
-                                fit: BoxFit.cover,
+                InkWell(
+                  onTap: (){
+                    if (teamResponse == null) {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (builder) => SubscriptionScreen()))
+                          .then((onValue) {
+                        fetchTeamData();
+                      });
+                    }else{
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (builder) => TeamMemberPage()));
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey.withOpacity(0.2)),
+                    child:
+
+
+                    Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            teamResponse != null &&
+                                teamResponse!.data.teamLogo != null
+                                ? SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.network(
+                                  "${Network.imgUrl}${teamResponse!.data.teamLogo}",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                                : SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.asset(
+                                  "assets/images/Ellipse 5.png",
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          )
-                        : SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image.asset(
-                                "assets/images/Ellipse 5.png",
-                                fit: BoxFit.cover,
-                              ),
+
+                            SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  teamResponse?.data.teamName ?? "-",
+                                  style: TextStyle(fontWeight: FontWeight.w700,fontSize: 16),
+                                ),
+                                Text(
+                                  teamResponse?.data.teamDescription ?? "-",style: TextStyle(color:Color(0xFF949494) ),
+                                ),
+                              ],
                             ),
-                          ),
-                    title: Text(
-                      teamResponse?.data.teamName ?? "-",
-                    ),
-                    subtitle: Text(
-                      teamResponse?.data.teamDescription ?? "-",
+                            Spacer(),
+                            InkWell(
+                                onTap: (){
+                                  Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                  builder: (builder) => EditTeamPage()))
+                                      .then((onValue) {
+                                  fetchTeamData();
+                                  });
+                                },
+                                child: Image.asset("assets/images/edit-05.png",width: 20,height: 20,color: Color(0xFF949494),))
+                        ],),
+
+                      ],
                     ),
                   ),
                 ),
@@ -343,23 +371,7 @@ class _AccountPageState extends State<AccountPage> {
                       color: Colors.grey.withOpacity(0.2)),
                   child: ListTile(
                     onTap: () {
-                      if (groupDataModel == null) {
-                        Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (builder) => CreateGroupPage()))
-                            .then((onValue) {
-                          fetchGroupData();
-                        });
-                      } else {
-                        Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (builder) => EditGroupPage()))
-                            .then((onValue) {
-                          fetchGroupData();
-                        });
-                      }
+
                     },
                     contentPadding: EdgeInsets.zero,
                     leading: groupDataModel != null &&
