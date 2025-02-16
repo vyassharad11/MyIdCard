@@ -13,6 +13,7 @@ import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
 import '../../models/social_data.dart';
+import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
 import '../../models/team_response.dart';
 import '../../models/user_data_model.dart';
@@ -180,6 +181,20 @@ Future<void> apiRemoveGroupMember(body) async {
     try {
       httpResponse = await groupRepository.apiGetTag(id);
       dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+
+  Future<void> apiGetTeamTag() async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    TagModel dto;
+    try {
+      httpResponse = await groupRepository.apiGetTeamTag();
+      dto = httpResponse.data as TagModel;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));

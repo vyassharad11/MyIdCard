@@ -13,6 +13,7 @@ import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
 import '../../models/social_data.dart';
+import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
 import '../../models/team_response.dart';
 import '../../models/user_data_model.dart';
@@ -255,6 +256,12 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiGetTag(@Path("url") url,
       @Header(authorization) token,@Path("id") id,);
+
+  @GET("{url}tag/get-team-tag")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<TagModel>> apiGetTeamTag(@Path("url") url,
+      @Header(authorization) token,);
 
   @POST("{url}tag/update/{id}")
   @Header(headerValue)

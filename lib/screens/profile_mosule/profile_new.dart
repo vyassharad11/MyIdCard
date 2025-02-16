@@ -21,6 +21,7 @@ import '../../bloc/cubit/team_cubit.dart';
 import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/group_response.dart';
+import '../../models/team_member.dart';
 import '../../models/team_response.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -28,6 +29,7 @@ import '../group_module/create_group.dart';
 import '../group_module/group_management_member.dart';
 import '../subscription_module/buy_preview_subscription.dart';
 import '../subscription_module/subscription_screen.dart';
+import '../tag/tag_management_screen.dart';
 import '../team/edit_team.dart';
 
 class AccountPage extends StatefulWidget {
@@ -38,9 +40,10 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  TeamCubit? getTeamCubit;
+  TeamCubit? getTeamCubit,_getTeamMember;
   GroupCubit? getGroupCubit;
   AuthCubit?_authCubit;
+  List<Member> teamMember = [];
 
   User? user;
   Future<void> fetchUserData() async {
@@ -58,14 +61,25 @@ class _AccountPageState extends State<AccountPage> {
     getGroupCubit?.apiGetGroupDetails("20");
   }
 
+  void getTeamMembers() async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "key_word": "",
+      "page": 1
+    };
+    _getTeamMember?.apiGetTeamMember(data);
+  }
+
 
   @override
   void initState() {
     getTeamCubit =TeamCubit(TeamRepository());
+    _getTeamMember =TeamCubit(TeamRepository());
     getGroupCubit =GroupCubit(GroupRepository());
     _authCubit =AuthCubit(AuthRepository());
     fetchUserData();
     fetchGroupData();
+    getTeamMembers();
     fetchTeamData();
     // fetchGroupData();
     super.initState();
@@ -75,6 +89,28 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<TeamCubit, ResponseState>(
+          bloc: _getTeamMember,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as TeamMembersResponse;
+              teamMember.clear();
+              teamMember.addAll(dto.data.members);
+            }
+            setState(() {});
+          },
+        ),
         BlocListener<TeamCubit, ResponseState>(
           bloc: getTeamCubit,
           listener: (context, state) {
@@ -343,6 +379,32 @@ class _AccountPageState extends State<AccountPage> {
                                 Text(
                                   teamResponse?.data.teamDescription ?? "-",style: TextStyle(color:Color(0xFF949494) ),
                                 ),
+                                Row(children: [
+                                if(teamMember.isNotEmpty)  ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                      "${Network.imgUrl}${teamMember[0].avatar ??""}",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  if(teamMember.isNotEmpty) Text(
+                                    teamMember[0].name ?? "",
+                                  ),
+                                  if(teamMember.isNotEmpty && teamMember.length > 1)   SizedBox(width: 8,),
+                                  if(teamMember.isNotEmpty && teamMember.length > 1)  Container(width: 1,height: 5,color: Colors.grey,),
+                                  if(teamMember.isNotEmpty && teamMember.length > 1)   ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                      "${Network.imgUrl}${teamMember[1].avatar ??""}",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  if(teamMember.isNotEmpty && teamMember.length > 1)  SizedBox(width: 5,),
+                                  if(teamMember.isNotEmpty && teamMember.length > 1)  Text(
+                                    teamMember[1].name ?? "",
+                                  ),
+                                ],)
                               ],
                             ),
                             Spacer(),
@@ -491,6 +553,19 @@ class _AccountPageState extends State<AccountPage> {
                   child: OptionTile(
                     icon: Icons.people,
                     title: 'Manage groups & Members',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (builder) => TagManagementScreen()));
+                  },
+                  child: ListTile(
+                    leading: Image.asset("assets/images/tag_icon.png",height: 22,width: 22,),
+                    title: Text("Manage Team Tags"),
+                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   ),
                 ),
                 GestureDetector(
