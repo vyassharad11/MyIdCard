@@ -227,13 +227,13 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
           if (state is ResponseStateLoading) {
           } else if (state is ResponseStateEmpty) {
             Utility.hideLoader(context);
-            Utility().showFlushBar(context: context, message: state.message);
+            Utility().showFlushBar(context: context, message: state.message,isError: true);
           } else if (state is ResponseStateNoInternet) {
              Utility.hideLoader(context);
-             Utility().showFlushBar(context: context, message: state.message);
+             Utility().showFlushBar(context: context, message: state.message,isError: true);
           } else if (state is ResponseStateError) {
            Utility.hideLoader(context);
-           Utility().showFlushBar(context: context, message: state.errorMessage);
+           Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
           } else if (state is ResponseStateSuccess) {
              Utility.hideLoader(context);
             var dto = state.data as UtilityDto;
@@ -250,7 +250,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
                 token: dto.token ?? "",
               ),
             );
-             Utility().showFlushBar(context: context, message: dto.message ?? "");
+             // Utility().showFlushBar(context: context, message: dto.message ?? "");
           } setState(() {});
         },),
        BlocListener<AuthCubit, ResponseState>(
@@ -259,13 +259,13 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
           if (state is ResponseStateLoading) {
           } else if (state is ResponseStateEmpty) {
             Utility.hideLoader(context);
-            Utility().showFlushBar(context: context, message: state.message);
+            Utility().showFlushBar(context: context, message: state.message,isError: true);
           } else if (state is ResponseStateNoInternet) {
              Utility.hideLoader(context);
-             Utility().showFlushBar(context: context, message: state.message);
+             Utility().showFlushBar(context: context, message: state.message,isError: true);
           } else if (state is ResponseStateError) {
              Utility.hideLoader(context);
-             Utility().showFlushBar(context: context, message: state.errorMessage);
+             Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
           } else if (state is ResponseStateSuccess) {
              Utility.hideLoader(context);
             var dto = state.data as LoginDto;
@@ -289,13 +289,13 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
           if (state is ResponseStateLoading) {
           } else if (state is ResponseStateEmpty) {
             Utility.hideLoader(context);
-            Utility().showFlushBar(context: context, message: state.message);
+            Utility().showFlushBar(context: context, message: state.message,isError: true);
           } else if (state is ResponseStateNoInternet) {
              Utility.hideLoader(context);
-             Utility().showFlushBar(context: context, message: state.message);
+             Utility().showFlushBar(context: context, message: state.message,isError: true);
           } else if (state is ResponseStateError) {
              Utility.hideLoader(context);
-             Utility().showFlushBar(context: context, message: state.errorMessage);
+             Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
           } else if (state is ResponseStateSuccess) {
              Utility.hideLoader(context);
             var dto = state.data as LoginDto;

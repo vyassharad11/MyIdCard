@@ -155,24 +155,24 @@ class Utility {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           Padding(
+         if(isError == false)  Padding(
             padding: const EdgeInsets.only(top: 2.0),
-            child: Icon(icon, color: color, size: 20.0),
+            child: Icon(icon, color: Colors.black, size: 20.0),
           ),
-          const SizedBox(
+          if(isError == false)   const SizedBox(
             width: 10,
           ),
           Expanded(
             child: Text(
               message,
               textAlign: TextAlign.left,
-              style: const TextStyle(
-                  color: Colors.black,
+              style:  TextStyle(
+                  color: isError?Colors.white:Colors.black,
                   fontSize:14,
                   fontWeight: FontWeight.w400),
             ),
           ),
-          InkWell(
+          if(isError)   InkWell(
             child: const Padding(
               padding: EdgeInsets.only(top: 3.0),
               child: Icon(

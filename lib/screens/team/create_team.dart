@@ -58,13 +58,13 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
         if (state is ResponseStateLoading) {
         } else if (state is ResponseStateEmpty) {
           Utility.hideLoader(context);
-          Utility().showFlushBar(context: context, message: state.message);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
         } else if (state is ResponseStateNoInternet) {
           Utility.hideLoader(context);
-          Utility().showFlushBar(context: context, message: state.message);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
         } else if (state is ResponseStateError) {
           Utility.hideLoader(context);
-          Utility().showFlushBar(context: context, message: state.errorMessage);
+          Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
         } else if (state is ResponseStateSuccess) {
           var dto = state.data as UtilityDto;
           Utility.hideLoader(context);

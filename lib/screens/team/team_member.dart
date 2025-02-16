@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_share/flutter_share.dart';
+// import 'package:flutter_share/flutter_share.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -106,13 +106,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateNoInternet) {
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.errorMessage);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as TeamMembersResponse;
@@ -128,13 +128,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateNoInternet) {
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.errorMessage);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
@@ -148,14 +148,14 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.errorMessage);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
@@ -170,14 +170,14 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.message);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.errorMessage);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
@@ -268,8 +268,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                             child: InkWell(
                               splashColor: Colors.blue, // Splash color
                               onTap: () {
-                                FlutterShare.share(
-                                    title: "Share on Other App", text: "invite your friend" ?? '', linkUrl: "google.com");
+                                // FlutterShare.share(
+                                //     title: "Share on Other App", text: "invite your friend" ?? '', linkUrl: "google.com");
                               },
                               child: const SizedBox(
                                   width: 40,
