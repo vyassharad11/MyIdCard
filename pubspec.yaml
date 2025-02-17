@@ -44,7 +44,11 @@ dependencies:
   dio: ^5.8.0+1
 #  flutter_share: ^2.0.0
   another_flushbar: ^1.10.26
-  ai_barcode_scanner: ^6.0.1
+#  qr: ^3.0.2,
+  flutter_barcode_scanner: ^2.0.0
+  #  ai_barcode_scanner: ^6.0.1
+#  google_ml_kit: ^0.7.0  # Check for the latest version on pub.dev
+
 
 dev_dependencies:
   flutter_test:

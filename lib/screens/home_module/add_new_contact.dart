@@ -1,10 +1,33 @@
-import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
+// import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
-
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 class ScanQrCodeBottomSheet extends StatelessWidget {
   const ScanQrCodeBottomSheet({super.key});
 
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      print(barcodeScanRes);
+      print("Scan result: $barcodeScanRes");
+
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    // if (!mounted) return;
+
+    // setState(() {
+    //   _scanBarcode = barcodeScanRes;
+    // });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,47 +96,66 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              InkWell(       onTap:(){ Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => AiBarcodeScanner(
-                      onDispose: () {
-                  /// This is called when the barcode scanner is disposed.
-                  /// You can write your own logic here.
-                  debugPrint("Barcode scanner disposed!");
-              },
-                hideGalleryButton: false,
-                controller: MobileScannerController(
-                detectionSpeed: DetectionSpeed.noDuplicates,
-                ),
-                onDetect: (BarcodeCapture capture) {
-                /// The row string scanned barcode value
-                final String? scannedValue =
-                capture.barcodes.first.rawValue;
-                debugPrint("Barcode scanned: $scannedValue");
+              InkWell(       onTap:() async {
+                scanQR();
+                // Future<void> scanBarcode() async {
+                //   String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+                //     '#ff6666', // Scanner color
+                //     'Cancel', // Cancel button text
+                //     true, // Show flash icon
+                //     ScanMode.BARCODE, // Scan mode
+                //    );
 
-                /// The `Uint8List` image is only available if `returnImage` is set to `true`.
-                // final Uint8List? image = capture.image;
-                // debugPrint("Barcode image: $image");
+                  // print("Scan result: $barcodeScanRes");
+                // }
+                // final qrCode = QrCode(4, QrErrorCorrectLevel.L)
+                //   ..addData('Hello, world in QR form!');
+                //    debugPrint("Barcode list: $qrCode");
+                // final qrImage = QrImage(qrCode);
+                // debugPrint("Barcode list: $qrImage");
 
-                /// row data of the barcode
-                final Object? raw = capture.raw;
-                debugPrint("Barcode raw: $raw");
-
-                /// List of scanned barcodes if any
-                final List<Barcode> barcodes = capture.barcodes;
-                debugPrint("Barcode list: $barcodes");
+                // Navigator.of(context).push(
+              //     MaterialPageRoute(
+              //         builder: (context) => AiBarcodeScanner(
+              //         onDispose: () {
+              //     /// This is called when the barcode scanner is disposed.
+              //     /// You can write your own logic here.
+              //     debugPrint("Barcode scanner disposed!");
+              // },
+              //   hideGalleryButton: false,
+              //   controller: MobileScannerController(
+              //   detectionSpeed: DetectionSpeed.noDuplicates,
+              //   ),
+              //   onDetect: (BarcodeCapture capture) {
+              //   /// The row string scanned barcode value
+              //   final String? scannedValue =
+              //   capture.barcodes.first.rawValue;
+              //   debugPrint("Barcode scanned: $scannedValue");
+              //
+              //   /// The `Uint8List` image is only available if `returnImage` is set to `true`.
+              //   // final Uint8List? image = capture.image;
+              //   // debugPrint("Barcode image: $image");
+              //
+              //   /// row data of the barcode
+              //   final Object? raw = capture.raw;
+              //   debugPrint("Barcode raw: $raw");
+              //
+              //   /// List of scanned barcodes if any
+              //   final List<Barcode> barcodes = capture.barcodes;
+              //   debugPrint("Barcode list: $barcodes");
+              //   },
+              //   validator: (value) {
+              //   if (value.barcodes.isEmpty) {
+              //   return false;
+              //   }
+              //   if (!(value.barcodes.first.rawValue
+              //       ?.contains('flutter.dev') ??
+              //   false)) {
+              //   return false;
+              //   }
+              //   return true;
+              //   })));
                 },
-                validator: (value) {
-                if (value.barcodes.isEmpty) {
-                return false;
-                }
-                if (!(value.barcodes.first.rawValue
-                    ?.contains('flutter.dev') ??
-                false)) {
-                return false;
-                }
-                return true;
-                })));},
                 child: const Center(
                   child: Icon(
                     Icons.qr_code_2, // QR Code Icon
