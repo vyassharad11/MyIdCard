@@ -96,6 +96,14 @@ abstract class RestClient {
   Future<HttpResponse<LoginDto>> completeProfileApi(@Path("url") url,
       @Body() body, @Header(authorization) token);
 
+
+  @POST("{url}user/set-plan")
+  @Header(headerValue)
+  @Header(headerContentType)
+  @FormUrlEncoded()
+  Future<HttpResponse<UtilityDto>> apiSetPlan(@Path("url") url,
+      @Body() body, @Header(authorization) token);
+
  @POST("{url}card/update/{id}")
   @Header(headerValue)
   @Header(headerContentType)

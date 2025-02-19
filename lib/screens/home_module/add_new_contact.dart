@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 class ScanQrCodeBottomSheet extends StatelessWidget {
   const ScanQrCodeBottomSheet({super.key});
 
@@ -10,10 +10,10 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
-      print(barcodeScanRes);
-      print("Scan result: $barcodeScanRes");
+      // barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+      //     '#ff6666', 'Cancel', true, ScanMode.QR);
+      // print(barcodeScanRes);
+      // print("Scan result: $barcodeScanRes");
 
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';

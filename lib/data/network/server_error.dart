@@ -83,7 +83,7 @@ class ServerError implements Exception {
             "Connection failed due to internet connection");
       case DioExceptionType.badResponse:
         try {
-          if(dioError.response?.statusCode == 502 || dioError.response?.statusCode == 503 || dioError.response?.statusCode == 401 || dioError.response?.statusCode?.toInt() == 500) {
+          if(dioError.response?.statusCode == 502 || dioError.response?.statusCode == 503 || dioError.response?.statusCode == 401 || dioError.response?.statusCode?.toInt() == 302 || dioError.response?.statusCode?.toInt() == 500) {
             return const ResponseStateError("Service unavailable");
           }
           ErrorDto errorDto = ErrorDto.fromJson(dioError.response?.data);

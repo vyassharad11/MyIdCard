@@ -1,10 +1,15 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/data/repository/auth_repository.dart';
+import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/team/create_team.dart';
 
+import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/auth_cubit.dart';
 import '../../localStorage/storage.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
@@ -20,111 +25,122 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  int planId = 3;
+  int planId = 0;
+  AuthCubit? _setPlanCubit;
 
   Future<void> submitPlanId() async {
-    var token = await Storage().getToken();
-    const String apiUrl =
-        "${Network.baseUrl}user/set-plan"; // Replace with your API endpoint
-
-    try {
-      final response = await http.post(Uri.parse(apiUrl), headers: {
-        'Authorization': 'Bearer $token',
-      }, body: {
-        "plan_id": planId.toString()
-      });
-
-      if (response.statusCode == 200) {
-        debugPrint("Data fetched successfully: ${response.body}");
-        Navigator.push(context,
-            CupertinoPageRoute(builder: (builder) => CreateTeamPage()));
-         Utility.hideLoader(context);
-      } else {
-         Utility.hideLoader(context);
-
-        // Handle error response
-        debugPrint("Failed to fetch data. Status Code: ${response.statusCode}");
-        debugPrint("Error: ${response.body}");
-      }
-    } catch (error) {
-       Utility.hideLoader(context);
-
-      // Handle any exceptions
-      debugPrint("An error occurred: $error");
-    }
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "plan_id": planId.toString()
+    };
+    _setPlanCubit?.apiSetPlan(data);
   }
 
   @override
   void initState() {
+    _setPlanCubit = AuthCubit(AuthRepository());
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _setPlanCubit?.close();
+    _setPlanCubit = null;
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColoursUtils.background.withOpacity(1.0),
-      appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        foregroundColor: Colors.white,
-        backgroundColor: ColoursUtils.background,
-        title: Text(
-          "Upgrade to Premium",
-          style: GoogleFonts.poppins(
-            textStyle: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w600),
+    return BlocListener<AuthCubit, ResponseState>(
+      bloc: _setPlanCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+          var dto = state.data as UtilityDto;
+          // Navigator.push(context,
+          //     CupertinoPageRoute(builder: (builder) => CreateTeamPage()));
+          Navigator.pop(context);
+          Utility().showFlushBar(context: context, message: dto.message ?? "");
+        }
+        setState(() {});
+      },
+      child: Scaffold(
+        backgroundColor: ColoursUtils.background.withOpacity(1.0),
+        appBar: AppBar(
+          elevation: 0,
+          automaticallyImplyLeading: true,
+          iconTheme: IconThemeData(color: Colors.black),
+          foregroundColor: Colors.white,
+          backgroundColor: ColoursUtils.background,
+          title: Text(
+            "Upgrade to Premium",
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.w600),
+            ),
           ),
         ),
-      ),
-      body: DefaultTabController(
-        length: 2, // Two tabs: Login and Sign Up
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Tab bar with "Login" and "Sign Up"
+        body: DefaultTabController(
+          length: 2, // Two tabs: Login and Sign Up
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Tab bar with "Login" and "Sign Up"
 
-            Container(
-              margin: const EdgeInsets.all(16),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border:
-                    Border.all(color: Colors.grey.withOpacity(0.3), width: 3),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TabBar(
-                tabAlignment: TabAlignment.fill,
-                labelStyle: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.w500),
-                automaticIndicatorColorAdjustment: true,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 20),
-                unselectedLabelColor: Colors.black,
-                isScrollable: false,
-                indicatorPadding:
-                    const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-                indicator: BoxDecoration(
+              Container(
+                margin: const EdgeInsets.all(16),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border:
+                      Border.all(color: Colors.grey.withOpacity(0.3), width: 3),
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
                 ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: const [
-                  Tab(text: 'Monthly'),
-                  Tab(text: 'Yearly'),
-                ],
+                child: TabBar(
+                  tabAlignment: TabAlignment.fill,
+                  labelStyle: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w500),
+                  automaticIndicatorColorAdjustment: true,
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+                  unselectedLabelColor: Colors.black,
+                  isScrollable: false,
+                  indicatorPadding:
+                      const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                  ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabs: const [
+                    Tab(text: 'Monthly'),
+                    Tab(text: 'Yearly'),
+                  ],
+                ),
               ),
-            ),
-            // Tab bar content (Login and Sign Up)
-            Expanded(
-              child: TabBarView(
-                children: [
-                  // Login Tab
-                  monthlyWidget(),
-                  // Sign Up Tab
-                  monthlyWidget(),
-                ],
+              // Tab bar content (Login and Sign Up)
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // Login Tab
+                    monthlyWidget(),
+                    // Sign Up Tab
+                    monthlyWidget(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -141,15 +157,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           SubscriptionOption(
             title: 'Free Tier',
             price: '₹100',
-            isChecked: ischecked,
+            isChecked: planId == 1,
             description: 'Lorem ipsum dolor sit amet',
             discount: 'selected',
             isDiscounted: false,
             onTap: () {
               debugPrint("ontap----");
               setState(() {
-                ischecked = !ischecked;
-                planId = 3;
+                // ischecked = !ischecked;
+                planId = 0;
+                setState(() {
+
+                });
               });
               // Subscription logic for Free Tier
             },
@@ -157,40 +176,45 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           SubscriptionOption(
             title: 'Single User Tier',
             price: '₹200',
-            isChecked: ischecked,
+            isChecked:  planId == 2,
             description: 'Lorem ipsum dolor sit amet',
             isDiscounted: true,
             discount: 'For You 50% OFF',
             onTap: () {
-              planId = 3;
-              // setState(() {
-              //   ischecked = !ischecked;
-              // });
+              planId = 1;
+              setState(() {
+              });
               // Subscription logic for Single User Tier
             },
           ),
           SubscriptionOption(
             title: 'Small Team Tier',
             price: '₹400',
-            isChecked: ischecked,
+            isChecked:  planId == 3,
             description: 'Lorem ipsum dolor sit amet',
             isDiscounted: false,
             onTap: () {
-              planId = 3;
+              planId = 2;
+              setState(() {
+
+              });
               // Subscription logic for Small Team Tier
-              // setState(() {
-              //   ischecked = !ischecked;
-              // });
+              setState(() {
+                ischecked = !ischecked;
+              });
             },
           ),
           SubscriptionOption(
             title: 'Big Team Tier',
             price: '₹800',
-            isChecked: ischecked,
+            isChecked:  planId == 4,
             description: 'Lorem ipsum dolor sit amet',
             isDiscounted: false,
             onTap: () {
               planId = 3;
+              setState(() {
+
+              });
               // Subscription logic for Big Team Tier
             },
           ),
@@ -257,13 +281,13 @@ class SubscriptionOption extends StatelessWidget {
       child: Stack(
         children: [
           Card(
-            color: discount != "selected" || isChecked
+            color:  !isChecked
                 ? Colors.white
                 : ColoursUtils.tileColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18), // if you need this
               side: BorderSide(
-                color: discount != "selected"
+                color: !isChecked
                     ? Colors.white
                     : ColoursUtils.primaryColor,
                 width: 2,
@@ -293,8 +317,8 @@ class SubscriptionOption extends StatelessWidget {
                                   checkColor: Colors.white,
                                   tristate: true,
                                   value:
-                                      title == "Free Tier" ? true : isChecked,
-                                  activeColor: title == "Free Tier"
+                                       isChecked,
+                                  activeColor: isChecked
                                       ? ColoursUtils.primaryColor
                                       : Colors.white,
                                   shape: const CircleBorder(),
