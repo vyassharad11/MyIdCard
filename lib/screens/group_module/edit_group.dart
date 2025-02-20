@@ -22,11 +22,13 @@ import '../../models/group_response.dart';
 import '../../models/team_member.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
+import '../profile_mosule/profile_new.dart';
 import 'add_group_member_bottom_sheet.dart';
 
 class EditGroupPage extends StatefulWidget {
   final String? groupId;
-  const EditGroupPage({super.key,this.groupId});
+  final String role;
+  const EditGroupPage({super.key,this.groupId,required this.role});
 
   @override
   State<EditGroupPage> createState() => _EditGroupPageState();
@@ -459,7 +461,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                             'Members & Roles',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          InkWell(
+                       if(widget.role == Role.towner.name || widget.role == Role.tadmin.name)   InkWell(
                             onTap: (){
                               showModalBottomSheet(
                                 context: context,
@@ -511,7 +513,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
                             return CustomRowWidget(
                               description: groupMember[index].lastName ?? "",
                               imageUrl: groupMember[index].avatar ?? "",
-                              onDelete: () {
+                              isShow:  widget.role == Role.towner.name || widget.role == Role.tadmin.name,
+                            onDelete: () {
                                 Utility.showLoader(context);
                                 selectedIndex = index;
                                 setState(() {
@@ -744,12 +747,14 @@ class CustomRowWidget extends StatelessWidget {
   final String title;
   final String description;
   final String initialRole;
+  final bool isShow;
   final Function(String) onRoleChanged;
   final VoidCallback onDelete;
 
   const CustomRowWidget({super.key, 
     required this.imageUrl,
     required this.title,
+    required this.isShow,
     required this.description,
     this.initialRole = "Member",
     required this.onRoleChanged,
@@ -803,7 +808,7 @@ class CustomRowWidget extends StatelessWidget {
           const SizedBox(width: 16),
 
           // Dropdown for Role Selection
-          DropdownButton<String>(
+     if(isShow)     DropdownButton<String>(
             value: initialRole,
             icon: Icon(
               Icons.keyboard_arrow_down,
@@ -828,7 +833,7 @@ class CustomRowWidget extends StatelessWidget {
           // const SizedBox(width: 16),
 
           // Delete Icon
-          IconButton(
+     if(isShow)     IconButton(
             padding: EdgeInsets.zero,
             onPressed: onDelete,
             iconSize: 16,

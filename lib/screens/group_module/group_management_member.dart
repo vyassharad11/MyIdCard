@@ -281,7 +281,7 @@ int selectedIndex = 0;
                                 onSelected: (String value) {
                                   switch (value) {
                                     case 'Edit':
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroupPage(groupId: myGroupList[index].id.toString(),),)).then((value) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroupPage(groupId: myGroupList[index].id.toString(),role: "tadmin",),)).then((value) {
                                         fetchGroupData();
                                       },);
                                       break;

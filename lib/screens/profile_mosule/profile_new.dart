@@ -496,7 +496,9 @@ bool isLoad = true;
                                ],
                              ),
                              Spacer(),
-                             if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name))   InkWell(
+                             // if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name))
+                             if(user?.role == Role.towner.name)
+                               InkWell(
                                  onTap: (){
                                    Navigator.push(
                                        context,
@@ -528,7 +530,7 @@ bool isLoad = true;
                            },);
                          }else {
                            Navigator.push(context, MaterialPageRoute(
-                             builder: (context) => EditGroupPage(groupId:myGroupList[0].id?.toString() ,),)).then((value) {
+                             builder: (context) => EditGroupPage(groupId:myGroupList[0].id?.toString() ,role: user?.role ?? "",),)).then((value) {
                              fetchGroupData();
                            },);
                          }
@@ -719,7 +721,7 @@ bool isLoad = true;
                      ],
                    ),
                  ),
-                 if(user?.role != Role.individual.name && user?.role == Role.member.name)   Container(
+                 if(user?.role != Role.individual.name && user?.role == Role.towner.name)   Container(
                    height: 53,
                    padding: EdgeInsets.all(16),
                    margin: EdgeInsets.only(top: 14),
