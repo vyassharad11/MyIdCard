@@ -111,6 +111,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
               isLoadingTeam = false;
+              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               isLoadingTeam = false;
               Utility.hideLoader(context);
@@ -132,6 +133,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
@@ -171,10 +173,13 @@ class _EditGroupPageState extends State<EditGroupPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
             }
             setState(() {});
           },

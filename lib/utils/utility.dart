@@ -113,7 +113,9 @@ class Utility {
   }
 
   static void showLoader(BuildContext context) {
-    context.loaderOverlay.show();
+    if (!context.loaderOverlay.visible) {
+      context.loaderOverlay.show();
+    }
   }
 
   static Flushbar? flushBar;

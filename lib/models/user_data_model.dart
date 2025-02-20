@@ -18,6 +18,7 @@ class User {
   dynamic phonenumber;
   dynamic providerId;
   dynamic avatar;
+  dynamic role;
   List<Cards>? cards;
 
   User(
@@ -38,6 +39,7 @@ class User {
       this.phonenumber,
       this.providerId,
       this.avatar,
+      this.role,
       this.cards});
 
   // Factory method to create a User instance from JSON
@@ -59,6 +61,7 @@ class User {
     phonenumber = json['phonenumber'];
     providerId = json['provider_id'];
     avatar = json['avatar'];
+    role = json['role'];
     if (json['cards'] != null) {
       cards = <Cards>[];
       json['cards'].forEach((v) {
@@ -86,6 +89,7 @@ class User {
     data['phonenumber'] = phonenumber;
     data['provider_id'] = providerId;
     data['avatar'] = avatar;
+    data['role'] = role;
     if (cards != null) {
       data['cards'] = cards!.map((v) => v.toJson()).toList();
     }
