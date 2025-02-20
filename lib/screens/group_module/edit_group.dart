@@ -100,7 +100,6 @@ class _EditGroupPageState extends State<EditGroupPage> {
               groupDataModel = dto;
               title.text = groupDataModel?.data?.groupName ?? "";
               description.text = groupDataModel?.data?.groupDescription ?? "";
-              Utility().showFlushBar(context: context, message: "Group updated successfully");
             }
             setState(() {});
           },

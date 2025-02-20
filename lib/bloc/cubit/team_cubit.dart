@@ -104,4 +104,18 @@ class TeamCubit extends Cubit<ResponseState> {
     }
   }
 
+
+  Future<void> apiDeleteTeam(id) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await teamRepository.apiDeleteTeam(id);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
 }

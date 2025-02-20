@@ -12,6 +12,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/my_group_list_model.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -54,13 +55,26 @@ class GroupCubit extends Cubit<ResponseState> {
     }
   }
 
- Future<void> apiGetGroup() async {
+ Future<void> apiDeleteGroup(id) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    GroupDataModel dto;
+    UtilityDto dto;
     try {
-      httpResponse = await groupRepository.apiGetGroup();
-      dto = httpResponse.data as GroupDataModel;
+      httpResponse = await groupRepository.apiDeleteGroup(id);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+ Future<void> apiGetMyGroups() async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    MyGroupListModel dto;
+    try {
+      httpResponse = await groupRepository.apiGetMyGroups();
+      dto = httpResponse.data as MyGroupListModel;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));
@@ -88,6 +102,20 @@ Future<void> apiGetGroupMember(id) async {
     GroupMember dto;
     try {
       httpResponse = await groupRepository.apiGetGroupMember(id);
+      dto = httpResponse.data as GroupMember;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+
+Future<void> apiGetAllGroupMembers() async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    GroupMember dto;
+    try {
+      httpResponse = await groupRepository.apiGetAllGroupMembers();
       dto = httpResponse.data as GroupMember;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

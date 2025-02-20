@@ -8,6 +8,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/my_group_list_model.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -42,11 +43,18 @@ class GroupRepository {
     return _apiClient.apiUpdateGroup(dto,token2,body,id);
   }
 
-  Future<HttpResponse<GroupDataModel>> apiGetGroup() async {
+  Future<HttpResponse<UtilityDto>> apiDeleteGroup(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyGroup(dto,token2);
+    return _apiClient.apiDeleteGroup(dto,token2,id);
+  }
+
+  Future<HttpResponse<MyGroupListModel>> apiGetMyGroups() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetMyGroups(dto,token2);
   }
 
   Future<HttpResponse<GroupDataModel>> apiGetGroupDetails(id) async {
@@ -61,6 +69,13 @@ class GroupRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiGetGroupMember(dto,token2,id);
+  }
+
+  Future<HttpResponse<GroupMember>> apiGetAllGroupMembers() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetAllGroupMembers(dto,token2,);
   }
 
   Future<HttpResponse<GroupDataModel>> apiGetGroupByTeam(id) async {

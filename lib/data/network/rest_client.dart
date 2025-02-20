@@ -12,6 +12,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/my_group_list_model.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -184,6 +185,12 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiGetUnApproveTeamMember(@Path("url") url,
       @Header(authorization) token,@Body() body,);
 
+ @POST("{url}team/delete/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteTeam(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
+
 
  @POST("{url}group/store")
   @Header(headerValue)
@@ -198,6 +205,12 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiUpdateGroup(@Path("url") url,
       @Header(authorization) token,@Body() body,@Path("id") id,);
 
+ @POST("{url}group/destroy/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteGroup(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,);
+
 
 
   @GET("{url}group/get/{id}")
@@ -207,10 +220,10 @@ abstract class RestClient {
       @Header(authorization) token,@Path("id") id,);
 
 
-  @GET("{url}get-my-group")
+  @GET("{url}group/get-my-groups")
   @Header(headerValue)
   @Header(headerContentType)
-  Future<HttpResponse<GroupDataModel>> apiGetMyGroup(@Path("url") url,
+  Future<HttpResponse<MyGroupListModel>> apiGetMyGroups(@Path("url") url,
       @Header(authorization) token);
 
 
@@ -219,6 +232,13 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetGroupMember(@Path("url") url,
       @Header(authorization) token,@Path("id") id,);
+
+
+@GET("{url}group/get-my-group-members")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<GroupMember>> apiGetAllGroupMembers(@Path("url") url,
+      @Header(authorization) token,);
 
 
 @GET("{url}group/get-group-by-team/{id}")
