@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,6 @@ import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/data/repository/team_repository.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:http/http.dart' as http;
 import '../../bloc/api_resp_state.dart';
 import '../../localStorage/storage.dart';
 import '../../models/utility_dto.dart';
@@ -345,16 +345,34 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     required File cardImage, // Card image file
   }) async {
     Utility.showLoader(context);
-    Map<String, dynamic> data = {
-    'team_name' : title,
-    'team_description' : description,
-  };
+  //   Map<String, dynamic> data = {
+  //   'team_name' : title,
+  //   'team_description' : description,
+  // };
     // Add the image to the request
     // if (!cardImage.path.contains("storage")) {
     //   var file = await http.MultipartFile.fromPath(
     //     'team_logo',
     //     cardImage.path,
     //   );
+    Utility.showLoader(context);
+    var data=null;
+    if (!cardImage.path.contains("storage")) {
+      data = FormData.fromMap({
+        'team_logo':
+        await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
+        ,
+        'team_name': title,
+        'team_description': description
+      }) as Map<String, dynamic>;
+    }else{
+      data = FormData.fromMap({
+        'team_name': title,
+        'team_description': description
+      }) as Map<String, dynamic>;
+    }
+    createTeamCubit?.apiCreateUpdateTeam(data,"");
+
     // createTeamCubit?.apiCreateUpdateTeam(data,"11");
       
   }

@@ -10,12 +10,16 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/bloc/cubit/group_cubit.dart';
 import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
+import 'package:my_di_card/models/utility_dto.dart';
+import 'package:my_di_card/screens/group_module/create_group.dart';
+import 'package:my_di_card/screens/group_module/edit_group.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import '../../bloc/api_resp_state.dart';
 import '../../models/group_member_model.dart';
+import '../../models/my_group_list_model.dart';
 import '../../utils/utility.dart';
 import '../contact/contact_home.dart';
 
@@ -29,26 +33,12 @@ class GroupMemberPage extends StatefulWidget {
 class _GroupMemberPageState extends State<GroupMemberPage> {
   String selecteValie = "Member";
   List<MemberDatum> groupMember = [];
-  GroupCubit? _getActiveMember;
+  List<MemberDatum> groupAllMember = [];
+  GroupCubit? _getActiveMember,_groupMemberCubit, getGroupCubit , _deleteGroupCubit;
+  List<MyGroupListDatum> myGroupList = [];
 
+int selectedIndex = 0;
 
-  final List<Person> people = [
-    Person('Janice Schneider Sr.', 'Product Solutions Manager',
-        'assets/images/user_dummy.png'),
-    Person(
-        'Delbert Wyman', 'Corporate Web Agent', 'assets/images/user_dummy.png'),
-    Person('Delia Wolff', 'Dynamic Directives Analyst',
-        'assets/images/user_dummy.png'),
-    Person('Angelica Nikolaus', 'Dynamic Mobility Executive',
-        'assets/images/user_dummy.png'),
-    Person('Rachel Purdy', 'National Program Supervisor',
-        'assets/images/user_dummy.png'),
-    Person('Alejandro Kuphal', 'Chief Applications Liaison',
-        'assets/images/user_dummy.png'),
-    Person('Cody Lind', 'National Web Officer', 'assets/images/user_dummy.png'),
-    Person('Toby Von', 'District Identity Orchestrator',
-        'assets/images/user_dummy.png'),
-  ];
 
 
 
@@ -56,10 +46,25 @@ class _GroupMemberPageState extends State<GroupMemberPage> {
 @override
   void initState() {
   _getActiveMember = GroupCubit(GroupRepository());
+  _groupMemberCubit = GroupCubit(GroupRepository());
+  getGroupCubit = GroupCubit(GroupRepository());
+  _deleteGroupCubit = GroupCubit(GroupRepository());
   apiGetActiveMemberForGroup();
+  fetchGroupData();
+  fetchGroupMember();
     // TODO: implement initState
     super.initState();
   }
+
+  Future<void> fetchGroupData() async {
+    getGroupCubit?.apiGetMyGroups();
+  }
+
+
+  Future<void> apiDeleteGroup(groupId) async {
+    _deleteGroupCubit?.apiDeleteGroup(groupId);
+  }
+
 
   Future<void> apiGetActiveMemberForGroup() async {
     Utility.showLoader(context);
@@ -67,80 +72,142 @@ class _GroupMemberPageState extends State<GroupMemberPage> {
   }
 
 
+  Future<void> fetchGroupMember() async {
+    _groupMemberCubit?.apiGetAllGroupMembers();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  BlocListener<GroupCubit, ResponseState>(
-      bloc: _getActiveMember,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateNoInternet) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateError) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateSuccess) {
-          Utility.hideLoader(context);
-          var dto = state.data as GroupMember;
-          groupMember.clear();
-          groupMember.addAll(dto.data ?? []);
-        }
-        setState(() {});
-      },
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: ColoursUtils.background,
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: Column(
-              children: [
-                // Team Name Input
-                const SizedBox(
-                  height: 35,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () =>
-                          Navigator.pop(context), // Default action: Go back
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        elevation: 2,
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Icon(
-                            Icons.arrow_back,
-                            size: 20,
-                            color: Colors.black,
+    return  MultiBlocListener(
+      listeners: [
+       BlocListener<GroupCubit, ResponseState>(
+        bloc: _getActiveMember,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateNoInternet) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateSuccess) {
+            Utility.hideLoader(context);
+            var dto = state.data as GroupMember;
+            groupMember.clear();
+            groupMember.addAll(dto.data ?? []);
+          }
+          setState(() {});
+        },),
+       BlocListener<GroupCubit, ResponseState>(
+        bloc: _deleteGroupCubit,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateNoInternet) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateSuccess) {
+            Utility.hideLoader(context);
+            var dto = state.data as UtilityDto;
+            myGroupList.removeAt(selectedIndex);
+           Utility().showFlushBar(context: context, message: dto.message ?? "");
+          }
+          setState(() {});
+        },),
+        BlocListener<GroupCubit, ResponseState>(
+          bloc: getGroupCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as MyGroupListModel;
+              myGroupList = dto.data ?? [];
+            }
+            setState(() {});
+          },
+        ),
+       BlocListener<GroupCubit, ResponseState>(
+        bloc: _groupMemberCubit,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateNoInternet) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateSuccess) {
+            Utility.hideLoader(context);
+            var dto = state.data as GroupMember;
+            groupAllMember.clear();
+            groupAllMember.addAll(dto.data ?? []);
+          }
+          setState(() {});
+        },),
+
+      ],
+        child: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            backgroundColor: ColoursUtils.background,
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: Column(
+                children: [
+                  // Team Name Input
+                  const SizedBox(
+                    height: 35,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () =>
+                            Navigator.pop(context), // Default action: Go back
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          elevation: 2,
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 20,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width / 1.3,
-                      child: Center(
-                        child: Text(
-                          "GROUP AND MEMBERS MANAGEMENT",
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.w600),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width / 1.3,
+                        child: Center(
+                          child: Text(
+                            "GROUP AND MEMBERS MANAGEMENT",
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.w600),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
 
                 Card(
                   elevation: 0,
@@ -184,8 +251,8 @@ class _GroupMemberPageState extends State<GroupMemberPage> {
                             ),
                           ],
                         ),
-                        ListView.builder(
-                          itemCount: 2,
+                       if(myGroupList.isNotEmpty) ListView.builder(
+                          itemCount: myGroupList.length,
                           shrinkWrap: true,
                           padding: EdgeInsets.only(),
                           itemBuilder: (ctx, index) {
@@ -194,23 +261,55 @@ class _GroupMemberPageState extends State<GroupMemberPage> {
                               leading: CircleAvatar(
                                 radius: 25,
                                 backgroundImage:
-                                    AssetImage(people[index].imageUrl.toString()),
+                                NetworkImage(myGroupList[index].groupLogo ?? ""),
                               ),
                               title: Text(
-                                people[index].name,
-                                style: const TextStyle(
+                                myGroupList[index].groupName ?? "",
+                               style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16,
                                     color: Colors.black),
                               ),
                               subtitle: Text(
-                                people[index].description,
+                                  myGroupList[index].groupDescription ?? "",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 13,
                                     color: Colors.black),
                               ),
-                              trailing: const Icon(Icons.more_vert),
+                              trailing:   PopupMenuButton<String>(
+                                onSelected: (String value) {
+                                  switch (value) {
+                                    case 'Edit':
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroupPage(groupId: myGroupList[index].id.toString(),role: "tadmin",),)).then((value) {
+                                        fetchGroupData();
+                                      },);
+                                      break;
+                                    case 'Delete':
+                                      selectedIndex   = index;
+                                      setState(() {
+
+                                      });
+                                      Utility.showLoader(context);
+                                      apiDeleteGroup(myGroupList[index].id);
+                                      break;
+                                  }
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                <PopupMenuEntry<String>>[
+                                  const PopupMenuItem<String>(
+                                    value: 'Edit',
+                                    child: Text('Edit'),
+                                  ),
+                                  const PopupMenuItem<String>(
+                                    value: 'Delete',
+                                    child: Text(
+                                      'Delete',
+                                      style: TextStyle(color: Colors.redAccent),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               onTap: () {
                                 // Navigator.push(
                                 //   context,
@@ -262,105 +361,105 @@ class _GroupMemberPageState extends State<GroupMemberPage> {
                           child: TabBar(
                             tabAlignment: TabAlignment.fill,
 
-                            automaticIndicatorColorAdjustment: true,
-                            labelPadding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                            ),
-                            unselectedLabelColor:
-                                Colors.black, // Inactive label color
-                            isScrollable:
-                                false, // Disables scrolling, makes the tabs equal width
-                            indicatorPadding: const EdgeInsets.symmetric(
-                                horizontal: 3, vertical: 3),
-                            labelStyle: const TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w500),
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              // Creates rounded indicator
-                              // color: Colors.grey.withOpacity(0.2), // Indicator color
-                              color: ColoursUtils.background, // Indicator color
-                            ),
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            tabs: [
-                              Tab(text: "All"),
-                              Tab(text: "Without Group"),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Search Box
-                        TextField(
-                          decoration: InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 14, vertical: 1),
-                            hintText: 'Search',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            filled: true,
-                            fillColor: ColoursUtils.background,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(14),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-
-                        // List of Members
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height / 2,
-                          child: TabBarView(
-                            children: [
-                              ListView.builder(
-                                itemCount: groupMember.length,
-                                padding: EdgeInsets.only(),
-                                itemBuilder: (ctx, index) {
-                                  return CustomRowWidget(
-                                    description: groupMember[index].lastName,
-                                    imageUrl: "asd",
-                                    onDelete: () {},
-                                    onRoleChanged: (value) {
-                                      setState(() {
-                                        selecteValie = value;
-                                      });
-                                    },
-                                    title: groupMember[index].firstName,
-                                    initialRole: selecteValie,
-                                  );
-                                },
-                                physics: AlwaysScrollableScrollPhysics(),
+                              automaticIndicatorColorAdjustment: true,
+                              labelPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
                               ),
-                              ListView.builder(
-                                itemCount: 10,
-                                padding: EdgeInsets.only(),
-                                itemBuilder: (ctx, index) {
-                                  return CustomRowWidget(
-                                    description: "Product Manager with vialinms",
-                                    imageUrl: "asd",
-                                    onDelete: () {},
-                                    onRoleChanged: (value) {
-                                      setState(() {
-                                        selecteValie = value;
-                                      });
-                                    },
-                                    title: "Delbert Wyman",
-                                    initialRole: selecteValie,
-                                  );
-                                },
-                                physics: AlwaysScrollableScrollPhysics(),
+                              unselectedLabelColor:
+                                  Colors.black, // Inactive label color
+                              isScrollable:
+                                  false, // Disables scrolling, makes the tabs equal width
+                              indicatorPadding: const EdgeInsets.symmetric(
+                                  horizontal: 3, vertical: 3),
+                              labelStyle: const TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500),
+                              indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                // Creates rounded indicator
+                                // color: Colors.grey.withOpacity(0.2), // Indicator color
+                                color: ColoursUtils.background, // Indicator color
                               ),
-                            ],
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              tabs: [
+                                Tab(text: "All"),
+                                Tab(text: "Without Group"),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 16),
+
+                          // Search Box
+                          TextField(
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 14, vertical: 1),
+                              hintText: 'Search',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              filled: true,
+                              fillColor: ColoursUtils.background,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+
+                          // List of Members
+                          SizedBox(
+                            height: MediaQuery.sizeOf(context).height / 2,
+                            child: TabBarView(
+                              children: [
+                                ListView.builder(
+                                  itemCount: groupMember.length,
+                                  padding: EdgeInsets.only(),
+                                  itemBuilder: (ctx, index) {
+                                    return CustomRowWidget(
+                                      description: groupMember[index].lastName,
+                                      imageUrl: "asd",
+                                      onDelete: () {},
+                                      onRoleChanged: (value) {
+                                        setState(() {
+                                          selecteValie = value;
+                                        });
+                                      },
+                                      title: groupMember[index].firstName,
+                                      initialRole: selecteValie,
+                                    );
+                                  },
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                ),
+                                ListView.builder(
+                                  itemCount: groupAllMember.length,
+                                  padding: EdgeInsets.only(),
+                                  itemBuilder: (ctx, index) {
+                                    return CustomRowWidget(
+                                      description: groupAllMember[index].lastName,
+                                      imageUrl: "asd",
+                                      onDelete: () {},
+                                      onRoleChanged: (value) {
+                                        setState(() {
+                                          selecteValie = value;
+                                        });
+                                      },
+                                      title: groupAllMember[index].firstName,
+                                      initialRole: selecteValie,
+                                    );
+                                  },
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
     );
   }
 

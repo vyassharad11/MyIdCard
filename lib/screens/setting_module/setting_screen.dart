@@ -280,6 +280,7 @@ class _SettingScreenState extends State<SettingScreen> {
             TextButton(
               onPressed: () {
                 // Perform delete action here
+                Utility.showLoader(context);
 
                 clearSharedPreferences();
                 // Close the dialog
@@ -326,7 +327,6 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Future<void> clearSharedPreferences() async {
-    Utility.showLoader(context);
 
     bool success = await prefs.clear(); // Clears all key-value pairs
     if (success) {

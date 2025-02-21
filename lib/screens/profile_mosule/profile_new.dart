@@ -11,7 +11,9 @@ import 'package:my_di_card/bloc/cubit/group_cubit.dart';
 import 'package:my_di_card/data/repository/auth_repository.dart';
 import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/data/repository/team_repository.dart';
+import 'package:my_di_card/models/my_group_list_model.dart';
 import 'package:my_di_card/models/user_data_model.dart';
+import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/group_module/edit_group.dart';
 import 'package:my_di_card/screens/setting_module/setting_screen.dart';
 import 'package:my_di_card/screens/team/team_member.dart';
@@ -42,7 +44,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  TeamCubit? getTeamCubit,_getTeamMember;
+  TeamCubit? getTeamCubit,_getTeamMember,_deleteTeamCubit;
   GroupCubit? getGroupCubit;
   AuthCubit?_authCubit,_completeProfileCubit;
   List<Member> teamMember = [];
@@ -54,14 +56,14 @@ bool isLoad = true;
   }
 
   TeamResponse? teamResponse;
-  GroupDataModel? groupDataModel;
+  List<MyGroupListDatum> myGroupList = [];
 
   Future<void> fetchTeamData() async {
     getTeamCubit?.apiGetMyTeam();
   }
 
   Future<void> fetchGroupData() async {
-    getGroupCubit?.apiGetGroupByTeam(teamResponse?.data.id.toString() ?? "");
+    getGroupCubit?.apiGetMyGroups();
   }
 
   void getTeamMembers() async {
@@ -72,11 +74,16 @@ bool isLoad = true;
     _getTeamMember?.apiGetTeamMember(data);
   }
 
+  void apiDeleteTeam(teamId) async {
+    _deleteTeamCubit?.apiDeleteTeam(teamId);
+  }
+
 
   @override
   void initState() {
     getTeamCubit =TeamCubit(TeamRepository());
     _getTeamMember =TeamCubit(TeamRepository());
+    _deleteTeamCubit =TeamCubit(TeamRepository());
     getGroupCubit =GroupCubit(GroupRepository());
     _authCubit =AuthCubit(AuthRepository());
     _completeProfileCubit =AuthCubit(AuthRepository());
@@ -121,6 +128,34 @@ bool isLoad = true;
               });
             }),
         BlocListener<TeamCubit, ResponseState>(
+            bloc: _deleteTeamCubit,
+            listener: (context, state) {
+              if (state is ResponseStateLoading) {
+              } else if (state is ResponseStateEmpty) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context, message: state.message, isError: true);
+              } else if (state is ResponseStateNoInternet) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context, message: state.message, isError: true);
+              } else if (state is ResponseStateError) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context,
+                    message: state.errorMessage,
+                    isError: true);
+              } else if (state is ResponseStateSuccess) {
+                var dto = state.data as UtilityDto;
+                  fetchUserData();
+                  fetchTeamData();
+                  Utility().showFlushBar(
+                      context: context, message: dto.message ?? "");
+              }setState(() {
+
+              });
+            }),
+        BlocListener<TeamCubit, ResponseState>(
           bloc: _getTeamMember,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
@@ -138,7 +173,6 @@ bool isLoad = true;
               var dto = state.data as TeamMembersResponse;
               teamMember.clear();
               teamMember.addAll(dto.data.members);
-              fetchGroupData();
             }
             setState(() {});
           },
@@ -181,6 +215,7 @@ bool isLoad = true;
               if(user != null && user?.role != Role.individual.name){
                 getTeamMembers();
                 fetchTeamData();
+                fetchGroupData();
               }
               isLoad = false;
             }
@@ -199,8 +234,8 @@ bool isLoad = true;
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              var dto = state.data as GroupDataModel;
-              groupDataModel = dto;
+              var dto = state.data as MyGroupListModel;
+              myGroupList = dto.data ?? [];
             }
             setState(() {});
           },
@@ -401,7 +436,7 @@ bool isLoad = true;
                                child: ClipRRect(
                                  borderRadius: BorderRadius.circular(50),
                                  child: Image.network(
-                                   "${Network.imgUrl}${teamResponse!.data.teamLogo}",
+                                   "${Network.imgUrl}${teamResponse!.data.teamLogo ?? ""}",
                                    fit: BoxFit.cover,
                                  ),
                                ),
@@ -435,6 +470,9 @@ bool isLoad = true;
                                      child: Image.network(
                                        "${Network.imgUrl}${teamMember[0].avatar ??""}",
                                        fit: BoxFit.cover,
+                                       errorBuilder: (context, error, stackTrace) {
+                                         return Container(color: Colors.grey);
+                                       },
                                      ),
                                    ),
                                    SizedBox(width: 5,),
@@ -458,7 +496,9 @@ bool isLoad = true;
                                ],
                              ),
                              Spacer(),
-                             if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name))   InkWell(
+                             // if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name))
+                             if(user?.role == Role.towner.name)
+                               InkWell(
                                  onTap: (){
                                    Navigator.push(
                                        context,
@@ -476,35 +516,36 @@ bool isLoad = true;
                    ),
                  ),
                  if(user?.role != Role.individual.name)        const SizedBox(height: 10),
-                 if(user?.role != Role.individual.name)          Container(
+                 if(user?.role != Role.individual.name && myGroupList.isNotEmpty)          Container(
                    padding: const EdgeInsets.all(8),
                    decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(12),
                        color: Colors.grey.withOpacity(0.2)),
                    child: ListTile(
                      onTap: () {
-                       if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name)){
-                         if(groupDataModel == null){
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),));
+                       if( user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name || (myGroupList.isNotEmpty && myGroupList[0].adminId == user?.id))){
+                         if(myGroupList.isEmpty){
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),)).then((value) {
+                             fetchGroupData();
+                           },);
                          }else {
                            Navigator.push(context, MaterialPageRoute(
-                             builder: (context) => EditGroupPage(groupId:groupDataModel?.data?.id?.toString() ,),)).then((value) {
+                             builder: (context) => EditGroupPage(groupId:myGroupList[0].id?.toString() ,role: user?.role ?? "",),)).then((value) {
                              fetchGroupData();
                            },);
                          }
                        }
                      },
                      contentPadding: EdgeInsets.zero,
-                     leading: groupDataModel != null &&
-                         groupDataModel!.data != null &&
-                         groupDataModel!.data!.groupLogo != null
+                     leading: myGroupList.isNotEmpty &&
+                         myGroupList[0].groupLogo != null
                          ? SizedBox(
                        height: 50,
                        width: 50,
                        child: ClipRRect(
                          borderRadius: BorderRadius.circular(50),
                          child: Image.network(
-                           "${Network.imgUrl}${groupDataModel!.data!.groupLogo}",
+                           "${Network.imgUrl}${myGroupList[0].groupLogo ?? ""}",
                            fit: BoxFit.cover,
                          ),
                        ),
@@ -521,12 +562,24 @@ bool isLoad = true;
                        ),
                      ),
                      title: Text(
-                       groupDataModel?.data?.groupName ?? "-",
+                       myGroupList[0].groupName ?? "-",
                      ),
                      subtitle: Text(
-                       groupDataModel?.data?.groupDescription ?? "-",
+                       myGroupList[0].groupDescription ?? "-",
                      ),
                    ),
+                 ),
+                 if(user?.role != Role.individual.name && myGroupList.isEmpty)      InkWell(
+                   onTap: (){
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),));
+                   },
+                   child: Container(height: 55,
+                     width: MediaQuery.of(context).size.width,
+                     padding: const EdgeInsets.all(16),
+                     alignment: Alignment.centerLeft,
+                     decoration: BoxDecoration(
+                         borderRadius: BorderRadius.circular(12),
+                         color: Colors.grey.withOpacity(0.2)),child: Text("Create Group",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),),
                  ),
                  if(user?.role != Role.individual.name &&  user?.role != Role.member.name)       const SizedBox(height: 20),
                  if(user?.role == Role.individual.name && user?.userStatusId == 2 &&  user?.role != Role.member.name)     ApprovalCard(),
@@ -611,7 +664,7 @@ bool isLoad = true;
                      title: 'Invite Members',
                    ),
                  ),
-                 if(user?.role != Role.individual.name &&  user?.role != Role.member.name)            GestureDetector(
+                 if(user?.role != Role.individual.name &&  user?.role != Role.member.name && myGroupList.isNotEmpty)            GestureDetector(
                    onTap: () {
                      Navigator.push(
                          context,
@@ -668,7 +721,7 @@ bool isLoad = true;
                      ],
                    ),
                  ),
-                 if(user?.role != Role.individual.name && user?.role == Role.member.name)   Container(
+                 if(user?.role != Role.individual.name && user?.role == Role.towner.name)   Container(
                    height: 53,
                    padding: EdgeInsets.all(16),
                    margin: EdgeInsets.only(top: 14),

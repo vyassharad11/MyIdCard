@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -352,12 +353,28 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
     //
     //   request.files.add(file);
     // }
-    Map<String, dynamic> data = {
-    'group_name' : title,
-    'admin_id' : "1",
-    'group_description' : description,
-
-    };
+    // Map<String, dynamic> data = {
+    // 'group_name' : title,
+    // 'admin_id' : "1",
+    // 'group_description' : description,
+    //
+    // };
+    var data=null;
+    if (!cardImage.path.contains("storage")) {
+      data = FormData.fromMap({
+        'group_logo':
+        await MultipartFile.fromFile(cardImage.path, filename: "demo.png"),
+        'group_name': title,
+        'group_description': description,
+        'admin_id' : "",
+      }) ;
+    }else{
+      data = FormData.fromMap({
+        'group_name': title,
+        'group_description': description,
+        'admin_id' : "",
+      });
+    }
     _groupCubit?.apiCreateGroup(data);
   }
 

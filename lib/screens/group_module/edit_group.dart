@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+ import 'package:dio/dio.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
@@ -22,11 +22,13 @@ import '../../models/group_response.dart';
 import '../../models/team_member.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
+import '../profile_mosule/profile_new.dart';
 import 'add_group_member_bottom_sheet.dart';
 
 class EditGroupPage extends StatefulWidget {
   final String? groupId;
-  const EditGroupPage({super.key,this.groupId});
+  final String role;
+  const EditGroupPage({super.key,this.groupId,required this.role});
 
   @override
   State<EditGroupPage> createState() => _EditGroupPageState();
@@ -65,14 +67,35 @@ class _EditGroupPageState extends State<EditGroupPage> {
     _groupMemberCubit?.apiGetGroupMember(widget.groupId ?? "");
   }
 
-  Future<void> editGroup() async {
+  Future<void> submitData({
+    required String title,
+    required String description,
+    required File cardImage, // Card image file
+  }) async {
   Utility.showLoader(context);
-    Map<String, dynamic> data = {
-      'group_name': title.text,
-      'admin_id': "1",
-      'group_description': description.text,
+    // Map<String, dynamic> data = {
+    //   'group_name': title.text,
+    //   'admin_id': "1",
+    //   'group_description': description.text,
+    //
+    // };
+  var data=null;
+  if (!cardImage.path.contains("storage")) {
+    data = FormData.fromMap({
+      'group_logo':
+      await MultipartFile.fromFile(cardImage.path, filename: "demo1.png"),
+      'group_name': title,
+      'group_description': description,
+      'admin_id' : "",
+    });
+  }else{
+    data = FormData.fromMap({
+      'group_name': title,
+      'group_description': description,
+      'admin_id' : "",
+    }) ;
+  }
 
-    };
     _editGroup?.apiUpdateGroup(data,widget.groupId ?? "");
   }
 
@@ -100,7 +123,10 @@ class _EditGroupPageState extends State<EditGroupPage> {
               groupDataModel = dto;
               title.text = groupDataModel?.data?.groupName ?? "";
               description.text = groupDataModel?.data?.groupDescription ?? "";
-              Utility().showFlushBar(context: context, message: "Group updated successfully");
+              if (groupDataModel != null &&
+                  groupDataModel!.data!.groupLogo != null) {
+                _selectedImage = File(groupDataModel!.data!.groupLogo);
+              }
             }
             setState(() {});
           },
@@ -428,7 +454,12 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                 ),
                               ),
                               onPressed: () {
-                                editGroup();
+    submitData(
+    cardImage: _selectedImage ?? File(""),
+    description: description.text,
+    title: title.text);
+
+                                // editGroup(cardImage: _selectedImage ?? File(""),);
                               },
                               child: const Text('Save'),
                             ),
@@ -460,7 +491,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                             'Members & Roles',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          InkWell(
+                       if(widget.role == Role.towner.name || widget.role == Role.tadmin.name)   InkWell(
                             onTap: (){
                               showModalBottomSheet(
                                 context: context,
@@ -512,7 +543,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
                             return CustomRowWidget(
                               description: groupMember[index].lastName ?? "",
                               imageUrl: groupMember[index].avatar ?? "",
-                              onDelete: () {
+                              isShow:  widget.role == Role.towner.name || widget.role == Role.tadmin.name,
+                            onDelete: () {
                                 Utility.showLoader(context);
                                 selectedIndex = index;
                                 setState(() {
@@ -551,63 +583,63 @@ class _EditGroupPageState extends State<EditGroupPage> {
     );
   }
 
-  Future<void> submitData({
-    required String title,
-    required String description,
-    required File cardImage, // Card image file
-  }) async {
-    Utility.showLoader(context);
-
-    var token = await Storage().getToken();
-
-    String apiUrl =
-        "${Network.baseUrl}card/update/"; // Replace with your API endpoint
-
-    try {
-      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-
-      // Add fields to the request
-
-      request.fields['title'] = title;
-      request.fields['description'] = description;
-
-      // Add the image to the request
-      if (!cardImage.path.contains("storage")) {
-        var file = await http.MultipartFile.fromPath(
-          'logo',
-          cardImage.path,
-        );
-
-        debugPrint("${cardImage.path}---");
-
-        request.files.add(file);
-      }
-
-      // Add headers, including Authorization token
-      request.headers.addAll({
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      });
-      var response = await request.send();
-
-      // Handle the response
-      if (response.statusCode == 200) {
-         Utility.hideLoader(context);
-
-        final responseData = await response.stream.bytesToString();
-        final data = jsonDecode(responseData);
-         Utility.hideLoader(context);
-
-        debugPrint("Data submitted successfully: $data");
-      } else {
-        debugPrint("Failed to submit data. Status Code: ${response.statusCode}");
-      }
-    } catch (error) {
-       Utility.hideLoader(context);
-
-      debugPrint("An error occurred: $error");
-    }
-  }
+  // Future<void> submitData({
+  //   required String title,
+  //   required String description,
+  //   required File cardImage, // Card image file
+  // }) async {
+  //   Utility.showLoader(context);
+  //
+  //   var token = await Storage().getToken();
+  //
+  //   String apiUrl =
+  //       "${Network.baseUrl}card/update/"; // Replace with your API endpoint
+  //
+  //   try {
+  //     var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+  //
+  //     // Add fields to the request
+  //
+  //     request.fields['title'] = title;
+  //     request.fields['description'] = description;
+  //
+  //     // Add the image to the request
+  //     if (!cardImage.path.contains("storage")) {
+  //       var file = await http.MultipartFile.fromPath(
+  //         'logo',
+  //         cardImage.path,
+  //       );
+  //
+  //       debugPrint("${cardImage.path}---");
+  //
+  //       request.files.add(file);
+  //     }
+  //
+  //     // Add headers, including Authorization token
+  //     request.headers.addAll({
+  //       'Authorization': 'Bearer $token',
+  //       'Accept': 'application/json',
+  //     });
+  //     var response = await request.send();
+  //
+  //     // Handle the response
+  //     if (response.statusCode == 200) {
+  //        Utility.hideLoader(context);
+  //
+  //       final responseData = await response.stream.bytesToString();
+  //       final data = jsonDecode(responseData);
+  //        Utility.hideLoader(context);
+  //
+  //       debugPrint("Data submitted successfully: $data");
+  //     } else {
+  //       debugPrint("Failed to submit data. Status Code: ${response.statusCode}");
+  //     }
+  //   } catch (error) {
+  //      Utility.hideLoader(context);
+  //
+  //     debugPrint("An error occurred: $error");
+  //   }
+  // }
 
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
@@ -745,12 +777,14 @@ class CustomRowWidget extends StatelessWidget {
   final String title;
   final String description;
   final String initialRole;
+  final bool isShow;
   final Function(String) onRoleChanged;
   final VoidCallback onDelete;
 
   const CustomRowWidget({super.key, 
     required this.imageUrl,
     required this.title,
+    required this.isShow,
     required this.description,
     this.initialRole = "Member",
     required this.onRoleChanged,
@@ -804,7 +838,7 @@ class CustomRowWidget extends StatelessWidget {
           const SizedBox(width: 16),
 
           // Dropdown for Role Selection
-          DropdownButton<String>(
+     if(isShow)     DropdownButton<String>(
             value: initialRole,
             icon: Icon(
               Icons.keyboard_arrow_down,
@@ -829,7 +863,7 @@ class CustomRowWidget extends StatelessWidget {
           // const SizedBox(width: 16),
 
           // Delete Icon
-          IconButton(
+     if(isShow)     IconButton(
             padding: EdgeInsets.zero,
             onPressed: onDelete,
             iconSize: 16,

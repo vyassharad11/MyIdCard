@@ -103,4 +103,11 @@ class TeamRepository {
     return _apiClient.apiGetUnApproveTeamMember(dto,token2,body);
   }
 
+  Future<HttpResponse<UtilityDto>> apiDeleteTeam(body,) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiDeleteTeam(dto,token2,body,);
+  }
+
 }

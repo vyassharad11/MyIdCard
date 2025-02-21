@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -8,6 +10,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/my_group_list_model.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -32,21 +35,89 @@ class GroupRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiCreateGroup(dto,token2,body);
+
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': token2
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      dto+"group/store",
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: body,
+    );
+
+    // if (response.statusCode == 200) {
+    print(" responce "+ json.encode(response.data));
+    late UtilityDto _value;
+    try {
+      _value = UtilityDto.fromJson(response.data!);
+    } on Object catch (e, s) {
+      // errorLogger?.logError(e, s,);
+      print(" error "+ json.encode(response.statusMessage));
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, response);
+    return httpResponse;
+
+
+
+     return _apiClient.apiCreateGroup(dto,token2,body);
   }
 
   Future<HttpResponse<UtilityDto>> apiUpdateGroup(body,id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': token2
+    };
+    var dio = Dio();
+    // print(" requestOptions "+ (body));
+
+    var response = await dio.request(
+      dto+"group/update/"+id.toString(),
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: body,
+    );
+    // print(" requestOptions "+ json.encode(response.requestOptions));
+
+    // if (response.statusCode == 200) {
+    print(" responce "+ json.encode(response.data));
+    late UtilityDto _value;
+    try {
+      _value = UtilityDto.fromJson(response.data!);
+    } on Object catch (e, s) {
+      // errorLogger?.logError(e, s,);
+      print(" error "+ json.encode(response.statusMessage));
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, response);
+    return httpResponse;
+
+
     return _apiClient.apiUpdateGroup(dto,token2,body,id);
   }
 
-  Future<HttpResponse<GroupDataModel>> apiGetGroup() async {
+  Future<HttpResponse<UtilityDto>> apiDeleteGroup(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyGroup(dto,token2);
+    return _apiClient.apiDeleteGroup(dto,token2,id);
+  }
+
+  Future<HttpResponse<MyGroupListModel>> apiGetMyGroups() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetMyGroups(dto,token2);
   }
 
   Future<HttpResponse<GroupDataModel>> apiGetGroupDetails(id) async {
@@ -61,6 +132,13 @@ class GroupRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiGetGroupMember(dto,token2,id);
+  }
+
+  Future<HttpResponse<GroupMember>> apiGetAllGroupMembers() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetAllGroupMembers(dto,token2,);
   }
 
   Future<HttpResponse<GroupDataModel>> apiGetGroupByTeam(id) async {

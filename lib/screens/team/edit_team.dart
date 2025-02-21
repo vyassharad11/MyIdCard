@@ -537,25 +537,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
        });
      }
      updateTeamCubit?.apiCreateUpdateTeam(data,teamResponse?.data.id);
-
-
-
   }
-  // Future<File> downloadImageWithDio(String imageUrl) async {
-  //   Dio dio = Dio();
-  //
-  //   try {
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
-  //     final filePath = '${directory.path}/$fileName';
-  //
-  //     await dio.download(imageUrl, filePath);
-  //     return File(filePath);
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-
 
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
