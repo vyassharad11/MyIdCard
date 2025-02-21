@@ -607,12 +607,16 @@ class _RestClient implements RestClient {
   Future<HttpResponse<UtilityDto>> apiCreateUpdateTeam(
     dynamic url,
     dynamic token,
-    dynamic body,
     dynamic id,
+    dynamic headerContentTypeMul,
+    dynamic body,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept': headerContentTypeMul,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(

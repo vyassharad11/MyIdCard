@@ -28,8 +28,11 @@ abstract class RestClient {
     "Accept: application/json",
     "Content-Type: application/json"
   ];
+
   static const headerValue = "Accept: application/json";
   static const headerContentType = "Content-Type: application/json";
+  static const headerContentTypeMul = "Content-Type: application/json";
+
   static const authorization = "Authorization";
 
   // @GET("base.json")
@@ -145,10 +148,11 @@ abstract class RestClient {
 
 
   @POST("{url}team/update/{id}")
-  @Header(headerValue)
-  @Header(headerContentType)
+  // @Header(headerValue)
+  // @Header(headerContentTypeMul)
   Future<HttpResponse<UtilityDto>> apiCreateUpdateTeam(@Path("url") url,
-      @Header(authorization) token,@Body() body,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,@Header("Accept") headerContentTypeMul,@Body() body);
+
 
   @GET("{url}team/get-my-team")
   @Header(headerValue)

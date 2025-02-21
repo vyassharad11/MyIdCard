@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -518,21 +520,42 @@ class _EditTeamPageState extends State<EditTeamPage> {
     required String description,
     required File cardImage, // Card image file
   }) async {
-    Utility.showLoader(context);
-    Map<String, dynamic> data = {
+     Utility.showLoader(context);
+     var data=null;
+     if (!cardImage.path.contains("storage")) {
+     data = FormData.fromMap({
+      'team_logo':
+        await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
+      ,
       'team_name': title,
-      'team_description': description,
-    };
-    updateTeamCubit?.apiCreateUpdateTeam(data,teamResponse?.data.id);
+      'team_description': description
+    });
+     }else{
+       data = FormData.fromMap({
+         'team_name': title,
+         'team_description': description
+       });
+     }
+     updateTeamCubit?.apiCreateUpdateTeam(data,teamResponse?.data.id);
 
 
-      // Add the image to the request
-      // if (!cardImage.path.contains("storage")) {
-        // var file = await http.MultipartFile.fromPath(
-        //   'team_logo',
-        //   cardImage.path,
-        // );
+
   }
+  // Future<File> downloadImageWithDio(String imageUrl) async {
+  //   Dio dio = Dio();
+  //
+  //   try {
+  //     final directory = await getApplicationDocumentsDirectory();
+  //     String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+  //     final filePath = '${directory.path}/$fileName';
+  //
+  //     await dio.download(imageUrl, filePath);
+  //     return File(filePath);
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
 
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;

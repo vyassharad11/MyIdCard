@@ -165,7 +165,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               debugPrint("ontap----");
               setState(() {
                 // ischecked = !ischecked;
-                planId = 0;
+                planId = 1;
                 setState(() {
 
                 });
@@ -181,7 +181,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             isDiscounted: true,
             discount: 'For You 50% OFF',
             onTap: () {
-              planId = 1;
+              planId = 2;
               setState(() {
               });
               // Subscription logic for Single User Tier
@@ -194,7 +194,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             description: 'Lorem ipsum dolor sit amet',
             isDiscounted: false,
             onTap: () {
-              planId = 2;
+              planId = 3;
               setState(() {
 
               });
@@ -211,7 +211,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             description: 'Lorem ipsum dolor sit amet',
             isDiscounted: false,
             onTap: () {
-              planId = 3;
+              planId = 4;
               setState(() {
 
               });

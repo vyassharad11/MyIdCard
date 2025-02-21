@@ -355,7 +355,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     //     'team_logo',
     //     cardImage.path,
     //   );
-    createTeamCubit?.apiCreateUpdateTeam(data,"11");
+    // createTeamCubit?.apiCreateUpdateTeam(data,"11");
       
   }
 
