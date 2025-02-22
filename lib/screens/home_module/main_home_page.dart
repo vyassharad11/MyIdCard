@@ -10,7 +10,6 @@ import 'package:my_di_card/bloc/cubit/card_cubit.dart';
 import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
-
 import '../../bloc/api_resp_state.dart';
 import '../../createCard/create_card_final_preview.dart';
 import '../../createCard/create_card_user_screen.dart';
@@ -484,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         Navigator.push(
                             context,
                             MaterialPageRoute(

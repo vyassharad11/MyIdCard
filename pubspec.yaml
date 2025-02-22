@@ -13,7 +13,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_share: ^2.0.0
+#  flutter_share: ^2.0.0
+  share_plus: ^10.1.4
   cupertino_icons: ^1.0.8
   card_swiper: ^3.0.1
   url_launcher: ^6.3.1
