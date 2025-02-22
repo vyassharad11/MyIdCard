@@ -273,7 +273,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                             color: Colors.blue, // Button color
                             child: InkWell(
                               splashColor: Colors.blue, // Splash color
-                              onTap: () {
+                              onTap: () async {
                                 // _onShare method:
                                 final box = context.findRenderObject() as RenderBox?;
 
