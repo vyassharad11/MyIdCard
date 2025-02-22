@@ -247,7 +247,9 @@ int selectedIndex = 0;
                                   color: Colors.blue, // Button color
                                   child: InkWell(
                                     splashColor: Colors.blue, // Splash color
-                                    onTap: () => {print('InkWell clicked!')},
+                                    onTap: () => {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),))
+                                    },
 
                                     child: const SizedBox(
                                         width: 40,
@@ -363,15 +365,12 @@ int selectedIndex = 0;
                               16), // Optional margin around the tab bar
                           width: double.infinity, // Full width of the screen
                           decoration: BoxDecoration(
-                            border: Border.all(
-                                color: ColoursUtils.background,
-                                width: 3), // Outline border
+                            color: ColoursUtils.background, // Outline border
                             borderRadius:
                                 BorderRadius.circular(8), // Rounded corners
                           ),
                           child: TabBar(
                             tabAlignment: TabAlignment.fill,
-
                               automaticIndicatorColorAdjustment: true,
                               labelPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
@@ -388,7 +387,7 @@ int selectedIndex = 0;
                                 borderRadius: BorderRadius.circular(8),
                                 // Creates rounded indicator
                                 // color: Colors.grey.withOpacity(0.2), // Indicator color
-                                color: ColoursUtils.background, // Indicator color
+                                color: Colors.white, // Indicator color
                               ),
                               indicatorSize: TabBarIndicatorSize.tab,
                               tabs: [
@@ -425,17 +424,49 @@ int selectedIndex = 0;
                                   itemCount: groupMember.length,
                                   padding: EdgeInsets.only(),
                                   itemBuilder: (ctx, index) {
-                                    return CustomRowWidget(
-                                      description: groupMember[index].lastName,
-                                      imageUrl: "asd",
-                                      onDelete: () {},
-                                      onRoleChanged: (value) {
-                                        setState(() {
-                                          selecteValie = value;
-                                        });
-                                      },
-                                      title: groupMember[index].firstName,
-                                      initialRole: selecteValie,
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          // Circle Image
+                                          CircleAvatar(
+                                            radius: 22,
+                                            backgroundImage: NetworkImage(groupMember[index].avatar ?? ""),
+                                            backgroundColor: Colors.grey.shade200,
+                                          ),
+                                          const SizedBox(width: 16),
+
+                                          // Title and Description Column
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  groupMember[index].name ?? "",
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  groupMember[index].lastName ?? "",
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey.shade700,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     );
                                   },
                                   physics: AlwaysScrollableScrollPhysics(),

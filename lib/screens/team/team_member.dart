@@ -32,7 +32,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
   String selecteValie = "Member";
   TeamCubit? _getTeamMember,_removeMember,_approvedCubit , _getUnApprovedCubit;
   List<Member> teamMember = [];
-  int selectedIndex =0 ;
+  List<Member> unApprovedMember = [];
+  int selectedIndex =0 ,unApprovedSelectedIndex = 0;
 
   @override
   void initState() {
@@ -41,6 +42,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     _getUnApprovedCubit = TeamCubit(TeamRepository());
     _approvedCubit = TeamCubit(TeamRepository());
     getTeamMembers(0,"");
+    apiGetUnApproveTeamMember();
+
     // apiGetUnApproveTeamMember();
     // TODO: implement initState
     super.initState();
@@ -87,11 +90,11 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     _removeMember?.apiRemoveTeamMember(data);
   }
 
-  void apiApproveTeamMember(String userId) async {
+  void apiApproveTeamMember(String userId,String status) async {
     Utility.showLoader(context);
     Map<String, dynamic> data = {
       "user_id": userId.toString(),
-      "status": "1",
+      "status": status,
     };
     _approvedCubit?.apiApproveTeamMember(data);
   }
@@ -137,7 +140,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              var dto = state.data as UtilityDto;
+              var dto = state.data as TeamMembersResponse;
+              unApprovedMember.clear();
+              unApprovedMember = dto.data.members ?? [];
               // teamMember.clear();
             }
             setState(() {});
@@ -181,6 +186,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
+              unApprovedMember.removeAt(unApprovedSelectedIndex);
               Utility().showFlushBar(context: context, message: dto.message ?? "");
               getTeamMembers(0,"");
             }
@@ -308,73 +314,86 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                       SizedBox(
                         height: 18,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              "Kelvin@gmai.com Team",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 25,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 0),
-                                    elevation: 0,
-                                    backgroundColor: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Approve',
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 4.0),
-                                child: Container(
-                                  height: 21, // Diameter of the circle
-                                  width: 21,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.red.shade400, width: 2),
-                                  ),
-                                  child: Center(
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      icon: Icon(
-                                        Icons.clear,
-                                        size: 16,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        // Add your logic here
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                     ListView.separated(itemBuilder: (context, index) {
+                       return  Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
+                           Padding(
+                             padding: const EdgeInsets.only(left: 4.0),
+                             child: Text(
+                             unApprovedMember[index].firstName ?? "",
+                               style: TextStyle(
+                                 color: Colors.black87,
+                                 fontSize: 14,
+                                 fontWeight: FontWeight.w600,
+                               ),
+                             ),
+                           ),
+                           Row(
+                             children: [
+                               SizedBox(
+                                 height: 25,
+                                 child: ElevatedButton(
+                                   style: ElevatedButton.styleFrom(
+                                     padding: EdgeInsets.symmetric(
+                                         horizontal: 8, vertical: 0),
+                                     elevation: 0,
+                                     backgroundColor: Colors.blue,
+                                     shape: RoundedRectangleBorder(
+                                       borderRadius: BorderRadius.circular(16),
+                                     ),
+                                   ),
+                                   onPressed: () {
+                                     setState(() {
+                                       unApprovedSelectedIndex = index;
+                                     });
+                                     apiApproveTeamMember(unApprovedMember[index].id,"1");
+                                   },
+                                   child: const Text(
+                                     'Approve',
+                                     style: TextStyle(fontSize: 12),
+                                   ),
+                                 ),
+                               ),
+                               SizedBox(
+                                 width: 8,
+                               ),
+                               Padding(
+                                 padding: const EdgeInsets.only(right: 4.0),
+                                 child: Container(
+                                   height: 21, // Diameter of the circle
+                                   width: 21,
+                                   decoration: BoxDecoration(
+                                     shape: BoxShape.circle,
+                                     border: Border.all(
+                                         color: Colors.red.shade400, width: 2),
+                                   ),
+                                   child: Center(
+                                     child: IconButton(
+                                       padding: EdgeInsets.zero,
+                                       icon: Icon(
+                                         Icons.clear,
+                                         size: 16,
+                                         color: Colors.red,
+                                       ),
+                                       onPressed: () {
+                                         setState(() {
+                                           unApprovedSelectedIndex = index;
+                                         });
+                                         apiApproveTeamMember(unApprovedMember[index].id,"0");
+                                         // Add your logic here
+                                       },
+                                     ),
+                                   ),
+                                 ),
+                               ),
+                             ],
+                           ),
+                         ],
+                       );
+                     }, separatorBuilder: (context, index) {
+                       return SizedBox(height: 12,);
+                     }, itemCount: unApprovedMember.length)
                     ],
                   ),
                 ),

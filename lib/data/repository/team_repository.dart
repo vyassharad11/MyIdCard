@@ -96,7 +96,7 @@ class TeamRepository {
     return _apiClient.apiApproveTeamMember(dto,token2,body);
   }
 
-  Future<HttpResponse<UtilityDto>> apiGetUnApproveTeamMember(body) async {
+  Future<HttpResponse<TeamMembersResponse>> apiGetUnApproveTeamMember(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
