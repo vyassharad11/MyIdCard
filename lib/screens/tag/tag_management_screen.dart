@@ -181,6 +181,8 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                 context: context,
                 message: dto.message ?? "",
               );
+              apiTagList();
+
             }
             setState(() {});
           },
@@ -347,12 +349,38 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                 height: 18,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    "",
-                    style: TextStyle(color: Colors.black, fontSize: 14),
+                  // const Text(
+                  //   "",
+                  //   style: TextStyle(color: Colors.black, fontSize: 14),
+                  // ),
+                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 25,
+                    width: 100,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 0),
+                        elevation: 0,
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      onPressed: () {
+                        if(controller.text.isNotEmpty) {
+                          apiAddTag(controller.text);
+                        }
+                        controller.clear();
+                      },
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
                   ),
                   IconButton(
                       onPressed: () {
@@ -428,31 +456,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 10,),
-              SizedBox(
-                height: 25,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 0),
-                    elevation: 0,
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  onPressed: () {
-                    if(controller.text.isNotEmpty) {
-                      apiAddTag(controller.text);
-                    }
-                    controller.clear();
-                  },
-                  child: const Text(
-                    'Add Tag',
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ),
-              ),
+
               const Spacer(),
               // Contact Information
               ListTile(

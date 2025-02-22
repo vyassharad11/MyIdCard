@@ -803,7 +803,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<HttpResponse<UtilityDto>> apiGetUnApproveTeamMember(
+  Future<HttpResponse<TeamMembersResponse>> apiGetUnApproveTeamMember(
     dynamic url,
     dynamic token,
     dynamic body,
@@ -813,7 +813,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
-    final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
+    final _options = _setStreamType<HttpResponse<TeamMembersResponse>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -830,9 +830,9 @@ class _RestClient implements RestClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UtilityDto _value;
+    late TeamMembersResponse _value;
     try {
-      _value = UtilityDto.fromJson(_result.data!);
+      _value = TeamMembersResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
