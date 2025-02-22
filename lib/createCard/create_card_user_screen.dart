@@ -57,7 +57,8 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          showDeleteDialog(context), // Default action: Go back
+              Navigator.of(context).pop(),
+                          // showDeleteDialog(context), // Default action: Go back
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
@@ -443,6 +444,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
     required File cardImage, // Card image file
   }) async {
     var token = await Storage().getToken();
+    Utility.showLoader(context);
 
     String apiUrl =
         "${Network.baseUrl}card/update/$cardId"; // Replace with your API endpoint
@@ -558,8 +560,10 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
             TextButton(
               onPressed: () {
                 // Perform delete action here
-                Navigator.of(context).pop();
-                deleteCardApiCalling();
+                // Navigator.of(context).pop();
+                Navigator.pop(context);
+
+                // deleteCardApiCalling();
                 // Close the dialog
               },
               child: Text('Delete'),
