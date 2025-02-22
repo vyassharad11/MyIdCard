@@ -186,7 +186,7 @@ abstract class RestClient {
  @POST("{url}team/get-unapproved-team-member")
   @Header(headerValue)
   @Header(headerContentType)
-  Future<HttpResponse<UtilityDto>> apiGetUnApproveTeamMember(@Path("url") url,
+  Future<HttpResponse<TeamMembersResponse>> apiGetUnApproveTeamMember(@Path("url") url,
       @Header(authorization) token,@Body() body,);
 
  @POST("{url}team/delete/{id}")

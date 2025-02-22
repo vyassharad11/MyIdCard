@@ -428,6 +428,31 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                   ],
                 ),
               ),
+              SizedBox(height: 10,),
+              SizedBox(
+                height: 25,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 0),
+                    elevation: 0,
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  onPressed: () {
+                    if(controller.text.isNotEmpty) {
+                      apiAddTag(controller.text);
+                    }
+                    controller.clear();
+                  },
+                  child: const Text(
+                    'Add Tag',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+              ),
               const Spacer(),
               // Contact Information
               ListTile(
@@ -468,16 +493,10 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                   ),
                 ),
               ),
+
             ],
           ),
         );
-      },
-    ).whenComplete(
-      () {
-        if(controller.text.isNotEmpty) {
-          apiAddTag(controller.text);
-        }
-        controller.clear();
       },
     );
   }

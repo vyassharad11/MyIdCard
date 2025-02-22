@@ -392,10 +392,11 @@ bool isLoad = true;
                  if(user?.planId != 3)    const SizedBox(height: 20),
 
                  // Team Information
-                 if(user?.role != Role.individual.name)                Align(
+                 Align(
                    alignment: Alignment.centerLeft,
                    child: Text(
-                     AppLocalizations.of(context).translate('teamadmin'),
+                     user?.role == Role.tadmin.name?  "Team Admin":
+                     user?.role == Role.towner.name ? "Team Owner": user!.role.toString() ,
                      style: const TextStyle(fontWeight: FontWeight.bold),
                    ),
                  ),
@@ -561,15 +562,20 @@ bool isLoad = true;
                          ),
                        ),
                      ),
-                     title: Text(
-                       myGroupList[0].groupName ?? "-",
+                     title: Row(
+                       children: [
+                         Text(
+                           myGroupList[0].groupName ?? "-",
+                         ),
+                         Image.asset("assets/images/edit-05.png",width: 20,height: 20,color: Color(0xFF949494),)
+                       ],
                      ),
                      subtitle: Text(
                        myGroupList[0].groupDescription ?? "-",
                      ),
                    ),
                  ),
-                 if(user?.role != Role.individual.name && myGroupList.isEmpty)      InkWell(
+                 if((user?.role == Role.tadmin.name || user?.role == Role.towner.name) && myGroupList.isEmpty)      InkWell(
                    onTap: (){
                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),));
                    },
@@ -652,7 +658,7 @@ bool isLoad = true;
                    ),
                  ),
                  // Options
-                 if(user?.role != Role.individual.name &&  user?.role != Role.member.name)    GestureDetector(
+                 if(user?.role == Role.tadmin.name ||  user?.role == Role.towner.name)    GestureDetector(
                    onTap: () {
                      Navigator.push(
                          context,
@@ -664,7 +670,7 @@ bool isLoad = true;
                      title: 'Invite Members',
                    ),
                  ),
-                 if(user?.role != Role.individual.name &&  user?.role != Role.member.name && myGroupList.isNotEmpty)            GestureDetector(
+                 if(user?.role != Role.towner.name &&  user?.role != Role.tadmin.name && myGroupList.isNotEmpty)            GestureDetector(
                    onTap: () {
                      Navigator.push(
                          context,
@@ -703,7 +709,7 @@ bool isLoad = true;
                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                    ),
                  ),
-                 if(user?.role != Role.individual.name && user?.role == Role.towner.name)   Container(
+                 if(user?.role == Role.towner.name)   Container(
                    height: 53,
                    padding: EdgeInsets.all(16),
                    margin: EdgeInsets.only(top: 14),

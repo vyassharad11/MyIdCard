@@ -140,8 +140,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
               if (teamResponse != null &&
                   teamResponse!.data.teamLogo != null) {
                 _selectedImage = File(teamResponse!.data.teamLogo);
-                getTeamMembers(0, "");
               }
+              getTeamMembers(0, "");
             }
             setState(() {});
           },

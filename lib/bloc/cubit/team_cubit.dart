@@ -94,10 +94,10 @@ class TeamCubit extends Cubit<ResponseState> {
   Future<void> apiGetUnApproveTeamMember(body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    UtilityDto dto;
+    TeamMembersResponse dto;
     try {
       httpResponse = await teamRepository.apiGetUnApproveTeamMember(body);
-      dto = httpResponse.data as UtilityDto;
+      dto = httpResponse.data as TeamMembersResponse;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));
