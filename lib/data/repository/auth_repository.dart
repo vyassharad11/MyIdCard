@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -81,6 +83,40 @@ class AuthRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.completeProfileApi(dto,body,token2,);
+  }
+  Future<HttpResponse<LoginDto>> completeProfileApiNew(body,) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': token2
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      dto+"user/complete-profile",
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: body,
+    );
+
+    // if (response.statusCode == 200) {
+    print(" responce "+ json.encode(response.data));
+    late LoginDto _value;
+    try {
+      _value = LoginDto.fromJson(response.data!);
+    } on Object catch (e, s) {
+      // errorLogger?.logError(e, s,);
+      print(" error "+ json.encode(response.statusMessage));
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, response);
+    return httpResponse;
+
+
+     // return _apiClient.completeProfileApi(dto,body,token2,);
   }
 
   Future<HttpResponse<UtilityDto>> apiSetPlan(body,) async {

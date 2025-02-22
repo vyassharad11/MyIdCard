@@ -22,6 +22,7 @@ import '../models/card_get_model.dart';
 import '../utils/utility.dart';
 import '../utils/widgets/network.dart';
 import 'create_card_details_other.dart';
+import 'package:dio/dio.dart';
 
 class CreateCardScreenDetails extends StatefulWidget {
   final String cardId;
@@ -473,20 +474,38 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
   }
 
   Future<void> submitData(File selectedImage) async {
-    var file;
-    Utility.showLoader(context);
-    if (!selectedImage.path.contains("storage")) {
-       file = await http.MultipartFile.fromPath(
-        'backgroung_image',
-        selectedImage.path,
-      );
+   //  var file;
+   //  Utility.showLoader(context);
+   //  if (!selectedImage.path.contains("storage")) {
+   //     file = await http.MultipartFile.fromPath(
+   //      'backgroung_image',
+   //      selectedImage.path,
+   //    );
+   //  }
+   //  Map<String, dynamic> data = {
+   //  'step_no' : "4",
+   //  'card_style' : _currentColor.hex,
+   // 'card_name' : cardName.text.toString(),
+   //    'backgroung_image':file.toString()
+   //  };
+    var data=null;
+    if (selectedImage != null &&
+        selectedImage!.path != "" &&
+        !selectedImage!.path.contains("storage")) {
+      data = FormData.fromMap({
+        'backgroung_image':
+        await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
+        'step_no' : "4",
+        'card_style' : _currentColor.hex,
+        'card_name' : cardName.text.toString(),
+      });
+    }else{
+      data = FormData.fromMap({
+        'step_no' : "4",
+        'card_style' : _currentColor.hex,
+        'card_name' : cardName.text.toString(),
+      });
     }
-    Map<String, dynamic> data = {
-    'step_no' : "4",
-    'card_style' : _currentColor.hex,
-   'card_name' : cardName.text.toString(),
-      'backgroung_image':file.toString()
-    };
     _updateCardCubit?.cardUpdateApi(data,widget.cardId,);
   }
 

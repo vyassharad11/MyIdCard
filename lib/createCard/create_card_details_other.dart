@@ -20,7 +20,7 @@ import '../models/utility_dto.dart';
 import '../utils/utility.dart';
 import '../utils/widgets/network.dart';
 import 'package:path/path.dart' as path;
-
+import 'package:dio/dio.dart';
 import 'create_card_final_preview.dart';
 import '../models/card_get_model.dart' as dataModel;
 
@@ -427,7 +427,32 @@ class _CreateCardScreenDetailsOtherState
 
 
   // Future<void> submitData() async {
-  //   _updateCubit?.cardUpdateApi(body, id)
+  //
+  //   Utility.showLoader(context);
+  //   var data=null;
+  //
+  //   for (int i = 0; i < _selectedImage.length; i++) {
+  //     if (!_selectedImage[i].path.contains("storage")) {
+  //       data = FormData.fromMap({
+  //         'documents[$i]':
+  //         await MultipartFile.fromFile(_selectedImage[i].path, filename: "demo.png"),
+  //       });
+  //     }
+  //   }
+  //   for (int i = 0; i < _selectedDElecImage.length; i++) {
+  //     if (!_selectedDElecImage[i].path.contains("storage")) {
+  //       data = FormData.fromMap({
+  //         'delete_document_id[$i]':
+  //         await MultipartFile.fromFile(_selectedDElecImage[i].path, filename: "demo.png"),
+  //       });
+  //     }
+  //   }
+  //
+  //     data = FormData.fromMap({'step_no' : "5",
+  //     });
+  //
+  //
+  //   _updateCubit?.cardUpdateApi(data, widget.cardId);
   //
   // }
 

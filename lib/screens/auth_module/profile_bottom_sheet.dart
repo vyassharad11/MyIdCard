@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,12 +55,31 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
     required String lastName,
     required File cardImage,}) async {
     Utility.showLoader(context);
-    Map<String, dynamic> data = {
-      'first_name': firstName.toString().trim(),
-      'last_name': lastName.toString(),
-      'team_code': teamCode.toString()
-    };
-    _completeProfileCubit?.completeProfileApi(data,);
+    // Map<String, dynamic> data = {
+    //   'first_name': firstName.toString().trim(),
+    //   'last_name': lastName.toString(),
+    //   'team_code': teamCode.toString()
+    // };
+    var data=null;
+
+    if (!cardImage.path.contains("storage")) {
+      data = FormData.fromMap({
+        'avatar':
+        await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
+        ,
+        'first_name': firstName.toString().trim(),
+        'last_name': lastName.toString(),
+        'team_code': teamCode.toString()
+      });
+    }else{
+      data = FormData.fromMap({
+        'first_name': firstName.toString().trim(),
+        'last_name': lastName.toString(),
+        'team_code': teamCode.toString()
+      });
+    }
+
+    _completeProfileCubit?.completeProfileApiNew(data,);
   }
 
 

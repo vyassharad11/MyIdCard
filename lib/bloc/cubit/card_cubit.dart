@@ -33,6 +33,20 @@ class CardCubit extends Cubit<ResponseState> {
       emit(ServerError.mapDioErrorToState(error));
     }
   }
+  Future<void> cardUpdateApiOld(body,id) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await authRepository.cardUpdateApiOld(body,id);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+
 
 
   Future<void> apiGetCompanyType() async {

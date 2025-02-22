@@ -25,6 +25,8 @@ import '../utils/image_cropo.dart';
 import '../utils/utility.dart';
 import '../utils/widgets/network.dart';
 import 'create_card_social.dart';
+import 'package:dio/dio.dart';
+
 
 class CreateCardScreen2 extends StatefulWidget {
   final String cardId;
@@ -157,27 +159,57 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
       return;
     }
 
+    // var   fileData;
+    // if (_selectedImage != null &&
+    //           _selectedImage!.path != "" &&
+    //           !_selectedImage!.path.contains("storage")) {
+    //   fileData = await http.MultipartFile.fromPath(
+    //           'company_logo',
+    //           _selectedImage?.path ?? "",
+    //         );
+    //  }
+    // Map<String, dynamic> data = {
+    //   'step_no' : "2",
+    //   'company_name' : companyName.text.toString().trim(),
+    //   'company_type_id' : selectedId.toString().trim(),
+    //   'job_title' :  jobTitle.text.toString().trim(),
+    //   'company_address' : companyAddress.text.toString().trim(),
+    //   'company_website' : companyWebsite.text.toString().trim(),
+    //   'work_email' : workEmail.text.toString().trim(),
+    //   'phone_no' : workPhone.text.toString().trim(),
+    //   'company_logo':fileData.toString()
+    // };
+
     Utility.showLoader(context);
-    var   fileData;
+    var data=null;
     if (_selectedImage != null &&
-              _selectedImage!.path != "" &&
-              !_selectedImage!.path.contains("storage")) {
-      fileData = await http.MultipartFile.fromPath(
-              'company_logo',
-              _selectedImage?.path ?? "",
-            );
-     }
-    Map<String, dynamic> data = {
-      'step_no' : "2",
-      'company_name' : companyName.text.toString().trim(),
-      'company_type_id' : selectedId.toString().trim(),
-      'job_title' :  jobTitle.text.toString().trim(),
-      'company_address' : companyAddress.text.toString().trim(),
-      'company_website' : companyWebsite.text.toString().trim(),
-      'work_email' : workEmail.text.toString().trim(),
-      'phone_no' : workPhone.text.toString().trim(),
-      'company_logo':fileData.toString()
-    };
+        _selectedImage!.path != "" &&
+        !_selectedImage!.path.contains("storage")) {
+      data = FormData.fromMap({
+        'company_logo':
+        await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
+        'step_no' : "2",
+        'company_name' : companyName.text.toString().trim(),
+        'company_type_id' : selectedId.toString().trim(),
+        'job_title' :  jobTitle.text.toString().trim(),
+        'company_address' : companyAddress.text.toString().trim(),
+        'company_website' : companyWebsite.text.toString().trim(),
+        'work_email' : workEmail.text.toString().trim(),
+        'phone_no' : workPhone.text.toString().trim(),
+      });
+    }else{
+      data = FormData.fromMap({
+        'step_no' : "2",
+        'company_name' : companyName.text.toString().trim(),
+        'company_type_id' : selectedId.toString().trim(),
+        'job_title' :  jobTitle.text.toString().trim(),
+        'company_address' : companyAddress.text.toString().trim(),
+        'company_website' : companyWebsite.text.toString().trim(),
+        'work_email' : workEmail.text.toString().trim(),
+        'phone_no' : workPhone.text.toString().trim(),
+      });
+    }
+
     _updateCardCubit?.cardUpdateApi(data,widget.cardId,);
 
 

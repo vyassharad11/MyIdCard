@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -25,6 +27,41 @@ class CardRepository {
 
 
   Future<HttpResponse<UtilityDto>> cardUpdateApi(body,id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': token2
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      dto+"card/update/"+id.toString(),
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: body,
+    );
+
+    // if (response.statusCode == 200) {
+    print(" responce "+ json.encode(response.data));
+    late UtilityDto _value;
+    try {
+      _value = UtilityDto.fromJson(response.data!);
+    } on Object catch (e, s) {
+      // errorLogger?.logError(e, s,);
+      print(" error "+ json.encode(response.statusMessage));
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, response);
+    return httpResponse;
+
+
+    return _apiClient.cardUpdateApi(dto,body,token2,id);
+  }
+  Future<HttpResponse<UtilityDto>> cardUpdateApiOld(body,id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;

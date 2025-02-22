@@ -563,6 +563,6 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
       body["social_id[$value]"] = valueData["social_id[]"];
       value++;
     }
-    _updateCardCubit?.cardUpdateApi(body,widget.cardId);
+    _updateCardCubit?.cardUpdateApiOld(body,widget.cardId);
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+// import 'package:flutter_share/flutter_share.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +77,15 @@ int selectedIndex = 0;
   Future<void> fetchGroupMember() async {
     _groupMemberCubit?.apiGetAllGroupMembers();
   }
-
+  // Future<void> share() async {
+  // print("object");
+  //   // await FlutterShare.share(
+  //   //     title: 'Example share',
+  //   //     text: 'Example share text',
+  //   //     linkUrl: 'https://flutter.dev/',
+  //   //     chooserTitle: 'Example Chooser Title'
+  //   // );
+  // }
   @override
   Widget build(BuildContext context) {
     return  MultiBlocListener(
@@ -237,7 +247,8 @@ int selectedIndex = 0;
                                   color: Colors.blue, // Button color
                                   child: InkWell(
                                     splashColor: Colors.blue, // Splash color
-                                    onTap: () {},
+                                    onTap: () => {print('InkWell clicked!')},
+
                                     child: const SizedBox(
                                         width: 40,
                                         height: 40,
