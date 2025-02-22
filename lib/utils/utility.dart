@@ -313,17 +313,33 @@ class Utility {
             Align(alignment: Alignment.bottomRight,
                 child: Padding(
                   padding:  const EdgeInsets.only(right: 20,bottom: 10),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context!);
-                      onPositiveClick?.call();
-                    },
-                    child: Text(btnText,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context!);
+                          onPositiveClick?.call();
+                        },
+                        child: Text(btnText,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context!);
+                        },
+                        child: Text("No",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12),
+                        ),
+                      ),
+                    ],
                   ),
                 )
             ),

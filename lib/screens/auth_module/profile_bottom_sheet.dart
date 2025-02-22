@@ -63,8 +63,8 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
     var data=null;
 
     if (!cardImage.path.contains("storage")) {
-      data = FormData.fromMap({
-        'avatar':
+      data =  FormData.fromMap({
+       if(_selectedImage != null ) 'avatar':
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
         ,
         'first_name': firstName.toString().trim(),

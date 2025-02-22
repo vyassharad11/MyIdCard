@@ -82,7 +82,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
   var data=null;
   if (!cardImage.path.contains("storage")) {
     data = FormData.fromMap({
-      'group_logo':
+      if(_selectedImage != null)'group_logo':
       await MultipartFile.fromFile(cardImage.path, filename: "demo1.png"),
       'group_name': title,
       'group_description': description,
@@ -393,6 +393,9 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                                 fit: BoxFit.cover,
                                                 width: 80,
                                                 height: 80,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return Container(height: 80,width: 80,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(50)),);
+                                                },
                                               ),
                                             )
                                           : Center(
@@ -454,10 +457,10 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                 ),
                               ),
                               onPressed: () {
-    submitData(
-    cardImage: _selectedImage ?? File(""),
-    description: description.text,
-    title: title.text);
+                                submitData(
+                                    cardImage: _selectedImage ?? File(""),
+                                    description: description.text,
+                                    title: title.text);
 
                                 // editGroup(cardImage: _selectedImage ?? File(""),);
                               },
@@ -556,17 +559,24 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                 _removeGroupMemberCubit?.apiRemoveGroupMember(data);
                               },
                               onRoleChanged: (value) {
-                                setState(() {
-                                  selecteValie = value;
-                                });
-                                Map<String, dynamic> data = {
-                                  "user_id":groupMember[index].id.toString(),
-                                  "role": value == "member" ? "member": "gadmin"
-                                };
-                                _roleChangeCubit?.apiSwitchGroupMemberRole(data);
-                              },
-                              title: groupMember[index].firstName ?? "",
-                              initialRole: selecteValie,
+                                    setState(() {
+                                      groupMember[index].role =
+                                          value == "Member"
+                                              ? "member"
+                                              : "gadmin";
+                                    });
+                                    Map<String, dynamic> data = {
+                                      "user_id":
+                                          groupMember[index].id.toString(),
+                                      "role": value.toLowerCase() == "member"
+                                          ? "member"
+                                          : "gadmin"
+                                    };
+                                    _roleChangeCubit
+                                        ?.apiSwitchGroupMemberRole(data);
+                                  },
+                                  title: groupMember[index].firstName ?? "",
+                              initialRole: groupMember[index].role.toString() == "member" ? "Member": "Admin",
                             );
                           },
                           physics: NeverScrollableScrollPhysics(),
@@ -786,13 +796,14 @@ class CustomRowWidget extends StatelessWidget {
     required this.title,
     required this.isShow,
     required this.description,
-    this.initialRole = "Member",
+    required this.initialRole,
     required this.onRoleChanged,
     required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
+    print("initialRole::$initialRole");
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -838,7 +849,7 @@ class CustomRowWidget extends StatelessWidget {
           const SizedBox(width: 16),
 
           // Dropdown for Role Selection
-     if(isShow)     DropdownButton<String>(
+         if(isShow)     DropdownButton<String>(
             value: initialRole,
             icon: Icon(
               Icons.keyboard_arrow_down,

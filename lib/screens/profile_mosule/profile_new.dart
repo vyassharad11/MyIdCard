@@ -116,13 +116,13 @@ bool isLoad = true;
                     isError: true);
               } else if (state is ResponseStateSuccess) {
                 var dto = state.data as LoginDto;
-                if (dto.user != null) {
+                // if (dto.user != null) {
                   fetchUserData();
                   Utility().showFlushBar(
                       context: context, message: dto.message ?? "");
-                }else{
-                  Utility.hideLoader(context);
-                }
+                // }else{
+                //   Utility.hideLoader(context);
+                // }
               }setState(() {
 
               });
@@ -395,8 +395,8 @@ bool isLoad = true;
                  Align(
                    alignment: Alignment.centerLeft,
                    child: Text(
-                     user?.role == Role.tadmin.name?  "Team Admin":
-                     user?.role == Role.towner.name ? "Team Owner": user!.role.toString() ,
+                    "(${ user?.role == Role.tadmin.name?  "Team Admin":
+                    user?.role == Role.towner.name ? "Team Owner": user!.role.toString()})" ,
                      style: const TextStyle(fontWeight: FontWeight.bold),
                    ),
                  ),
@@ -409,10 +409,10 @@ bool isLoad = true;
                            CupertinoPageRoute(
                                builder: (builder) => SubscriptionScreen()))
                            .then((onValue) {
-                         if(user != null && user?.role != Role.individual.name){
+                         // if(user != null && user?.role != Role.individual.name){
                            getTeamMembers();
                            fetchTeamData();
-                         }
+                         // }
                        });
                      }
                    },
@@ -439,6 +439,9 @@ bool isLoad = true;
                                  child: Image.network(
                                    "${Network.imgUrl}${teamResponse!.data.teamLogo ?? ""}",
                                    fit: BoxFit.cover,
+                                   errorBuilder: (context, error, stackTrace) {
+                                     return Container(height: 50,width: 50,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(50)),);
+                                   },
                                  ),
                                ),
                              )
@@ -472,7 +475,7 @@ bool isLoad = true;
                                        "${Network.imgUrl}${teamMember[0].avatar ??""}",
                                        fit: BoxFit.cover,
                                        errorBuilder: (context, error, stackTrace) {
-                                         return Container(color: Colors.grey);
+                                         return Container(height: 16,width: 16,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(16)),);
                                        },
                                      ),
                                    ),
@@ -487,11 +490,14 @@ bool isLoad = true;
                                      child: Image.network(
                                        "${Network.imgUrl}${teamMember[1].avatar ??""}",
                                        fit: BoxFit.cover,
+                                       errorBuilder: (context, error, stackTrace) {
+                                         return Container(height: 16,width: 16,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(16)),);
+                                       },
                                      ),
                                    ),
                                    if(teamMember.isNotEmpty && teamMember.length > 1)  SizedBox(width: 5,),
                                    if(teamMember.isNotEmpty && teamMember.length > 1)  Text(
-                                     teamMember[1].name ?? "",
+                                     teamMember[1].firstName ?? "",
                                    ),
                                  ],)
                                ],
@@ -530,10 +536,7 @@ bool isLoad = true;
                              fetchGroupData();
                            },);
                          }else {
-                           Navigator.push(context, MaterialPageRoute(
-                             builder: (context) => EditGroupPage(groupId:myGroupList[0].id?.toString() ,role: user?.role ?? "",),)).then((value) {
-                             fetchGroupData();
-                           },);
+
                          }
                        }
                      },
@@ -548,6 +551,9 @@ bool isLoad = true;
                          child: Image.network(
                            "${Network.imgUrl}${myGroupList[0].groupLogo ?? ""}",
                            fit: BoxFit.cover,
+                           errorBuilder: (context, error, stackTrace) {
+                             return Container(height: 50,width: 50,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(50)),);
+                           },
                          ),
                        ),
                      )
@@ -563,11 +569,20 @@ bool isLoad = true;
                        ),
                      ),
                      title: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: [
                          Text(
                            myGroupList[0].groupName ?? "-",
                          ),
-                         Image.asset("assets/images/edit-05.png",width: 20,height: 20,color: Color(0xFF949494),)
+    if( user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name || (myGroupList.isNotEmpty && myGroupList[0].adminId == user?.id)))
+                       InkWell(
+                             onTap: (){
+                               Navigator.push(context, MaterialPageRoute(
+                                 builder: (context) => EditGroupPage(groupId:myGroupList[0].id?.toString() ,role: user?.role ?? "",),)).then((value) {
+                                 fetchGroupData();
+                               },);
+                             },
+                             child: Image.asset("assets/images/edit-05.png",width: 20,height: 20,color: Color(0xFF949494),))
                        ],
                      ),
                      subtitle: Text(
@@ -577,7 +592,9 @@ bool isLoad = true;
                  ),
                  if((user?.role == Role.tadmin.name || user?.role == Role.towner.name) && myGroupList.isEmpty)      InkWell(
                    onTap: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),));
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),)).then((value) {
+                       fetchGroupData();
+                     },);
                    },
                    child: Container(height: 55,
                      width: MediaQuery.of(context).size.width,
@@ -663,14 +680,14 @@ bool isLoad = true;
                      Navigator.push(
                          context,
                          CupertinoPageRoute(
-                             builder: (builder) => TeamMemberPage()));
+                             builder: (builder) => TeamMemberPage(teamCode: teamResponse?.data?.teamCode.toString(),)));
                    },
                    child: OptionTile(
                      icon: Icons.group_add,
                      title: 'Invite Members',
                    ),
                  ),
-                 if(user?.role != Role.towner.name &&  user?.role != Role.tadmin.name && myGroupList.isNotEmpty)            GestureDetector(
+                 if((user?.role == Role.tadmin.name || user?.role == Role.towner.name) && myGroupList.isNotEmpty)            GestureDetector(
                    onTap: () {
                      Navigator.push(
                          context,
@@ -709,40 +726,54 @@ bool isLoad = true;
                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                    ),
                  ),
-                 if(user?.role == Role.towner.name)   Container(
-                   height: 53,
-                   padding: EdgeInsets.all(16),
-                   margin: EdgeInsets.only(top: 14),
-                   decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(16)),
-                   child: Row(
-                     children: [
-                       Image.asset(
-                         "assets/images/delete_icon.png",
-                         width: 20,
-                         height: 20,
-                       ),
-                       SizedBox(width: 14,),
-                       Text("Delete Team",style: TextStyle(color: Colors.redAccent)),
+                 if(user?.role == Role.towner.name)   GestureDetector(
+                   onTap: (){
+                     Utility.showAlertDialog(context: context, msg: "Do you want to delete your team",btnText: "Yes",onPositiveClick: (){
+                       apiDeleteTeam(teamResponse?.data.id.toString() ?? "");
+                     });
+                   },
+                   child: Container(
+                     height: 53,
+                     padding: EdgeInsets.all(16),
+                     margin: EdgeInsets.only(top: 14),
+                     decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(16)),
+                     child: Row(
+                       children: [
+                         Image.asset(
+                           "assets/images/delete_icon.png",
+                           width: 20,
+                           height: 20,
+                         ),
+                         SizedBox(width: 14,),
+                         Text("Delete Team",style: TextStyle(color: Colors.redAccent)),
 
-                     ],
+                       ],
+                     ),
                    ),
                  ),
-                 if(user?.role != Role.individual.name && user?.role == Role.towner.name)   Container(
-                   height: 53,
-                   padding: EdgeInsets.all(16),
-                   margin: EdgeInsets.only(top: 14),
-                   decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(16)),
-                   child: Row(
-                     children: [
-                       Image.asset(
-                         "assets/images/leave_icon.png",
-                         width: 20,
-                         height: 20,
-                       ),
-                       SizedBox(width: 14,),
-                       Text("Leave Team",style: TextStyle(color: Colors.redAccent)),
+                 if(user?.role != Role.individual.name && user?.role != Role.towner.name)   GestureDetector(
+                   onTap: (){
+                     Utility.showAlertDialog(context: context, msg: "Do you want to leave this team",btnText: "Yes",onPositiveClick: (){
+                       apiDeleteTeam(teamResponse?.data.id.toString() ?? "");
+                     });
+                   },
+                   child: Container(
+                     height: 53,
+                     padding: EdgeInsets.all(16),
+                     margin: EdgeInsets.only(top: 14),
+                     decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(16)),
+                     child: Row(
+                       children: [
+                         Image.asset(
+                           "assets/images/leave_icon.png",
+                           width: 20,
+                           height: 20,
+                         ),
+                         SizedBox(width: 14,),
+                         Text("Leave Team",style: TextStyle(color: Colors.redAccent)),
 
-                     ],
+                       ],
+                     ),
                    ),
                  )],)
               ],

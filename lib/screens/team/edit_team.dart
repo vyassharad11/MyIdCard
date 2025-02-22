@@ -14,6 +14,7 @@ import 'package:my_di_card/bloc/cubit/group_cubit.dart';
 import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/data/repository/team_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
+import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -38,8 +39,9 @@ class _EditTeamPageState extends State<EditTeamPage> {
   final title = TextEditingController();
   final description = TextEditingController();
   List<Member> teamMember = [];
-  TeamCubit? updateTeamCubit,getTeamCubit,_getTeamMember;
+  TeamCubit? updateTeamCubit,getTeamCubit,_getTeamMember,_removeMember;
   GroupCubit? _roleChangeCubit;
+  int selectedMemberIndex = 0;
 
   @override
   void dispose() {
@@ -50,9 +52,11 @@ class _EditTeamPageState extends State<EditTeamPage> {
     _roleChangeCubit?.close();
     getTeamCubit?.close();
     _getTeamMember?.close();
+    _removeMember?.close();
     updateTeamCubit = null;
     _roleChangeCubit = null;
     _getTeamMember = null;
+    _removeMember = null;
     getTeamCubit = null;
     super.dispose();
   }
@@ -75,11 +79,20 @@ class _EditTeamPageState extends State<EditTeamPage> {
     _getTeamMember?.apiGetTeamMember(data);
   }
 
+  void apiRemoveTeamMember(String userId) async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "user_id": userId.toString(),
+    };
+    _removeMember?.apiRemoveTeamMember(data);
+  }
+
   @override
   void initState() {
     updateTeamCubit = TeamCubit(TeamRepository());
     getTeamCubit = TeamCubit(TeamRepository());
     _getTeamMember = TeamCubit(TeamRepository());
+    _removeMember = TeamCubit(TeamRepository());
     _roleChangeCubit = GroupCubit(GroupRepository());
     fetchTeamData();
     super.initState();
@@ -97,6 +110,26 @@ class _EditTeamPageState extends State<EditTeamPage> {
           } else if (state is ResponseStateError) {
             Utility.hideLoader(context);
           } else if (state is ResponseStateSuccess) {
+            var dto =  state as UtilityDto;
+            Utility().showFlushBar(context: context, message: dto.message ?? "");
+          }
+          setState(() {});
+        },
+      ),
+      BlocListener<TeamCubit, ResponseState>(
+        bloc: _removeMember,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateNoInternet) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateSuccess) {
+            var dto = state as UtilityDto;
+            Utility().showFlushBar(context: context, message: dto.result?.message ?? "");
+            teamMember.removeAt(selectedMemberIndex);
           }
           setState(() {});
         },
@@ -356,6 +389,11 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                                           .width /
                                                           1.1,
                                                       height: 90,
+                                                      errorBuilder: (context, error, stackTrace) {
+                                                        return Container(height: 90,width:  MediaQuery.sizeOf(context)
+                                                            .width /
+                                                            1.1,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(20)),);
+                                                      },
                                                     ),
                                                   )
                                                 : Center(
@@ -486,19 +524,35 @@ class _EditTeamPageState extends State<EditTeamPage> {
                               return CustomRowWidget(
                                 description: teamMember[index].lastName,
                                 imageUrl: teamMember[index].avatar,
-                                onDelete: () {},
+                                onDelete: () {
+                                  selectedMemberIndex = index;
+                                  setState(() {
+
+                                  });
+                                  Utility.showAlertDialog(context: context, msg: "Do you want to remove this member ",btnText: "Yes",onPositiveClick: (){
+                                    apiRemoveTeamMember(teamMember[0].id.toString() ?? "");
+                                  });
+                                },
                                 onRoleChanged: (value) {
                                   setState(() {
-                                    selecteValie = value;
+                                    teamMember[index].role =
+                                        value == "Member" ? "member" : "tadmin";
                                   });
                                   Map<String, dynamic> data = {
-                                    "user_id":teamMember[index].id.toString(),
-                                    "role": value == "member" ? "member": "tadmin"
+                                    "user_id": teamMember[index].id.toString(),
+                                    "role": value.toLowerCase() == "member"
+                                        ? "member"
+                                        : "tadmin"
                                   };
-                                  _roleChangeCubit?.apiSwitchGroupMemberRole(data);
+                                  _roleChangeCubit
+                                      ?.apiSwitchGroupMemberRole(data);
                                 },
+                                initialRole:
+                                    teamMember[index].role.toString() ==
+                                            "member"
+                                        ? "Member"
+                                        : "Admin",
                                 title: teamMember[index].firstName,
-                                initialRole: selecteValie,
                               );
                             },
                             physics: NeverScrollableScrollPhysics(),
@@ -524,7 +578,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
      var data=null;
      if (!cardImage.path.contains("storage")) {
      data = FormData.fromMap({
-      'team_logo':
+       if(_selectedImage != null)  'team_logo':
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
       ,
       'team_name': title,

@@ -95,6 +95,7 @@ class Member {
   dynamic name;
   dynamic firstName;
   dynamic lastName;
+  dynamic role;
   dynamic email;
   dynamic emailVerifiedAt;
   dynamic mode;
@@ -114,6 +115,7 @@ class Member {
     this.name,
     required this.firstName,
     required this.lastName,
+    required this.role,
     required this.email,
     this.emailVerifiedAt,
     required this.mode,
@@ -134,6 +136,7 @@ class Member {
       id: json['id'],
       name: json['name'],
       firstName: json['first_name'],
+      role: json['role'],
       lastName: json['last_name'],
       email: json['email'],
       emailVerifiedAt: json['email_verified_at'],
@@ -156,6 +159,7 @@ class Member {
       'id': id,
       'name': name,
       'first_name': firstName,
+      'role': role,
       'last_name': lastName,
       'email': email,
       'email_verified_at': emailVerifiedAt,

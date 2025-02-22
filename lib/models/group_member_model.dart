@@ -33,6 +33,7 @@ class MemberDatum {
   dynamic name;
   dynamic firstName;
   dynamic lastName;
+  dynamic role;
   String? email;
   DateTime? emailVerifiedAt;
   String? mode;
@@ -52,6 +53,7 @@ class MemberDatum {
     this.name,
     this.firstName,
     this.lastName,
+    this.role,
     this.email,
     this.emailVerifiedAt,
     this.mode,
@@ -72,6 +74,7 @@ class MemberDatum {
     name: json["name"],
     firstName: json["first_name"],
     lastName: json["last_name"],
+    role: json["role"],
     email: json["email"],
     emailVerifiedAt: json["email_verified_at"] == null ? null : DateTime.parse(json["email_verified_at"]),
     mode: json["mode"],

@@ -22,7 +22,8 @@ import '../../models/team_member.dart';
 import '../../utils/utility.dart';
 
 class TeamMemberPage extends StatefulWidget {
-  const TeamMemberPage({super.key});
+  String? teamCode;
+   TeamMemberPage({super.key,this.teamCode});
 
   @override
   State<TeamMemberPage> createState() => _TeamMemberPageState();
@@ -278,8 +279,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                                 final box = context.findRenderObject() as RenderBox?;
 
                                 await Share.share(
-                                  "gwhggr",
-                                  subject: "Team Code",
+                                  widget.teamCode ?? "",
+                                  subject: "Join My Team!",
                                   sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                 );
                                 // FlutterShare.share(
@@ -320,9 +321,12 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                             TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                       SizedBox(
-                        height: 18,
+                        height: 10,
                       ),
-                     ListView.separated(itemBuilder: (context, index) {
+                     ListView.separated(
+                         shrinkWrap: true,
+                         padding: EdgeInsets.zero,
+                         itemBuilder: (context, index) {
                        return  Row(
                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                          children: [
@@ -355,7 +359,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                                      setState(() {
                                        unApprovedSelectedIndex = index;
                                      });
-                                     apiApproveTeamMember(unApprovedMember[index].id,"1");
+                                     apiApproveTeamMember(unApprovedMember[index].id.toString(),"1");
                                    },
                                    child: const Text(
                                      'Approve',
@@ -465,7 +469,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                                   selecteValie = value;
                                 });
                               },
-                              title: teamMember[index].name ?? "",
+                              title: teamMember[index].firstName ?? "",
                               initialRole: selecteValie,
                             );
                           },
