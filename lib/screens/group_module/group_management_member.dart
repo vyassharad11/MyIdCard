@@ -478,14 +478,14 @@ int selectedIndex = 0;
                                     return CustomRowWidget(
                                       description: groupAllMember[index].lastName,
                                       imageUrl: "asd",
-                                      onDelete: () {},
-                                      onRoleChanged: (value) {
-                                        setState(() {
-                                          selecteValie = value;
-                                        });
-                                      },
+                                      // onDelete: () {},
+                                      // onRoleChanged: (value) {
+                                      //   setState(() {
+                                      //     selecteValie = value;
+                                      //   });
+                                      // },
                                       title: groupAllMember[index].firstName,
-                                      initialRole: selecteValie,
+                                      // initialRole: selecteValie,
                                     );
                                   },
                                   physics: AlwaysScrollableScrollPhysics(),
@@ -513,17 +513,17 @@ class CustomRowWidget extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String description;
-  final String initialRole;
-  final Function(String) onRoleChanged;
-  final VoidCallback onDelete;
+  // final String initialRole;
+  // final Function(String) onRoleChanged;
+  // final VoidCallback onDelete;
 
   const CustomRowWidget({super.key, 
     required this.imageUrl,
     required this.title,
     required this.description,
-    this.initialRole = "Member",
-    required this.onRoleChanged,
-    required this.onDelete,
+    // this.initialRole = "Member",
+    // required this.onRoleChanged,
+    // required this.onDelete,
   });
 
   @override
@@ -573,40 +573,40 @@ class CustomRowWidget extends StatelessWidget {
           const SizedBox(width: 16),
 
           // Dropdown for Role Selection
-          DropdownButton<String>(
-            value: initialRole,
-            icon: Icon(
-              Icons.keyboard_arrow_down,
-              color: Colors.blue,
-              size: 16,
-            ),
-            underline: SizedBox(),
-            items: ["Admin", "Member"].map((String role) {
-              return DropdownMenuItem<String>(
-                value: role,
-                child: Text(
-                  role,
-                  style: TextStyle(color: Colors.blue, fontSize: 12),
-                ),
-              );
-            }).toList(),
-            onChanged: (String? newRole) {
-              if (newRole != null) onRoleChanged(newRole);
-            },
-          ),
-
-          // const SizedBox(width: 16),
-
-          // Delete Icon
-          IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: onDelete,
-            iconSize: 16,
-            icon: Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-          ),
+          // DropdownButton<String>(
+          //   value: initialRole,
+          //   icon: Icon(
+          //     Icons.keyboard_arrow_down,
+          //     color: Colors.blue,
+          //     size: 16,
+          //   ),
+          //   underline: SizedBox(),
+          //   items: ["Admin", "Member"].map((String role) {
+          //     return DropdownMenuItem<String>(
+          //       value: role,
+          //       child: Text(
+          //         role,
+          //         style: TextStyle(color: Colors.blue, fontSize: 12),
+          //       ),
+          //     );
+          //   }).toList(),
+          //   onChanged: (String? newRole) {
+          //     if (newRole != null) onRoleChanged(newRole);
+          //   },
+          // ),
+          //
+          // // const SizedBox(width: 16),
+          //
+          // // Delete Icon
+          // IconButton(
+          //   padding: EdgeInsets.zero,
+          //   onPressed: onDelete,
+          //   iconSize: 16,
+          //   icon: Icon(
+          //     Icons.delete,
+          //     color: Colors.red,
+          //   ),
+          // ),
         ],
       ),
     );

@@ -362,7 +362,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
     var data=null;
     if (!cardImage.path.contains("storage")) {
       data = FormData.fromMap({
-        'group_logo':
+       if(_selectedImage != null) 'group_logo':
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png"),
         'group_name': title,
         'group_description': description,
