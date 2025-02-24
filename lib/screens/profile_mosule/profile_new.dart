@@ -465,7 +465,7 @@ bool isLoad = true;
                    ),
                  ),
                  if(user?.role != Role.individual.name)               const SizedBox(height: 10),
-                 teamResponse != null &&  teamResponse!.data.teamName != null &&  teamResponse!.data.teamName.toString().isNotEmpty ?          InkWell(
+                 teamResponse != null &&  teamResponse!.data.teamDescription != null &&  teamResponse!.data.teamDescription.toString().isNotEmpty ?          InkWell(
                    onTap: (){
                      if (teamResponse == null) {
                        Navigator.push(
@@ -625,7 +625,9 @@ bool isLoad = true;
                              ),
                            ),
                            onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => EditTeamPage(),));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => EditTeamPage(isCreate: true,),)).then((value) {
+                               fetchTeamData();
+                             },);
                            },
                            child: const Text(
                              'Create Team',
