@@ -29,6 +29,7 @@ import '../../utils/utility.dart';
 import '../../utils/widgets/button_primary.dart';
 import '../../utils/widgets/network.dart';
 import '../home_module/first_card.dart';
+import '../subscription_module/subscription_screen.dart';
 
 class ProfileBottomSheet extends StatefulWidget {
   const ProfileBottomSheet({super.key});
@@ -64,7 +65,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
 
     if (!cardImage.path.contains("storage")) {
       data =  FormData.fromMap({
-       if(_selectedImage != null ) 'avatar':
+       if(_selectedImage != null && cardImage.path.isNotEmpty ) 'avatar':
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
         ,
         'first_name': firstName.toString().trim(),
@@ -131,7 +132,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
             Storage().saveUserToPreferences(dto.user!);
           }
           Navigator.push(context,
-              CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+              CupertinoPageRoute(builder: (builder) => SubscriptionScreen(isFromCreateProfile: true,)));
            Utility().showFlushBar(context: context, message: dto.message ?? "");
         }
         setState(() {});

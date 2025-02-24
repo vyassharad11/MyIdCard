@@ -186,7 +186,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         _selectedImage!.path != "" &&
         !_selectedImage!.path.contains("storage")) {
       data = FormData.fromMap({
-        'company_logo':
+       if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'company_logo':
         await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
         'step_no' : "2",
         'company_name' : companyName.text.toString().trim(),

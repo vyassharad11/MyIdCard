@@ -28,7 +28,8 @@ import '../../utils/image_cropo.dart';
 import '../../utils/utility.dart';
 
 class EditTeamPage extends StatefulWidget {
-  const EditTeamPage({super.key});
+  final bool? isCreate;
+  const EditTeamPage({super.key,this.isCreate = false});
 
   @override
   State<EditTeamPage> createState() => _EditTeamPageState();
@@ -240,7 +241,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                   ),
                   Center(
                     child: Text(
-                      "Edit Team",
+                      "${widget.isCreate == true?"Create":"Edit"} Team",
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w500),
@@ -498,6 +499,9 @@ class _EditTeamPageState extends State<EditTeamPage> {
 
                         // Search Box
                         TextField(
+                          onChanged: (value){
+                            getTeamMembers(0, value);
+                          },
                           decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 14, vertical: 1),
@@ -578,7 +582,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
      var data=null;
      if (!cardImage.path.contains("storage")) {
      data = FormData.fromMap({
-       if(_selectedImage != null)  'team_logo':
+       if(_selectedImage != null && cardImage.path.isNotEmpty)  'team_logo':
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
       ,
       'team_name': title,

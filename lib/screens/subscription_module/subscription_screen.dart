@@ -18,14 +18,15 @@ import '../home_module/first_card.dart';
 import 'package:http/http.dart' as http;
 
 class SubscriptionScreen extends StatefulWidget {
-  const SubscriptionScreen({super.key});
+final  bool? isFromCreateProfile;
+  const SubscriptionScreen({super.key,this.isFromCreateProfile = false});
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  int planId = 0;
+  int planId = 1;
   AuthCubit? _setPlanCubit;
 
   Future<void> submitPlanId() async {
@@ -69,9 +70,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         } else if (state is ResponseStateSuccess) {
           Utility.hideLoader(context);
           var dto = state.data as UtilityDto;
-          // Navigator.push(context,
-          //     CupertinoPageRoute(builder: (builder) => CreateTeamPage()));
-          Navigator.pop(context);
+          if(widget.isFromCreateProfile == true) {
+            Navigator.push(context,
+              CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+          }else{
+            Navigator.pop(context);
+          }
           Utility().showFlushBar(context: context, message: dto.message ?? "");
         }
         setState(() {});
@@ -240,8 +244,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           TextButton(
             onPressed: () {
               // Skip for now logic
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+              submitPlanId();
             },
             child: const Text(
               'Skip for now',

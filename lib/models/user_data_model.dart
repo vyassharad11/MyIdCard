@@ -19,6 +19,7 @@ class User {
   dynamic providerId;
   dynamic avatar;
   dynamic role;
+  dynamic planName;
   List<Cards>? cards;
 
   User(
@@ -26,6 +27,7 @@ class User {
       this.name,
       this.firstName,
       this.lastName,
+      this.planName,
       this.email,
       this.emailVerifiedAt,
       this.mode,
@@ -48,6 +50,7 @@ class User {
     name = json['name'];
     firstName = json['first_name'];
     lastName = json['last_name'];
+    planName = json['plan_name'];
     email = json['email'];
     emailVerifiedAt = json['email_verified_at'];
     mode = json['mode'];
@@ -76,6 +79,7 @@ class User {
     data['name'] = name;
     data['first_name'] = firstName;
     data['last_name'] = lastName;
+    data['plan_name'] = planName;
     data['email'] = email;
     data['email_verified_at'] = emailVerifiedAt;
     data['mode'] = mode;
