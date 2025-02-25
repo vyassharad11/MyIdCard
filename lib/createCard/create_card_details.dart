@@ -493,7 +493,7 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
         selectedImage!.path != "" &&
         !selectedImage!.path.contains("storage")) {
       data = FormData.fromMap({
-        'backgroung_image':
+       if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'backgroung_image':
         await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
         'step_no' : "4",
         'card_style' : _currentColor.hex,

@@ -359,7 +359,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     var data=null;
     if (!cardImage.path.contains("storage")) {
       data = FormData.fromMap({
-        'team_logo':
+      if(_selectedImage != null && cardImage.path.isNotEmpty)  'team_logo':
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
         ,
         'team_name': title,

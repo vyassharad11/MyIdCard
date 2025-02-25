@@ -248,7 +248,9 @@ int selectedIndex = 0;
                                   child: InkWell(
                                     splashColor: Colors.blue, // Splash color
                                     onTap: () => {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),))
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),)).then((value) {
+                                        fetchGroupData();
+                                      },)
                                     },
 
                                     child: const SizedBox(

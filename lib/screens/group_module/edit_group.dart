@@ -21,6 +21,7 @@ import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/team_member.dart';
 import '../../models/utility_dto.dart';
+import '../../utils/image_cropo.dart';
 import '../../utils/utility.dart';
 import '../profile_mosule/profile_new.dart';
 import 'add_group_member_bottom_sheet.dart';
@@ -43,6 +44,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
   List<MemberDatum> groupMember = [];
   final title = TextEditingController();
   final description = TextEditingController();
+  final textController = TextEditingController();
 
 @override
   void initState() {
@@ -72,6 +74,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
     required String description,
     required File cardImage, // Card image file
   }) async {
+  print("cardIm>>>>>>>>>>age${cardImage.path}");
   Utility.showLoader(context);
     // Map<String, dynamic> data = {
     //   'group_name': title.text,
@@ -82,7 +85,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
   var data=null;
   if (!cardImage.path.contains("storage")) {
     data = FormData.fromMap({
-      if(_selectedImage != null)'group_logo':
+      if(_selectedImage != null && cardImage.path.isNotEmpty)
+        'group_logo':
       await MultipartFile.fromFile(cardImage.path, filename: "demo1.png"),
       'group_name': title,
       'group_description': description,
@@ -520,6 +524,10 @@ class _EditGroupPageState extends State<EditGroupPage> {
 
                       // Search Box
                       TextField(
+                        controller: textController,
+                        onChanged: (value){
+                          fetchGroupMember();
+                        },
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 14, vertical: 1),
@@ -665,8 +673,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
       final permissionStatus = source == ImageSource.camera
           ? await Permission.camera.request()
           : androidInfo.version.sdkInt <= 32
-              ? await Permission.storage.request()
-              : await Permission.photos.request();
+          ? await Permission.storage.request()
+          : await Permission.photos.request();
 
       if (permissionStatus.isGranted) {
         try {
@@ -675,8 +683,9 @@ class _EditGroupPageState extends State<EditGroupPage> {
             preferredCameraDevice: CameraDevice.front,
           );
           if (pickedFile != null) {
+            final value = await imageCropperFunc(pickedFile.path);
             setState(() {
-              _selectedImage = File(pickedFile.path);
+              _selectedImage = File(value.path);
             });
             debugPrint("Image Path: ${pickedFile.path}");
           }
@@ -699,8 +708,9 @@ class _EditGroupPageState extends State<EditGroupPage> {
             preferredCameraDevice: CameraDevice.front,
           );
           if (pickedFile != null) {
+            final value = await imageCropperFunc(pickedFile.path);
             setState(() {
-              _selectedImage = File(pickedFile.path);
+              _selectedImage = File(value.path);
             });
             debugPrint("Image Path: ${pickedFile.path}");
           }
@@ -780,6 +790,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
       },
     );
   }
+
 }
 
 class CustomRowWidget extends StatelessWidget {

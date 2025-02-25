@@ -44,7 +44,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  TeamCubit? getTeamCubit,_getTeamMember,_deleteTeamCubit;
+  TeamCubit? getTeamCubit,_getTeamMember,_deleteTeamCubit,_removeMember;
   GroupCubit? getGroupCubit;
   AuthCubit?_authCubit,_completeProfileCubit;
   List<Member> teamMember = [];
@@ -66,6 +66,15 @@ bool isLoad = true;
     getGroupCubit?.apiGetMyGroups();
   }
 
+
+  void apiRemoveTeamMember(String userId) async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "user_id": userId.toString(),
+    };
+    _removeMember?.apiRemoveTeamMember(data);
+  }
+
   void getTeamMembers() async {
     Map<String, dynamic> data = {
       "key_word": "",
@@ -84,6 +93,7 @@ bool isLoad = true;
     getTeamCubit =TeamCubit(TeamRepository());
     _getTeamMember =TeamCubit(TeamRepository());
     _deleteTeamCubit =TeamCubit(TeamRepository());
+    _removeMember =TeamCubit(TeamRepository());
     getGroupCubit =GroupCubit(GroupRepository());
     _authCubit =AuthCubit(AuthRepository());
     _completeProfileCubit =AuthCubit(AuthRepository());
@@ -129,6 +139,34 @@ bool isLoad = true;
             }),
         BlocListener<TeamCubit, ResponseState>(
             bloc: _deleteTeamCubit,
+            listener: (context, state) {
+              if (state is ResponseStateLoading) {
+              } else if (state is ResponseStateEmpty) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context, message: state.message, isError: true);
+              } else if (state is ResponseStateNoInternet) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context, message: state.message, isError: true);
+              } else if (state is ResponseStateError) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context,
+                    message: state.errorMessage,
+                    isError: true);
+              } else if (state is ResponseStateSuccess) {
+                var dto = state.data as UtilityDto;
+                  fetchUserData();
+                  fetchTeamData();
+                  Utility().showFlushBar(
+                      context: context, message: dto.message ?? "");
+              }setState(() {
+
+              });
+            }),
+        BlocListener<TeamCubit, ResponseState>(
+            bloc: _removeMember,
             listener: (context, state) {
               if (state is ResponseStateLoading) {
               } else if (state is ResponseStateEmpty) {
@@ -335,20 +373,20 @@ bool isLoad = true;
 
                  const SizedBox(height: 10),
                  Text(
-                   user?.firstName ?? "",
+                   "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
                    style:
                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                  ),
-                 Text(
-                   user?.lastName ?? "",
-                   style: const TextStyle(color: Colors.grey),
-                 ),
+                 // Text(
+                 //   user?.lastName ?? "",
+                 //   style: const TextStyle(color: Colors.grey),
+                 // ),
                  const SizedBox(height: 20),
 
                  // Subscription Info
-                 if(user?.planId != 3)   Container(
+                 if(user?.planId != 3 && (user?.role == Role.individual.name || user?.role == Role.towner.name))   Container(
                    padding:
-                   const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+                   const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                    decoration: BoxDecoration(
                      border: Border.all(color: Colors.blue, width: 1),
                      color:
@@ -371,17 +409,44 @@ bool isLoad = true;
                              }
                            });
                          },
-                         child: Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                            children: [
-                             Text(
-                               AppLocalizations.of(context)
-                                   .translate('Subscribed'),
-                               style: const TextStyle(fontWeight: FontWeight.bold),
+                             Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                     Text(
+                                       user?.planName ?? "",
+                                       style: const TextStyle(fontWeight: FontWeight.bold),
+                                     ),
+
+                                 Text(
+                                   AppLocalizations.of(context).translate('manage'),
+                                   style: const TextStyle(color: Colors.grey),
+                                 ),
+                               ],
                              ),
-                             Text(
-                               AppLocalizations.of(context).translate('manage'),
-                               style: const TextStyle(color: Colors.grey),
+                             SizedBox(
+                               height: 25,
+                               width: 94,
+                               child: ElevatedButton(
+                                 style: ElevatedButton.styleFrom(
+                                   padding: EdgeInsets.symmetric(
+                                       horizontal: 8, vertical: 0),
+                                   elevation: 0,
+                                   backgroundColor: Colors.blue,
+                                   shape: RoundedRectangleBorder(
+                                     borderRadius: BorderRadius.circular(16),
+                                   ),
+                                 ),
+                                 onPressed: () {
+                                   Navigator.push(context, MaterialPageRoute(builder: (context) => EditTeamPage(),));
+                                 },
+                                 child: const Text(
+                                   'Upgrade',
+                                   style: TextStyle(fontSize: 12),
+                                 ),
+                               ),
                              ),
                            ],
                          ),
@@ -390,7 +455,6 @@ bool isLoad = true;
                    ),
                  ),
                  if(user?.planId != 3)    const SizedBox(height: 20),
-
                  // Team Information
                  Align(
                    alignment: Alignment.centerLeft,
@@ -401,7 +465,7 @@ bool isLoad = true;
                    ),
                  ),
                  if(user?.role != Role.individual.name)               const SizedBox(height: 10),
-                 if(user?.role != Role.individual.name)             InkWell(
+                 teamResponse != null &&  teamResponse!.data.teamDescription != null &&  teamResponse!.data.teamDescription.toString().isNotEmpty ?          InkWell(
                    onTap: (){
                      if (teamResponse == null) {
                        Navigator.push(
@@ -521,7 +585,60 @@ bool isLoad = true;
                        ],
                      ),
                    ),
-                 ),
+                 ):
+                 isLoad == false && teamResponse != null  && user?.planId == 3? Container(
+                   padding: EdgeInsets.all(16),
+                   margin: EdgeInsets.only(top: 14),
+                   decoration: BoxDecoration(
+                       color: Colors.white,
+                       borderRadius:
+                       BorderRadius.circular(16)),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.center,
+                     children: [
+                       Image.asset(
+                         "assets/images/create_team_icon.png",
+                         width: 40,
+                         height: 40,
+                       ),
+                       SizedBox(
+                         width: 14,
+                       ),
+                       Text("No Team Added",
+                           style: TextStyle(
+                               color: Colors.black,fontSize: 16,fontWeight: FontWeight.w500)),
+                       Text("Create a team to access all the features",
+                           style: TextStyle(
+                               color: Color(0xFF667085))),
+                       SizedBox(height: 10,),
+                       SizedBox(
+                         height: 41,
+                         width: 137,
+                         child: ElevatedButton(
+                           style: ElevatedButton.styleFrom(
+                             padding: EdgeInsets.symmetric(
+                                 horizontal: 8, vertical: 0),
+                             elevation: 0,
+                             backgroundColor: Colors.blue,
+                             shape: RoundedRectangleBorder(
+                               borderRadius: BorderRadius.circular(16),
+                             ),
+                           ),
+                           onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => EditTeamPage(isCreate: true,),)).then((value) {
+                               fetchTeamData();
+                             },);
+                           },
+                           child: const Text(
+                             'Create Team',
+                             style: TextStyle(fontSize: 12),
+                           ),
+                         ),
+                       ),
+                     ],
+                   ),
+                 )
+                     : SizedBox(),
                  if(user?.role != Role.individual.name)        const SizedBox(height: 10),
                  if(user?.role != Role.individual.name && myGroupList.isNotEmpty)          Container(
                    padding: const EdgeInsets.all(8),
@@ -713,7 +830,7 @@ bool isLoad = true;
                      title: 'Manage Team card template',
                    ),
                  ),
-                 if(user?.role != Role.individual.name &&  user?.role == Role.towner.name)           GestureDetector(
+                 if(user?.role == Role.towner.name || user?.role == Role.tadmin.name)           GestureDetector(
                    onTap: () {
                      Navigator.push(
                          context,
@@ -726,7 +843,7 @@ bool isLoad = true;
                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                    ),
                  ),
-                 if(user?.role == Role.towner.name)   GestureDetector(
+                 if(user?.role != null && user?.role == Role.towner.name)   GestureDetector(
                    onTap: (){
                      Utility.showAlertDialog(context: context, msg: "Do you want to delete your team",btnText: "Yes",onPositiveClick: (){
                        apiDeleteTeam(teamResponse?.data.id.toString() ?? "");
@@ -751,10 +868,10 @@ bool isLoad = true;
                      ),
                    ),
                  ),
-                 if(user?.role != Role.individual.name && user?.role != Role.towner.name)   GestureDetector(
+                 if(user?.role != null && user?.role != Role.individual.name && user?.role != Role.towner.name)   GestureDetector(
                    onTap: (){
                      Utility.showAlertDialog(context: context, msg: "Do you want to leave this team",btnText: "Yes",onPositiveClick: (){
-                       apiDeleteTeam(teamResponse?.data.id.toString() ?? "");
+                       apiRemoveTeamMember(user?.id.toString() ?? "");
                      });
                    },
                    child: Container(
@@ -775,7 +892,9 @@ bool isLoad = true;
                        ],
                      ),
                    ),
-                 )],)
+                 )
+
+                                         ],)
               ],
             ),
           ),
