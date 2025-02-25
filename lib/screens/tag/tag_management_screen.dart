@@ -411,6 +411,9 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                     Expanded(
                       child: TextField(
                         controller: controller,
+                        onTapOutside: (v){
+                          Utility.hideKeyboard(context);
+                        },
                         onChanged: (v) {
                           setState(() {});
                         },

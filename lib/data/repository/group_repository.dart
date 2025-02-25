@@ -127,18 +127,18 @@ class GroupRepository {
     return _apiClient.apiGetGroupDetails(dto,token2,id);
   }
 
-  Future<HttpResponse<GroupMember>> apiGetGroupMember(id) async {
+  Future<HttpResponse<GroupMember>> apiGetGroupMember(id,body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetGroupMember(dto,token2,id);
+    return _apiClient.apiGetGroupMember(dto,token2,id,body);
   }
 
-  Future<HttpResponse<GroupMember>> apiGetAllGroupMembers() async {
+  Future<HttpResponse<GroupMember>> apiGetAllGroupMembers(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetAllGroupMembers(dto,token2,);
+    return _apiClient.apiGetAllGroupMembers(dto,token2,body);
   }
 
   Future<HttpResponse<GroupDataModel>> apiGetGroupByTeam(id) async {
@@ -148,11 +148,11 @@ class GroupRepository {
     return _apiClient.apiGetGroupByTeam(dto,token2,id);
   }
 
-  Future<HttpResponse<GroupMember>> apiGetActiveMemberForGroup() async {
+  Future<HttpResponse<GroupMember>> apiGetActiveMemberForGroup(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetActiveMemberForGroup(dto,token2);
+    return _apiClient.apiGetActiveMemberForGroup(dto,token2,body);
   }
 
 

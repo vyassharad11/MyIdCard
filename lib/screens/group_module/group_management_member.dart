@@ -51,9 +51,9 @@ int selectedIndex = 0;
   _groupMemberCubit = GroupCubit(GroupRepository());
   getGroupCubit = GroupCubit(GroupRepository());
   _deleteGroupCubit = GroupCubit(GroupRepository());
-  apiGetActiveMemberForGroup();
+  apiGetActiveMemberForGroup("");
   fetchGroupData();
-  fetchGroupMember();
+  fetchGroupMember("");
     // TODO: implement initState
     super.initState();
   }
@@ -68,14 +68,22 @@ int selectedIndex = 0;
   }
 
 
-  Future<void> apiGetActiveMemberForGroup() async {
+  Future<void> apiGetActiveMemberForGroup(key) async {
     Utility.showLoader(context);
-    _getActiveMember?.apiGetActiveMemberForGroup();
+    Map<String, dynamic> data = {
+      "key_word": key,
+      "page": 1,
+    };
+    _getActiveMember?.apiGetActiveMemberForGroup(data);
   }
 
 
-  Future<void> fetchGroupMember() async {
-    _groupMemberCubit?.apiGetAllGroupMembers();
+  Future<void> fetchGroupMember(key) async {
+    Map<String, dynamic> data = {
+      "key_word": key,
+      "page": 1,
+    };
+    _groupMemberCubit?.apiGetAllGroupMembers(data);
   }
   // Future<void> share() async {
   // print("object");
@@ -402,6 +410,10 @@ int selectedIndex = 0;
 
                           // Search Box
                           TextField(
+                            onChanged: (value){
+                              fetchGroupMember(value);
+                              apiGetActiveMemberForGroup(value);
+                            },
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 14, vertical: 1),
