@@ -32,7 +32,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
     deleteTag = GroupCubit(GroupRepository());
     _updateTag = GroupCubit(GroupRepository());
     addTagCubit = GroupCubit(GroupRepository());
-    apiTagList();
+    apiTagList("");
     // TODO: implement initState
     super.initState();
   }
@@ -51,8 +51,12 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
     super.dispose();
   }
 
-  Future<void> apiTagList() async {
-    _getTagCubit?.apiGetTeamTag();
+  Future<void> apiTagList(keyword) async {
+    Map<String, dynamic> data = {
+      "key_word": keyword.toString(),
+      "page": 1,
+    };
+    _getTagCubit?.apiGetTeamTag(data);
   }
 
   Future<void> apiAddTag(tagName) async {
@@ -149,7 +153,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
             } else if (state is ResponseStateSuccess) {
               var dto = state.data as UtilityDto;
               Utility.hideLoader(context);
-              apiTagList();
+              apiTagList("");
               Utility().showFlushBar(
                 context: context,
                 message: dto.message ?? "",
@@ -181,7 +185,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                 context: context,
                 message: dto.message ?? "",
               );
-              apiTagList();
+              apiTagList("");
 
             }
             setState(() {});

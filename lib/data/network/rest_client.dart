@@ -300,7 +300,7 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TagModel>> apiGetTeamTag(@Path("url") url,
-      @Header(authorization) token,);
+      @Header(authorization) token,@Body() body,);
 
   @POST("{url}tag/update/{id}")
   @Header(headerValue)
