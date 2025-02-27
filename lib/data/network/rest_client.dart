@@ -235,14 +235,14 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetGroupMember(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,@Body() body,);
 
 
 @GET("{url}group/get-my-group-members")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetAllGroupMembers(@Path("url") url,
-      @Header(authorization) token,);
+      @Header(authorization) token,@Body() body,);
 
 
 @GET("{url}group/get-group-by-team/{id}")
@@ -256,7 +256,7 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetActiveMemberForGroup(@Path("url") url,
-      @Header(authorization) token,);
+      @Header(authorization) token,@Body() body,);
 
 
 @POST("{url}group/remove-member")

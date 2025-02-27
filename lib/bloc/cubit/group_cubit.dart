@@ -96,12 +96,12 @@ class GroupCubit extends Cubit<ResponseState> {
   }
 
 
-Future<void> apiGetGroupMember(id) async {
+Future<void> apiGetGroupMember(id,body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     GroupMember dto;
     try {
-      httpResponse = await groupRepository.apiGetGroupMember(id);
+      httpResponse = await groupRepository.apiGetGroupMember(id,body);
       dto = httpResponse.data as GroupMember;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
@@ -110,12 +110,12 @@ Future<void> apiGetGroupMember(id) async {
   }
 
 
-Future<void> apiGetAllGroupMembers() async {
+Future<void> apiGetAllGroupMembers(body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     GroupMember dto;
     try {
-      httpResponse = await groupRepository.apiGetAllGroupMembers();
+      httpResponse = await groupRepository.apiGetAllGroupMembers(body);
       dto = httpResponse.data as GroupMember;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
@@ -136,12 +136,12 @@ Future<void> apiGetGroupByTeam(id) async {
     }
   }
 
-Future<void> apiGetActiveMemberForGroup() async {
+Future<void> apiGetActiveMemberForGroup(body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     GroupMember dto;
     try {
-      httpResponse = await groupRepository.apiGetActiveMemberForGroup();
+      httpResponse = await groupRepository.apiGetActiveMemberForGroup(body);
       dto = httpResponse.data as GroupMember;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

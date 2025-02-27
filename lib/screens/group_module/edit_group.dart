@@ -54,7 +54,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
   _groupMemberCubit = GroupCubit(GroupRepository());
   _removeGroupMemberCubit = GroupCubit(GroupRepository());
   fetchGroupData();
-  fetchGroupMember();
+  fetchGroupMember("");
     // TODO: implement initState
     super.initState();
   }
@@ -65,8 +65,12 @@ class _EditGroupPageState extends State<EditGroupPage> {
     getGroupCubit?.apiGetGroupDetails(widget.groupId ?? "");
   }
 
-  Future<void> fetchGroupMember() async {
-    _groupMemberCubit?.apiGetGroupMember(widget.groupId ?? "");
+  Future<void> fetchGroupMember(key) async {
+    Map<String, dynamic> data = {
+      "key_word": key,
+      "page": 1,
+    };
+    _groupMemberCubit?.apiGetGroupMember(widget.groupId ?? "",data);
   }
 
   Future<void> submitData({
@@ -510,7 +514,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                 isScrollControlled: true,
                                 builder: (context) => AddGroupMemberBottomSheet(groupId: widget.groupId,)
                               ).whenComplete(() {
-                                fetchGroupMember();
+                                fetchGroupMember("");
                               },);
                             },
                               child:  Image.asset(
@@ -526,7 +530,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                       TextField(
                         controller: textController,
                         onChanged: (value){
-                          fetchGroupMember();
+                          fetchGroupMember(value);
                         },
                         decoration: InputDecoration(
                           contentPadding:

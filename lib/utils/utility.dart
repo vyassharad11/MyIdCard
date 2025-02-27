@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' as IO;
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -109,6 +110,16 @@ class Utility {
     if (context.loaderOverlay
         .visible /* && context.loaderOverlay.overlayWidgetType == ReconnectingOverlay*/) {
       context.loaderOverlay.hide();
+    }
+  }
+
+
+  static hideKeyboard(BuildContext context) {
+    var currentFocus = FocusScope.of(context);
+    FocusManager.instance.primaryFocus?.unfocus();
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
     }
   }
 

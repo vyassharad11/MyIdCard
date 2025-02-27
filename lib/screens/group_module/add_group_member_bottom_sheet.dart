@@ -43,8 +43,12 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
   }
 
   Future<void> apiGetActiveMemberForGroup() async {
+    Map<String, dynamic> data = {
+      "key_word": "",
+      "page": 1,
+    };
     Utility.showLoader(context);
-    _getActiveMember?.apiGetActiveMemberForGroup();
+    _getActiveMember?.apiGetActiveMemberForGroup(data);
   }
 
   Future<void> apiAddGroupMember(userId) async {
