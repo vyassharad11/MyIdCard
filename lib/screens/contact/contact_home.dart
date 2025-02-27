@@ -41,7 +41,11 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
   }
 
   Future<void> apiTagList() async {
-    _getTagCubit?.apiGetTeamTag();
+    Map<String, dynamic> data = {
+      "key_word": "",
+      "page": 1,
+    };
+    _getTagCubit?.apiGetTeamTag(data);
   }
 
   int selectIndec = 0;

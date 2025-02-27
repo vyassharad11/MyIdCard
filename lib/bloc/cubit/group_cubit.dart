@@ -216,12 +216,12 @@ Future<void> apiRemoveGroupMember(body) async {
   }
 
 
-  Future<void> apiGetTeamTag() async {
+  Future<void> apiGetTeamTag(body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     TagModel dto;
     try {
-      httpResponse = await groupRepository.apiGetTeamTag();
+      httpResponse = await groupRepository.apiGetTeamTag(body);
       dto = httpResponse.data as TagModel;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

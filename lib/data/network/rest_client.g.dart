@@ -1469,12 +1469,13 @@ class _RestClient implements RestClient {
   Future<HttpResponse<TagModel>> apiGetTeamTag(
     dynamic url,
     dynamic token,
+    dynamic body,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
-    const Map<String, dynamic>? _data = null;
+    final _data = body;
     final _options = _setStreamType<HttpResponse<TagModel>>(Options(
       method: 'POST',
       headers: _headers,

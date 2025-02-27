@@ -191,11 +191,11 @@ Future<HttpResponse<UtilityDto>> apiGetTag(id) async {
     return _apiClient.apiGetTag(dto,token2,id);
   }
 
-Future<HttpResponse<TagModel>> apiGetTeamTag() async {
+Future<HttpResponse<TagModel>> apiGetTeamTag(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetTeamTag(dto,token2,);
+    return _apiClient.apiGetTeamTag(dto,token2,body);
   }
 
 Future<HttpResponse<UtilityDto>> apiUpdateTag(body,id) async {
