@@ -433,6 +433,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
                       // Search Box
                       TextField(
+                        onChanged: (v){
+                          getTeamMembers(0,v);
+                        },
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 14, vertical: 1),
@@ -462,7 +465,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                                 setState(() {
                                   selectedIndex = index;
                                 });
-                                apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
+                                showLogoutDialogForRemoveMember(context,index);
                               },
                               onRoleChanged: (value) {
                                 setState(() {
@@ -486,7 +489,34 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       ),
     );
   }
-
+  void showLogoutDialogForRemoveMember(BuildContext context,index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove Member'),
+          content: Text('Do you want to remove this member ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Utility.showLoader(context);
+                apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
+                // Close the dialog
+              },
+              child: Text('Remove'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;

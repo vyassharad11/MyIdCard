@@ -156,7 +156,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
               Utility.hideLoader(context);
               var dto = state.data as GroupMember;
               groupMember.clear();
-              groupMember.addAll(dto.data ?? []);
+              groupMember.addAll(dto.data?.data ?? []);
               isLoadingTeam = false;
             }
             setState(() {});

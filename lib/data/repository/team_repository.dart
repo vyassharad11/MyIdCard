@@ -88,6 +88,13 @@ class TeamRepository {
     return _apiClient.apiRemoveTeamMember(dto,token2,body);
   }
 
+  Future<HttpResponse<UtilityDto>> apiLeaveTeam() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiLeaveTeam(dto,token2,);
+  }
+
 
   Future<HttpResponse<UtilityDto>> apiApproveTeamMember(body) async {
     token = await Storage().getToken() ?? "";

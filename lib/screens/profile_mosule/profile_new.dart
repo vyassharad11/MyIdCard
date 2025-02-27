@@ -44,13 +44,14 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  TeamCubit? getTeamCubit,_getTeamMember,_deleteTeamCubit,_removeMember;
+  TeamCubit? getTeamCubit, _getTeamMember, _deleteTeamCubit, _removeMember;
   GroupCubit? getGroupCubit;
-  AuthCubit?_authCubit,_completeProfileCubit;
+  AuthCubit?_authCubit, _completeProfileCubit;
   List<Member> teamMember = [];
   TextEditingController controller = TextEditingController();
-bool isLoad = true;
+  bool isLoad = true;
   User? user;
+
   Future<void> fetchUserData() async {
     _authCubit?.apiUserProfile();
   }
@@ -67,12 +68,12 @@ bool isLoad = true;
   }
 
 
-  void apiRemoveTeamMember(String userId) async {
+  void apiLeaveTeam() async {
     Utility.showLoader(context);
-    Map<String, dynamic> data = {
-      "user_id": userId.toString(),
-    };
-    _removeMember?.apiRemoveTeamMember(data);
+    // Map<String, dynamic> data = {
+    //   "user_id": userId.toString(),
+    // };
+    _removeMember?.apiLeaveTeam();
   }
 
   void getTeamMembers() async {
@@ -90,13 +91,13 @@ bool isLoad = true;
 
   @override
   void initState() {
-    getTeamCubit =TeamCubit(TeamRepository());
-    _getTeamMember =TeamCubit(TeamRepository());
-    _deleteTeamCubit =TeamCubit(TeamRepository());
-    _removeMember =TeamCubit(TeamRepository());
-    getGroupCubit =GroupCubit(GroupRepository());
-    _authCubit =AuthCubit(AuthRepository());
-    _completeProfileCubit =AuthCubit(AuthRepository());
+    getTeamCubit = TeamCubit(TeamRepository());
+    _getTeamMember = TeamCubit(TeamRepository());
+    _deleteTeamCubit = TeamCubit(TeamRepository());
+    _removeMember = TeamCubit(TeamRepository());
+    getGroupCubit = GroupCubit(GroupRepository());
+    _authCubit = AuthCubit(AuthRepository());
+    _completeProfileCubit = AuthCubit(AuthRepository());
     fetchUserData();
     // fetchGroupData();
     super.initState();
@@ -109,8 +110,8 @@ bool isLoad = true;
         BlocListener<AuthCubit, ResponseState>(
             bloc: _completeProfileCubit,
             listener: (context, state) {
-              if (state is ResponseStateLoading) {
-              } else if (state is ResponseStateEmpty) {
+              if (state is ResponseStateLoading) {} else
+              if (state is ResponseStateEmpty) {
                 Utility.hideLoader(context);
                 Utility().showFlushBar(
                     context: context, message: state.message, isError: true);
@@ -127,21 +128,22 @@ bool isLoad = true;
               } else if (state is ResponseStateSuccess) {
                 var dto = state.data as LoginDto;
                 // if (dto.user != null) {
-                  fetchUserData();
-                  Utility().showFlushBar(
-                      context: context, message: dto.message ?? "");
+                fetchUserData();
+                Utility().showFlushBar(
+                    context: context, message: dto.message ?? "");
                 // }else{
                 //   Utility.hideLoader(context);
                 // }
-              }setState(() {
+              }
+              setState(() {
 
               });
             }),
         BlocListener<TeamCubit, ResponseState>(
             bloc: _deleteTeamCubit,
             listener: (context, state) {
-              if (state is ResponseStateLoading) {
-              } else if (state is ResponseStateEmpty) {
+              if (state is ResponseStateLoading) {} else
+              if (state is ResponseStateEmpty) {
                 Utility.hideLoader(context);
                 Utility().showFlushBar(
                     context: context, message: state.message, isError: true);
@@ -157,19 +159,20 @@ bool isLoad = true;
                     isError: true);
               } else if (state is ResponseStateSuccess) {
                 var dto = state.data as UtilityDto;
-                  fetchUserData();
-                  fetchTeamData();
-                  Utility().showFlushBar(
-                      context: context, message: dto.message ?? "");
-              }setState(() {
+                fetchUserData();
+                fetchTeamData();
+                Utility().showFlushBar(
+                    context: context, message: dto.message ?? "");
+              }
+              setState(() {
 
               });
             }),
         BlocListener<TeamCubit, ResponseState>(
             bloc: _removeMember,
             listener: (context, state) {
-              if (state is ResponseStateLoading) {
-              } else if (state is ResponseStateEmpty) {
+              if (state is ResponseStateLoading) {} else
+              if (state is ResponseStateEmpty) {
                 Utility.hideLoader(context);
                 Utility().showFlushBar(
                     context: context, message: state.message, isError: true);
@@ -185,27 +188,31 @@ bool isLoad = true;
                     isError: true);
               } else if (state is ResponseStateSuccess) {
                 var dto = state.data as UtilityDto;
-                  fetchUserData();
-                  fetchTeamData();
-                  Utility().showFlushBar(
-                      context: context, message: dto.message ?? "");
-              }setState(() {
+                fetchUserData();
+                fetchTeamData();
+                Utility().showFlushBar(
+                    context: context, message: dto.message ?? "");
+              }
+              setState(() {
 
               });
             }),
         BlocListener<TeamCubit, ResponseState>(
           bloc: _getTeamMember,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.message,isError: true);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
             } else if (state is ResponseStateNoInternet) {
-              Utility().showFlushBar(context: context, message: state.message,isError: true);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
-              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as TeamMembersResponse;
@@ -218,8 +225,8 @@ bool isLoad = true;
         BlocListener<TeamCubit, ResponseState>(
           bloc: getTeamCubit,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
@@ -236,8 +243,8 @@ bool isLoad = true;
         BlocListener<AuthCubit, ResponseState>(
           bloc: _authCubit,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               isLoad = false;
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
@@ -250,7 +257,7 @@ bool isLoad = true;
               Utility.hideLoader(context);
               var dto = state.data as User;
               user = dto;
-              if(user != null && user?.role != Role.individual.name){
+              if (user != null && user?.role != Role.individual.name) {
                 getTeamMembers();
                 fetchTeamData();
                 fetchGroupData();
@@ -263,8 +270,8 @@ bool isLoad = true;
         BlocListener<GroupCubit, ResponseState>(
           bloc: getGroupCubit,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
@@ -331,570 +338,687 @@ bool isLoad = true;
                 ),
 
 
-                isLoad?_getShimmerView():
+                isLoad ? _getShimmerView() :
                 // Profile Picture and Name
-               Column(
-               children: [ user != null && user!.avatar != null
-                   ? ClipRRect(
-                 borderRadius: BorderRadius.circular(
-                     10000.0),
-                 child: CachedNetworkImage(
-                   height: 100,
-                   width: 100,
-                   fit: BoxFit.fitWidth,
-                   imageUrl: "${Network.imgUrl}${user!.avatar}",
-                   progressIndicatorBuilder:
-                       (context, url, downloadProgress) => Center(
-                     child: CircularProgressIndicator(
-                         value: downloadProgress.progress),
-                   ),
-                   errorWidget: (context, url, error) => Image.asset(
-                     "assets/images/user_dummy.png",
-                     height: 80,
-                     fit: BoxFit.fill,
-                     width: double.infinity,
-                   ),
-                 ),
-               )
-                   : const CircleAvatar(
-                 radius: 50,
-                 backgroundImage: AssetImage(
-                     'assets/images/user_dummy.png'), // Replace with actual image URL
-                 child: Align(
-                   alignment: Alignment.bottomRight,
-                   child: CircleAvatar(
-                     radius: 15,
-                     backgroundColor: Colors.blue,
-                     child: Icon(Icons.edit_outlined,
-                         size: 15, color: Colors.white),
-                   ),
-                 ),
-               ),
+                Column(
+                  children: [ user != null && user!.avatar != null
+                      ? ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        10000.0),
+                    child: CachedNetworkImage(
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.fitWidth,
+                      imageUrl: "${Network.imgUrl}${user!.avatar}",
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                          Center(
+                            child: CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                          ),
+                      errorWidget: (context, url, error) =>
+                          Image.asset(
+                            "assets/images/user_dummy.png",
+                            height: 80,
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                          ),
+                    ),
+                  )
+                      : const CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage(
+                        'assets/images/user_dummy.png'),
+                    // Replace with actual image URL
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: CircleAvatar(
+                        radius: 15,
+                        backgroundColor: Colors.blue,
+                        child: Icon(Icons.edit_outlined,
+                            size: 15, color: Colors.white),
+                      ),
+                    ),
+                  ),
 
-                 const SizedBox(height: 10),
-                 Text(
-                   "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
-                   style:
-                   const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                 ),
-                 // Text(
-                 //   user?.lastName ?? "",
-                 //   style: const TextStyle(color: Colors.grey),
-                 // ),
-                 const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+                    Text(
+                      "${user?.firstName ?? ""} ${user?.lastName ?? ""}",
+                      style:
+                      const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    // Text(
+                    //   user?.lastName ?? "",
+                    //   style: const TextStyle(color: Colors.grey),
+                    // ),
+                    const SizedBox(height: 20),
 
-                 // Subscription Info
-                 if(user?.planId != 3 && (user?.role == Role.individual.name || user?.role == Role.towner.name))   Container(
-                   padding:
-                   const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                   decoration: BoxDecoration(
-                     border: Border.all(color: Colors.blue, width: 1),
-                     color:
-                     const Color.fromARGB(255, 133, 189, 236).withOpacity(0.1),
-                     borderRadius: BorderRadius.circular(25),
-                   ),
-                   child: Row(
-                     children: [
-                       const Icon(Icons.info_outline, color: Colors.black26),
-                       const SizedBox(width: 10),
-                       GestureDetector(
-                         onTap: () {
-                           Navigator.push(
-                               context,
-                               CupertinoPageRoute(
-                                   builder: (builder) => SubscriptionScreen())).then((onValue) {
-                             if(user != null && user?.role != Role.individual.name){
-                               getTeamMembers();
-                               fetchTeamData();
-                             }
-                           });
-                         },
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                           children: [
-                             Column(
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                     Text(
-                                       user?.planName ?? "",
-                                       style: const TextStyle(fontWeight: FontWeight.bold),
-                                     ),
+                    // Subscription Info
+                    if(user?.planId != 3 &&
+                        (user?.role == Role.individual.name ||
+                            user?.role == Role.towner.name)) Container(
+                      padding:
+                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 1),
+                        color:
+                        const Color.fromARGB(255, 133, 189, 236).withOpacity(
+                            0.1),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.info_outline, color: Colors.black26),
+                          const SizedBox(width: 10),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (builder) =>
+                                          SubscriptionScreen())).then((
+                                  onValue) {
+                                if (user != null &&
+                                    user?.role != Role.individual.name) {
+                                  getTeamMembers();
+                                  fetchTeamData();
+                                }
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      user?.planName ?? "",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
 
-                                 Text(
-                                   AppLocalizations.of(context).translate('manage'),
-                                   style: const TextStyle(color: Colors.grey),
-                                 ),
-                               ],
-                             ),
-                             SizedBox(
-                               height: 25,
-                               width: 94,
-                               child: ElevatedButton(
-                                 style: ElevatedButton.styleFrom(
-                                   padding: EdgeInsets.symmetric(
-                                       horizontal: 8, vertical: 0),
-                                   elevation: 0,
-                                   backgroundColor: Colors.blue,
-                                   shape: RoundedRectangleBorder(
-                                     borderRadius: BorderRadius.circular(16),
-                                   ),
-                                 ),
-                                 onPressed: () {
-                                   Navigator.push(context, MaterialPageRoute(builder: (context) => EditTeamPage(),));
-                                 },
-                                 child: const Text(
-                                   'Upgrade',
-                                   style: TextStyle(fontSize: 12),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                     ],
-                   ),
-                 ),
-                 if(user?.planId != 3)    const SizedBox(height: 20),
-                 // Team Information
-                 Align(
-                   alignment: Alignment.centerLeft,
-                   child: Text(
-                    "(${ user?.role == Role.tadmin.name?  "Team Admin":
-                    user?.role == Role.towner.name ? "Team Owner": user!.role.toString()})" ,
-                     style: const TextStyle(fontWeight: FontWeight.bold),
-                   ),
-                 ),
-                 if(user?.role != Role.individual.name)               const SizedBox(height: 10),
-                 teamResponse != null &&  teamResponse!.data.teamDescription != null &&  teamResponse!.data.teamDescription.toString().isNotEmpty ?          InkWell(
-                   onTap: (){
-                     if (teamResponse == null) {
-                       Navigator.push(
-                           context,
-                           CupertinoPageRoute(
-                               builder: (builder) => SubscriptionScreen()))
-                           .then((onValue) {
-                         // if(user != null && user?.role != Role.individual.name){
-                           getTeamMembers();
-                           fetchTeamData();
-                         // }
-                       });
-                     }
-                   },
-                   child: Container(
-                     padding: const EdgeInsets.all(8),
-                     decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(12),
-                         color: Colors.grey.withOpacity(0.2)),
-                     child:
+                                    Text(
+                                      AppLocalizations.of(context).translate(
+                                          'manage'),
+                                      style: const TextStyle(
+                                          color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 25,
+                                  width: 94,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 0),
+                                      elevation: 0,
+                                      backgroundColor: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) => EditTeamPage(),));
+                                    },
+                                    child: const Text(
+                                      'Upgrade',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if(user?.planId != 3) const SizedBox(height: 20),
+                    // Team Information
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "(${ user?.role == Role.tadmin.name ? "Team Admin" :
+                        user?.role == Role.towner.name ? "Team Owner" : user!
+                            .role.toString()})",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    if(user?.role != Role.individual.name) const SizedBox(
+                        height: 10),
+                    teamResponse != null &&
+                        teamResponse!.data.teamDescription != null &&
+                        teamResponse!
+                            .data.teamDescription
+                            .toString()
+                            .isNotEmpty ? InkWell(
+                      onTap: () {
+                        if (teamResponse == null) {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (builder) => SubscriptionScreen()))
+                              .then((onValue) {
+                            // if(user != null && user?.role != Role.individual.name){
+                            getTeamMembers();
+                            fetchTeamData();
+                            // }
+                          });
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.grey.withOpacity(0.2)),
+                        child:
 
 
-                     Column(
-                       children: [
-                         Row(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             teamResponse != null &&
-                                 teamResponse!.data.teamLogo != null
-                                 ? SizedBox(
-                               height: 50,
-                               width: 50,
-                               child: ClipRRect(
-                                 borderRadius: BorderRadius.circular(50),
-                                 child: Image.network(
-                                   "${Network.imgUrl}${teamResponse!.data.teamLogo ?? ""}",
-                                   fit: BoxFit.cover,
-                                   errorBuilder: (context, error, stackTrace) {
-                                     return Container(height: 50,width: 50,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(50)),);
-                                   },
-                                 ),
-                               ),
-                             )
-                                 : SizedBox(
-                               height: 50,
-                               width: 50,
-                               child: ClipRRect(
-                                 borderRadius: BorderRadius.circular(50),
-                                 child: Image.asset(
-                                   "assets/images/Ellipse 5.png",
-                                   fit: BoxFit.cover,
-                                 ),
-                               ),
-                             ),
+                        Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                teamResponse != null &&
+                                    teamResponse!.data.teamLogo != null
+                                    ? SizedBox(
+                                  height: 50,
+                                  width: 50,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(
+                                      "${Network.imgUrl}${teamResponse!.data
+                                          .teamLogo ?? ""}",
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error,
+                                          stackTrace) {
+                                        return Container(height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius: BorderRadius
+                                                  .circular(50)),);
+                                      },
+                                    ),
+                                  ),
+                                )
+                                    : SizedBox(
+                                  height: 50,
+                                  width: 50,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.asset(
+                                      "assets/images/Ellipse 5.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
 
-                             SizedBox(width: 10,),
-                             Column(
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 Text(
-                                   teamResponse?.data.teamName ?? "-",
-                                   style: TextStyle(fontWeight: FontWeight.w700,fontSize: 16),
-                                 ),
-                                 Text(
-                                   teamResponse?.data.teamDescription ?? "-",style: TextStyle(color:Color(0xFF949494) ),
-                                 ),
-                                 Row(children: [
-                                   if(teamMember.isNotEmpty)  ClipRRect(
-                                     borderRadius: BorderRadius.circular(16),
-                                     child: Image.network(
-                                       "${Network.imgUrl}${teamMember[0].avatar ??""}",
-                                       fit: BoxFit.cover,
-                                       errorBuilder: (context, error, stackTrace) {
-                                         return Container(height: 16,width: 16,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(16)),);
-                                       },
-                                     ),
-                                   ),
-                                   SizedBox(width: 5,),
-                                   if(teamMember.isNotEmpty) Text(
-                                     teamMember[0].name ?? "",
-                                   ),
-                                   if(teamMember.isNotEmpty && teamMember.length > 1)   SizedBox(width: 8,),
-                                   if(teamMember.isNotEmpty && teamMember.length > 1)  Container(width: 1,height: 5,color: Colors.grey,),
-                                   if(teamMember.isNotEmpty && teamMember.length > 1)   ClipRRect(
-                                     borderRadius: BorderRadius.circular(16),
-                                     child: Image.network(
-                                       "${Network.imgUrl}${teamMember[1].avatar ??""}",
-                                       fit: BoxFit.cover,
-                                       errorBuilder: (context, error, stackTrace) {
-                                         return Container(height: 16,width: 16,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(16)),);
-                                       },
-                                     ),
-                                   ),
-                                   if(teamMember.isNotEmpty && teamMember.length > 1)  SizedBox(width: 5,),
-                                   if(teamMember.isNotEmpty && teamMember.length > 1)  Text(
-                                     teamMember[1].firstName ?? "",
-                                   ),
-                                 ],)
-                               ],
-                             ),
-                             Spacer(),
-                             // if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name))
-                             if(user?.role == Role.towner.name)
-                               InkWell(
-                                 onTap: (){
-                                   Navigator.push(
-                                       context,
-                                       CupertinoPageRoute(
-                                           builder: (builder) => EditTeamPage()))
-                                       .then((onValue) {
-                                     fetchTeamData();
-                                   });
-                                 },
-                                 child: Image.asset("assets/images/edit-05.png",width: 20,height: 20,color: Color(0xFF949494),))
-                           ],),
+                                SizedBox(width: 10,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      teamResponse?.data.teamName ?? "-",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16),
+                                    ),
+                                    Text(
+                                      teamResponse?.data.teamDescription ?? "-",
+                                      style: TextStyle(
+                                          color: Color(0xFF949494)),
+                                    ),
+                                    Row(children: [
+                                      if(teamMember.isNotEmpty) ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Image.network(
+                                          "${Network.imgUrl}${teamMember[0]
+                                              .avatar ?? ""}",
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error,
+                                              stackTrace) {
+                                            return Container(height: 16,
+                                              width: 16,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey,
+                                                  borderRadius: BorderRadius
+                                                      .circular(16)),);
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(width: 5,),
+                                      if(teamMember.isNotEmpty) Text(
+                                        teamMember[0].name ?? "",
+                                      ),
+                                      if(teamMember.isNotEmpty &&
+                                          teamMember.length > 1) SizedBox(
+                                        width: 8,),
+                                      if(teamMember.isNotEmpty &&
+                                          teamMember.length > 1) Container(
+                                        width: 1,
+                                        height: 5,
+                                        color: Colors.grey,),
+                                      if(teamMember.isNotEmpty &&
+                                          teamMember.length > 1) ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Image.network(
+                                          "${Network.imgUrl}${teamMember[1]
+                                              .avatar ?? ""}",
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error,
+                                              stackTrace) {
+                                            return Container(height: 16,
+                                              width: 16,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey,
+                                                  borderRadius: BorderRadius
+                                                      .circular(16)),);
+                                          },
+                                        ),
+                                      ),
+                                      if(teamMember.isNotEmpty &&
+                                          teamMember.length > 1) SizedBox(
+                                        width: 5,),
+                                      if(teamMember.isNotEmpty &&
+                                          teamMember.length > 1) Text(
+                                        teamMember[1].firstName ?? "",
+                                      ),
+                                    ],)
+                                  ],
+                                ),
+                                Spacer(),
+                                // if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name))
+                                if(user?.role == Role.towner.name)
+                                  InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                                builder: (builder) =>
+                                                    EditTeamPage()))
+                                            .then((onValue) {
+                                          fetchTeamData();
+                                        });
+                                      },
+                                      child: Image.asset(
+                                        "assets/images/edit-05.png", width: 20,
+                                        height: 20,
+                                        color: Color(0xFF949494),))
+                              ],),
 
-                       ],
-                     ),
-                   ),
-                 ):
-                 isLoad == false && teamResponse != null  && user?.planId == 3? Container(
-                   padding: EdgeInsets.all(16),
-                   margin: EdgeInsets.only(top: 14),
-                   decoration: BoxDecoration(
-                       color: Colors.white,
-                       borderRadius:
-                       BorderRadius.circular(16)),
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.center,
-                     children: [
-                       Image.asset(
-                         "assets/images/create_team_icon.png",
-                         width: 40,
-                         height: 40,
-                       ),
-                       SizedBox(
-                         width: 14,
-                       ),
-                       Text("No Team Added",
-                           style: TextStyle(
-                               color: Colors.black,fontSize: 16,fontWeight: FontWeight.w500)),
-                       Text("Create a team to access all the features",
-                           style: TextStyle(
-                               color: Color(0xFF667085))),
-                       SizedBox(height: 10,),
-                       SizedBox(
-                         height: 41,
-                         width: 137,
-                         child: ElevatedButton(
-                           style: ElevatedButton.styleFrom(
-                             padding: EdgeInsets.symmetric(
-                                 horizontal: 8, vertical: 0),
-                             elevation: 0,
-                             backgroundColor: Colors.blue,
-                             shape: RoundedRectangleBorder(
-                               borderRadius: BorderRadius.circular(16),
-                             ),
-                           ),
-                           onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => EditTeamPage(isCreate: true,),)).then((value) {
-                               fetchTeamData();
-                             },);
-                           },
-                           child: const Text(
-                             'Create Team',
-                             style: TextStyle(fontSize: 12),
-                           ),
-                         ),
-                       ),
-                     ],
-                   ),
-                 )
-                     : SizedBox(),
-                 if(user?.role != Role.individual.name)        const SizedBox(height: 10),
-                 if(user?.role != Role.individual.name && myGroupList.isNotEmpty)          Container(
-                   padding: const EdgeInsets.all(8),
-                   decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(12),
-                       color: Colors.grey.withOpacity(0.2)),
-                   child: ListTile(
-                     onTap: () {
-                       if( user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name || (myGroupList.isNotEmpty && myGroupList[0].adminId == user?.id))){
-                         if(myGroupList.isEmpty){
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),)).then((value) {
-                             fetchGroupData();
-                           },);
-                         }else {
+                          ],
+                        ),
+                      ),
+                    ) :
+                    isLoad == false && teamResponse != null && user?.planId == 3
+                        ? Container(
+                      padding: EdgeInsets.all(16),
+                      margin: EdgeInsets.only(top: 14),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.circular(16)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/create_team_icon.png",
+                            width: 40,
+                            height: 40,
+                          ),
+                          SizedBox(
+                            width: 14,
+                          ),
+                          Text("No Team Added",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                          Text("Create a team to access all the features",
+                              style: TextStyle(
+                                  color: Color(0xFF667085))),
+                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 41,
+                            width: 137,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 0),
+                                elevation: 0,
+                                backgroundColor: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditTeamPage(isCreate: true,),)).then((
+                                    value) {
+                                  fetchTeamData();
+                                },);
+                              },
+                              child: const Text(
+                                'Create Team',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        : SizedBox(),
+                    if(user?.role != Role.individual.name) const SizedBox(
+                        height: 10),
+                    if(user?.role != Role.individual.name &&
+                        myGroupList.isNotEmpty) Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey.withOpacity(0.2)),
+                      child: ListTile(
+                        onTap: () {
+                          if (user?.role != Role.individual.name &&
+                              user?.role != Role.member.name &&
+                              (user?.role != Role.towner.name ||
+                                  user?.role != Role.tadmin.name ||
+                                  (myGroupList.isNotEmpty &&
+                                      myGroupList[0].adminId == user?.id))) {
+                            if (myGroupList.isEmpty) {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => CreateGroupPage(),))
+                                  .then((value) {
+                                fetchGroupData();
+                              },);
+                            } else {
 
-                         }
-                       }
-                     },
-                     contentPadding: EdgeInsets.zero,
-                     leading: myGroupList.isNotEmpty &&
-                         myGroupList[0].groupLogo != null
-                         ? SizedBox(
-                       height: 50,
-                       width: 50,
-                       child: ClipRRect(
-                         borderRadius: BorderRadius.circular(50),
-                         child: Image.network(
-                           "${Network.imgUrl}${myGroupList[0].groupLogo ?? ""}",
-                           fit: BoxFit.cover,
-                           errorBuilder: (context, error, stackTrace) {
-                             return Container(height: 50,width: 50,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(50)),);
-                           },
-                         ),
-                       ),
-                     )
-                         : SizedBox(
-                       height: 50,
-                       width: 50,
-                       child: ClipRRect(
-                         borderRadius: BorderRadius.circular(50),
-                         child: Image.asset(
-                           "assets/images/Ellipse 5.png",
-                           fit: BoxFit.cover,
-                         ),
-                       ),
-                     ),
-                     title: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         Text(
-                           myGroupList[0].groupName ?? "-",
-                         ),
-    if( user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name || (myGroupList.isNotEmpty && myGroupList[0].adminId == user?.id)))
-                       InkWell(
-                             onTap: (){
-                               Navigator.push(context, MaterialPageRoute(
-                                 builder: (context) => EditGroupPage(groupId:myGroupList[0].id?.toString() ,role: user?.role ?? "",),)).then((value) {
-                                 fetchGroupData();
-                               },);
-                             },
-                             child: Image.asset("assets/images/edit-05.png",width: 20,height: 20,color: Color(0xFF949494),))
-                       ],
-                     ),
-                     subtitle: Text(
-                       myGroupList[0].groupDescription ?? "-",
-                     ),
-                   ),
-                 ),
-                 if((user?.role == Role.tadmin.name || user?.role == Role.towner.name) && myGroupList.isEmpty)      InkWell(
-                   onTap: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroupPage(),)).then((value) {
-                       fetchGroupData();
-                     },);
-                   },
-                   child: Container(height: 55,
-                     width: MediaQuery.of(context).size.width,
-                     padding: const EdgeInsets.all(16),
-                     alignment: Alignment.centerLeft,
-                     decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(12),
-                         color: Colors.grey.withOpacity(0.2)),child: Text("Create Group",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),),
-                 ),
-                 if(user?.role != Role.individual.name &&  user?.role != Role.member.name)       const SizedBox(height: 20),
-                 if(user?.role == Role.individual.name && user?.userStatusId == 2 &&  user?.role != Role.member.name)     ApprovalCard(),
-                 if(user?.role.toString() == Role.individual.name && user?.teamId == null && user?.userStatusId == 1)       Card(
-                   elevation: 0,
-                   child: Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Padding(
-                           padding: const EdgeInsets.symmetric(vertical: 10),
-                           child: Text(
-                             'Team code',
-                             style: TextStyle(
-                                 color: Colors.black,
-                                 fontSize: 15,
-                                 fontWeight: FontWeight.w400),
-                           ),
-                         ),
-                         TextField(
-                           controller: controller,
-                           decoration: InputDecoration(
-                             // labelText: 'Team Name',
-                             hintStyle:
-                             TextStyle(color: Colors.grey, fontSize: 14),
-                             filled: true,
-                             hintText: "Enter a team code to join team",
-                             contentPadding: EdgeInsets.symmetric(
-                                 horizontal: 12, vertical: 12),
-                             fillColor: Colors.grey[200],
-                             border: OutlineInputBorder(
-                               borderRadius: BorderRadius.circular(12),
-                               borderSide: BorderSide.none,
-                             ),
-                           ),
-                         ),
-                         const SizedBox(height: 16),
+                            }
+                          }
+                        },
+                        contentPadding: EdgeInsets.zero,
+                        leading: myGroupList.isNotEmpty &&
+                            myGroupList[0].groupLogo != null
+                            ? SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.network(
+                              "${Network.imgUrl}${myGroupList[0].groupLogo ??
+                                  ""}",
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(
+                                          50)),);
+                              },
+                            ),
+                          ),
+                        )
+                            : SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.asset(
+                              "assets/images/Ellipse 5.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              myGroupList[0].groupName ?? "-",
+                            ),
+                            if( user?.role != Role.individual.name &&
+                                user?.role != Role.member.name &&
+                                (user?.role != Role.towner.name ||
+                                    user?.role != Role.tadmin.name ||
+                                    (myGroupList.isNotEmpty &&
+                                        myGroupList[0].adminId == user?.id)))
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => EditGroupPage(
+                                        groupId: myGroupList[0].id?.toString(),
+                                        role: user?.role ?? "",),)).then((
+                                        value) {
+                                      fetchGroupData();
+                                    },);
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/edit-05.png", width: 20,
+                                    height: 20,
+                                    color: Color(0xFF949494),))
+                          ],
+                        ),
+                        subtitle: Text(
+                          myGroupList[0].groupDescription ?? "-",
+                        ),
+                      ),
+                    ),
+                    if((user?.role == Role.tadmin.name ||
+                        user?.role == Role.towner.name) &&
+                        myGroupList.isEmpty) InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => CreateGroupPage(),)).then((
+                            value) {
+                          fetchGroupData();
+                        },);
+                      },
+                      child: Container(height: 55,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        padding: const EdgeInsets.all(16),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.grey.withOpacity(0.2)),
+                        child: Text("Create Group", style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),),),
+                    ),
+                    if(user?.role != Role.individual.name &&
+                        user?.role != Role.member.name) const SizedBox(
+                        height: 20),
+                    if(user?.role == Role.individual.name &&
+                        user?.userStatusId == 2 &&
+                        user?.role != Role.member.name) ApprovalCard(),
+                    if(user?.role.toString() == Role.individual.name &&
+                        user?.teamId == null && user?.userStatusId == 1) Card(
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'Team code',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            TextField(
+                              controller: controller,
+                              decoration: InputDecoration(
+                                // labelText: 'Team Name',
+                                hintStyle:
+                                TextStyle(color: Colors.grey, fontSize: 14),
+                                filled: true,
+                                hintText: "Enter a team code to join team",
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 12),
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
 
-                         // Description Input
+                            // Description Input
 
-                         SizedBox(
-                           width: double.infinity,
-                           child: ElevatedButton(
-                             style: ElevatedButton.styleFrom(
-                               elevation: 0,
-                               padding: EdgeInsets.all(12),
-                               backgroundColor: Colors.blue,
-                               shape: RoundedRectangleBorder(
-                                 borderRadius: BorderRadius.circular(25),
-                               ),
-                             ),
-                             onPressed: () {
-                               Utility.showLoader(context);
-                               Map<String, dynamic> data = {
-                                 'first_name':user?.firstName ?? "",
-                                 'last_name':user?.lastName ?? "",
-                                 'team_code' : controller.text,
-                               };
-                               _completeProfileCubit?.completeProfileApi(data,);
-                             },
-                             child: const Text('Join'),
-                           ),
-                         ),
-                         SizedBox(
-                           height: 12,
-                         ),
-                       ],
-                     ),
-                   ),
-                 ),
-                 // Options
-                 if(user?.role == Role.tadmin.name ||  user?.role == Role.towner.name)    GestureDetector(
-                   onTap: () {
-                     Navigator.push(
-                         context,
-                         CupertinoPageRoute(
-                             builder: (builder) => TeamMemberPage(teamCode: teamResponse?.data?.teamCode.toString(),)));
-                   },
-                   child: OptionTile(
-                     icon: Icons.group_add,
-                     title: 'Invite Members',
-                   ),
-                 ),
-                 if((user?.role == Role.tadmin.name || user?.role == Role.towner.name) && myGroupList.isNotEmpty)            GestureDetector(
-                   onTap: () {
-                     Navigator.push(
-                         context,
-                         CupertinoPageRoute(
-                             builder: (builder) => GroupMemberPage()));
-                   },
-                   child: OptionTile(
-                     icon: Icons.people,
-                     title: 'Manage groups & Members',
-                   ),
-                 ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  padding: EdgeInsets.all(12),
+                                  backgroundColor: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Utility.showLoader(context);
+                                  Map<String, dynamic> data = {
+                                    'first_name': user?.firstName ?? "",
+                                    'last_name': user?.lastName ?? "",
+                                    'team_code': controller.text,
+                                  };
+                                  _completeProfileCubit?.completeProfileApi(
+                                    data,);
+                                },
+                                child: const Text('Join'),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Options
+                    if(user?.role == Role.tadmin.name ||
+                        user?.role == Role.towner.name) GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (builder) => TeamMemberPage(
+                                  teamCode: teamResponse?.data?.teamCode
+                                      .toString(),)));
+                      },
+                      child: OptionTile(
+                        icon: Icons.group_add,
+                        title: 'Invite Members',
+                      ),
+                    ),
+                    if((user?.role == Role.tadmin.name ||
+                        user?.role == Role.towner.name) &&
+                        myGroupList.isNotEmpty) GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (builder) => GroupMemberPage()));
+                      },
+                      child: OptionTile(
+                        icon: Icons.people,
+                        title: 'Manage groups & Members',
+                      ),
+                    ),
 
-                 if(user?.role != Role.individual.name &&  user?.role != Role.member.name)           GestureDetector(
-                   onTap: () {
-                     Navigator.push(
-                         context,
-                         CupertinoPageRoute(
-                             builder: (builder) =>
-                             const BuySubscriptionPreviewScreen()));
-                   },
-                   child: OptionTile(
-                     icon: Icons.credit_card,
-                     title: 'Manage Team card template',
-                   ),
-                 ),
-                 if(user?.role == Role.towner.name || user?.role == Role.tadmin.name)           GestureDetector(
-                   onTap: () {
-                     Navigator.push(
-                         context,
-                         CupertinoPageRoute(
-                             builder: (builder) => TagManagementScreen()));
-                   },
-                   child: ListTile(
-                     leading: Image.asset("assets/images/tag_icon.png",height: 22,width: 22,),
-                     title: Text("Manage Team Tags"),
-                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                   ),
-                 ),
-                 if(user?.role != null && user?.role == Role.towner.name)   GestureDetector(
-                   onTap: (){
-                     Utility.showAlertDialog(context: context, msg: "Do you want to delete your team",btnText: "Yes",onPositiveClick: (){
-                       apiDeleteTeam(teamResponse?.data.id.toString() ?? "");
-                     });
-                   },
-                   child: Container(
-                     height: 53,
-                     padding: EdgeInsets.all(16),
-                     margin: EdgeInsets.only(top: 14),
-                     decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(16)),
-                     child: Row(
-                       children: [
-                         Image.asset(
-                           "assets/images/delete_icon.png",
-                           width: 20,
-                           height: 20,
-                         ),
-                         SizedBox(width: 14,),
-                         Text("Delete Team",style: TextStyle(color: Colors.redAccent)),
+                    if(user?.role != Role.individual.name &&
+                        user?.role != Role.member.name) GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (builder) =>
+                                const BuySubscriptionPreviewScreen()));
+                      },
+                      child: OptionTile(
+                        icon: Icons.credit_card,
+                        title: 'Manage Team card template',
+                      ),
+                    ),
+                    if(user?.role == Role.towner.name ||
+                        user?.role == Role.tadmin.name) GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (builder) => TagManagementScreen()));
+                      },
+                      child: ListTile(
+                        leading: Image.asset(
+                          "assets/images/tag_icon.png", height: 22, width: 22,),
+                        title: Text("Manage Team Tags"),
+                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                      ),
+                    ),
+                    if(user?.role != null &&
+                        user?.role == Role.towner.name) GestureDetector(
+                      onTap: () {
+                        showLogoutDialogForDeleteTeam(context);
+                      },
+                      child: Container(
+                        height: 53,
+                        padding: EdgeInsets.all(16),
+                        margin: EdgeInsets.only(top: 14),
+                        decoration: BoxDecoration(color: Colors.white,
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/delete_icon.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 14,),
+                            Text("Delete Team",
+                                style: TextStyle(color: Colors.redAccent)),
 
-                       ],
-                     ),
-                   ),
-                 ),
-                 if(user?.role != null && user?.role != Role.individual.name && user?.role != Role.towner.name)   GestureDetector(
-                   onTap: (){
-                     Utility.showAlertDialog(context: context, msg: "Do you want to leave this team",btnText: "Yes",onPositiveClick: (){
-                       apiRemoveTeamMember(user?.id.toString() ?? "");
-                     });
-                   },
-                   child: Container(
-                     height: 53,
-                     padding: EdgeInsets.all(16),
-                     margin: EdgeInsets.only(top: 14),
-                     decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(16)),
-                     child: Row(
-                       children: [
-                         Image.asset(
-                           "assets/images/leave_icon.png",
-                           width: 20,
-                           height: 20,
-                         ),
-                         SizedBox(width: 14,),
-                         Text("Leave Team",style: TextStyle(color: Colors.redAccent)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if(user?.role != null &&
+                        user?.role != Role.individual.name &&
+                        user?.role != Role.towner.name) GestureDetector(
+                      onTap: () {
+                        showLogoutDialogForLeaveTeam(context);
+                      },
+                      child: Container(
+                        height: 53,
+                        padding: EdgeInsets.all(16),
+                        margin: EdgeInsets.only(top: 14),
+                        decoration: BoxDecoration(color: Colors.white,
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/leave_icon.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 14,),
+                            Text("Leave Team",
+                                style: TextStyle(color: Colors.redAccent)),
 
-                       ],
-                     ),
-                   ),
-                 )
+                          ],
+                        ),
+                      ),
+                    )
 
-                                         ],)
+                  ],)
               ],
             ),
           ),
@@ -902,149 +1026,219 @@ bool isLoad = true;
       ),
     );
   }
-}
-Widget _getShimmerView() {
-  return Shimmer.fromColors(
-      baseColor:  Color(0x72231532),
-      highlightColor: Color(0xFF463B5C), child: Column(
-    children: [
-     Center(
-       child: Container(height: 100,
-         margin: EdgeInsets.symmetric(vertical: 16),
-         width: 100,decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),color: Color(0x72231532)),),
-     ),
-      Container(height: 20,
-       width: 60,decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),color: Color(0x72231532)),),
-      SizedBox(height: 5,),
-      Container(height: 20,
-       width: 60,decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),color: Color(0x72231532)),),
-  Container(
-    margin: EdgeInsets.symmetric(vertical: 16),
-  padding:
-  const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-  decoration: BoxDecoration(
-  color:
-  const Color(0x72231532),
-  borderRadius: BorderRadius.circular(20),
-  ),),
-      Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        padding:
-        const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-        decoration: BoxDecoration(
-          color:
-          const Color(0x72231532),
-          borderRadius: BorderRadius.circular(20),
-        ),),
-      Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        padding:
-        const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-        decoration: BoxDecoration(
-          color:
-          const Color(0x72231532),
-          borderRadius: BorderRadius.circular(20),
-        ),), Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        padding:
-        const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-        decoration: BoxDecoration(
-          color:
-          const Color(0x72231532),
-          borderRadius: BorderRadius.circular(20),
-        ),), Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        padding:
-        const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-        decoration: BoxDecoration(
-          color:
-          const Color(0x72231532),
-          borderRadius: BorderRadius.circular(20),
-        ),)
-    ],
-  ),);}
-Widget ApprovalCard() {
-  return SizedBox(
-    height: 100,
-    child: Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      elevation: 1,
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // First Row
-            Row(
-              children: [
-                Icon(
-                  Icons.info_outline,
-                  color: Colors.yellow.shade700,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  "Approval Pending",
-                  style: TextStyle(
-                    color: Colors.grey.shade500,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
 
-            // Second Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 4.0),
-                  child: Text(
-                    "Manufacturing Team",
+
+  void showLogoutDialogForLeaveTeam(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Leave Team'),
+          content: Text('Do you want to leave this team ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Utility.showLoader(context);
+
+                apiLeaveTeam();
+                // Close the dialog
+              },
+              child: Text('Leave'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void showLogoutDialogForDeleteTeam(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Team'),
+          content: Text('Do you want to delete this team ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Utility.showLoader(context);
+
+                apiDeleteTeam(
+                    teamResponse?.data.id.toString() ?? "");
+                // Close the dialog
+              },
+              child: Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _getShimmerView() {
+    return Shimmer.fromColors(
+      baseColor: Color(0x72231532),
+      highlightColor: Color(0xFF463B5C), child: Column(
+      children: [
+        Center(
+          child: Container(height: 100,
+            margin: EdgeInsets.symmetric(vertical: 16),
+            width: 100,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),
+                color: Color(0x72231532)),),
+        ),
+        Container(height: 20,
+          width: 60,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),
+              color: Color(0x72231532)),),
+        SizedBox(height: 5,),
+        Container(height: 20,
+          width: 60,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),
+              color: Color(0x72231532)),),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          padding:
+          const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+          decoration: BoxDecoration(
+            color:
+            const Color(0x72231532),
+            borderRadius: BorderRadius.circular(20),
+          ),),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          padding:
+          const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+          decoration: BoxDecoration(
+            color:
+            const Color(0x72231532),
+            borderRadius: BorderRadius.circular(20),
+          ),),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          padding:
+          const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+          decoration: BoxDecoration(
+            color:
+            const Color(0x72231532),
+            borderRadius: BorderRadius.circular(20),
+          ),), Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          padding:
+          const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+          decoration: BoxDecoration(
+            color:
+            const Color(0x72231532),
+            borderRadius: BorderRadius.circular(20),
+          ),), Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          padding:
+          const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+          decoration: BoxDecoration(
+            color:
+            const Color(0x72231532),
+            borderRadius: BorderRadius.circular(20),
+          ),)
+      ],
+    ),);
+  }
+
+  Widget ApprovalCard() {
+    return SizedBox(
+      height: 100,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        elevation: 1,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // First Row
+              Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: Colors.yellow.shade700,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "Approval Pending",
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.grey.shade500,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 4.0),
-                  child: Container(
-                    height: 24, // Diameter of the circle
-                    width: 24,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.red.shade400, width: 2),
-                    ),
-                    child: Center(
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: Icon(
-                          Icons.clear,
-                          size: 16,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          // Add your logic here
-                        },
+                ],
+              ),
+
+              // Second Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      "Manufacturing Team",
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4.0),
+                    child: Container(
+                      height: 24, // Diameter of the circle
+                      width: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Colors.red.shade400, width: 2),
+                      ),
+                      child: Center(
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.clear,
+                            size: 16,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            // Add your logic here
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-
+    );
+  }
 }
 
 class OptionTile extends StatelessWidget {

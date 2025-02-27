@@ -533,10 +533,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                   setState(() {
 
                                   });
-                                  Utility.showAlertDialog(context: context, msg: "Do you want to remove this member ",btnText: "Yes",onPositiveClick: (){
-                                    apiRemoveTeamMember(teamMember[0].id.toString() ?? "");
-                                  });
-                                },
+                                  showLogoutDialogForRemoveMember(context,index);
+                                  },
                                 onRoleChanged: (value) {
                                   setState(() {
                                     teamMember[index].role =
@@ -572,7 +570,35 @@ class _EditTeamPageState extends State<EditTeamPage> {
       ),
     );
   }
+  void showLogoutDialogForRemoveMember(BuildContext context,index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove Member'),
+          content: Text('Do you want to remove this member ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Utility.showLoader(context);
 
+                apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
+                // Close the dialog
+              },
+              child: Text('Remove'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> submitData({
     required String title,
     required String description,
