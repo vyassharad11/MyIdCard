@@ -527,7 +527,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                             itemBuilder: (ctx, index) {
                               return CustomRowWidget(
                                 description: teamMember[index].lastName,
-                                imageUrl: teamMember[index].avatar,
+                                imageUrl:"${Network.imgUrl}${teamMember[index].avatar ?? ""}",
                                 onDelete: () {
                                   selectedMemberIndex = index;
                                   setState(() {

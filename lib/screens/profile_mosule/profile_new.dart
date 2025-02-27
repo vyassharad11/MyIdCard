@@ -538,6 +538,8 @@ bool isLoad = true;
                                      child: Image.network(
                                        "${Network.imgUrl}${teamMember[0].avatar ??""}",
                                        fit: BoxFit.cover,
+                                       width: 30,
+                                       height: 30,
                                        errorBuilder: (context, error, stackTrace) {
                                          return Container(height: 16,width: 16,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(16)),);
                                        },
@@ -545,7 +547,7 @@ bool isLoad = true;
                                    ),
                                    SizedBox(width: 5,),
                                    if(teamMember.isNotEmpty) Text(
-                                     teamMember[0].name ?? "",
+                                     teamMember[0].firstName ?? "",
                                    ),
                                    if(teamMember.isNotEmpty && teamMember.length > 1)   SizedBox(width: 8,),
                                    if(teamMember.isNotEmpty && teamMember.length > 1)  Container(width: 1,height: 5,color: Colors.grey,),
@@ -554,6 +556,8 @@ bool isLoad = true;
                                      child: Image.network(
                                        "${Network.imgUrl}${teamMember[1].avatar ??""}",
                                        fit: BoxFit.cover,
+                                       width: 30,
+                                       height: 30,
                                        errorBuilder: (context, error, stackTrace) {
                                          return Container(height: 16,width: 16,decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(16)),);
                                        },
