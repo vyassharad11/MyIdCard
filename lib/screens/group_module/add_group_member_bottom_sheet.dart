@@ -8,6 +8,7 @@ import '../../models/group_member_model.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
+import '../../utils/widgets/network.dart';
 
 class AddGroupMemberBottomSheet extends StatefulWidget {
   final String? groupId;
@@ -149,7 +150,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
                     // Circle Image
                     CircleAvatar(
                       radius: 22,
-                      backgroundImage: NetworkImage(groupMember[index].avatar ?? ""),
+                      backgroundImage: NetworkImage("${Network.imgUrl}${groupMember[index].avatar ?? ""}"),
                       backgroundColor: Colors.grey.shade200,
                     ),
                     const SizedBox(width: 16),
@@ -188,6 +189,9 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
                     // Add Icon
                     InkWell(
                       onTap: (){
+                        setState(() {
+                          selectedIndex = index;
+                        });
                         apiAddGroupMember(groupMember[index].id.toString());
                       },
                       child: Image.asset(

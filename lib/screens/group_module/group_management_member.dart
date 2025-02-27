@@ -284,7 +284,7 @@ int selectedIndex = 0;
                               leading: CircleAvatar(
                                 radius: 25,
                                 backgroundImage:
-                                NetworkImage(myGroupList[index].groupLogo ?? ""),
+                                NetworkImage("${Network.imgUrl}${myGroupList[index].groupLogo ?? ""}"),
                               ),
                               title: Text(
                                 myGroupList[index].groupName ?? "",
@@ -446,7 +446,7 @@ int selectedIndex = 0;
                                           // Circle Image
                                           CircleAvatar(
                                             radius: 22,
-                                            backgroundImage: NetworkImage(groupMember[index].avatar ?? ""),
+                                            backgroundImage: NetworkImage("${Network.imgUrl}${groupMember[index].avatar ?? ""}"),
                                             backgroundColor: Colors.grey.shade200,
                                           ),
                                           const SizedBox(width: 16),
@@ -457,7 +457,7 @@ int selectedIndex = 0;
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  groupMember[index].firstName ?? "",
+                                                  "${groupMember[index].firstName ?? ""} ${groupMember[index].lastName ?? ""}",
                                                   maxLines: 1,
                                                   overflow: TextOverflow.ellipsis,
                                                   style: TextStyle(
@@ -466,16 +466,16 @@ int selectedIndex = 0;
                                                     color: Colors.black,
                                                   ),
                                                 ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  groupMember[index].lastName ?? "",
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.grey.shade700,
-                                                  ),
-                                                ),
+                                                // const SizedBox(height: 4),
+                                                // Text(
+                                                //   groupMember[index].lastName ?? "",
+                                                //   maxLines: 1,
+                                                //   overflow: TextOverflow.ellipsis,
+                                                //   style: TextStyle(
+                                                //     fontSize: 12,
+                                                //     color: Colors.grey.shade700,
+                                                //   ),
+                                                // ),
                                               ],
                                             ),
                                           ),
@@ -578,7 +578,7 @@ class CustomRowWidget extends StatelessWidget {
           // Circle Image
           CircleAvatar(
             radius: 22,
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: NetworkImage("${Network.imgUrl}$imageUrl"),
             backgroundColor: Colors.grey.shade200,
           ),
           const SizedBox(width: 16),
@@ -589,7 +589,7 @@ class CustomRowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  "$title $description",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -598,16 +598,16 @@ class CustomRowWidget extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
+                // const SizedBox(height: 4),
+                // Text(
+                //   description,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     color: Colors.grey.shade700,
+                //   ),
+                // ),
               ],
             ),
           ),

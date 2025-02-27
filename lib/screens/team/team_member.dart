@@ -460,7 +460,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                           itemBuilder: (ctx, index) {
                             return CustomRowWidget(
                               description: teamMember[index].lastName ?? "",
-                              imageUrl: teamMember[index].avatar ?? "",
+                              imageUrl: teamMember[index].avatar ?? "" ,
                               onDelete: () {
                                 setState(() {
                                   selectedIndex = index;
@@ -670,7 +670,7 @@ class CustomRowWidget extends StatelessWidget {
           // Circle Image
           CircleAvatar(
             radius: 22,
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: NetworkImage("${Network.imgUrl}$imageUrl"),
             backgroundColor: Colors.grey.shade200,
           ),
           const SizedBox(width: 16),
@@ -681,7 +681,7 @@ class CustomRowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  "$title $description",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -690,16 +690,16 @@ class CustomRowWidget extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
+                // const SizedBox(height: 4),
+                // Text(
+                //   description,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     color: Colors.grey.shade700,
+                //   ),
+                // ),
               ],
             ),
           ),

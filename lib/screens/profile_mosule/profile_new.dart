@@ -69,7 +69,6 @@ class _AccountPageState extends State<AccountPage> {
 
 
   void apiLeaveTeam() async {
-    Utility.showLoader(context);
     // Map<String, dynamic> data = {
     //   "user_id": userId.toString(),
     // };
@@ -187,6 +186,7 @@ class _AccountPageState extends State<AccountPage> {
                     message: state.errorMessage,
                     isError: true);
               } else if (state is ResponseStateSuccess) {
+                Utility.hideLoader(context);
                 var dto = state.data as UtilityDto;
                 fetchUserData();
                 fetchTeamData();
@@ -578,6 +578,7 @@ class _AccountPageState extends State<AccountPage> {
                                           "${Network.imgUrl}${teamMember[0]
                                               .avatar ?? ""}",
                                           fit: BoxFit.cover,
+                                          width: 16,height: 16,
                                           errorBuilder: (context, error,
                                               stackTrace) {
                                             return Container(height: 16,
@@ -591,7 +592,7 @@ class _AccountPageState extends State<AccountPage> {
                                       ),
                                       SizedBox(width: 5,),
                                       if(teamMember.isNotEmpty) Text(
-                                        teamMember[0].name ?? "",
+                                        teamMember[0].firstName ?? "",
                                       ),
                                       if(teamMember.isNotEmpty &&
                                           teamMember.length > 1) SizedBox(
@@ -605,6 +606,7 @@ class _AccountPageState extends State<AccountPage> {
                                           teamMember.length > 1) ClipRRect(
                                         borderRadius: BorderRadius.circular(16),
                                         child: Image.network(
+                                          height: 16,width: 16,
                                           "${Network.imgUrl}${teamMember[1]
                                               .avatar ?? ""}",
                                           fit: BoxFit.cover,
@@ -950,7 +952,7 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ),
                     if(user?.role == Role.towner.name ||
-                        user?.role == Role.tadmin.name) GestureDetector(
+                        user?.role == Role.tadmin.name || user?.role ==   Role.gadmin.name) GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -1258,4 +1260,4 @@ class OptionTile extends StatelessWidget {
 }
 
 
-enum Role{individual,member,tadmin,towner}
+enum Role{individual,member,tadmin,towner,gadmin}

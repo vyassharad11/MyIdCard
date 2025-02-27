@@ -296,7 +296,7 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiGetTag(@Path("url") url,
       @Header(authorization) token,@Path("id") id,);
 
-  @GET("{url}tag/get-team-tag")
+  @POST("{url}tag/get-team-tag")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TagModel>> apiGetTeamTag(@Path("url") url,

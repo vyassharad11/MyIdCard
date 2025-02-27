@@ -131,8 +131,15 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
           if(dto.user != null) {
             Storage().saveUserToPreferences(dto.user!);
           }
-          Navigator.push(context,
-              CupertinoPageRoute(builder: (builder) => SubscriptionScreen(isFromCreateProfile: true,)));
+          if(teamCode.text.isNotEmpty) {
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (builder) =>
+                    FirstCardScreen()));
+          }else{
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (builder) =>
+                    SubscriptionScreen(isFromCreateProfile: true,)));
+          }
            Utility().showFlushBar(context: context, message: dto.message ?? "");
         }
         setState(() {});
