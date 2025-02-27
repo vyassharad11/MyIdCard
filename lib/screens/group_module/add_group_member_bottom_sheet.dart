@@ -8,6 +8,7 @@ import '../../models/group_member_model.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
+import '../../utils/widgets/network.dart';
 
 class AddGroupMemberBottomSheet extends StatefulWidget {
   final String? groupId;
@@ -27,7 +28,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
   void initState() {
     _addGroupMemberCubit = GroupCubit(GroupRepository());
     _getActiveMember = GroupCubit(GroupRepository());
-    apiGetActiveMemberForGroup();
+    apiGetActiveMemberForGroup("");
     // TODO: implement initState
     super.initState();
   }
@@ -42,9 +43,9 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
     super.dispose();
   }
 
-  Future<void> apiGetActiveMemberForGroup() async {
+  Future<void> apiGetActiveMemberForGroup(key) async {
     Map<String, dynamic> data = {
-      "key_word": "",
+      "key_word": key,
       "page": 1,
     };
     Utility.showLoader(context);
@@ -78,7 +79,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
                 Utility.hideLoader(context);
                 var dto = state.data as GroupMember;
                 groupMember.clear();
-                groupMember.addAll(dto.data ?? []);
+                groupMember.addAll(dto.data?.data ?? []);
               }
               setState(() {});
             },
@@ -120,6 +121,9 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
             Text("Add Members",style: TextStyle(fontSize: 16,fontWeight:FontWeight.w500 ),),
             SizedBox(height: 16,),
             if(groupMember.isNotEmpty)  TextField(
+              onChanged: (v){
+                apiGetActiveMemberForGroup(v);
+              },
               decoration: InputDecoration(
                 contentPadding:
                 EdgeInsets.symmetric(horizontal: 14, vertical: 1),
@@ -146,7 +150,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
                     // Circle Image
                     CircleAvatar(
                       radius: 22,
-                      backgroundImage: NetworkImage(groupMember[index].avatar ?? ""),
+                      backgroundImage: NetworkImage("${Network.imgUrl}${groupMember[index].avatar ?? ""}"),
                       backgroundColor: Colors.grey.shade200,
                     ),
                     const SizedBox(width: 16),
@@ -185,6 +189,9 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
                     // Add Icon
                     InkWell(
                       onTap: (){
+                        setState(() {
+                          selectedIndex = index;
+                        });
                         apiAddGroupMember(groupMember[index].id.toString());
                       },
                       child: Image.asset(

@@ -10,7 +10,7 @@ String groupMemberToJson(GroupMember data) => json.encode(data.toJson());
 
 class GroupMember {
   bool? status;
-  List<MemberDatum>? data;
+  Data? data;
 
   GroupMember({
     this.status,
@@ -19,26 +19,89 @@ class GroupMember {
 
   factory GroupMember.fromJson(Map<String, dynamic> json) => GroupMember(
     status: json["status"],
-    data: json["data"] == null ? [] : List<MemberDatum>.from(json["data"]!.map((x) => MemberDatum.fromJson(x))),
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
+    "data": data?.toJson(),
+  };
+}
+
+class Data {
+  int? currentPage;
+  List<MemberDatum>? data;
+  String? firstPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
+  List<Link>? links;
+  dynamic nextPageUrl;
+  String? path;
+  int? perPage;
+  dynamic prevPageUrl;
+  int? to;
+  int? total;
+
+  Data({
+    this.currentPage,
+    this.data,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.links,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+    currentPage: json["current_page"],
+    data: json["data"] == null ? [] : List<MemberDatum>.from(json["data"]!.map((x) => MemberDatum.fromJson(x))),
+    firstPageUrl: json["first_page_url"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    lastPageUrl: json["last_page_url"],
+    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+    nextPageUrl: json["next_page_url"],
+    path: json["path"],
+    perPage: json["per_page"],
+    prevPageUrl: json["prev_page_url"],
+    to: json["to"],
+    total: json["total"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "current_page": currentPage,
     "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "first_page_url": firstPageUrl,
+    "from": from,
+    "last_page": lastPage,
+    "last_page_url": lastPageUrl,
+    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "next_page_url": nextPageUrl,
+    "path": path,
+    "per_page": perPage,
+    "prev_page_url": prevPageUrl,
+    "to": to,
+    "total": total,
   };
 }
 
 class MemberDatum {
   int? id;
   dynamic name;
-  dynamic firstName;
-  dynamic lastName;
-  dynamic role;
+  String? firstName;
+  String? lastName;
   String? email;
   DateTime? emailVerifiedAt;
   String? mode;
   int? userStatusId;
-  dynamic teamId;
+  int? teamId;
   int? groupId;
   int? planId;
   int? profile;
@@ -47,13 +110,13 @@ class MemberDatum {
   dynamic phonenumber;
   dynamic providerId;
   dynamic avatar;
+  String? role;
 
   MemberDatum({
     this.id,
     this.name,
     this.firstName,
     this.lastName,
-    this.role,
     this.email,
     this.emailVerifiedAt,
     this.mode,
@@ -67,6 +130,7 @@ class MemberDatum {
     this.phonenumber,
     this.providerId,
     this.avatar,
+    this.role,
   });
 
   factory MemberDatum.fromJson(Map<String, dynamic> json) => MemberDatum(
@@ -74,7 +138,6 @@ class MemberDatum {
     name: json["name"],
     firstName: json["first_name"],
     lastName: json["last_name"],
-    role: json["role"],
     email: json["email"],
     emailVerifiedAt: json["email_verified_at"] == null ? null : DateTime.parse(json["email_verified_at"]),
     mode: json["mode"],
@@ -88,6 +151,7 @@ class MemberDatum {
     phonenumber: json["phonenumber"],
     providerId: json["provider_id"],
     avatar: json["avatar"],
+    role: json["role"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -108,5 +172,30 @@ class MemberDatum {
     "phonenumber": phonenumber,
     "provider_id": providerId,
     "avatar": avatar,
+    "role": role,
+  };
+}
+
+class Link {
+  String? url;
+  String? label;
+  bool? active;
+
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
+
+  factory Link.fromJson(Map<String, dynamic> json) => Link(
+    url: json["url"],
+    label: json["label"],
+    active: json["active"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "url": url,
+    "label": label,
+    "active": active,
   };
 }

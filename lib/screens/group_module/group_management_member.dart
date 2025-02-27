@@ -69,7 +69,7 @@ int selectedIndex = 0;
 
 
   Future<void> apiGetActiveMemberForGroup(key) async {
-    Utility.showLoader(context);
+    // Utility.showLoader(context);
     Map<String, dynamic> data = {
       "key_word": key,
       "page": 1,
@@ -111,8 +111,8 @@ int selectedIndex = 0;
           } else if (state is ResponseStateSuccess) {
             Utility.hideLoader(context);
             var dto = state.data as GroupMember;
-            groupMember.clear();
-            groupMember.addAll(dto.data ?? []);
+            groupAllMember.clear();
+            groupAllMember.addAll(dto.data?.data ?? []);
           }
           setState(() {});
         },),
@@ -165,8 +165,8 @@ int selectedIndex = 0;
           } else if (state is ResponseStateSuccess) {
             Utility.hideLoader(context);
             var dto = state.data as GroupMember;
-            groupAllMember.clear();
-            groupAllMember.addAll(dto.data ?? []);
+            groupMember.clear();
+            groupMember.addAll(dto.data?.data ?? []);
           }
           setState(() {});
         },),
@@ -284,7 +284,7 @@ int selectedIndex = 0;
                               leading: CircleAvatar(
                                 radius: 25,
                                 backgroundImage:
-                                NetworkImage(myGroupList[index].groupLogo ?? ""),
+                                NetworkImage("${Network.imgUrl}${myGroupList[index].groupLogo ?? ""}"),
                               ),
                               title: Text(
                                 myGroupList[index].groupName ?? "",
@@ -313,8 +313,8 @@ int selectedIndex = 0;
                                       setState(() {
 
                                       });
-                                      Utility.showLoader(context);
-                                      apiDeleteGroup(myGroupList[index].id);
+                                      showLogoutDialogForDeleteGroup(context,index);
+
                                       break;
                                   }
                                 },
@@ -446,7 +446,7 @@ int selectedIndex = 0;
                                           // Circle Image
                                           CircleAvatar(
                                             radius: 22,
-                                            backgroundImage: NetworkImage(groupMember[index].avatar ?? ""),
+                                            backgroundImage: NetworkImage("${Network.imgUrl}${groupMember[index].avatar ?? ""}"),
                                             backgroundColor: Colors.grey.shade200,
                                           ),
                                           const SizedBox(width: 16),
@@ -457,7 +457,7 @@ int selectedIndex = 0;
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  groupMember[index].name ?? "",
+                                                  "${groupMember[index].firstName ?? ""} ${groupMember[index].lastName ?? ""}",
                                                   maxLines: 1,
                                                   overflow: TextOverflow.ellipsis,
                                                   style: TextStyle(
@@ -466,16 +466,16 @@ int selectedIndex = 0;
                                                     color: Colors.black,
                                                   ),
                                                 ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  groupMember[index].lastName ?? "",
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.grey.shade700,
-                                                  ),
-                                                ),
+                                                // const SizedBox(height: 4),
+                                                // Text(
+                                                //   groupMember[index].lastName ?? "",
+                                                //   maxLines: 1,
+                                                //   overflow: TextOverflow.ellipsis,
+                                                //   style: TextStyle(
+                                                //     fontSize: 12,
+                                                //     color: Colors.grey.shade700,
+                                                //   ),
+                                                // ),
                                               ],
                                             ),
                                           ),
@@ -490,15 +490,15 @@ int selectedIndex = 0;
                                   padding: EdgeInsets.only(),
                                   itemBuilder: (ctx, index) {
                                     return CustomRowWidget(
-                                      description: groupAllMember[index].lastName,
-                                      imageUrl: "asd",
+                                      description: groupAllMember[index].lastName ?? "",
+                                      imageUrl: groupAllMember[index].avatar ?? "",
                                       // onDelete: () {},
                                       // onRoleChanged: (value) {
                                       //   setState(() {
                                       //     selecteValie = value;
                                       //   });
                                       // },
-                                      title: groupAllMember[index].firstName,
+                                      title: groupAllMember[index].firstName ?? "",
                                       // initialRole: selecteValie,
                                     );
                                   },
@@ -520,7 +520,35 @@ int selectedIndex = 0;
   }
 
 
+  void showLogoutDialogForDeleteGroup(BuildContext context,index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Group'),
+          content: Text('Do you want to delete this group ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Utility.showLoader(context);
 
+                apiDeleteGroup(myGroupList[index].id);
+                // Close the dialog
+              },
+              child: Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class CustomRowWidget extends StatelessWidget {
@@ -550,7 +578,7 @@ class CustomRowWidget extends StatelessWidget {
           // Circle Image
           CircleAvatar(
             radius: 22,
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: NetworkImage("${Network.imgUrl}$imageUrl"),
             backgroundColor: Colors.grey.shade200,
           ),
           const SizedBox(width: 16),
@@ -561,7 +589,7 @@ class CustomRowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  "$title $description",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -570,16 +598,16 @@ class CustomRowWidget extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
+                // const SizedBox(height: 4),
+                // Text(
+                //   description,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     color: Colors.grey.shade700,
+                //   ),
+                // ),
               ],
             ),
           ),

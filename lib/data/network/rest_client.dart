@@ -176,6 +176,13 @@ abstract class RestClient {
       @Header(authorization) token,@Body() body,);
 
 
+ @GET("{url}team/leave/team")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiLeaveTeam(@Path("url") url,
+      @Header(authorization) token,);
+
+
  @POST("{url}team/approve-team-member")
   @Header(headerValue)
   @Header(headerContentType)
@@ -231,14 +238,14 @@ abstract class RestClient {
       @Header(authorization) token);
 
 
-@GET("{url}group/get-group-member/{id}")
+@POST("{url}group/get-group-member/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetGroupMember(@Path("url") url,
       @Header(authorization) token,@Path("id") id,@Body() body,);
 
 
-@GET("{url}group/get-my-group-members")
+@POST("{url}group/get-my-group-members")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetAllGroupMembers(@Path("url") url,
@@ -289,7 +296,7 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiGetTag(@Path("url") url,
       @Header(authorization) token,@Path("id") id,);
 
-  @GET("{url}tag/get-team-tag")
+  @POST("{url}tag/get-team-tag")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TagModel>> apiGetTeamTag(@Path("url") url,

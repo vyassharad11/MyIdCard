@@ -533,10 +533,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                   setState(() {
 
                                   });
-                                  Utility.showAlertDialog(context: context, msg: "Do you want to remove this member ",btnText: "Yes",onPositiveClick: (){
-                                    apiRemoveTeamMember(teamMember[0].id.toString() ?? "");
-                                  });
-                                },
+                                  showLogoutDialogForRemoveMember(context,index);
+                                  },
                                 onRoleChanged: (value) {
                                   setState(() {
                                     teamMember[index].role =
@@ -572,7 +570,35 @@ class _EditTeamPageState extends State<EditTeamPage> {
       ),
     );
   }
+  void showLogoutDialogForRemoveMember(BuildContext context,index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove Member'),
+          content: Text('Do you want to remove this member ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Utility.showLoader(context);
 
+                apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
+                // Close the dialog
+              },
+              child: Text('Remove'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> submitData({
     required String title,
     required String description,
@@ -757,7 +783,7 @@ class CustomRowWidget extends StatelessWidget {
           // Circle Image
           CircleAvatar(
             radius: 22,
-            backgroundImage: NetworkImage(imageUrl ?? ""),
+            backgroundImage: NetworkImage("${Network.imgUrl}${imageUrl ?? ""}"),
             backgroundColor: Colors.grey.shade200,
           ),
           const SizedBox(width: 16),
@@ -768,7 +794,7 @@ class CustomRowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  "$title $description",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -777,16 +803,16 @@ class CustomRowWidget extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
+                // const SizedBox(height: 4),
+                // Text(
+                //   description,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     color: Colors.grey.shade700,
+                //   ),
+                // ),
               ],
             ),
           ),

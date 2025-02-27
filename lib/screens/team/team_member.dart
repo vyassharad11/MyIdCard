@@ -433,6 +433,9 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
                       // Search Box
                       TextField(
+                        onChanged: (v){
+                          getTeamMembers(0,v);
+                        },
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 14, vertical: 1),
@@ -457,12 +460,12 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                           itemBuilder: (ctx, index) {
                             return CustomRowWidget(
                               description: teamMember[index].lastName ?? "",
-                              imageUrl: "${Network.imgUrl}${teamMember[index].avatar ?? ""}" ,
+                              imageUrl: teamMember[index].avatar ?? "" ,
                               onDelete: () {
                                 setState(() {
                                   selectedIndex = index;
                                 });
-                                apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
+                                showLogoutDialogForRemoveMember(context,index);
                               },
                               onRoleChanged: (value) {
                                 setState(() {
@@ -486,7 +489,34 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       ),
     );
   }
-
+  void showLogoutDialogForRemoveMember(BuildContext context,index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove Member'),
+          content: Text('Do you want to remove this member ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Utility.showLoader(context);
+                apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
+                // Close the dialog
+              },
+              child: Text('Remove'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
@@ -640,7 +670,7 @@ class CustomRowWidget extends StatelessWidget {
           // Circle Image
           CircleAvatar(
             radius: 22,
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: NetworkImage("${Network.imgUrl}$imageUrl"),
             backgroundColor: Colors.grey.shade200,
           ),
           const SizedBox(width: 16),
@@ -651,7 +681,7 @@ class CustomRowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  "$title $description",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -660,16 +690,16 @@ class CustomRowWidget extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
+                // const SizedBox(height: 4),
+                // Text(
+                //   description,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     color: Colors.grey.shade700,
+                //   ),
+                // ),
               ],
             ),
           ),
