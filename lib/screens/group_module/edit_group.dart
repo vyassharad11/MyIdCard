@@ -89,9 +89,9 @@ class _EditGroupPageState extends State<EditGroupPage> {
   var data=null;
   if (!cardImage.path.contains("storage")) {
     data = FormData.fromMap({
-      if(_selectedImage != null && cardImage.path.isNotEmpty)
+      if(cardImage != null && cardImage.path.isNotEmpty)
         'group_logo':
-      await MultipartFile.fromFile(cardImage.path, filename: "demo1.png"),
+      await MultipartFile.fromFile(cardImage.path, filename: "demo.png"),
       'group_name': title,
       'group_description': description,
       'admin_id' : "",
