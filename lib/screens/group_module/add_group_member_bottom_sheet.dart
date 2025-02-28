@@ -113,7 +113,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
   Widget _getBody(){
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding:  EdgeInsets.only(right: 16.0,left: 16,bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

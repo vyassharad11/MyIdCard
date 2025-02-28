@@ -192,9 +192,8 @@ class _AccountPageState extends State<AccountPage> {
                 var dto = state.data as UtilityDto;
                 // fetchUserData();
                 // fetchTeamData();
-                Utility().showFlushBar(
-                    context: context, message: dto.message ?? "");
                 clearSharedPreferences();
+
 
               }
               setState(() {
@@ -222,10 +221,7 @@ class _AccountPageState extends State<AccountPage> {
               } else if (state is ResponseStateSuccess) {
                 Utility.hideLoader(context);
                 var dto = state.data as UtilityDto;
-                fetchUserData();
-                fetchTeamData();
-                Utility().showFlushBar(
-                    context: context, message: dto.message ?? "");
+                clearSharedPreferences();
               }
               setState(() {
 
@@ -515,8 +511,7 @@ class _AccountPageState extends State<AccountPage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "(${ user?.role == Role.tadmin.name ? "Team Admin" :
-                        user?.role == Role.towner.name ? "Team Owner" : user!
-                            .role.toString()})",
+                        user?.role == Role.towner.name ? "Team Owner" : user?.role.toString()})",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -1003,7 +998,7 @@ class _AccountPageState extends State<AccountPage> {
                     if(user?.role != null &&
                         user?.role == Role.towner.name) GestureDetector(
                       onTap: () {
-                        showLogoutDialogForDeleteTeam(context);
+                        // showLogoutDialogForDeleteTeam(context);
                       },
                       child: Container(
                         height: 53,

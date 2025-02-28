@@ -532,6 +532,9 @@ class _EditGroupPageState extends State<EditGroupPage> {
                         onChanged: (value){
                           fetchGroupMember(value);
                         },
+                        onTapOutside: (v){
+                          Utility.hideKeyboard(context);
+                        },
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 14, vertical: 1),
@@ -591,7 +594,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                               initialRole: groupMember[index].role.toString() == "member" ? "Member": "Admin",
                             );
                           },
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: AlwaysScrollableScrollPhysics(),
                         ),
                       ),
                     ],
