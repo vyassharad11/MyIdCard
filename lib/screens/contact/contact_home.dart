@@ -22,7 +22,7 @@ class ContactHomeScreen extends StatefulWidget {
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
   GroupCubit? _getTagCubit;
 
-  List<TagDatum> tags = [];
+  List<Datum> tags = [];
 
 
   @override
@@ -66,7 +66,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as TagModel;
-              tags = dto.data ?? [];
+              tags = dto.data?.data ?? [];
             }
             setState(() {});
           },

@@ -176,7 +176,7 @@ abstract class RestClient {
       @Header(authorization) token,@Body() body,);
 
 
- @GET("{url}team/leave/team")
+ @GET("{url}team/leave-team")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiLeaveTeam(@Path("url") url,

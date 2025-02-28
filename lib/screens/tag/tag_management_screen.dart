@@ -21,7 +21,7 @@ class TagManagementScreen extends StatefulWidget {
 class _TagManagementScreenState extends State<TagManagementScreen> {
   GroupCubit? _getTagCubit, addTagCubit, deleteTag, _updateTag;
 
-  List<TagDatum> tags = [];
+  List<Datum> tags = [];
   int selectedIndex = 0;
   bool isLoad = true;
 
@@ -100,7 +100,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as TagModel;
-              tags = dto.data ?? [];
+              tags = dto.data?.data ?? [];
               isLoad = false;
             }
             setState(() {});

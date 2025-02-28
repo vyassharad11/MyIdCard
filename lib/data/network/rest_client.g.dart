@@ -780,7 +780,7 @@ class _RestClient implements RestClient {
     )
         .compose(
           _dio.options,
-          '${url}team/leave/team',
+          '${url}team/leave-team',
           queryParameters: queryParameters,
           data: _data,
         )

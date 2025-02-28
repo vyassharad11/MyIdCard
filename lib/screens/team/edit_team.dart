@@ -783,7 +783,7 @@ class CustomRowWidget extends StatelessWidget {
           // Circle Image
           CircleAvatar(
             radius: 22,
-            backgroundImage: NetworkImage("${Network.imgUrl}${imageUrl ?? ""}"),
+            backgroundImage: NetworkImage(imageUrl ?? ""),
             backgroundColor: Colors.grey.shade200,
           ),
           const SizedBox(width: 16),

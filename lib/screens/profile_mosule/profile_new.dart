@@ -29,12 +29,15 @@ import '../../models/team_member.dart';
 import '../../models/team_response.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
+import '../auth_module/welcome_screen.dart';
 import '../group_module/create_group.dart';
 import '../group_module/group_management_member.dart';
 import '../subscription_module/buy_preview_subscription.dart';
 import '../subscription_module/subscription_screen.dart';
 import '../tag/tag_management_screen.dart';
 import '../team/edit_team.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -44,6 +47,8 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  late SharedPreferences prefs;
+
   TeamCubit? getTeamCubit, _getTeamMember, _deleteTeamCubit, _removeMember;
   GroupCubit? getGroupCubit;
   AuthCubit?_authCubit, _completeProfileCubit;
@@ -61,6 +66,9 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<void> fetchTeamData() async {
     getTeamCubit?.apiGetMyTeam();
+  }
+  void sharedPreInit() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> fetchGroupData() async {
@@ -90,6 +98,7 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   void initState() {
+    sharedPreInit();
     getTeamCubit = TeamCubit(TeamRepository());
     _getTeamMember = TeamCubit(TeamRepository());
     _deleteTeamCubit = TeamCubit(TeamRepository());
@@ -101,6 +110,29 @@ class _AccountPageState extends State<AccountPage> {
     // fetchGroupData();
     super.initState();
   }
+
+  Future<void> clearSharedPreferences() async {
+
+    bool success = await prefs.clear(); // Clears all key-value pairs
+    if (success) {
+      Future.delayed(
+        const Duration(seconds: 2),
+            () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (builder) => WelcomePage()),
+                (route) => false,
+          );
+          Utility.hideLoader(context);
+        },
+      );
+
+      debugPrint("SharedPreferences cleared successfully.");
+    } else {
+      debugPrint("Failed to clear SharedPreferences.");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -158,10 +190,12 @@ class _AccountPageState extends State<AccountPage> {
                     isError: true);
               } else if (state is ResponseStateSuccess) {
                 var dto = state.data as UtilityDto;
-                fetchUserData();
-                fetchTeamData();
+                // fetchUserData();
+                // fetchTeamData();
                 Utility().showFlushBar(
                     context: context, message: dto.message ?? "");
+                clearSharedPreferences();
+
               }
               setState(() {
 
@@ -1042,7 +1076,7 @@ class _AccountPageState extends State<AccountPage> {
               onPressed: () {
                 // Perform delete action here
                 Utility.showLoader(context);
-
+                Navigator.of(context).pop();
                 apiLeaveTeam();
                 // Close the dialog
               },
