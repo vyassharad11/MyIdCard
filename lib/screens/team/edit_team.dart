@@ -502,6 +502,9 @@ class _EditTeamPageState extends State<EditTeamPage> {
                           onChanged: (value){
                             getTeamMembers(0, value);
                           },
+                          onTapOutside: (v){
+                            Utility.hideKeyboard(context);
+                          },
                           decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 14, vertical: 1),
@@ -557,7 +560,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                 title: teamMember[index].firstName,
                               );
                             },
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: AlwaysScrollableScrollPhysics(),
                           ),
                         ),
                       ],

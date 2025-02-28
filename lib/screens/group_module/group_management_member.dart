@@ -414,6 +414,9 @@ int selectedIndex = 0;
                               fetchGroupMember(value);
                               apiGetActiveMemberForGroup(value);
                             },
+                            onTapOutside: (v){
+                              Utility.hideKeyboard(context);
+                            },
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 14, vertical: 1),
