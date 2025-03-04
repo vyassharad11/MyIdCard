@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/utility.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
 
@@ -65,7 +68,9 @@ class _ContactDetailsState extends State<ContactDetails> {
             ),
             onTap: () {
               Navigator.pop(context);
-              // Add functionality here
+              requestPermissions().then((value) {
+                addContact();
+              },);            // Add functionality here
             },
           ),
           const Divider(
@@ -87,6 +92,33 @@ class _ContactDetailsState extends State<ContactDetails> {
         ],
       ),
     );
+  }
+
+
+  Future<void> requestPermissions() async {
+    PermissionStatus permission = await Permission.contacts.request();
+    if (!permission.isGranted) {
+      // Handle the case where the user denies permission
+    }
+  }
+
+
+  Future<void> addContact() async {
+    // Make sure permissions are granted
+    if (await FlutterContacts.requestPermission()) {
+      // Create a new contact
+      final newContact = Contact()
+        ..name.first = 'John'
+        ..name.last = 'Doe'
+        ..phones = [Phone('')];  // Add the phone number here
+
+      try {
+        await FlutterContacts.insertContact(newContact);
+        Utility().showFlushBar(context: context,message: 'Contact added successfully');
+      } catch (e) {
+        print('Error adding contact: $e');
+      }
+    }
   }
 
   @override

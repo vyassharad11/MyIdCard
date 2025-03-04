@@ -120,7 +120,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
             SizedBox(height: 24,),
             Text("Add Members",style: TextStyle(fontSize: 16,fontWeight:FontWeight.w500 ),),
             SizedBox(height: 16,),
-            if(groupMember.isNotEmpty)  TextField(
+           TextField(
               onChanged: (v){
                 apiGetActiveMemberForGroup(v);
               },
@@ -137,7 +137,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            if(groupMember.isNotEmpty)  const SizedBox(height: 10),
            if(groupMember.isNotEmpty) ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
