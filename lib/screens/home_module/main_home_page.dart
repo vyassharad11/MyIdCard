@@ -544,7 +544,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 BorderRadius.vertical(top: Radius.circular(20)),
                           ),
                           builder: (context) => ScanQrCodeBottomSheet(),
-                        );
+                        ).then((value) {
+                          if(value != null){
+                            apiA
+                          }
+                        },);
                       },
                       child: Card(
                         shape: RoundedRectangleBorder(

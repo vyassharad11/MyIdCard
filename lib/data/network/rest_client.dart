@@ -12,6 +12,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
@@ -314,5 +315,24 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteTag(@Path("url") url,
       @Header(authorization) token,@Path("id") id,);
+
+  @GET("{url}contact/get-my-card")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<MyContactDto>> apiGetMyContact(@Path("url") url,
+      @Header(authorization) token);
+
+  @GET("{url}card/show/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<ContactDetailsDatum>> apiGetContactByQr(@Path("url") url,
+      @Header(authorization) token,@Path("id") id ,);
+
+  @GET("{url}contact/store")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiAddContact(@Path("url") url,
+      @Header(authorization) token,@Body() body ,);
+
 
 }

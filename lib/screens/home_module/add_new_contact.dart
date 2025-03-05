@@ -115,6 +115,7 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
                 /// The row string scanned barcode value
                 final String? scannedValue =
                 capture.barcodes.first.rawValue;
+                Navigator.pop(context,scannedValue?.split('/')[-1]);
                 debugPrint("Barcode scanned: $scannedValue");
 
                 /// The `Uint8List` image is only available if `returnImage` is set to `true`.
