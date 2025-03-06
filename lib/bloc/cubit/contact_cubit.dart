@@ -40,12 +40,12 @@ class ContactCubit extends Cubit<ResponseState> {
   }
 
 
-  Future<void> apiGetContactByQr(id) async {
+  Future<void> apiGetContactDetail(id) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     ContactDetailsDatum dto;
     try {
-      httpResponse = await contactRepository.apiGetContactByQr(id);
+      httpResponse = await contactRepository.apiGetContactDetail(id);
       dto = httpResponse.data as ContactDetailsDatum;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
@@ -56,10 +56,10 @@ class ContactCubit extends Cubit<ResponseState> {
   Future<void> apiAddContact(body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    ContactDetailsDatum dto;
+    UtilityDto dto;
     try {
       httpResponse = await contactRepository.apiAddContact(body);
-      dto = httpResponse.data as ContactDetailsDatum;
+      dto = httpResponse.data as UtilityDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));

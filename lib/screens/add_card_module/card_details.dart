@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_di_card/screens/add_card_module/create_card_user.dart';
+import 'package:my_di_card/screens/add_card_module/share_card_bottom_sheet.dart';
 
 import '../../language/app_localizations.dart';
+import '../../models/card_list.dart';
 import '../meetings/metting_details.dart';
 
 class CardDetails extends StatefulWidget {
-  const CardDetails({super.key});
+  final CardData? cardData;
+  const CardDetails({super.key,this.cardData});
 
   @override
   State<CardDetails> createState() => _CardDetailsState();
@@ -92,29 +95,27 @@ class _CardDetailsState extends State<CardDetails> {
                                       height: 17,
                                     ),
                                     Text(
-                                      AppLocalizations.of(context)
-                                          .translate('userName'),
+                                    widget.cardData?.firstName ?? "",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black),
                                     ),
                                     Text(
-                                      AppLocalizations.of(context)
-                                          .translate('userName'),
+                                      widget.cardData?.lastName ?? "",
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.normal,
                                           color: Colors.black45),
                                     ),
-                                    Text(
-                                      AppLocalizations.of(context)
-                                          .translate('userName'),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black45),
-                                    ),
+                                    // Text(
+                                    //   AppLocalizations.of(context)
+                                    //       .translate('userName'),
+                                    //   style: TextStyle(
+                                    //       fontSize: 14,
+                                    //       fontWeight: FontWeight.normal,
+                                    //       color: Colors.black45),
+                                    // ),
                                   ],
                                 ),
                                 SizedBox(
@@ -123,8 +124,18 @@ class _CardDetailsState extends State<CardDetails> {
                                   child: ElevatedButton(
                                    // iconAlignment: IconAlignment.start,
                                     onPressed: () {
-                                      // Handle button press
-                                    },
+                                      showModalBottomSheet(
+                                        context: context,
+                                        useSafeArea: true,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.vertical(top: Radius.circular(20)),
+                                        ),
+                                        builder: (context) => ShareCardBottomSheet(
+                                          cardData: widget.cardData,
+                                        ),
+                                      );                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Colors.blue, // Background color

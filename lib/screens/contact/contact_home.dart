@@ -2,6 +2,7 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/bloc/cubit/contact_cubit.dart';
 import 'package:my_di_card/data/repository/contact_repository.dart';
 import 'package:my_di_card/data/repository/group_repository.dart';
@@ -14,6 +15,7 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
 import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
+import '../home_module/add_new_contact.dart';
 import '../tag/tag_management_screen.dart';
 import 'contact_notes.dart';
 
@@ -107,6 +109,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as MyContactDto;
+              myContactList = [];
               myContactList = dto.data ?? [];
             }
             setState(() {});
@@ -130,9 +133,9 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
               Utility().showFlushBar(context: context,message: state.errorMessage,isError: true);
                   } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              Navigator.pop(context);
               var dto = state.data as UtilityDto;
               Utility().showFlushBar(context: context, message: dto.message ?? "");
+              apiGetMyContact();
             }
             setState(() {});
           },
@@ -159,11 +162,19 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                   child: InkWell(
                     splashColor: Colors.blue, // Splash color
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (builder) => const ContactDetails(),
+                      showModalBottomSheet(
+                        context: context,
+                        useSafeArea: true,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
                         ),
+                        builder: (context) => ScanQrCodeBottomSheet(callBack: (v){
+                          Navigator.pop(context);
+                          context.loaderOverlay.show();
+                          apiAddContact(v);
+                        },),
                       );
                     },
                     child: const SizedBox(
@@ -399,7 +410,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (builder) => const ContactDetails(),
+                      builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,),
                     ),
                   );
                   // Add your onTap functionality here if needed

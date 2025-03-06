@@ -3,7 +3,7 @@ import 'card_get_model.dart';
 class CardListModel {
   bool? status;
   dynamic message;
-  List<Data>? data;
+  List<CardData>? data;
 
   CardListModel({this.status, this.message, this.data});
 
@@ -11,9 +11,9 @@ class CardListModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <CardData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(CardData.fromJson(v));
       });
     }
   }
@@ -29,7 +29,7 @@ class CardListModel {
   }
 }
 
-class Data {
+class CardData {
   int? id;
   dynamic userId;
   dynamic languageId;
@@ -50,10 +50,11 @@ class Data {
   dynamic stepNo;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic qrCode;
   List<CardDocuments>? cardDocuments;
   List<CardSocials>? cardSocials;
 
-  Data(
+  CardData(
       {this.id,
       this.userId,
       this.languageId,
@@ -75,9 +76,10 @@ class Data {
       this.createdAt,
       this.updatedAt,
       this.cardDocuments,
+      this.qrCode,
       this.cardSocials});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CardData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     languageId = json['language_id'];
@@ -98,6 +100,7 @@ class Data {
     stepNo = json['step_no'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    qrCode = json['qr_code'];
     if (json['cardDocuments'] != null) {
       cardDocuments = <CardDocuments>[];
       json['cardDocuments'].forEach((v) {
@@ -134,6 +137,7 @@ class Data {
     data['step_no'] = stepNo;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['qr_code'] = qrCode;
     if (cardDocuments != null) {
             data['cardDocuments'] = cardDocuments!.map((v) => v.toJson()).toList();
     }

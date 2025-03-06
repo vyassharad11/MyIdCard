@@ -1622,7 +1622,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<HttpResponse<ContactDetailsDatum>> apiGetContactByQr(
+  Future<HttpResponse<ContactDetailsDatum>> apiGetContactDetail(
     dynamic url,
     dynamic token,
     dynamic id,
@@ -1672,7 +1672,7 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )

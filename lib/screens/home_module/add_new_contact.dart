@@ -1,11 +1,13 @@
 // import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
+
 import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 class ScanQrCodeBottomSheet extends StatelessWidget {
-  const ScanQrCodeBottomSheet({super.key});
+  Function callBack;
+   ScanQrCodeBottomSheet({super.key,required this.callBack});
 
   Future<void> scanQR() async {
     String barcodeScanRes;
@@ -107,7 +109,7 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
                   /// You can write your own logic here.
                   debugPrint("Barcode scanner disposed!");
               },
-                hideGalleryButton: false,
+                hideGalleryButton: true,
                 controller: MobileScannerController(
                 detectionSpeed: DetectionSpeed.noDuplicates,
                 ),
@@ -115,8 +117,11 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
                 /// The row string scanned barcode value
                 final String? scannedValue =
                 capture.barcodes.first.rawValue;
-                Navigator.pop(context,scannedValue?.split('/')[-1]);
-                debugPrint("Barcode scanned: $scannedValue");
+                RegExp regExp = RegExp(r"(\d+)$");
+                String? extractedNumber = regExp.firstMatch(scannedValue ?? "")?.group(0);
+                Navigator.pop(context,);
+                callBack.call(extractedNumber);
+                debugPrint("Barcode scanned: $extractedNumber");
 
                 /// The `Uint8List` image is only available if `returnImage` is set to `true`.
                 // final Uint8List? image = capture.image;

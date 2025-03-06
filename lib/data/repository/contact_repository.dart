@@ -41,11 +41,11 @@ class ContactRepository {
   }
 
 
-  Future<HttpResponse<ContactDetailsDatum>> apiGetContactByQr(id) async {
+  Future<HttpResponse<ContactDetailsDatum>> apiGetContactDetail(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetContactByQr(dto,token2,id);
+    return _apiClient.apiGetContactDetail(dto,token2,id);
   }
 
   Future<HttpResponse<UtilityDto>> apiAddContact(body) async {

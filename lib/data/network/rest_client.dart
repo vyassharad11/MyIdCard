@@ -325,10 +325,10 @@ abstract class RestClient {
   @GET("{url}card/show/{id}")
   @Header(headerValue)
   @Header(headerContentType)
-  Future<HttpResponse<ContactDetailsDatum>> apiGetContactByQr(@Path("url") url,
+  Future<HttpResponse<ContactDetailsDatum>> apiGetContactDetail(@Path("url") url,
       @Header(authorization) token,@Path("id") id ,);
 
-  @GET("{url}contact/store")
+  @POST("{url}contact/store")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddContact(@Path("url") url,
