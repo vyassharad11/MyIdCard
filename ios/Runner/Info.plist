@@ -22,6 +22,8 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>NSContactsUsageDescription</key>
+    <string>Your message to the user about why you need contacts access</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

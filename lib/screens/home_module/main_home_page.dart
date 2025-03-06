@@ -6,14 +6,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/bloc/cubit/card_cubit.dart';
 import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/contact_cubit.dart';
 import '../../createCard/create_card_final_preview.dart';
 import '../../createCard/create_card_user_screen.dart';
+import '../../data/repository/contact_repository.dart';
 import '../../models/card_list.dart';
+import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../profile_mosule/profile_new.dart';
@@ -99,10 +103,14 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
 
         currentIndex: _selectedIndex,
         // Set the current selected index
-        selectedItemColor: Colors.blue, // Selected item color
-        unselectedItemColor: Colors.grey, // Unselected item color
-        showUnselectedLabels: true, // Show labels for unselected items
-        onTap: _onItemTapped, // Handle item tap
+        selectedItemColor: Colors.blue,
+        // Selected item color
+        unselectedItemColor: Colors.grey,
+        // Unselected item color
+        showUnselectedLabels: true,
+        // Show labels for unselected items
+        onTap: _onItemTapped,
+        // Handle item tap
         type: BottomNavigationBarType
             .fixed, // Use fixed type for more than 3 items
       ),
@@ -121,37 +129,78 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   CardCubit? _getCardCubit;
   CardListModel? cardList;
+  ContactCubit? _addContactCubit;
 
   @override
   void initState() {
     _getCardCubit = CardCubit(CardRepository());
+    _addContactCubit = ContactCubit(ContactRepository());
     getMyCard();
     super.initState();
   }
+
   Future<void> getMyCard() async {
     _getCardCubit?.apiGetMyCard();
   }
 
+  Future<void> apiAddContact(cardId) async {
+    Map<String, dynamic> data = {
+      "card_id": cardId,
+    };
+    _addContactCubit?.apiAddContact(data);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return  BlocListener<CardCubit, ResponseState>(
-      bloc: _getCardCubit,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateNoInternet) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateError) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateSuccess) {
-          Utility.hideLoader(context);
-          var dto = state.data as CardListModel;
-          cardList = dto;
-        }
-        setState(() {});
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CardCubit, ResponseState>(
+          bloc: _getCardCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as CardListModel;
+              cardList = dto;
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _addContactCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Navigator.pop(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Navigator.pop(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Navigator.pop(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },
+        ),
+      ],
       child: Scaffold(
         backgroundColor: ColoursUtils.background,
         appBar: AppBar(
@@ -223,21 +272,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? Stack(
                                         children: [
                                           ClipRRect(
-                                            borderRadius: const BorderRadius.only(
-                                                topLeft: Radius.circular(18),
-                                                topRight: Radius.circular(18)),
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(18),
+                                                    topRight:
+                                                        Radius.circular(18)),
                                             child: CachedNetworkImage(
                                               height: 100,
                                               width: double.infinity,
                                               fit: BoxFit.fitWidth,
                                               imageUrl:
                                                   "${Network.imgUrl}${cardList!.data![index].backgroungImage}",
-                                              progressIndicatorBuilder: (context,
-                                                      url, downloadProgress) =>
-                                                  Center(
-                                                child: CircularProgressIndicator(
-                                                    value: downloadProgress
-                                                        .progress),
+                                              progressIndicatorBuilder:
+                                                  (context, url,
+                                                          downloadProgress) =>
+                                                      Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        value: downloadProgress
+                                                            .progress),
                                               ),
                                               errorWidget:
                                                   (context, url, error) =>
@@ -272,11 +326,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         (context, url,
                                                                 downloadProgress) =>
                                                             Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                              value:
-                                                                  downloadProgress
-                                                                      .progress),
+                                                      child: CircularProgressIndicator(
+                                                          value:
+                                                              downloadProgress
+                                                                  .progress),
                                                     ),
                                                     errorWidget:
                                                         (context, url, error) =>
@@ -315,9 +368,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     : Stack(
                                         children: [
                                           ClipRRect(
-                                            borderRadius: const BorderRadius.only(
-                                                topLeft: Radius.circular(18),
-                                                topRight: Radius.circular(18)),
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(18),
+                                                    topRight:
+                                                        Radius.circular(18)),
                                             child: Image.asset(
                                               "assets/logo/Top with a picture.png",
                                               height: 100,
@@ -354,7 +410,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 2.0, horizontal: 20),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const SizedBox(
                                         height: 17,
@@ -399,7 +456,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 18,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       color: Colors.black),
                                                 ),
                                               ),
@@ -419,7 +477,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             height: 35,
                                             width: 90,
                                             child: ElevatedButton(
-                                             // iconAlignment: IconAlignment.start,
+                                              // iconAlignment: IconAlignment.start,
                                               onPressed: () {
                                                 // Handle button press
                                               },
@@ -445,7 +503,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                   const SizedBox(
                                                     width: 6,
-                                                  ), // Space between icon and text
+                                                  ),
+                                                  // Space between icon and text
                                                   const Text(
                                                     "Send", // Right side text
                                                     style: TextStyle(
@@ -543,7 +602,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius:
                                 BorderRadius.vertical(top: Radius.circular(20)),
                           ),
-                          builder: (context) => ScanQrCodeBottomSheet(),
+                          builder: (context) => ScanQrCodeBottomSheet(
+                            callBack: (v) {Navigator.pop(context);
+                            context.loaderOverlay.show();
+                            apiAddContact(v);},
+                          ),
                         );
                       },
                       child: Card(

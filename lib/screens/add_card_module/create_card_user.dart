@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../createCard/create_card_user_screen.dart';
 import '../../language/app_localizations.dart';
 
 class CreateCardScreen extends StatefulWidget {
@@ -122,8 +123,13 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 child: ElevatedButton(
                  // iconAlignment: IconAlignment.start,
                   onPressed: () {
-                    // Handle button press
-                  },
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => const CreateCardScreen1(
+                              cardId: "",
+                              isEdit: false,
+                            )));                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue, // Background color
                     shape: RoundedRectangleBorder(

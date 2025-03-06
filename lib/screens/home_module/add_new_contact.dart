@@ -1,10 +1,13 @@
 // import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
+
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 class ScanQrCodeBottomSheet extends StatelessWidget {
-  const ScanQrCodeBottomSheet({super.key});
+  Function callBack;
+   ScanQrCodeBottomSheet({super.key,required this.callBack});
 
   Future<void> scanQR() async {
     String barcodeScanRes;
@@ -97,64 +100,52 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               InkWell(       onTap:() async {
-                scanQR();
-                // Future<void> scanBarcode() async {
-                //   String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                //     '#ff6666', // Scanner color
-                //     'Cancel', // Cancel button text
-                //     true, // Show flash icon
-                //     ScanMode.BARCODE, // Scan mode
-                //    );
+                // scanQR();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => AiBarcodeScanner(
+                      onDispose: () {
+                  /// This is called when the barcode scanner is disposed.
+                  /// You can write your own logic here.
+                  debugPrint("Barcode scanner disposed!");
+              },
+                hideGalleryButton: false,
+                controller: MobileScannerController(
+                detectionSpeed: DetectionSpeed.noDuplicates,
+                ),
+                onDetect: (BarcodeCapture capture) {
+                /// The row string scanned barcode value
+                final String? scannedValue =
+                capture.barcodes.first.rawValue;
+                RegExp regExp = RegExp(r"(\d+)$");
+                String? extractedNumber = regExp.firstMatch(scannedValue ?? "")?.group(0);
+                Navigator.pop(context,);
+                callBack.call(extractedNumber);
+                debugPrint("Barcode scanned: $extractedNumber");
 
-                  // print("Scan result: $barcodeScanRes");
-                // }
-                // final qrCode = QrCode(4, QrErrorCorrectLevel.L)
-                //   ..addData('Hello, world in QR form!');
-                //    debugPrint("Barcode list: $qrCode");
-                // final qrImage = QrImage(qrCode);
-                // debugPrint("Barcode list: $qrImage");
+                /// The `Uint8List` image is only available if `returnImage` is set to `true`.
+                // final Uint8List? image = capture.image;
+                // debugPrint("Barcode image: $image");
 
-                // Navigator.of(context).push(
-              //     MaterialPageRoute(
-              //         builder: (context) => AiBarcodeScanner(
-              //         onDispose: () {
-              //     /// This is called when the barcode scanner is disposed.
-              //     /// You can write your own logic here.
-              //     debugPrint("Barcode scanner disposed!");
-              // },
-              //   hideGalleryButton: false,
-              //   controller: MobileScannerController(
-              //   detectionSpeed: DetectionSpeed.noDuplicates,
-              //   ),
-              //   onDetect: (BarcodeCapture capture) {
-              //   /// The row string scanned barcode value
-              //   final String? scannedValue =
-              //   capture.barcodes.first.rawValue;
-              //   debugPrint("Barcode scanned: $scannedValue");
-              //
-              //   /// The `Uint8List` image is only available if `returnImage` is set to `true`.
-              //   // final Uint8List? image = capture.image;
-              //   // debugPrint("Barcode image: $image");
-              //
-              //   /// row data of the barcode
-              //   final Object? raw = capture.raw;
-              //   debugPrint("Barcode raw: $raw");
-              //
-              //   /// List of scanned barcodes if any
-              //   final List<Barcode> barcodes = capture.barcodes;
-              //   debugPrint("Barcode list: $barcodes");
-              //   },
-              //   validator: (value) {
-              //   if (value.barcodes.isEmpty) {
-              //   return false;
-              //   }
-              //   if (!(value.barcodes.first.rawValue
-              //       ?.contains('flutter.dev') ??
-              //   false)) {
-              //   return false;
-              //   }
-              //   return true;
-              //   })));
+                /// row data of the barcode
+                final Object? raw = capture.raw;
+                debugPrint("Barcode raw: $raw");
+
+                /// List of scanned barcodes if any
+                final List<Barcode> barcodes = capture.barcodes;
+                debugPrint("Barcode list: $barcodes");
+                },
+                validator: (value) {
+                if (value.barcodes.isEmpty) {
+                return false;
+                }
+                if (!(value.barcodes.first.rawValue
+                    ?.contains('flutter.dev') ??
+                false)) {
+                return false;
+                }
+                return true;
+                })));
                 },
                 child: const Center(
                   child: Icon(

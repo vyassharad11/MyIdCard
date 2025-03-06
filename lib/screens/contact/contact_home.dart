@@ -2,13 +2,20 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/bloc/cubit/contact_cubit.dart';
+import 'package:my_di_card/data/repository/contact_repository.dart';
 import 'package:my_di_card/data/repository/group_repository.dart';
+import 'package:my_di_card/models/my_contact_model.dart';
+import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/contact/contact_details_screen.dart';
+import 'package:my_di_card/utils/widgets/network.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
 import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
+import '../home_module/add_new_contact.dart';
 import '../tag/tag_management_screen.dart';
 import 'contact_notes.dart';
 
@@ -21,14 +28,19 @@ class ContactHomeScreen extends StatefulWidget {
 
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
   GroupCubit? _getTagCubit;
+  ContactCubit? _getMyContact,_addContactCubit;
 
   List<Datum> tags = [];
+  List<ContactDetailsDatum> myContactList = [];
 
 
   @override
   void initState() {
     _getTagCubit = GroupCubit(GroupRepository());
+    _getMyContact = ContactCubit(ContactRepository());
+    _addContactCubit = ContactCubit(ContactRepository());
     apiTagList();
+    apiGetMyContact();
     // TODO: implement initState
     super.initState();
   }
@@ -36,6 +48,8 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
   @override
   dispose(){
     _getTagCubit?.close();
+    _addContactCubit?.close();
+    _addContactCubit = null;
     _getTagCubit = null;
     super.dispose();
   }
@@ -46,6 +60,17 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
       "page": 1,
     };
     _getTagCubit?.apiGetTeamTag(data);
+  }
+
+  Future<void> apiAddContact(cardId) async {
+    Map<String, dynamic> data = {
+      "card_id": cardId,
+    };
+    _addContactCubit?.apiAddContact(data);
+  }
+
+  Future<void> apiGetMyContact() async {
+    _getMyContact?.apiGetMyContact();
   }
 
   int selectIndec = 0;
@@ -67,6 +92,50 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
               Utility.hideLoader(context);
               var dto = state.data as TagModel;
               tags = dto.data?.data ?? [];
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _getMyContact,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as MyContactDto;
+              myContactList = [];
+              myContactList = dto.data ?? [];
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _addContactCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Navigator.pop(context);
+              Utility().showFlushBar(context: context,message: state.message,isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Navigator.pop(context);
+              Utility().showFlushBar(context: context,message: state.message,isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Navigator.pop(context);
+              Utility().showFlushBar(context: context,message: state.errorMessage,isError: true);
+                  } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
+              apiGetMyContact();
             }
             setState(() {});
           },
@@ -93,11 +162,19 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                   child: InkWell(
                     splashColor: Colors.blue, // Splash color
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (builder) => const ContactDetails(),
+                      showModalBottomSheet(
+                        context: context,
+                        useSafeArea: true,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
                         ),
+                        builder: (context) => ScanQrCodeBottomSheet(callBack: (v){
+                          Navigator.pop(context);
+                          context.loaderOverlay.show();
+                          apiAddContact(v);
+                        },),
                       );
                     },
                     child: const SizedBox(
@@ -305,25 +382,25 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
           child: ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: people.length,
+            itemCount: myContactList.length,
             itemBuilder: (context, index) {
               return ListTile(
                 contentPadding: const EdgeInsets.all(10),
                 leading: CircleAvatar(
                   radius: 25,
                   backgroundImage:
-                      AssetImage(people[index].imageUrl.toString()),
+                      AssetImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
                 ),
                 title: Text(
-                  people[index].name,
+                  myContactList[index].firstName ?? "",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                       color: Colors.black),
                 ),
                 subtitle: Text(
-                  people[index].description,
-                  style: const TextStyle(
+                  "",
+                 style: const TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 13,
                       color: Colors.black),
@@ -333,7 +410,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (builder) => const ContactDetails(),
+                      builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,),
                     ),
                   );
                   // Add your onTap functionality here if needed
