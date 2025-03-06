@@ -109,7 +109,7 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
                   /// You can write your own logic here.
                   debugPrint("Barcode scanner disposed!");
               },
-                hideGalleryButton: true,
+                hideGalleryButton: false,
                 controller: MobileScannerController(
                 detectionSpeed: DetectionSpeed.noDuplicates,
                 ),
