@@ -388,8 +388,9 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                 contentPadding: const EdgeInsets.all(10),
                 leading: CircleAvatar(
                   radius: 25,
-                  backgroundImage:
-                      AssetImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
+                  backgroundImage: NetworkImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
+                  backgroundColor: Colors.grey.shade200,
+
                 ),
                 title: Text(
                   myContactList[index].firstName ?? "",
@@ -399,7 +400,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                       color: Colors.black),
                 ),
                 subtitle: Text(
-                  "",
+                  myContactList[index].jobTitle ?? "",
                  style: const TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 13,
