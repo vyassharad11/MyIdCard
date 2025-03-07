@@ -20,6 +20,7 @@ import '../../models/card_list.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
+import '../add_card_module/share_card_bottom_sheet.dart';
 import '../profile_mosule/profile_new.dart';
 import '../add_card_module/add_new_card.dart';
 import '../contact/contact_home.dart';
@@ -479,8 +480,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: ElevatedButton(
                                               // iconAlignment: IconAlignment.start,
                                               onPressed: () {
-                                                // Handle button press
-                                              },
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  useSafeArea: true,
+                                                  isScrollControlled: true,
+                                                  shape: const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.vertical(top: Radius.circular(20)),
+                                                  ),
+                                                  builder: (context) => ShareCardBottomSheet(
+                                                    cardData:  cardList!.data![index],
+                                                  ),
+                                                );                                                },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors
                                                     .blue, // Background color

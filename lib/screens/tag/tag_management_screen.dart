@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_di_card/bloc/cubit/contact_cubit.dart';
+import 'package:my_di_card/data/repository/contact_repository.dart';
 import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/contact/contact_notes.dart';
@@ -12,7 +14,8 @@ import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
 
 class TagManagementScreen extends StatefulWidget {
-  const TagManagementScreen({super.key});
+  bool? isFromCard;
+   TagManagementScreen({super.key,this.isFromCard = false});
 
   @override
   _TagManagementScreenState createState() => _TagManagementScreenState();
@@ -20,6 +23,7 @@ class TagManagementScreen extends StatefulWidget {
 
 class _TagManagementScreenState extends State<TagManagementScreen> {
   GroupCubit? _getTagCubit, addTagCubit, deleteTag, _updateTag;
+  ContactCubit?getCardTagCubit,addCardTagCubit,deleteCardTag,updateCardTag;
 
   List<Datum> tags = [];
   int selectedIndex = 0;
@@ -28,11 +32,18 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
   @override
   void initState() {
     Utility.showLoader(context);
+    getCardTagCubit = ContactCubit(ContactRepository());
+    addCardTagCubit = ContactCubit(ContactRepository());
+    deleteCardTag = ContactCubit(ContactRepository());
+    updateCardTag = ContactCubit(ContactRepository());
     _getTagCubit = GroupCubit(GroupRepository());
     deleteTag = GroupCubit(GroupRepository());
     _updateTag = GroupCubit(GroupRepository());
     addTagCubit = GroupCubit(GroupRepository());
-    apiTagList("");
+    if(widget.isFromCard == false){
+    apiTagList("");}else {
+      apiGetCardTag("");
+    }
     // TODO: implement initState
     super.initState();
   }
@@ -59,12 +70,29 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
     _getTagCubit?.apiGetTeamTag(data);
   }
 
+
+Future<void> apiGetCardTag(keyword) async {
+    Map<String, dynamic> data = {
+      "key_word": keyword.toString(),
+      "page": 1,
+    };
+    getCardTagCubit?.apiGetCardTag(data);
+  }
+
   Future<void> apiAddTag(tagName) async {
     Utility.showLoader(context);
     Map<String, dynamic> data = {
       "tag": tagName,
     };
     addTagCubit?.apiAddTag(data);
+  }
+
+  Future<void> apAddCardTag(tagName) async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "tag": tagName,
+    };
+    addCardTagCubit?.apiAddCardTag(data);
   }
 
   Future<void> apiUpdateTag({tagName, id}) async {
@@ -75,9 +103,22 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
     _updateTag?.apiUpdateTag(data, id);
   }
 
+  Future<void> apiUpdateCardTag({tagName, id}) async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "tag": tagName,
+    };
+    updateCardTag?.apiUpdateCardTag(data, id);
+  }
+
   Future<void> apiDeleteTag({id}) async {
     Utility.showLoader(context);
     deleteTag?.apiDeleteTag(id);
+  }
+
+  Future<void> apiDeleteCardTag({id}) async {
+    Utility.showLoader(context);
+    deleteCardTag?.apiDeleteCardTag(id);
   }
 
   @override
@@ -106,8 +147,58 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
             setState(() {});
           },
         ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: getCardTagCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              isLoad = false;
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              isLoad = false;
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              isLoad = false;
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as TagModel;
+              tags = dto.data?.data ?? [];
+              isLoad = false;
+            }
+            setState(() {});
+          },
+        ),
         BlocListener<GroupCubit, ResponseState>(
           bloc: deleteTag,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              var dto = state.data as UtilityDto;
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                context: context,
+                message: dto.message ?? "",
+              );
+              tags.removeAt(selectedIndex);
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: deleteCardTag,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
@@ -162,8 +253,65 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
             setState(() {});
           },
         ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: addCardTagCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              var dto = state.data as UtilityDto;
+              Utility.hideLoader(context);
+              apiTagList("");
+              Utility().showFlushBar(
+                context: context,
+                message: dto.message ?? "",
+              );
+            }
+            setState(() {});
+          },
+        ),
         BlocListener<GroupCubit, ResponseState>(
           bloc: _updateTag,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              var dto = state.data as UtilityDto;
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                context: context,
+                message: dto.message ?? "",
+              );
+              apiTagList("");
+
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: updateCardTag,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
@@ -376,7 +524,11 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                       ),
                       onPressed: () {
                         if(controller.text.isNotEmpty) {
-                          apiAddTag(controller.text);
+                          if(widget.isFromCard == false) {
+                            apiAddTag(controller.text);
+                          }else{
+                            apAddCardTag(controller.text);
+                          }
                         }
                         controller.clear();
                       },
@@ -532,8 +684,13 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
                 selectedIndex = 0;
               });
               Navigator.pop(context);
-              apiUpdateTag(
-                  tagName: controller.text, id: tags[index].id.toString());
+              if(widget.isFromCard == false) {
+                apiUpdateTag(
+                    tagName: controller.text, id: tags[index].id.toString());
+              }else{
+                apiUpdateCardTag(
+                    tagName: controller.text, id: tags[index].id.toString());
+              }
             },
             child: const Text("Save"),
           ),
@@ -550,7 +707,11 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
   void _deleteTag(int index) {
     setState(() {
       selectedIndex = index;
-      apiDeleteTag(id: tags[index].id.toString());
+      if(widget.isFromCard == false) {
+        apiDeleteTag(id: tags[index].id.toString());
+      }else{
+        apiDeleteCardTag(id: tags[index].id.toString());
+      }
     });
   }
 }
