@@ -25,7 +25,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
   GroupCubit? _getTagCubit, addTagCubit, deleteTag, _updateTag;
   ContactCubit?getCardTagCubit,addCardTagCubit,deleteCardTag,updateCardTag;
 
-  List<Datum> tags = [];
+  List<TagDatum> tags = [];
   int selectedIndex = 0;
   bool isLoad = true;
 
@@ -244,7 +244,10 @@ Future<void> apiGetCardTag(keyword) async {
             } else if (state is ResponseStateSuccess) {
               var dto = state.data as UtilityDto;
               Utility.hideLoader(context);
-              apiTagList("");
+              if(widget.isFromCard == false){
+                apiTagList("");}else {
+                apiGetCardTag("");
+              }
               Utility().showFlushBar(
                 context: context,
                 message: dto.message ?? "",
@@ -272,7 +275,10 @@ Future<void> apiGetCardTag(keyword) async {
             } else if (state is ResponseStateSuccess) {
               var dto = state.data as UtilityDto;
               Utility.hideLoader(context);
-              apiTagList("");
+              if(widget.isFromCard == false){
+                apiTagList("");}else {
+                apiGetCardTag("");
+              }
               Utility().showFlushBar(
                 context: context,
                 message: dto.message ?? "",
@@ -304,7 +310,10 @@ Future<void> apiGetCardTag(keyword) async {
                 context: context,
                 message: dto.message ?? "",
               );
-              apiTagList("");
+              if(widget.isFromCard == false){
+                apiTagList("");}else {
+                apiGetCardTag("");
+              }
 
             }
             setState(() {});

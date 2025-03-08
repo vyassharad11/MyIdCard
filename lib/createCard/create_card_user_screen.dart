@@ -307,7 +307,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                         if (firstname.text.isNotEmpty) {
                           if (lastName.text.isNotEmpty) {
                             if (widget.isEdit) {
-                              // Utility.showLoader(context);
+                              Utility.showLoader(context);
 
                               submitData(
                                 cardId: widget.cardId.toString(),
@@ -317,7 +317,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                                 languageId: _selectedLanguageId.toString(),
                               );
                             } else {
-                              // Utility.showLoader(context);
+                              Utility.showLoader(context);
 
                               getUserId(
                                   languageId: _selectedLanguageId.toString(),
@@ -444,7 +444,6 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
     required File cardImage, // Card image file
   }) async {
     var token = await Storage().getToken();
-    Utility.showLoader(context);
 
     String apiUrl =
         "${Network.baseUrl}card/update/$cardId"; // Replace with your API endpoint

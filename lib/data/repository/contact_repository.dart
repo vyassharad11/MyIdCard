@@ -56,6 +56,13 @@ class ContactRepository {
     return _apiClient.apiAddContact(dto,token2,body);
   }
 
+  Future<HttpResponse<UtilityDto>> apiDeleteContact(id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiDeleteContact(dto,token2,id);
+  }
+
   Future<HttpResponse<UtilityDto>> apiCreateMeeting(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
@@ -112,6 +119,13 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiDeleteCardTag(dto,token2,id);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiAddTagInContact(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiAddTagInContact(dto,token2,body);
   }
 
 

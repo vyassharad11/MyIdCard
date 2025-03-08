@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_di_card/bloc/cubit/contact_cubit.dart';
 import 'package:my_di_card/data/repository/contact_repository.dart';
 import 'package:my_di_card/screens/meetings/metting_details.dart';
-
+import 'package:intl/intl.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/card_cubit.dart';
 import '../../models/my_meetings_model.dart';
@@ -118,7 +118,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                     fontWeight: FontWeight.w500),
               ),
               trailing: Text(
-                "${meeting.dateTime?.day.toString() ?? ""}${meeting.dateTime?.month.toString() ?? ''}${meeting.dateTime?.year.toString() ?? ''}",
+                DateFormat('d MMMM yyyy').format(meeting.dateTime ?? DateTime.now()),
                 style: TextStyle(color: Colors.blue, fontSize: 14),
               ),
             );

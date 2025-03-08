@@ -85,17 +85,22 @@ class ScanQrCodeBottomSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                      height: 30,
-                      width: 30,
-                      margin: const EdgeInsets.only(left: 12),
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(22)),
-                      child: const Icon(
-                        Icons.clear,
-                        size: 18,
-                      )),
+                  InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                        height: 30,
+                        width: 30,
+                        margin: const EdgeInsets.only(left: 12),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(22)),
+                        child: const Icon(
+                          Icons.clear,
+                          size: 18,
+                        )),
+                  ),
                 ],
               ),
               const SizedBox(height: 8),
