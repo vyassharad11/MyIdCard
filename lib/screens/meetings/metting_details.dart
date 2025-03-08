@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart'; // To open the meeting link
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../models/my_meetings_model.dart';
+import 'create_edit_meeting.dart'; // To open the meeting link
 
 class MeetingDetailsScreen extends StatelessWidget {
-  // Meeting details
-  final String title = 'Abhishek\'s Meeting';
-  final String description = 'Product Design Discussion';
-  final String dateTime = '8 July 2024, 10:00 AM - 11:00 AM';
-  final String address = '3517 Parker Road, Allentown, New Mexico 31134';
-  final String link = 'https://meet.google.com/myd-ddhy-bmv';
-  final String notes =
-      'Two driven jocks help fax my big quiz. Quick, Baz, get my woven flax jodhpurs! "Now fax quiz Jack!"';
-
-  const MeetingDetailsScreen({super.key});
+  MeetingDatum? meetingDatum;
+  String?contactId;
+   MeetingDetailsScreen({super.key,this.meetingDatum,this.contactId});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +16,8 @@ class MeetingDetailsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          "Abhishek's Meeting",
+        title:  Text(
+          "${meetingDatum?.firstName ?? ""} Meeting",
           style: TextStyle(
               fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
         ),
@@ -43,7 +39,7 @@ class MeetingDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        description,
+                        meetingDatum?.notes ?? "",
                         style: const TextStyle(
                             fontSize: 16,
                             color: Colors.blue,
@@ -52,17 +48,24 @@ class MeetingDetailsScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                           onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(25.0),
-                                ),
-                              ),
-                              builder: (context) {
-                                return BottomSheetContentAddContact();
-                              },
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CreateEditMeeting(
+                              isEdit: true,
+                              meetingDatum: meetingDatum,
+                              contactId: contactId,
+                              meetingId: meetingDatum?.id.toString(),
+
+                            ),));
+                            // showModalBottomSheet(
+                            //   context: context,
+                            //   shape: const RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.vertical(
+                            //       top: Radius.circular(25.0),
+                            //     ),
+                            //   ),
+                            //   builder: (context) {
+                            //     return BottomSheetContentAddContact();
+                            //   },
+                            // );
                           },
                           child: Image.asset(
                             "assets/images/edit-05.png",
@@ -86,7 +89,7 @@ class MeetingDetailsScreen extends StatelessWidget {
                               Icons.calendar_month_outlined, 'Date & Time'),
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 6),
-                            child: Text(dateTime,
+                            child: Text(              "${meetingDatum?.dateTime?.day.toString() ?? ""}${meetingDatum?.dateTime?.month.toString() ?? ''}${meetingDatum?.dateTime?.year.toString() ?? ''}",
                                 style: const TextStyle(fontSize: 14)),
                           ),
                         ],
@@ -106,7 +109,7 @@ class MeetingDetailsScreen extends StatelessWidget {
                           _buildSectionTitle(Icons.location_city, 'Address'),
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 6),
-                            child: Text(address,
+                            child: Text(meetingDatum?.address ?? "",
                                 style: const TextStyle(fontSize: 14)),
                           ),
                         ],
@@ -127,9 +130,9 @@ class MeetingDetailsScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 6),
                             child: InkWell(
-                              onTap: () => _launchURL("linke"),
+                              onTap: () => _launchURL( meetingDatum?.link ?? "",),
                               child: Text(
-                                link,
+                                meetingDatum?.link ?? "",
                                 style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.black87,
@@ -154,7 +157,7 @@ class MeetingDetailsScreen extends StatelessWidget {
                           _buildSectionTitle(Icons.notes, 'Notes'),
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 6),
-                            child: Text(notes,
+                            child: Text(meetingDatum?.notes ?? "",
                                 style: const TextStyle(fontSize: 14)),
                           ),
                         ],

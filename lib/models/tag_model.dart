@@ -96,23 +96,27 @@ class Datum {
   int? id;
   String? tag;
   int? teamId;
+  int? userId;
 
   Datum({
     this.id,
     this.tag,
     this.teamId,
+    this.userId,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     tag: json["tag"],
     teamId: json["team_id"],
+    userId: json["user_id"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "tag": tag,
     "team_id": teamId,
+    "user_id": userId,
   };
 }
 

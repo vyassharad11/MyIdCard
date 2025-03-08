@@ -12,6 +12,7 @@ import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
+import '../../models/my_meetings_model.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -53,6 +54,64 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiAddContact(dto,token2,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiCreateMeeting(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiCreateMeeting(dto,token2,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiUpdateMeeting(body,id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiUpdateMeeting(dto,token2,body,id);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiDeleteMeeting(id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiDeleteMeeting(dto,token2,id);
+  }
+
+  Future<HttpResponse<MyMeetingModel>> apiGetMyMeetings(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetMyMeetings(dto,token2,body);
+  }
+
+
+  Future<HttpResponse<TagModel>> apiGetCardTag(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetCardTag(dto,token2,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiAddCardTag(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiAddCardTag(dto,token2,body);
+  }
+
+
+  Future<HttpResponse<UtilityDto>> apiUpdateCardTag(body,id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiUpdateCardTag(dto,token2,body,id);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiDeleteCardTag(id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiDeleteCardTag(dto,token2,id);
   }
 
 

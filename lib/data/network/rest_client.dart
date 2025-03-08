@@ -14,6 +14,7 @@ import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
+import '../../models/my_meetings_model.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -334,5 +335,59 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiAddContact(@Path("url") url,
       @Header(authorization) token,@Body() body ,);
 
+  @POST("{url}contact/meeting/store")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiCreateMeeting(@Path("url") url,
+      @Header(authorization) token,@Body() body ,);
+
+
+  @POST("{url}contact/meeting/update/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiUpdateMeeting(@Path("url") url,
+      @Header(authorization) token,@Body() body ,@Path("id") id );
+
+
+  @POST("{url}contact/meeting/destroy/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteMeeting(@Path("url") url,
+      @Header(authorization) token,@Path("id") id );
+
+
+  @POST("{url}contact/meeting/get-my-meeting")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<MyMeetingModel>> apiGetMyMeetings(@Path("url") url,
+      @Header(authorization) token,@Body() body  );
+
+
+  @POST("{url}contact/tag/get-my-tag")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<TagModel>> apiGetCardTag(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
+  @POST("{url}contact/tag/store")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiAddCardTag(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
+  @POST("{url}contact/tag/update/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiUpdateCardTag(@Path("url") url,
+      @Header(authorization) token,@Body() body,@Path("id") id);
+
+
+  @POST("{url}contact/tag/destroy/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteCardTag(@Path("url") url,
+      @Header(authorization) token,@Path("id") id);
 
 }

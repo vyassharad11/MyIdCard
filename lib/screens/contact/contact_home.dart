@@ -411,7 +411,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,),
+                      builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,contactIdForMeeting: myContactList[index].id,),
                     ),
                   );
                   // Add your onTap functionality here if needed

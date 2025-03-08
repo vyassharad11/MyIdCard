@@ -8,13 +8,16 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../data/repository/contact_repository.dart';
 import '../../models/my_contact_model.dart';
+import '../../models/my_meetings_model.dart';
 import '../../utils/utility.dart';
+import '../meetings/create_edit_meeting.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
 
 class ContactDetails extends StatefulWidget {
   final int contactId;
-  const ContactDetails({super.key,required this.contactId});
+  final int? contactIdForMeeting;
+  const ContactDetails({super.key,required this.contactId,this.contactIdForMeeting});
 
   @override
   State<ContactDetails> createState() => _ContactDetailsState();
@@ -23,23 +26,33 @@ class ContactDetails extends StatefulWidget {
 class _ContactDetailsState extends State<ContactDetails> {
   ContactCubit? _contactDetailCubit;
   ContactDetailsDatum?contactDetailsDatum;
+  ContactCubit? meetingCubit;
+  List<MeetingDatum> meetings = [];
 
   @override
   initState(){
     _contactDetailCubit = ContactCubit(ContactRepository());
+    meetingCubit = ContactCubit(ContactRepository());
     getContactDetail();
+    apiGetMyMeetings();
     super.initState();
   }
 
   @override
   dispose(){
     _contactDetailCubit?.close();
+    meetingCubit?.close();
     _contactDetailCubit = null;
+    meetingCubit = null;
     super.dispose();
   }
 
   Future<void> getContactDetail() async {
     _contactDetailCubit?.apiGetContactDetail(widget.contactId);
+  }
+
+  Future<void> apiGetMyMeetings() async {
+    meetingCubit?.apiGetMyMeetings(widget.contactId);
   }
 
   Widget buildContactBottomSheetContent(BuildContext context) {
@@ -166,6 +179,25 @@ class _ContactDetailsState extends State<ContactDetails> {
               Utility.hideLoader(context);
               var dto = state.data as ContactDetailsDatum;
               contactDetailsDatum = dto;
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: meetingCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as MyMeetingModel;
+              meetings = [];
+              meetings = dto.data?.data ?? [];
             }
             setState(() {});
           },
@@ -414,18 +446,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   child: InkWell(
                                     splashColor: Colors.blue, // Splash color
                                     onTap: () {
-                                      // showModalBottomSheet(
-                                      //   context: context,
-                                      //   shape: const RoundedRectangleBorder(
-                                      //     borderRadius: BorderRadius.vertical(
-                                      //       top: Radius.circular(25.0),
-                                      //     ),
-                                      //   ),
-                                      //   builder: (context) {
-                                      //     return buildContactBottomSheetContent(
-                                      //         context);
-                                      //   },
-                                      // );
+                                     Navigator.push(context, MaterialPageRoute(builder: (context) => CreateEditMeeting(contactId: widget.contactIdForMeeting.toString(),),)).then((value) {
+                                       apiGetMyMeetings();
+                                     },);
                                     },
                                     child: const SizedBox(
                                         width: 40,
@@ -440,7 +463,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                    if(meetings.isNotEmpty)    SizedBox(
                           height: 200,
                           child: ListView.separated(
                             physics: const NeverScrollableScrollPhysics(),
@@ -459,28 +482,27 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     context,
                                     CupertinoPageRoute(
                                       builder: (builder) =>
-                                          MeetingDetailsScreen(),
+                                          MeetingDetailsScreen(meetingDatum: meetings[index],contactId: contactDetailsDatum?.id.toString(),),
                                     ),
                                   );
                                 },
                                 title: Text(
-                                  meeting['title'] ?? '',
+                                  meeting.notes?? '',
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 subtitle: Text(
-                                  meeting['description'] ?? '',
+                                  meeting.link ?? '',
                                   style: const TextStyle(
                                       color: Colors.grey,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 trailing: Text(
-                                  meeting['date'] ?? '',
-                                  style: const TextStyle(
-                                      color: Colors.blue, fontSize: 14),
+                                  "${meeting.dateTime?.day.toString() ?? ""}${meeting.dateTime?.month.toString() ?? ''}${meeting.dateTime?.year.toString() ?? ''}",
+                                  style: TextStyle(color: Colors.blue, fontSize: 14),
                                 ),
                               );
                             },
@@ -534,28 +556,6 @@ class _ContactDetailsState extends State<ContactDetails> {
     );
   }
 
-  final List<Map<String, String>> meetings = [
-    {
-      'title': 'Meeting with Janice',
-      'date': '5 July 2024',
-      'description': 'Product Design Discussion',
-    },
-    {
-      'title': 'Meeting with Ori',
-      'date': '3 July 2024',
-      'description': 'Design System',
-    },
-    {
-      'title': 'Meeting with Max',
-      'date': '3 July 2024',
-      'description': 'Design System',
-    },
-    {
-      'title': 'Meeting with Max',
-      'date': '2 July 2024',
-      'description': 'Design System',
-    },
-  ];
 }
 
 
