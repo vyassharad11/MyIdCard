@@ -27,16 +27,16 @@ class ContactHomeScreen extends StatefulWidget {
 }
 
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
-  GroupCubit? _getTagCubit;
+  ContactCubit? _getTagCubit;
   ContactCubit? _getMyContact,_addContactCubit;
 
-  List<Datum> tags = [];
+  List<TagDatum> tags = [];
   List<ContactDetailsDatum> myContactList = [];
 
 
   @override
   void initState() {
-    _getTagCubit = GroupCubit(GroupRepository());
+    _getTagCubit = ContactCubit(ContactRepository());
     _getMyContact = ContactCubit(ContactRepository());
     _addContactCubit = ContactCubit(ContactRepository());
     apiTagList();
@@ -59,7 +59,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
       "key_word": "",
       "page": 1,
     };
-    _getTagCubit?.apiGetTeamTag(data);
+    _getTagCubit?.apiGetCardTag(data);
   }
 
   Future<void> apiAddContact(cardId) async {
@@ -78,7 +78,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<GroupCubit, ResponseState>(
+        BlocListener<ContactCubit, ResponseState>(
           bloc: _getTagCubit,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
@@ -283,7 +283,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (builder) => TagManagementScreen()));
+                            builder: (builder) => TagManagementScreen(isFromCard: true,)));
                     // Edit button functionality
                   },
                 ),
@@ -411,9 +411,13 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,contactIdForMeeting: myContactList[index].id,),
+                      builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,contactIdForMeeting: myContactList[index].id,tags: tags,),
                     ),
-                  );
+                  ).then((value) {
+                    if(value == 2){
+                      apiGetMyContact();
+                    }
+                  },);
                   // Add your onTap functionality here if needed
                 },
               );

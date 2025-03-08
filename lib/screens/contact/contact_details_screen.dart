@@ -2,29 +2,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:my_di_card/models/utility_dto.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:intl/intl.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../data/repository/contact_repository.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_meetings_model.dart';
+import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
 import '../meetings/create_edit_meeting.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
+import 'add_tag_in_contact_bottom_sheet.dart';
 
 class ContactDetails extends StatefulWidget {
   final int contactId;
   final int? contactIdForMeeting;
-  const ContactDetails({super.key,required this.contactId,this.contactIdForMeeting});
+  final List<TagDatum> tags;
+  const ContactDetails({super.key,required this.contactId,this.contactIdForMeeting,required this.tags});
 
   @override
   State<ContactDetails> createState() => _ContactDetailsState();
 }
 
 class _ContactDetailsState extends State<ContactDetails> {
-  ContactCubit? _contactDetailCubit;
+  ContactCubit? _contactDetailCubit,deleteContactCubit;
   ContactDetailsDatum?contactDetailsDatum;
   ContactCubit? meetingCubit;
   List<MeetingDatum> meetings = [];
@@ -32,6 +36,7 @@ class _ContactDetailsState extends State<ContactDetails> {
   @override
   initState(){
     _contactDetailCubit = ContactCubit(ContactRepository());
+    deleteContactCubit = ContactCubit(ContactRepository());
     meetingCubit = ContactCubit(ContactRepository());
     getContactDetail();
     apiGetMyMeetings();
@@ -41,14 +46,20 @@ class _ContactDetailsState extends State<ContactDetails> {
   @override
   dispose(){
     _contactDetailCubit?.close();
+    deleteContactCubit?.close();
     meetingCubit?.close();
     _contactDetailCubit = null;
+    deleteContactCubit = null;
     meetingCubit = null;
     super.dispose();
   }
 
   Future<void> getContactDetail() async {
     _contactDetailCubit?.apiGetContactDetail(widget.contactId);
+  }
+
+  Future<void> apiDeleteContact() async {
+    deleteContactCubit?.apiDeleteContact(widget.contactIdForMeeting ?? "");
   }
 
   Future<void> apiGetMyMeetings() async {
@@ -81,6 +92,21 @@ class _ContactDetailsState extends State<ContactDetails> {
             ),
             onTap: () {
               Navigator.pop(context);
+              showModalBottomSheet(
+                context: context,
+                useSafeArea: true,
+                isScrollControlled: true,
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 100,minHeight: 10),
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                builder: (context) => AddTagInContactBottomSheet(
+                  tags: widget.tags,
+                  contactId: widget.contactIdForMeeting ?? 0,
+                ),
+              );
+
               // Add functionality here
             },
           ),
@@ -123,6 +149,8 @@ class _ContactDetailsState extends State<ContactDetails> {
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiDeleteContact();
               // Add delete functionality here
             },
           ),
@@ -179,6 +207,25 @@ class _ContactDetailsState extends State<ContactDetails> {
               Utility.hideLoader(context);
               var dto = state.data as ContactDetailsDatum;
               contactDetailsDatum = dto;
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: deleteContactCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Navigator.pop(context,2);
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
             }
             setState(() {});
           },
@@ -501,7 +548,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 trailing: Text(
-                                  "${meeting.dateTime?.day.toString() ?? ""}${meeting.dateTime?.month.toString() ?? ''}${meeting.dateTime?.year.toString() ?? ''}",
+                                     DateFormat('d MMMM yyyy').format(meeting.dateTime ?? DateTime.now()),
                                   style: TextStyle(color: Colors.blue, fontSize: 14),
                                 ),
                               );

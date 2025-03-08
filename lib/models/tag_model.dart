@@ -30,7 +30,7 @@ class TagModel {
 
 class Data {
   int? currentPage;
-  List<Datum>? data;
+  List<TagDatum>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -61,7 +61,7 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<TagDatum>.from(json["data"]!.map((x) => TagDatum.fromJson(x))),
     firstPageUrl: json["first_page_url"],
     from: json["from"],
     lastPage: json["last_page"],
@@ -92,20 +92,22 @@ class Data {
   };
 }
 
-class Datum {
+class TagDatum {
   int? id;
   String? tag;
   int? teamId;
   int? userId;
+  bool? isCheck;
 
-  Datum({
+  TagDatum({
     this.id,
     this.tag,
     this.teamId,
+    this.isCheck,
     this.userId,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory TagDatum.fromJson(Map<String, dynamic> json) => TagDatum(
     id: json["id"],
     tag: json["tag"],
     teamId: json["team_id"],

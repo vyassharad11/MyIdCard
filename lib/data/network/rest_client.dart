@@ -335,6 +335,13 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiAddContact(@Path("url") url,
       @Header(authorization) token,@Body() body ,);
 
+
+  @POST("{url}contact/destroy/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteContact(@Path("url") url,
+      @Header(authorization) token,@Path("id") id  ,);
+
   @POST("{url}contact/meeting/store")
   @Header(headerValue)
   @Header(headerContentType)
@@ -389,5 +396,11 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteCardTag(@Path("url") url,
       @Header(authorization) token,@Path("id") id);
+
+  @POST("{url}contact/tag/add-tag")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiAddTagInContact(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
 
 }

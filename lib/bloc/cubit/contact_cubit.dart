@@ -68,6 +68,19 @@ class ContactCubit extends Cubit<ResponseState> {
     }
   }
 
+  Future<void> apiDeleteContact(id) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await contactRepository.apiDeleteContact(id);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
 
   Future<void> apiCreateMeeting(body) async {
     emit(ResponseStateLoading());
@@ -170,6 +183,19 @@ class ContactCubit extends Cubit<ResponseState> {
     UtilityDto dto;
     try {
       httpResponse = await contactRepository.apiDeleteCardTag(id);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+  Future<void> apiAddTagInContact(body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await contactRepository.apiAddTagInContact(body);
       dto = httpResponse.data as UtilityDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
