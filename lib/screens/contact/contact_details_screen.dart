@@ -13,6 +13,7 @@ import '../../models/my_meetings_model.dart';
 import '../../models/tag_model.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
+import '../add_card_module/share_card_bottom_sheet.dart';
 import '../meetings/create_edit_meeting.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
@@ -377,6 +378,19 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   child: ElevatedButton(
                                    // iconAlignment: IconAlignment.start,
                                     onPressed: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        useSafeArea: true,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.vertical(top: Radius.circular(20)),
+                                        ),
+                                        builder: (context) => ShareOtherCardBottomSheet(
+                                          cardData: contactDetailsDatum,
+                                        ),
+                                      );
+
                                       // Handle button press
                                     },
                                     style: ElevatedButton.styleFrom(

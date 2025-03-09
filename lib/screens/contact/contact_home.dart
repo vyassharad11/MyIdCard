@@ -2,6 +2,7 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/bloc/cubit/contact_cubit.dart';
 import 'package:my_di_card/data/repository/contact_repository.dart';
@@ -10,6 +11,7 @@ import 'package:my_di_card/models/my_contact_model.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/contact/contact_details_screen.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
@@ -17,6 +19,7 @@ import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
 import '../home_module/add_new_contact.dart';
 import '../tag/tag_management_screen.dart';
+import 'add_tag_in_contact_bottom_sheet.dart';
 import 'contact_notes.dart';
 
 class ContactHomeScreen extends StatefulWidget {
@@ -28,10 +31,11 @@ class ContactHomeScreen extends StatefulWidget {
 
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
   ContactCubit? _getTagCubit;
-  ContactCubit? _getMyContact,_addContactCubit;
-
+  ContactCubit? _getMyContact,_addContactCubit,deleteContactCubit;
+int selectedIndex = 0;
   List<TagDatum> tags = [];
   List<ContactDetailsDatum> myContactList = [];
+  bool isLoad = true;
 
 
   @override
@@ -39,6 +43,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
     _getTagCubit = ContactCubit(ContactRepository());
     _getMyContact = ContactCubit(ContactRepository());
     _addContactCubit = ContactCubit(ContactRepository());
+    deleteContactCubit = ContactCubit(ContactRepository());
     apiTagList();
     apiGetMyContact();
     // TODO: implement initState
@@ -48,9 +53,11 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
   @override
   dispose(){
     _getTagCubit?.close();
+    deleteContactCubit?.close();
     _addContactCubit?.close();
     _addContactCubit = null;
     _getTagCubit = null;
+    deleteContactCubit = null;
     super.dispose();
   }
 
@@ -73,11 +80,36 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
     _getMyContact?.apiGetMyContact();
   }
 
+
+  Future<void> apiDeleteContact(contactIdForMeeting) async {
+    deleteContactCubit?.apiDeleteContact(contactIdForMeeting ?? "");
+  }
+
+
   int selectIndec = 0;
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: deleteContactCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              myContactList.removeAt(selectedIndex);
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },
+        ),
         BlocListener<ContactCubit, ResponseState>(
           bloc: _getTagCubit,
           listener: (context, state) {
@@ -101,16 +133,20 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              isLoad = false;
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
+              isLoad = false;
               Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
+              isLoad = false;
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as MyContactDto;
               myContactList = [];
               myContactList = dto.data ?? [];
+              isLoad = false;
             }
             setState(() {});
           },
@@ -376,7 +412,10 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
             },
           ),
         ),
-
+        isLoad == true?
+        Padding(padding: EdgeInsets.symmetric(horizontal: 20),child:
+        Utility.userListShimmer()):
+        myContactList.isNotEmpty?
         SizedBox(
           height: MediaQuery.of(context).size.height,
           child: ListView.builder(
@@ -406,7 +445,20 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                       fontSize: 13,
                       color: Colors.black),
                 ),
-                trailing: const Icon(Icons.more_vert),
+                trailing: InkWell(
+                  onTap: (){ showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0),
+                      ),
+                    ),
+                    builder: (context) {
+                      return buildContactBottomSheetContent(context,myContactList[index].id,index);
+                    },
+                  );
+                  },
+                                  child: const Icon(Icons.more_vert)),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -423,8 +475,135 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
               );
             },
           ),
-        ),
+        ):SizedBox(),
       ],
+    );
+  }
+
+
+
+  Future<void> requestPermissions() async {
+    PermissionStatus permission = await Permission.contacts.request();
+    if (!permission.isGranted) {
+      // Handle the case where the user denies permission
+    }
+  }
+
+
+  Future<void> addContact() async {
+    // Make sure permissions are granted
+    if (await FlutterContacts.requestPermission()) {
+      // Create a new contact
+      final newContact = Contact()
+        ..name.first = 'John'
+        ..name.last = 'Doe'
+        ..phones = [Phone('')];  // Add the phone number here
+
+      try {
+        await FlutterContacts.insertContact(newContact);
+        Utility().showFlushBar(context: context,message: 'Contact added successfully');
+      } catch (e) {
+        print('Error adding contact: $e');
+      }
+    }
+  }
+
+  Widget buildContactBottomSheetContent(BuildContext context,contactIdForMeeting,index) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            title: const Text(
+              'Add to favorites',
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              // Add functionality here
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            title: const Text(
+              'Add tag',
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              showModalBottomSheet(
+                context: context,
+                useSafeArea: true,
+                isScrollControlled: true,
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 100,minHeight: 10),
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                builder: (context) => AddTagInContactBottomSheet(
+                  tags: tags,
+                  contactId: contactIdForMeeting ?? 0,
+                ),
+              );
+
+              // Add functionality here
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            title: const Text(
+              'Hide Contact',
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              // Add functionality here
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            title: const Text(
+              'Export to Contacts App',
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              requestPermissions().then((value) {
+                addContact();
+              },);            // Add functionality here
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            title: const Text(
+              'Delete Contact',
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            ),
+            onTap: () {
+              setState(() {
+                selectedIndex = index;
+              });
+              Navigator.pop(context);
+              Utility.showLoader(context);
+              apiDeleteContact(contactIdForMeeting.toString());
+              // Add delete functionality here
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+          ),
+        ],
+      ),
     );
   }
 
@@ -478,23 +657,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
     );
   }
 
-  final List<Person> people = [
-    Person('Janice Schneider Sr.', 'Product Solutions Manager',
-        'assets/images/user_dummy.png'),
-    Person(
-        'Delbert Wyman', 'Corporate Web Agent', 'assets/images/user_dummy.png'),
-    Person('Delia Wolff', 'Dynamic Directives Analyst',
-        'assets/images/user_dummy.png'),
-    Person('Angelica Nikolaus', 'Dynamic Mobility Executive',
-        'assets/images/user_dummy.png'),
-    Person('Rachel Purdy', 'National Program Supervisor',
-        'assets/images/user_dummy.png'),
-    Person('Alejandro Kuphal', 'Chief Applications Liaison',
-        'assets/images/user_dummy.png'),
-    Person('Cody Lind', 'National Web Officer', 'assets/images/user_dummy.png'),
-    Person('Toby Von', 'District Identity Orchestrator',
-        'assets/images/user_dummy.png'),
-  ];
+
   final List<Person> peopleHori = [
     Person('Janice Schneider Sr.', 'Product Solutions Manager',
         'assets/images/user_dummy.png'),
