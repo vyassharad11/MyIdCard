@@ -367,4 +367,59 @@ class Utility {
     );
   }
 
+
+
+  static userListShimmer(){
+    return   ListView.separated(
+      separatorBuilder: (context, index) => const Divider(
+        height: 1,
+        color: Colors.grey,
+      ),
+      shrinkWrap: true,
+      itemCount: 16,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return ListTile(
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 2),
+          leading: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color:  Color(0x72231532),
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          title: Container(
+            width: 100,
+            height: 20,
+            decoration: BoxDecoration(
+              color:  Color(0x72231532),
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+          subtitle:Container(
+            width: 150,
+            height: 18,
+            decoration: BoxDecoration(
+              color:  Color(0x72231532),
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+          trailing:Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color:  Color(0x72231532),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          onTap: () {
+            // Handle tap on the list item
+          },
+        );
+      },
+    );
+  }
+
 }

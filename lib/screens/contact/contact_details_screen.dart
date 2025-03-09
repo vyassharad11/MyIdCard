@@ -11,6 +11,7 @@ import '../../data/repository/contact_repository.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../models/tag_model.dart';
+import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
 import '../meetings/create_edit_meeting.dart';
 import '../meetings/metting_details.dart';
@@ -52,6 +53,24 @@ class _ContactDetailsState extends State<ContactDetails> {
     deleteContactCubit = null;
     meetingCubit = null;
     super.dispose();
+  }
+
+  String? twitterLink,instaLink,faceBookLink,linkdinLink;
+
+  setLink(){
+    contactDetailsDatum?.socials?.forEach((action) {
+      if (action.socialName == "Twitter") {
+        twitterLink = action.socialLink.toString();
+      }
+      if (action.socialName == "Instagram") {
+        instaLink = action.socialLink.toString();
+      }
+      if (action.socialName == "Facebook") {
+        faceBookLink = action.socialLink.toString();
+      }
+      if (action.socialName == "LinkedIn") {
+        linkdinLink = action.socialLink.toString();
+      }});
   }
 
   Future<void> getContactDetail() async {
@@ -207,6 +226,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               Utility.hideLoader(context);
               var dto = state.data as ContactDetailsDatum;
               contactDetailsDatum = dto;
+              setLink();
             }
             setState(() {});
           },
@@ -400,30 +420,65 @@ class _ContactDetailsState extends State<ContactDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                  "assets/social/linkedin.png",
-                                  height: 55,
-                                  width: 45,
+                                InkWell(
+                                  onTap: (){
+                                    launchUrlGet(
+                                      linkdinLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/social/linkedin.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
                                 ),
-                                Image.asset(
-                                  "assets/social/facebook.png",
-                                  height: 55,
-                                  width: 45,
+                                InkWell(
+                                  onTap: (){
+                                    launchUrlGet(
+                                      faceBookLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/social/facebook.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
                                 ),
-                                Image.asset(
-                                  "assets/social/insta.png",
-                                  height: 55,
-                                  width: 45,
+                                InkWell(
+                                  onTap: (){
+                                    launchUrlGet(
+                                      instaLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/social/insta.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
                                 ),
-                                Image.asset(
-                                  "assets/social/whats.png",
-                                  height: 55,
-                                  width: 45,
+                                InkWell(
+                                  onTap: (){
+                                    launchUrlGet(
+                                      linkdinLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/social/whats.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
                                 ),
-                                Image.asset(
-                                  "assets/social/applew.png",
-                                  height: 55,
-                                  width: 45,
+                                InkWell(
+                                  onTap: (){
+                                    launchUrlGet(
+                                      linkdinLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/social/applew.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
                                 ),
                               ],
                             ),

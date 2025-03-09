@@ -90,8 +90,11 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
             } else if (state is ResponseStateSuccess) {
               var dto = state.data as UtilityDto;
               Utility.hideLoader(context);
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => BottomNavBarExample()));
+              Navigator.pushAndRemoveUntil(
+                context,
+                CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                    (route) => false,
+              );
               Utility().showFlushBar(context: context, message: dto.message ?? "");
             }
             setState(() {});
