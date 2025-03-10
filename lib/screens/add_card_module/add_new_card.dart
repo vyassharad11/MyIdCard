@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_di_card/screens/add_card_module/card_details.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/card_cubit.dart';
@@ -16,6 +17,7 @@ import '../../data/repository/card_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/card_list.dart';
+import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import 'package:http/http.dart' as http;
@@ -33,6 +35,7 @@ class AddNewCardHome extends StatefulWidget {
 class _AddNewCardHomeState extends State<AddNewCardHome> {
   CardCubit? _getCardCubit;
   CardListModel? cardList;
+  bool isLoad = true;
 
   @override
   void initState() {
@@ -42,8 +45,11 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
   }
 
   Future<void> getMyCard() async {
+    isLoad = true;
     _getCardCubit?.apiGetMyCard();
   }
+
+
 
 
   @override
@@ -53,15 +59,19 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
       listener: (context, state) {
         if (state is ResponseStateLoading) {
         } else if (state is ResponseStateEmpty) {
+          isLoad = false;
           Utility.hideLoader(context);
         } else if (state is ResponseStateNoInternet) {
+          isLoad = false;
           Utility.hideLoader(context);
         } else if (state is ResponseStateError) {
+          isLoad = false;
           Utility.hideLoader(context);
         } else if (state is ResponseStateSuccess) {
           Utility.hideLoader(context);
           var dto = state.data as CardListModel;
           cardList = dto;
+          isLoad = false;
         }
         setState(() {});
       },
@@ -111,13 +121,30 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (cardList != null && cardList!.data!.isNotEmpty)
+              isLoad == true? SizedBox(
+          height: MediaQuery.of(context).size.height / 1.3,
+            width: MediaQuery.of(context).size.width,child:_getShimmerView()):
+              cardList != null && cardList!.data!.isNotEmpty?
               SizedBox(
                 height: MediaQuery.of(context).size.height / 1.3,
                 width: MediaQuery.of(context).size.width,
                 child: Swiper(
                   itemCount: cardList!.data!.length,
                   itemBuilder: (BuildContext context, int index) {
+                    String? twitterLink,instaLink,faceBookLink,linkdinLink;
+                     cardList!.data?[index].cardSocials?.forEach((action) {
+                        if (action.socialName == "Twitter") {
+                          twitterLink = action.socialLink.toString();
+                        }
+                        if (action.socialName == "Instagram") {
+                          instaLink = action.socialLink.toString();
+                        }
+                        if (action.socialName == "Facebook") {
+                          faceBookLink = action.socialLink.toString();
+                        }
+                        if (action.socialName == "LinkedIn") {
+                          linkdinLink = action.socialLink.toString();
+                        }});
                     return InkWell(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CardDetails(cardData: cardList?.data?[index] ,),));
@@ -409,30 +436,65 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Image.asset(
-                                    "assets/social/linkedin.png",
-                                    height: 65,
-                                    width: 65,
+                                  InkWell(
+                                    onTap: (){
+                                      launchUrlGet(
+                                        linkdinLink ?? "",
+                                      );
+                                    },
+                                    child: Image.asset(
+                                      "assets/social/linkedin.png",
+                                      height: 55,
+                                      width: 45,
+                                    ),
                                   ),
-                                  Image.asset(
-                                    "assets/social/facebook.png",
-                                    height: 65,
-                                    width: 65,
+                                  InkWell(
+                                    onTap: (){
+                                      launchUrlGet(
+                                        faceBookLink ?? "",
+                                      );
+                                    },
+                                    child: Image.asset(
+                                      "assets/social/facebook.png",
+                                      height: 55,
+                                      width: 45,
+                                    ),
                                   ),
-                                  Image.asset(
-                                    "assets/social/insta.png",
-                                    height: 65,
-                                    width: 65,
+                                  InkWell(
+                                    onTap: (){
+                                      launchUrlGet(
+                                        instaLink ?? "",
+                                      );
+                                    },
+                                    child: Image.asset(
+                                      "assets/social/insta.png",
+                                      height: 55,
+                                      width: 45,
+                                    ),
                                   ),
-                                  Image.asset(
-                                    "assets/social/whats.png",
-                                    height: 65,
-                                    width: 65,
+                                  InkWell(
+                                    onTap: (){
+                                      launchUrlGet(
+                                        linkdinLink ?? "",
+                                      );
+                                    },
+                                    child: Image.asset(
+                                      "assets/social/whats.png",
+                                      height: 55,
+                                      width: 45,
+                                    ),
                                   ),
-                                  Image.asset(
-                                    "assets/social/applew.png",
-                                    height: 70,
-                                    width: 65,
+                                  InkWell(
+                                    onTap: (){
+                                      launchUrlGet(
+                                        linkdinLink ?? "",
+                                      );
+                                    },
+                                    child: Image.asset(
+                                      "assets/social/applew.png",
+                                      height: 55,
+                                      width: 45,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -446,10 +508,221 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                   axisDirection: AxisDirection.right,
                   layout: SwiperLayout.STACK,
                 ),
-              ),
+              ):SizedBox(),
             ],
           ),
         ),
+      ),
+    );
+  }
+  Widget _getShimmerView() {
+    return Shimmer.fromColors(
+      baseColor: Color(0x72231532),
+      highlightColor: Color(0xFF463B5C),
+      child:showCardShimmer(),
+    );
+  }
+
+  Widget showCardShimmer(){
+    return Card(
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius:
+        BorderRadius.circular(18), // if you need this
+        side: const BorderSide(
+          color: Colors.white,
+          width: 2,
+        ),
+      ),
+      elevation: 0,
+      margin: EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(
+            children: [
+              Container(
+                  height: 100,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    const BorderRadius.only(
+                        topLeft:
+                        Radius.circular(18),
+                        topRight:
+                        Radius.circular(18)),
+                    color: Color(0x72231532),
+                  ),child:
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  height: 55,
+                  width: 55,
+                  margin: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(55)),
+                    color: Color(0x72231532),
+                  ),
+                ),
+              ))
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: 16.0, horizontal: 20),
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 0,
+                ),
+                Container(
+                  height: 20,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(4)),
+                    color: Color(0x72231532),
+                  ),
+                ),
+                Container(
+                  height: 20,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(4)),
+                    color: Color(0x72231532),
+                  ),
+                ),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 18),
+                  color: Colors.black12,
+                ),
+                Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 18,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    ),
+                    Container(
+                      height: 20,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 6,),
+                Divider(color: Colors.grey,height: 1,),
+                SizedBox(height: 20,),
+                Center(
+                  child: Container(
+                    height: 20,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(4)),
+                      color: Color(0x72231532),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 6,),
+                Center(
+                  child: Container(
+                    height: 170,
+                    width: 170,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(4)),
+                      color: Color(0x72231532),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8,),
+                Center(
+                  child: Container(
+                    height: 20,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(20)),
+                      color: Color(0x72231532),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 6,),
+                Divider(color: Colors.grey,height: 1,),
+                SizedBox(height: 6,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

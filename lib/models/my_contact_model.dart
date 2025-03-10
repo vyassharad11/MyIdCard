@@ -49,6 +49,7 @@ class ContactDetailsDatum {
   String? workEmail;
   String? phoneNo;
   String? cardStyle;
+  dynamic qrCode;
   String? backgroungImage;
   String? cardName;
   int? contactTypeId;
@@ -73,6 +74,7 @@ class ContactDetailsDatum {
     this.phoneNo,
     this.cardStyle,
     this.backgroungImage,
+    this.qrCode,
     this.cardName,
     this.contactTypeId,
     this.documents,
@@ -96,6 +98,7 @@ class ContactDetailsDatum {
     workEmail: json["work_email"],
     phoneNo: json["phone_no"],
     cardStyle: json["card_style"],
+    qrCode : json['qr_code'],
     backgroungImage: json["backgroung_image"],
     cardName: json["card_name"],
     contactTypeId: json["contact_type_id"],
@@ -121,7 +124,8 @@ class ContactDetailsDatum {
     "phone_no": phoneNo,
     "card_style": cardStyle,
     "backgroung_image": backgroungImage,
-    "card_name": cardName,
+    'qr_code': qrCode,
+  "card_name": cardName,
     "contact_type_id": contactTypeId,
     "documents": documents == null ? [] : List<dynamic>.from(documents!.map((x) => x.toJson())),
     "socials": socials == null ? [] : List<dynamic>.from(socials!.map((x) => x.toJson())),

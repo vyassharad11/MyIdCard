@@ -11,6 +11,7 @@ import 'package:my_di_card/bloc/cubit/card_cubit.dart';
 import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../createCard/create_card_final_preview.dart';
@@ -38,7 +39,7 @@ class BottomNavBarExample extends StatefulWidget {
 class _BottomNavBarExampleState extends State<BottomNavBarExample> {
   int _selectedIndex = 0;
 
-  // List of pages corresponding to each tab
+  // List of pages corresponding to each tabutil
   static final List<Widget> _pages = <Widget>[
     HomeScreen(),
     ContactHomeScreen(),
@@ -131,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
   CardCubit? _getCardCubit;
   CardListModel? cardList;
   ContactCubit? _addContactCubit;
+  bool isLoad = true;
 
   @override
   void initState() {
@@ -160,15 +162,19 @@ class _HomeScreenState extends State<HomeScreen> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
+              isLoad = false;
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
+              isLoad = false;
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
+              isLoad = false;
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as CardListModel;
               cardList = dto;
+              isLoad = false;
             }
             setState(() {});
           },
@@ -233,7 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (cardList != null && cardList!.data!.isNotEmpty)
+              isLoad == true ? _getShimmerView():
+              cardList != null && cardList!.data!.isNotEmpty?
                 SizedBox(
                   height: 300,
                   child: Swiper(
@@ -542,7 +549,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     layout: SwiperLayout.STACK,
                     allowImplicitScrolling: false,
                   ),
-                ),
+                ):
+              SizedBox(),
               SizedBox(
                 height: 12,
               ),
@@ -685,6 +693,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 10),
                         // ListView for the items inside the card
+
+                        isLoad == true?Utility.userListShimmer():
                         ListView.separated(
                           separatorBuilder: (context, index) => const Divider(
                             height: 1,
@@ -742,6 +752,141 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _getShimmerView() {
+    return Shimmer.fromColors(
+        baseColor: Color(0x72231532),
+    highlightColor: Color(0xFF463B5C),
+      child: showCardShimmer(),
+    );
+    }
+  Widget showCardShimmer(){
+    return Card(
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius:
+        BorderRadius.circular(18), // if you need this
+        side: const BorderSide(
+          color: Colors.white,
+          width: 2,
+        ),
+      ),
+      elevation: 0,
+      margin: EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Container(
+                  height: 100,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    const BorderRadius.only(
+                        topLeft:
+                        Radius.circular(18),
+                        topRight:
+                        Radius.circular(18)),
+                    color: Color(0x72231532),
+                  ),child:
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  height: 55,
+                  width: 55,
+                  margin: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(55)),
+                    color: Color(0x72231532),
+                  ),
+                ),
+              ))
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: 16.0, horizontal: 20),
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 0,
+                ),
+                Container(
+                  height: 20,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(4)),
+                    color: Color(0x72231532),
+                  ),
+                ),
+                Container(
+                  height: 20,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(4)),
+                    color: Color(0x72231532),
+                  ),
+                ),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 18),
+                  color: Colors.black12,
+                ),
+                Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment:
+                  CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 18,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(4)),
+                            color: Color(0x72231532),
+                          ),
+                        ),
+                        Container(
+                          height: 20,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(4)),
+                            color: Color(0x72231532),
+                          ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      height: 35,
+                      width: 90,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(4)),
+                        color: Color(0x72231532),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   final List<Map<String, String>> items = [
     {
       'title': 'Item 1',

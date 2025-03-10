@@ -479,10 +479,12 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                       child: ElevatedButton(
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
-                          submitSocialLinks();
-
-                          // Handle button press
-                        },
+                          if(linkedin.text.isNotEmpty || twitter.text.isNotEmpty || facebook.text.isNotEmpty || instagram.text.isNotEmpty) {
+                            submitSocialLinks();
+                          }else{
+                            Utility().showFlushBar(context: context, message: "Please enter atleast one social link",isError: true);
+                          }
+                          },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue, // Background color
                           shape: RoundedRectangleBorder(
