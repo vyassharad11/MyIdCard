@@ -10,6 +10,7 @@ import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/models/my_contact_model.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/contact/contact_details_screen.dart';
+import 'package:my_di_card/screens/contact/team_member_contact.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -31,10 +32,10 @@ class ContactHomeScreen extends StatefulWidget {
 
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
   ContactCubit? _getTagCubit;
-  ContactCubit? _getMyContact,_addContactCubit,deleteContactCubit;
+  ContactCubit? _getMyContact,_addContactCubit,deleteContactCubit,_favCubit;
 int selectedIndex = 0;
   List<TagDatum> tags = [];
-  List<ContactDetailsDatum> myContactList = [];
+  List<ContactDatum> myContactList = [];
   bool isLoad = true;
 
 
@@ -44,8 +45,9 @@ int selectedIndex = 0;
     _getMyContact = ContactCubit(ContactRepository());
     _addContactCubit = ContactCubit(ContactRepository());
     deleteContactCubit = ContactCubit(ContactRepository());
+    _favCubit = ContactCubit(ContactRepository());
     apiTagList();
-    apiGetMyContact();
+    apiGetMyContact("");
     // TODO: implement initState
     super.initState();
   }
@@ -76,13 +78,36 @@ int selectedIndex = 0;
     _addContactCubit?.apiAddContact(data);
   }
 
-  Future<void> apiGetMyContact() async {
-    _getMyContact?.apiGetMyContact();
+  Future<void> apiGetMyContact(key) async {
+    Map<String, dynamic> data = {
+      "key_word":key,
+      "tag_ids":"",
+      "company_type_id":"",
+       "contact_status":"",
+      "favorite":""
+
+    };
+    _getMyContact?.apiGetMyContact(data);
   }
 
 
   Future<void> apiDeleteContact(contactIdForMeeting) async {
     deleteContactCubit?.apiDeleteContact(contactIdForMeeting ?? "");
+  }
+
+
+  Future<void> apiContactFavUnFav(cardId,fav) async {
+    Map<String, dynamic> data = {
+      "favorite": fav.toString(),
+    };
+    _favCubit?.apiContactFavUnFav(cardId,data);
+  }
+
+  Future<void> apiContactHideUnHide(cardId) async {
+    Map<String, dynamic> data = {
+      "contact_status":"2",
+    };
+    _favCubit?.apiContactHideUnHide(cardId,data);
   }
 
 
@@ -106,6 +131,32 @@ int selectedIndex = 0;
               var dto = state.data as UtilityDto;
               myContactList.removeAt(selectedIndex);
               Utility().showFlushBar(context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _favCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+              apiGetMyContact("");
             }
             setState(() {});
           },
@@ -145,7 +196,7 @@ int selectedIndex = 0;
               Utility.hideLoader(context);
               var dto = state.data as MyContactDto;
               myContactList = [];
-              myContactList = dto.data ?? [];
+              myContactList = dto.data?.data ?? [];
               isLoad = false;
             }
             setState(() {});
@@ -171,7 +222,7 @@ int selectedIndex = 0;
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
               Utility().showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact();
+              apiGetMyContact("");
             }
             setState(() {});
           },
@@ -235,8 +286,7 @@ int selectedIndex = 0;
                 height: 20,
               ),
               tabBarWidget(context),
-              tabBarTile(selectIndec == 0 ? "Tags" : "Groups",
-                  selectIndec == 0 ? true : false),
+              tabBarView()
             ],
           ),
         ),
@@ -262,12 +312,15 @@ int selectedIndex = 0;
                     borderRadius: BorderRadius.circular(18),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: const Row(
+                  child:  Row(
                     children: [
                       Icon(Icons.search, color: Colors.grey),
                       SizedBox(width: 10),
                       Expanded(
                         child: TextField(
+                          onChanged: (v){
+                            apiGetMyContact((v));
+                          },
                           decoration: InputDecoration(
                             hintText: 'Search...',
                             border: InputBorder.none,
@@ -467,7 +520,7 @@ int selectedIndex = 0;
                     ),
                   ).then((value) {
                     if(value == 2){
-                      apiGetMyContact();
+                      apiGetMyContact("");
                     }
                   },);
                   // Add your onTap functionality here if needed
@@ -480,7 +533,11 @@ int selectedIndex = 0;
     );
   }
 
-
+Widget tabBarView(){
+    return  selectIndec == 0 || selectIndec ==1?  tabBarTile( "Tags" ,
+        true ):
+    TeamMemberContact();
+}
 
   Future<void> requestPermissions() async {
     PermissionStatus permission = await Permission.contacts.request();
@@ -490,14 +547,14 @@ int selectedIndex = 0;
   }
 
 
-  Future<void> addContact() async {
+  Future<void> addContact(firstName,lastName,mobileNumber) async {
     // Make sure permissions are granted
     if (await FlutterContacts.requestPermission()) {
       // Create a new contact
       final newContact = Contact()
-        ..name.first = 'John'
-        ..name.last = 'Doe'
-        ..phones = [Phone('')];  // Add the phone number here
+        ..name.first = firstName
+        ..name.last = firstName
+        ..phones = [Phone(mobileNumber)];  // Add the phone number here
 
       try {
         await FlutterContacts.insertContact(newContact);
@@ -515,12 +572,14 @@ int selectedIndex = 0;
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text(
-              'Add to favorites',
+            title:  Text(
+              myContactList[index].favorite == 1?'Add to favorites':'UnFavorite',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactFavUnFav(contactIdForMeeting,myContactList[index].favorite == 1 ? 2: 1);
               // Add functionality here
             },
           ),
@@ -562,6 +621,8 @@ int selectedIndex = 0;
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactHideUnHide(myContactList[index].id.toString());
               // Add functionality here
             },
           ),
@@ -577,7 +638,7 @@ int selectedIndex = 0;
             onTap: () {
               Navigator.pop(context);
               requestPermissions().then((value) {
-                addContact();
+                addContact(myContactList[index].firstName??"",myContactList[index].lastName ?? "",myContactList[index].phoneNo ?? "");
               },);            // Add functionality here
             },
           ),

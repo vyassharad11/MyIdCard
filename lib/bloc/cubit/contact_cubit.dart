@@ -28,12 +28,12 @@ class ContactCubit extends Cubit<ResponseState> {
 
 
 
-  Future<void> apiGetMyContact() async {
+  Future<void> apiGetMyContact(body) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
     MyContactDto dto;
     try {
-      httpResponse = await contactRepository.apiGetMyContact();
+      httpResponse = await contactRepository.apiGetMyContact(body);
       dto = httpResponse.data as MyContactDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
@@ -45,10 +45,10 @@ class ContactCubit extends Cubit<ResponseState> {
   Future<void> apiGetContactDetail(id) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    ContactDetailsDatum dto;
+    ContactDatum dto;
     try {
       httpResponse = await contactRepository.apiGetContactDetail(id);
-      dto = httpResponse.data as ContactDetailsDatum;
+      dto = httpResponse.data as ContactDatum;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));
@@ -196,6 +196,33 @@ class ContactCubit extends Cubit<ResponseState> {
     UtilityDto dto;
     try {
       httpResponse = await contactRepository.apiAddTagInContact(body);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+
+  Future<void> apiContactHideUnHide(id,body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await contactRepository.apiContactHideUnHide(id,body);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+  Future<void> apiContactFavUnFav(id,body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await contactRepository.apiContactFavUnFav(id,body);
       dto = httpResponse.data as UtilityDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

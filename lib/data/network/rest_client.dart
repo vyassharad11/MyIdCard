@@ -130,7 +130,7 @@ abstract class RestClient {
   Future<HttpResponse<GetCardModel>> apiGetCard(@Path("url") url,
       @Header(authorization) token,@Path("cardId") id,);
 
-  @GET("{url}card/get-my-card")
+  @POST("{url}card/get-my-card")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<CardListModel>> apiGetMyCard(@Path("url") url,
@@ -139,7 +139,7 @@ abstract class RestClient {
   @GET("{url}socials")
   @Header(headerValue)
   @Header(headerContentType)
-  Future<HttpResponse<Social>> apiGetSocials(@Path("url") url,
+  Future<HttpResponse<SocialForCard>> apiGetSocials(@Path("url") url,
       @Header(authorization) token);
 
 
@@ -317,16 +317,16 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiDeleteTag(@Path("url") url,
       @Header(authorization) token,@Path("id") id,);
 
-  @GET("{url}contact/get-my-card")
+  @POST("{url}contact/get-my-contact")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<MyContactDto>> apiGetMyContact(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,@Body() body );
 
   @GET("{url}card/show/{id}")
   @Header(headerValue)
   @Header(headerContentType)
-  Future<HttpResponse<ContactDetailsDatum>> apiGetContactDetail(@Path("url") url,
+  Future<HttpResponse<ContactDatum>> apiGetContactDetail(@Path("url") url,
       @Header(authorization) token,@Path("id") id ,);
 
   @POST("{url}contact/store")
@@ -402,5 +402,18 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddTagInContact(@Path("url") url,
       @Header(authorization) token,@Body() body,);
+
+  @POST("{url}contact/update-status/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiContactHideUnHide(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,@Body() body,);
+
+
+  @POST("{url}contact/update-favorite-status/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiContactFavUnFav(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,@Body() body,);
 
 }

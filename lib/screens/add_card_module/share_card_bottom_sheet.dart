@@ -225,7 +225,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
 }
 
 class ShareOtherCardBottomSheet extends StatefulWidget {
-  final ContactDetailsDatum? cardData;
+  final ContactDatum? cardData;
   const ShareOtherCardBottomSheet({super.key,this.cardData});
 
   @override

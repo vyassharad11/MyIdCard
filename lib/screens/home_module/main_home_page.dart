@@ -18,6 +18,7 @@ import '../../createCard/create_card_final_preview.dart';
 import '../../createCard/create_card_user_screen.dart';
 import '../../data/repository/contact_repository.dart';
 import '../../models/card_list.dart';
+import '../../models/my_contact_model.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -131,14 +132,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   CardCubit? _getCardCubit;
   CardListModel? cardList;
-  ContactCubit? _addContactCubit;
-  bool isLoad = true;
+  ContactCubit? _addContactCubit,_getMyContact,_unFavContact;
+  bool isLoad = true,isLoadFav = true;
+  List<ContactDatum> myContactList = [];
+  int selectedIndex = 0;
+
 
   @override
   void initState() {
     _getCardCubit = CardCubit(CardRepository());
     _addContactCubit = ContactCubit(ContactRepository());
+    _getMyContact = ContactCubit(ContactRepository());
+    _unFavContact = ContactCubit(ContactRepository());
     getMyCard();
+    apiGetMyContact("");
     super.initState();
   }
 
@@ -153,10 +160,52 @@ class _HomeScreenState extends State<HomeScreen> {
     _addContactCubit?.apiAddContact(data);
   }
 
+  Future<void> apiContactFavUnFav(cardId) async {
+    Map<String, dynamic> data = {
+      "favorite": "1",
+    };
+    _unFavContact?.apiContactFavUnFav(cardId,data);
+  }
+
+  Future<void> apiGetMyContact(key) async {
+    Map<String, dynamic> data = {
+      "key_word":key,
+      "tag_ids":"",
+      "company_type_id":"",
+      "contact_status":"",
+      "favorite":"2"
+
+    };
+    _getMyContact?.apiGetMyContact(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _getMyContact,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              isLoadFav = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              isLoadFav = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              isLoadFav = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as MyContactDto;
+              myContactList = [];
+              myContactList = dto.data?.data ?? [];
+              isLoadFav = false;
+            }
+            setState(() {});
+          },
+        ),
         BlocListener<CardCubit, ResponseState>(
           bloc: _getCardCubit,
           listener: (context, state) {
@@ -185,17 +234,14 @@ class _HomeScreenState extends State<HomeScreen> {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
-              Navigator.pop(context);
               Utility().showFlushBar(
                   context: context, message: state.message, isError: true);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
-              Navigator.pop(context);
               Utility().showFlushBar(
                   context: context, message: state.message, isError: true);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
-              Navigator.pop(context);
               Utility().showFlushBar(
                   context: context, message: state.errorMessage, isError: true);
             } else if (state is ResponseStateSuccess) {
@@ -203,6 +249,31 @@ class _HomeScreenState extends State<HomeScreen> {
               var dto = state.data as UtilityDto;
               Utility()
                   .showFlushBar(context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },
+        ),  BlocListener<ContactCubit, ResponseState>(
+          bloc: _unFavContact,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+              myContactList.removeAt(selectedIndex);
             }
             setState(() {});
           },
@@ -694,31 +765,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 10),
                         // ListView for the items inside the card
 
-                        isLoad == true?Utility.userListShimmer():
-                        ListView.separated(
+                        isLoadFav == true?Utility.userListShimmer():
+                        myContactList.isNotEmpty?      ListView.separated(
                           separatorBuilder: (context, index) => const Divider(
                             height: 1,
                             color: Colors.grey,
                           ),
                           shrinkWrap: true,
-                          itemCount: items.length,
+                          itemCount: myContactList.length,
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return ListTile(
                               contentPadding:
                                   const EdgeInsets.symmetric(horizontal: 2),
-                              leading: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child:
-                                    Image.asset("assets/images/user_dummy.png"),
+                              leading: CircleAvatar(
+                                radius: 25,
+                                backgroundImage: NetworkImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
+                                backgroundColor: Colors.grey.shade200,
+
                               ),
                               title: Text(
-                                items[index]['title']!,
+                                myContactList[index].firstName ?? "",
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     color: Colors.black,
@@ -726,7 +793,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               subtitle: Text(
-                                items[index]['description']!,
+                                myContactList[index].jobTitle ?? "",
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     color: Colors.black45,
@@ -735,11 +802,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               trailing: const Icon(Icons.more_vert),
                               onTap: () {
-                                // Handle tap on the list item
+                                showModalBottomSheet(
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(25.0),
+                                    ),
+                                  ),
+                                  builder: (context) {
+                                    return  Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                      ListTile(
+                                      title: const Text(
+                                      'Add to favorites',
+                                        style: TextStyle(color: Colors.black, fontSize: 14),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        selectedIndex = index;
+                                        setState(() {
+
+                                        });
+                                        Utility.showLoader(context);
+                                        apiContactFavUnFav(myContactList[index].id.toString());
+                                        // Add functionality here
+                                      },
+                                    ),SizedBox(height: 16,)]));
+                                  },
+                                );
                               },
                             );
                           },
-                        ),
+                        ):Center(child: Text("No record found")),
                       ],
                     ),
                   ),

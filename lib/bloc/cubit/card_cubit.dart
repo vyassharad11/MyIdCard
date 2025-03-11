@@ -92,10 +92,10 @@ class CardCubit extends Cubit<ResponseState> {
   Future<void> apiGetSocials() async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    Social dto;
+    SocialForCard dto;
     try {
       httpResponse = await authRepository.apiGetSocials();
-      dto = httpResponse.data as Social;
+      dto = httpResponse.data as SocialForCard;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));

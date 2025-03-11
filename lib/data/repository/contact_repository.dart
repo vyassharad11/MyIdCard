@@ -34,15 +34,15 @@ class ContactRepository {
   }
 
 
-  Future<HttpResponse<MyContactDto>> apiGetMyContact() async {
+  Future<HttpResponse<MyContactDto>> apiGetMyContact(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyContact(dto,token2,);
+    return _apiClient.apiGetMyContact(dto,token2,body);
   }
 
 
-  Future<HttpResponse<ContactDetailsDatum>> apiGetContactDetail(id) async {
+  Future<HttpResponse<ContactDatum>> apiGetContactDetail(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
@@ -126,6 +126,21 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiAddTagInContact(dto,token2,body);
+  }
+
+
+  Future<HttpResponse<UtilityDto>> apiContactHideUnHide(id,body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiContactHideUnHide(dto,token2,id,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiContactFavUnFav(id,body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiContactFavUnFav(dto,token2,id,body);
   }
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:intl/intl.dart';
 import '../../models/my_meetings_model.dart';
 import 'create_edit_meeting.dart'; // To open the meeting link
 
@@ -84,12 +84,14 @@ class MeetingDetailsScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(11.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildSectionTitle(
                               Icons.calendar_month_outlined, 'Date & Time'),
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 6),
-                            child: Text(              "${meetingDatum?.dateTime?.day.toString() ?? ""}${meetingDatum?.dateTime?.month.toString() ?? ''}${meetingDatum?.dateTime?.year.toString() ?? ''}",
+                            child: Text(
+                                DateFormat('d MMMM yyyy').format(meetingDatum?.dateTime ?? DateTime.now()),
                                 style: const TextStyle(fontSize: 14)),
                           ),
                         ],
@@ -105,6 +107,7 @@ class MeetingDetailsScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(11.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildSectionTitle(Icons.location_city, 'Address'),
                           Padding(
@@ -125,6 +128,7 @@ class MeetingDetailsScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(11.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildSectionTitle(Icons.link, 'Link'),
                           Padding(
@@ -153,6 +157,7 @@ class MeetingDetailsScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(11.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildSectionTitle(Icons.notes, 'Notes'),
                           Padding(

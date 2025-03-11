@@ -5,6 +5,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../data/repository/contact_repository.dart';
@@ -31,7 +32,7 @@ class ContactDetails extends StatefulWidget {
 
 class _ContactDetailsState extends State<ContactDetails> {
   ContactCubit? _contactDetailCubit,deleteContactCubit;
-  ContactDetailsDatum?contactDetailsDatum;
+  ContactDatum?contactDetailsDatum;
   ContactCubit? meetingCubit;
   List<MeetingDatum> meetings = [];
 
@@ -84,6 +85,42 @@ class _ContactDetailsState extends State<ContactDetails> {
 
   Future<void> apiGetMyMeetings() async {
     meetingCubit?.apiGetMyMeetings(widget.contactId);
+  }
+
+  Future<void> dialNumber(String phoneNumber) async {
+    final Uri url = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> openSMS(String phoneNumber) async {
+    final Uri url = Uri.parse('sms:$phoneNumber');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      print('Could not launch $url');
+      throw 'Could not launch $url';
+    }}
+
+  Future<void> openGmail({String? email, String? subject, String? body}) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email ?? '',
+      queryParameters: {
+        'subject': subject ?? '',
+        'body': body ?? '',
+      },
+    );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      throw 'Could not launch $emailUri';
+    }
   }
 
   Widget buildContactBottomSheetContent(BuildContext context) {
@@ -140,6 +177,7 @@ class _ContactDetailsState extends State<ContactDetails> {
             ),
             onTap: () {
               Navigator.pop(context);
+              openGmail(body: "a",email: "chhaji.kapil@gmail.com",subject: "b");
               // Add functionality here
             },
           ),
@@ -155,7 +193,7 @@ class _ContactDetailsState extends State<ContactDetails> {
             onTap: () {
               Navigator.pop(context);
               requestPermissions().then((value) {
-                addContact();
+                addContact(contactDetailsDatum?.firstName ?? "",contactDetailsDatum?.lastName ?? "",contactDetailsDatum?.phoneNo ?? "");
               },);            // Add functionality here
             },
           ),
@@ -191,14 +229,14 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
 
-  Future<void> addContact() async {
+  Future<void> addContact(firstName,lastName,mobileNumber) async {
     // Make sure permissions are granted
     if (await FlutterContacts.requestPermission()) {
       // Create a new contact
       final newContact = Contact()
-        ..name.first = 'John'
-        ..name.last = 'Doe'
-        ..phones = [Phone('')];  // Add the phone number here
+        ..name.first = firstName
+        ..name.last = firstName
+        ..phones = [Phone(mobileNumber)];  // Add the phone number here
 
       try {
         await FlutterContacts.insertContact(newContact);
@@ -225,7 +263,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              var dto = state.data as ContactDetailsDatum;
+              var dto = state.data as ContactDatum;
               contactDetailsDatum = dto;
               setLink();
             }
