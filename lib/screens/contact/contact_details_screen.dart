@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
@@ -177,7 +178,6 @@ class _ContactDetailsState extends State<ContactDetails> {
             ),
             onTap: () {
               Navigator.pop(context);
-              openGmail(body: "a",email: "chhaji.kapil@gmail.com",subject: "b");
               // Add functionality here
             },
           ),
@@ -244,6 +244,29 @@ class _ContactDetailsState extends State<ContactDetails> {
       } catch (e) {
         print('Error adding contact: $e');
       }
+    }}
+
+
+  Future<void> _openMap(address) async {
+    if (address.isEmpty) {
+      return;
+    }
+
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        double latitude = locations.first.latitude;
+        double longitude = locations.first.longitude;
+
+        String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+        if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+          await launchUrl(Uri.parse(googleMapsUrl));
+        } else {
+          throw 'Could not launch $googleMapsUrl';
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
     }
   }
 
@@ -474,12 +497,70 @@ class _ContactDetailsState extends State<ContactDetails> {
                               children: [
                                 InkWell(
                                   onTap: (){
+                                    dialNumber(contactDetailsDatum?.phoneNo.toString() ?? "");
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/call.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    openGmail(body: "",email: contactDetailsDatum?.workEmail ?? "",subject: "");
+                                    },
+                                  child: Image.asset(
+                                    "assets/images/mail.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    openSMS(contactDetailsDatum?.phoneNo.toString() ?? "");
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/message.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    _openMap(contactDetailsDatum?.companyAddress ?? "");
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/location.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    // launchUrlGet(
+                                    //   linkdinLink ?? "",
+                                    // );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/link.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: (){
                                     launchUrlGet(
                                       linkdinLink ?? "",
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/linkedin.png",
+                                    "assets/images/linkdin.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -491,7 +572,19 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/facebook.png",
+                                    "assets/images/fb.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    launchUrlGet(
+                                      twitterLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/x_fill.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -503,7 +596,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/insta.png",
+                                    "assets/images/insta.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -515,19 +608,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/whats.png",
-                                    height: 55,
-                                    width: 45,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: (){
-                                    launchUrlGet(
-                                      linkdinLink ?? "",
-                                    );
-                                  },
-                                  child: Image.asset(
-                                    "assets/social/applew.png",
+                                    "assets/images/other.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -636,7 +717,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     context,
                                     CupertinoPageRoute(
                                       builder: (builder) =>
-                                          MeetingDetailsScreen(meetingDatum: meetings[index],contactId: contactDetailsDatum?.id.toString(),),
+                                          MeetingDetailsScreen(meetingId: meetings[index].id ?? 0,contactId: contactDetailsDatum?.id.toString(),),
                                     ),
                                   );
                                 },
@@ -670,7 +751,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (builder) => const MeetingsScreen(),
+                                builder: (builder) =>  MeetingsScreen(contactId: contactDetailsDatum?.id ?? 0,),
                               ),
                             );
                           },

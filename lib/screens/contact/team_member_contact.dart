@@ -113,12 +113,14 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                       borderRadius: BorderRadius.circular(18),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: const Row(
+                    child:  Row(
                       children: [
                         Icon(Icons.search, color: Colors.grey),
                         SizedBox(width: 10),
                         Expanded(
-                          child: TextField(
+                          child: TextField(onChanged: (value) {
+                            getTeamMembers(0,value);
+                          },
                             decoration: InputDecoration(
                               hintText: 'Search...',
                               border: InputBorder.none,

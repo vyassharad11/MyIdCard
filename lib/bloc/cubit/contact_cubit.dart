@@ -12,6 +12,7 @@ import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
 import '../../models/login_dto.dart';
+import '../../models/meeting_details_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../models/social_data.dart';
 import '../../models/team_member.dart';
@@ -129,6 +130,19 @@ class ContactCubit extends Cubit<ResponseState> {
     try {
       httpResponse = await contactRepository.apiGetMyMeetings(body);
       dto = httpResponse.data as MyMeetingModel;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+  Future<void> apiGetMeetingDetails(id) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    MeetingDetailsModel dto;
+    try {
+      httpResponse = await contactRepository.apiGetMeetingDetails(id);
+      dto = httpResponse.data as MeetingDetailsModel;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));

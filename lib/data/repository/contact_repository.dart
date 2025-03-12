@@ -10,6 +10,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/meeting_details_model.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/my_meetings_model.dart';
@@ -89,6 +90,13 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiGetMyMeetings(dto,token2,body);
+  }
+
+  Future<HttpResponse<MeetingDetailsModel>> apiGetMeetingDetails(id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetMeetingDetails(dto,token2,id);
   }
 
 

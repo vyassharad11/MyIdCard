@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
@@ -158,9 +159,13 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      linkdinLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -170,9 +175,13 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      faceBookLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -182,9 +191,13 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      instaLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -194,9 +207,13 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      linkdinLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -206,9 +223,13 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      linkdinLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(

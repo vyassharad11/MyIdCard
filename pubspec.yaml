@@ -47,6 +47,7 @@ dependencies:
   another_flushbar: ^1.10.26
   shimmer:
   flutter_contacts: ^1.1.9+2
+  geocoding:
 #  qr: ^3.0.2,
 #  flutter_barcode_scanner: ^2.0.0
   ai_barcode_scanner: ^6.0.1

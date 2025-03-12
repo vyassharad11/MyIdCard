@@ -12,6 +12,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/meeting_details_model.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/my_meetings_model.dart';
@@ -368,6 +369,12 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<MyMeetingModel>> apiGetMyMeetings(@Path("url") url,
       @Header(authorization) token,@Body() body  );
+
+  @GET("{url}contact/meeting/ge/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<MeetingDetailsModel>> apiGetMeetingDetails(@Path("url") url,
+      @Header(authorization) token,@Path("id") id  );
 
 
   @POST("{url}contact/tag/get-my-tag")

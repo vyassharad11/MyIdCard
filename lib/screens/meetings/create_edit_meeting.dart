@@ -6,13 +6,14 @@ import 'package:my_di_card/data/repository/contact_repository.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
+import '../../models/meeting_details_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
 
 class CreateEditMeeting extends StatefulWidget {
   bool? isEdit;
-  MeetingDatum? meetingDatum;
+  MeetingDetailsModel? meetingDatum;
   String? contactId;
   String? meetingId;
   CreateEditMeeting({super.key,this.isEdit = false,this.meetingDatum,this.contactId,this.meetingId});
@@ -22,6 +23,8 @@ class CreateEditMeeting extends StatefulWidget {
 }
 
 class _CreateEditMeetingState extends State<CreateEditMeeting> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController purposeController = TextEditingController();
   TextEditingController notesController = TextEditingController();
   TextEditingController addController = TextEditingController();
   TextEditingController linkController = TextEditingController();
@@ -45,6 +48,8 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
       "address": addController.text,
       "link": linkController.text,
       "notes":notesController.text,
+      "title":titleController.text,
+       "purpose":purposeController.text
 
     };
     _createMeetingCubit?.apiCreateMeeting(body);
@@ -57,6 +62,8 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
       "address": addController.text,
       "link": linkController.text,
       "notes":notesController.text,
+      "title":titleController.text,
+      "purpose":purposeController.text
 
     };
     _createMeetingCubit?.apiUpdateMeeting(body,widget.meetingId);
@@ -64,10 +71,12 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
 
 
    setData(){
-    notesController.text = widget.meetingDatum?.notes ?? "";
-    addController.text = widget.meetingDatum?.address ?? "";
-    linkController.text = widget.meetingDatum?.link ?? "";
-    selectedDateTime = widget.meetingDatum?.dateTime ;
+    notesController.text = widget.meetingDatum?.data?.notes ?? "";
+    addController.text = widget.meetingDatum?.data?.address ?? "";
+    linkController.text = widget.meetingDatum?.data?.link ?? "";
+    titleController.text = widget.meetingDatum?.data?.title ?? "";
+    purposeController.text = widget.meetingDatum?.data?.purpose ?? "";
+    selectedDateTime = widget.meetingDatum?.data?.dateTime ;
     setState(() {
 
     });
@@ -142,6 +151,46 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
           body: SingleChildScrollView(
               child: Column(children: [
             Container(
+              height: 50,
+              decoration: BoxDecoration(
+                color: ColoursUtils.background, // Light white color
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter title',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.normal),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+                Container(
+              height: 50,
+              decoration: BoxDecoration(
+                color: ColoursUtils.background, // Light white color
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                controller: purposeController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter purpose',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.normal),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+                Container(
               height: 50,
               decoration: BoxDecoration(
                 color: ColoursUtils.background, // Light white color
@@ -226,7 +275,7 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
                   child: ElevatedButton(
                     // iconAlignment: IconAlignment.start,
                     onPressed: () {
-                          if(notesController.text.isNotEmpty && addController.text.isNotEmpty && linkController.text.isNotEmpty && selectedDateTime != null){
+                          if(titleController.text.isNotEmpty && purposeController.text.isNotEmpty && notesController.text.isNotEmpty && addController.text.isNotEmpty && linkController.text.isNotEmpty && selectedDateTime != null){
                             Utility.showLoader(context);
                            widget.isEdit == false ? apiCreateMeeting():apiUpdateMeeting();
                         } else {

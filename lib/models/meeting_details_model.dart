@@ -1,23 +1,23 @@
 // To parse this JSON data, do
 //
-//     final myMeetingModel = myMeetingModelFromJson(jsonString);
+//     final meetingDetailsModel = meetingDetailsModelFromJson(jsonString);
 
 import 'dart:convert';
 
-MyMeetingModel myMeetingModelFromJson(String str) => MyMeetingModel.fromJson(json.decode(str));
+MeetingDetailsModel meetingDetailsModelFromJson(String str) => MeetingDetailsModel.fromJson(json.decode(str));
 
-String myMeetingModelToJson(MyMeetingModel data) => json.encode(data.toJson());
+String meetingDetailsModelToJson(MeetingDetailsModel data) => json.encode(data.toJson());
 
-class MyMeetingModel {
+class MeetingDetailsModel {
   bool? status;
   Data? data;
 
-  MyMeetingModel({
+  MeetingDetailsModel({
     this.status,
     this.data,
   });
 
-  factory MyMeetingModel.fromJson(Map<String, dynamic> json) => MyMeetingModel(
+  factory MeetingDetailsModel.fromJson(Map<String, dynamic> json) => MeetingDetailsModel(
     status: json["status"],
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
   );
@@ -29,70 +29,6 @@ class MyMeetingModel {
 }
 
 class Data {
-  int? currentPage;
-  List<MeetingDatum>? data;
-  String? firstPageUrl;
-  int? from;
-  int? lastPage;
-  String? lastPageUrl;
-  List<Link>? links;
-  dynamic nextPageUrl;
-  String? path;
-  int? perPage;
-  dynamic prevPageUrl;
-  int? to;
-  int? total;
-
-  Data({
-    this.currentPage,
-    this.data,
-    this.firstPageUrl,
-    this.from,
-    this.lastPage,
-    this.lastPageUrl,
-    this.links,
-    this.nextPageUrl,
-    this.path,
-    this.perPage,
-    this.prevPageUrl,
-    this.to,
-    this.total,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<MeetingDatum>.from(json["data"]!.map((x) => MeetingDatum.fromJson(x))),
-    firstPageUrl: json["first_page_url"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    lastPageUrl: json["last_page_url"],
-    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-    nextPageUrl: json["next_page_url"],
-    path: json["path"],
-    perPage: json["per_page"],
-    prevPageUrl: json["prev_page_url"],
-    to: json["to"],
-    total: json["total"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-    "first_page_url": firstPageUrl,
-    "from": from,
-    "last_page": lastPage,
-    "last_page_url": lastPageUrl,
-    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
-    "next_page_url": nextPageUrl,
-    "path": path,
-    "per_page": perPage,
-    "prev_page_url": prevPageUrl,
-    "to": to,
-    "total": total,
-  };
-}
-
-class MeetingDatum {
   int? id;
   int? userId;
   int? cardId;
@@ -111,16 +47,17 @@ class MeetingDatum {
   String? cardStyle;
   String? backgroungImage;
   String? cardName;
-  int? contactTypeId;
+  int? contactStatus;
+  int? favorite;
   int? contactId;
   DateTime? dateTime;
   String? address;
-  String? title;
-  String? purpose;
   String? link;
   String? notes;
+  dynamic title;
+  dynamic purpose;
 
-  MeetingDatum({
+  Data({
     this.id,
     this.userId,
     this.cardId,
@@ -137,19 +74,20 @@ class MeetingDatum {
     this.workEmail,
     this.phoneNo,
     this.cardStyle,
-    this.purpose,
-    this.title,
     this.backgroungImage,
     this.cardName,
-    this.contactTypeId,
+    this.contactStatus,
+    this.favorite,
     this.contactId,
     this.dateTime,
     this.address,
     this.link,
     this.notes,
+    this.title,
+    this.purpose,
   });
 
-  factory MeetingDatum.fromJson(Map<String, dynamic> json) => MeetingDatum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
     userId: json["user_id"],
     cardId: json["card_id"],
@@ -168,7 +106,8 @@ class MeetingDatum {
     cardStyle: json["card_style"],
     backgroungImage: json["backgroung_image"],
     cardName: json["card_name"],
-    contactTypeId: json["contact_type_id"],
+    contactStatus: json["contact_status"],
+    favorite: json["favorite"],
     contactId: json["contact_id"],
     dateTime: json["date_time"] == null ? null : DateTime.parse(json["date_time"]),
     address: json["address"],
@@ -197,37 +136,14 @@ class MeetingDatum {
     "card_style": cardStyle,
     "backgroung_image": backgroungImage,
     "card_name": cardName,
-    "contact_type_id": contactTypeId,
+    "contact_status": contactStatus,
+    "favorite": favorite,
     "contact_id": contactId,
     "date_time": dateTime?.toIso8601String(),
     "address": address,
     "link": link,
     "notes": notes,
-    "purpose": purpose,
     "title": title,
-  };
-}
-
-class Link {
-  String? url;
-  String? label;
-  bool? active;
-
-  Link({
-    this.url,
-    this.label,
-    this.active,
-  });
-
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "url": url,
-    "label": label,
-    "active": active,
+    "purpose": purpose,
   };
 }

@@ -206,7 +206,7 @@ class _AddContactNotesState extends State<AddContactNotes> {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (builder) => const MeetingsScreen(),
+                              builder: (builder) =>  MeetingsScreen(contactId: 0,),
                             ),
                           );
                         },
