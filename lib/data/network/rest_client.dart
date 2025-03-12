@@ -370,7 +370,7 @@ abstract class RestClient {
   Future<HttpResponse<MyMeetingModel>> apiGetMyMeetings(@Path("url") url,
       @Header(authorization) token,@Body() body  );
 
-  @GET("{url}contact/meeting/ge/{id}")
+  @GET("{url}contact/meeting/get/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<MeetingDetailsModel>> apiGetMeetingDetails(@Path("url") url,

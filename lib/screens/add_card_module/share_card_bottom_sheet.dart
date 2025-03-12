@@ -163,7 +163,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "",
+                      "hello",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -179,7 +179,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "",
+                      "hello",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -195,7 +195,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "",
+                      "hello",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -211,7 +211,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "",
+                      "hello",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -227,7 +227,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "",
+                      "hello",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -395,9 +395,13 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      linkdinLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "hello",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -407,9 +411,13 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      faceBookLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "hello",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -419,9 +427,13 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      instaLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "hello",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -431,9 +443,13 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      linkdinLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "hello",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(
@@ -443,9 +459,13 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    launchUrlGet(
-                      linkdinLink ?? "",
+                  onTap: () async {
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    await Share.share(
+                      "hello",
+                      subject: "Share your card",
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                   child: Image.asset(

@@ -276,7 +276,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
     },),
       BlocListener<AuthCubit, ResponseState>(
     bloc: _googleLoginCubit,
-    listener: (context, state) {
+    listener: (context, state) async {
       if (state is ResponseStateLoading) {
       } else if (state is ResponseStateEmpty) {
         Utility.hideLoader(context);
@@ -295,7 +295,10 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         }
         Storage().saveToken(dto.token ?? "");
         FocusScope.of(context).unfocus();
-
+   if(dto.user != null && dto.user!.cards != null && dto.user!.cards!.isNotEmpty){
+   }else{
+     await Storage().setFirstCardSkip(false);
+   }
         if (dto.user != null && dto.user!.firstName == null) {
           showModalBottomSheet(
             context: context,

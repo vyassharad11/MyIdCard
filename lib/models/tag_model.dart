@@ -103,7 +103,7 @@ class TagDatum {
     this.id,
     this.tag,
     this.teamId,
-    this.isCheck,
+    this.isCheck = false,
     this.userId,
   });
 

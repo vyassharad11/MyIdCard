@@ -37,6 +37,8 @@ int selectedIndex = 0;
   List<TagDatum> tags = [];
   List<ContactDatum> myContactList = [];
   bool isLoad = true;
+  TextEditingController controller = TextEditingController();
+
 
 
   @override
@@ -47,7 +49,7 @@ int selectedIndex = 0;
     deleteContactCubit = ContactCubit(ContactRepository());
     _favCubit = ContactCubit(ContactRepository());
     apiTagList();
-    apiGetMyContact("");
+    apiGetMyContact("",false);
     // TODO: implement initState
     super.initState();
   }
@@ -78,12 +80,21 @@ int selectedIndex = 0;
     _addContactCubit?.apiAddContact(data);
   }
 
-  Future<void> apiGetMyContact(key) async {
+  Future<void> apiGetMyContact(key,hide) async {
+    List<int> tagId = [];
+    tags.forEach(
+          (element) {
+        if (element.isCheck == true) {
+          tagId.add(element.id ?? 0);
+        }
+      },
+    );
+    String contactTagIdsString = tagId.join(',');
     Map<String, dynamic> data = {
       "key_word":key,
       "tag_ids":"",
-      "company_type_id":"",
-       "contact_status":"",
+      "company_type_id":contactTagIdsString,
+       "contact_status":hide == true?"2":"1",
       "favorite":""
 
     };
@@ -103,9 +114,9 @@ int selectedIndex = 0;
     _favCubit?.apiContactFavUnFav(cardId,data);
   }
 
-  Future<void> apiContactHideUnHide(cardId) async {
+  Future<void> apiContactHideUnHide(cardId,hide) async {
     Map<String, dynamic> data = {
-      "contact_status":"2",
+      "contact_status":hide,
     };
     _favCubit?.apiContactHideUnHide(cardId,data);
   }
@@ -156,7 +167,7 @@ int selectedIndex = 0;
               var dto = state.data as UtilityDto;
               Utility()
                   .showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact("");
+              apiGetMyContact("",false);
             }
             setState(() {});
           },
@@ -222,7 +233,7 @@ int selectedIndex = 0;
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
               Utility().showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact("");
+              apiGetMyContact("",false);
             }
             setState(() {});
           },
@@ -318,8 +329,9 @@ int selectedIndex = 0;
                       SizedBox(width: 10),
                       Expanded(
                         child: TextField(
+                          controller: controller,
                           onChanged: (v){
-                            apiGetMyContact((v));
+                            apiGetMyContact(v,false);
                           },
                           decoration: InputDecoration(
                             hintText: 'Search...',
@@ -345,7 +357,9 @@ int selectedIndex = 0;
                     backgroundColor:
                         Colors.transparent, // To make corners rounded
                     builder: (context) => FullScreenBottomSheet(),
-                  );
+                  ).then((value) {
+                    apiGetMyContact(controller.text,value);
+                  },);
                 },
               ),
             ],
@@ -389,19 +403,29 @@ int selectedIndex = 0;
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200], // Light background color
-                    borderRadius: BorderRadius.circular(8), // Rounded corners
-                  ),
-                  child: Center(
-                    child: Text(
-                      tags[index].tag ?? "",
-                      style: const TextStyle(
-                        color: Colors.black, // Text color
-                        fontSize: 14,
+                child: InkWell(
+                  onTap: (){
+                    tags[index].isCheck =tags[index].isCheck ==  false?true:false;
+                    setState(() {
+
+                    });
+                    apiGetMyContact(controller.text,false);
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200], // Light background color
+                     border: Border.all(color:  tags[index].isCheck == true ? Colors.blue:Colors.transparent),
+                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                    ),
+                    child: Center(
+                      child: Text(
+                        tags[index].tag ?? "",
+                        style: const TextStyle(
+                          color: Colors.black, // Text color
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),
@@ -520,7 +544,7 @@ int selectedIndex = 0;
                     ),
                   ).then((value) {
                     if(value == 2){
-                      apiGetMyContact("");
+                      apiGetMyContact(controller.text,false);
                     }
                   },);
                   // Add your onTap functionality here if needed
@@ -615,14 +639,14 @@ Widget tabBarView(){
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Hide Contact',
+            title:  Text(
+              '${myContactList[index].contactStatus == 1 ? "Hide":"Un-hide"} Contact',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
               Utility.showLoader(context);
-              apiContactHideUnHide(myContactList[index].id.toString());
+              apiContactHideUnHide(myContactList[index].id.toString(),myContactList[index].contactStatus == 1?"2":"1");
               // Add functionality here
             },
           ),

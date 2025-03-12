@@ -26,6 +26,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
   @override
   void initState() {
     _getMeetingCubit = ContactCubit(ContactRepository());
+    apiGetMeetingDetails();
     // TODO: implement initState
     super.initState();
   }

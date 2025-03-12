@@ -212,7 +212,7 @@ class _CardDetailsState extends State<CardDetails> {
     final box = context.findRenderObject() as RenderBox?;
 
     await Share.share(
-    "",
+    "hello",
     subject: "Share your card",
     sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
@@ -228,7 +228,7 @@ class _CardDetailsState extends State<CardDetails> {
                                     final box = context.findRenderObject() as RenderBox?;
 
                                     await Share.share(
-                                      "",
+                                      "hello",
                                       subject: "Share your card",
                                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                     );
@@ -244,7 +244,7 @@ class _CardDetailsState extends State<CardDetails> {
                                     final box = context.findRenderObject() as RenderBox?;
 
                                     await Share.share(
-                                      "",
+                                      "hello",
                                       subject: "Share your card",
                                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                     );
@@ -260,7 +260,7 @@ class _CardDetailsState extends State<CardDetails> {
                                     final box = context.findRenderObject() as RenderBox?;
 
                                     await Share.share(
-                                      "",
+                                      "hello",
                                       subject: "Share your card",
                                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                     );
@@ -276,7 +276,7 @@ class _CardDetailsState extends State<CardDetails> {
                                     final box = context.findRenderObject() as RenderBox?;
 
                                     await Share.share(
-                                      "",
+                                      "hello",
                                       subject: "Share your card",
                                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                     );

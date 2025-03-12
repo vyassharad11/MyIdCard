@@ -1914,7 +1914,7 @@ class _RestClient implements RestClient {
     )
         .compose(
           _dio.options,
-          '${url}contact/meeting/ge/${id}',
+          '${url}contact/meeting/get/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

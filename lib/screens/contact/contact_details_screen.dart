@@ -32,7 +32,7 @@ class ContactDetails extends StatefulWidget {
 }
 
 class _ContactDetailsState extends State<ContactDetails> {
-  ContactCubit? _contactDetailCubit,deleteContactCubit;
+  ContactCubit? _contactDetailCubit,deleteContactCubit,_favCubit;
   ContactDatum?contactDetailsDatum;
   ContactCubit? meetingCubit;
   List<MeetingDatum> meetings = [];
@@ -42,6 +42,7 @@ class _ContactDetailsState extends State<ContactDetails> {
     _contactDetailCubit = ContactCubit(ContactRepository());
     deleteContactCubit = ContactCubit(ContactRepository());
     meetingCubit = ContactCubit(ContactRepository());
+    _favCubit = ContactCubit(ContactRepository());
     getContactDetail();
     apiGetMyMeetings();
     super.initState();
@@ -56,6 +57,13 @@ class _ContactDetailsState extends State<ContactDetails> {
     deleteContactCubit = null;
     meetingCubit = null;
     super.dispose();
+  }
+
+  Future<void> apiContactFavUnFav(cardId,fav) async {
+    Map<String, dynamic> data = {
+      "favorite": fav.toString(),
+    };
+    _favCubit?.apiContactFavUnFav(cardId,data);
   }
 
   String? twitterLink,instaLink,faceBookLink,linkdinLink;
@@ -131,12 +139,14 @@ class _ContactDetailsState extends State<ContactDetails> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text(
-              'Add to favorites',
+            title:  Text(
+              contactDetailsDatum?.favorite == 1?'Add to favorites':'UnFavorite',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactFavUnFav(widget.contactIdForMeeting,contactDetailsDatum?.favorite == 1 ? 2: 1);
               // Add functionality here
             },
           ),
@@ -172,12 +182,14 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Hide Contact',
+            title:  Text(
+              '${contactDetailsDatum?.contactStatus == 1 ? "Hide":"Un-hide"} Contact',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactHideUnHide(contactDetailsDatum?.id.toString(),contactDetailsDatum?.contactStatus == 1?"2":"1");
               // Add functionality here
             },
           ),
@@ -270,10 +282,44 @@ class _ContactDetailsState extends State<ContactDetails> {
     }
   }
 
+  Future<void> apiContactHideUnHide(cardId,hide) async {
+    Map<String, dynamic> data = {
+      "contact_status":hide,
+    };
+    _favCubit?.apiContactHideUnHide(cardId,data);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _favCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+              getContactDetail();
+            }
+            setState(() {});
+          },
+        ),
         BlocListener<ContactCubit, ResponseState>(
           bloc: _contactDetailCubit,
           listener: (context, state) {
