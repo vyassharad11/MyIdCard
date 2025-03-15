@@ -105,14 +105,14 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                 );
               },
               title: Text(
-                meeting.notes?? '',
+                meeting.title?? '',
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),
               ),
               subtitle: Text(
-                meeting.link ?? '',
+                meeting.purpose ?? '',
                 style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12,

@@ -395,7 +395,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     isScrollControlled: true,
                     backgroundColor:
                     Colors.transparent, // To make corners rounded
-                    builder: (context) => FullScreenBottomSheet(callBack: (isHide, companyTypeId) {
+                    builder: (context) => FullScreenBottomSheet(callBack: (isHide, companyTypeId,companyName) {
                       apiGetMyContact(controller.text, isHide,companyTypeId);
                     },),
                   );
@@ -506,29 +506,46 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: recentContactList.length,
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: NetworkImage(
-                          "${Network.imgUrl}${recentContactList[index].cardImage ??
-                              ""}"),
+              return InkWell(onTap: (){
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (builder) =>
+                        ContactDetails(contactId: recentContactList[index]
+                            .id ?? 0,
+                          contactIdForMeeting: recentContactList[index].id,
+                          tags: tags,),
+                  ),
+                ).then((value) {
+                  if (value == 2) {
+                    apiGetMyContact(controller.text, false,"");
+                  }
+                },);
+              },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                            "${Network.imgUrl}${recentContactList[index].cardImage ??
+                                ""}"),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Text(
-                    recentContactList[index].firstName.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 8,
-                        color: Colors.black),
-                  ),
-                ],
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Text(
+                      recentContactList[index].firstName.toString(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 8,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -558,7 +575,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
 
                 ),
                 title: Text(
-                  myContactList[index].firstName ?? "",
+                  "${myContactList[index].firstName}${ myContactList[index].lastName}",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -632,7 +649,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
       // Create a new contact
       final newContact = Contact()
         ..name.first = firstName
-        ..name.last = firstName
+        ..name.last = lastName
         ..phones = [Phone(mobileNumber)]; // Add the phone number here
 
       try {

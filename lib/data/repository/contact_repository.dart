@@ -77,7 +77,7 @@ class ContactRepository {
     };
     var dio = Dio();
     var response = await dio.request(
-      dto+"card/store-physical-card",
+      dto+"contact/store/by-physical-card",
       options: Options(
         method: 'POST',
         headers: headers,

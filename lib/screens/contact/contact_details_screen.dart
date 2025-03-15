@@ -278,7 +278,7 @@ class _ContactDetailsState extends State<ContactDetails> {
       // Create a new contact
       final newContact = Contact()
         ..name.first = firstName
-        ..name.last = firstName
+        ..name.last = lastName
         ..phones = [Phone(mobileNumber)]; // Add the phone number here
 
       try {
@@ -657,9 +657,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    // launchUrlGet(
-                                    //   linkdinLink ?? "",
-                                    // );
+                                    launchUrlGet(
+                                      contactDetailsDatum?.companyWebsite ?? "",
+                                    );
                                   },
                                   child: Image.asset(
                                     "assets/images/link.png",
@@ -758,9 +758,38 @@ class _ContactDetailsState extends State<ContactDetails> {
                         fontSize: 14,
                       ),
                     ),
+                    contactDetailsDatum == null ||
+                        contactDetailsDatum?.notes == null ||
+                        contactDetailsDatum!.notes!.isEmpty
+                        ?   InkWell(
+                      onTap: (){
+                        Utility.showLoader(context);
+                        apiUpdateNotes(
+                            contactDetailsDatum?.id.toString() ?? "");
+                      },
+                          child: Text(
+                                                "Add", // Right side text
+                                                style: TextStyle(
+                            color: Colors.blue, fontSize: 16),
+                                              ),
+                        )
+                        : isEdit == true
+                        ? InkWell(
+                      onTap: (){
+                        Utility.showLoader(context);
+                        apiUpdateNotes(
+                            contactDetailsDatum?.id.toString() ?? "");
+                      },
+                      child: Text(
+                        "Update", // Right side text
+                        style: TextStyle(
+                            color: Colors.blue, fontSize: 16),
+                      ),
+                    )
+                        : SizedBox(),
                     if (contactDetailsDatum != null &&
                         contactDetailsDatum?.notes != null &&
-                        contactDetailsDatum!.notes!.isNotEmpty)
+                        contactDetailsDatum!.notes!.isNotEmpty && isEdit == false)
                       IconButton(
                         icon: Image.asset(
                           "assets/images/edit-05.png",
@@ -814,83 +843,6 @@ class _ContactDetailsState extends State<ContactDetails> {
                         ),
                       ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              contactDetailsDatum == null ||
-                      contactDetailsDatum?.notes == null ||
-                      contactDetailsDatum!.notes!.isEmpty
-                  ? Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 24),
-                      child: SizedBox(
-                        height: 45,
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          // iconAlignment: IconAlignment.start,
-                          onPressed: () {
-                            Utility.showLoader(context);
-                            apiUpdateNotes(
-                                contactDetailsDatum?.id.toString() ?? "");
-                            // Handle button press
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue, // Background color
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(30), // Rounded corners
-                            ),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Add", // Right side text
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  : isEdit == true
-                      ? Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 24),
-                          child: SizedBox(
-                            height: 45,
-                            width: MediaQuery.of(context).size.width,
-                            child: ElevatedButton(
-                              // iconAlignment: IconAlignment.start,
-                              onPressed: () {
-                                Utility.showLoader(context);
-                                apiUpdateNotes(
-                                    contactDetailsDatum?.id.toString() ?? "");
-                                // Handle button press
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Colors.blue, // Background color
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      30), // Rounded corners
-                                ),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Update", // Right side text
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      : SizedBox(),
               const SizedBox(
                 height: 16,
               ),
@@ -977,14 +929,14 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     );
                                   },
                                   title: Text(
-                                    meeting.notes ?? '',
+                                    meeting.title ?? '',
                                     style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500),
                                   ),
                                   subtitle: Text(
-                                    meeting.link ?? '',
+                                    meeting.purpose ?? '',
                                     style: const TextStyle(
                                         color: Colors.grey,
                                         fontSize: 12,

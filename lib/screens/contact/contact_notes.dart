@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -147,8 +146,8 @@ class _AddContactNotesState extends State<AddContactNotes> {
                                     showModalBottomSheet(
                                       context: context,
                                       isScrollControlled: true,
-                                      backgroundColor: Colors
-                                          .transparent, // To make corners rounded
+                                      backgroundColor: Colors.transparent,
+                                      // To make corners rounded
                                       builder: (context) =>
                                           FullScreenBottomSheet(),
                                     );
@@ -214,7 +213,9 @@ class _AddContactNotesState extends State<AddContactNotes> {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (builder) =>  MeetingsScreen(contactId: 0,),
+                              builder: (builder) => MeetingsScreen(
+                                contactId: 0,
+                              ),
                             ),
                           );
                         },
@@ -278,18 +279,20 @@ class _AddContactNotesState extends State<AddContactNotes> {
 }
 
 class FullScreenBottomSheet extends StatefulWidget {
-  Function(bool ishide,String companyTypeId)? callBack;
-   FullScreenBottomSheet({super.key, this.callBack});
+  Function(bool ishide, String companyTypeId, String companyName)? callBack;
+
+  FullScreenBottomSheet({super.key, this.callBack});
 
   @override
   State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
 }
 
 class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
-  CardCubit?_getGetCompanyTypeCubit;
+  CardCubit? _getGetCompanyTypeCubit;
   bool isCheck = false;
   String companyId = "";
   List<DataCompany> companyList = []; // List to hold parsed data
+  TextEditingController companyNameController = TextEditingController();
 
   @override
   void initState() {
@@ -300,13 +303,14 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   }
 
   CompanyTypeModel? companyTypeModel;
+
   Future<void> fetchData() async {
     _getGetCompanyTypeCubit?.apiGetCompanyType();
   }
 
   @override
   Widget build(BuildContext context) {
-    return   BlocListener<CardCubit, ResponseState>(
+    return BlocListener<CardCubit, ResponseState>(
       bloc: _getGetCompanyTypeCubit,
       listener: (context, state) {
         if (state is ResponseStateLoading) {
@@ -326,7 +330,8 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
       },
       child: DraggableScrollableSheet(
         expand: false,
-        initialChildSize: 0.9, // Adjust this value to control initial height
+        initialChildSize: 0.9,
+        // Adjust this value to control initial height
         maxChildSize: 0.9,
         minChildSize: 0.5,
         builder: (context, scrollController) {
@@ -346,8 +351,8 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     children: [
                       const Text(
                         'Filters',
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       IconButton(
                         icon: const Icon(Icons.close),
@@ -369,20 +374,37 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         const SizedBox(height: 10),
                         const SizedBox(height: 20),
                         // Type of Company dropdown
-                         CustomDropdown(title: 'Type of Company',callBack: (v){
-                           companyId = v;
-                           setState(() {
-
-                           });
-                         },),
+                        CustomDropdown(
+                          title: 'Type of Company',
+                          callBack: (v) {
+                            companyId = v;
+                            setState(() {});
+                          },
+                        ),
                         const SizedBox(height: 20),
                         // Function dropdown
-                         CustomDropdown(title: 'Function'),
+                        SizedBox(
+                          height: 45,
+                          child: TextField(
+                            controller: companyNameController,
+                            decoration: InputDecoration(
+                              fillColor: Colors.grey.shade200,
+                              filled: true,
+                              labelText: 'Enter job title',
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 20),
                         Row(
                           children: [
-                            Text("Hide"),
-                            SizedBox(width: 10,),
+                            Text("Show Hidden Contact"),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Container(
                               height: 20,
                               width: 20,
@@ -410,8 +432,8 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {
-                            widget.callBack?.call(false,"");
-                            Navigator.pop(context,false);
+                            widget.callBack?.call(false, "", "");
+                            Navigator.pop(context, false);
                           },
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.black,
@@ -429,7 +451,8 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            widget.callBack?.call(isCheck,companyId);
+                            widget.callBack?.call(
+                                isCheck, companyId, companyNameController.text);
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
@@ -457,9 +480,10 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
 class CustomDropdown extends StatefulWidget {
   final String title;
   Function? callBack;
-  List<DataCompany>? companyList ; // List to hold parsed data
+  List<DataCompany>? companyList; // List to hold parsed data
 
-   CustomDropdown({super.key, required this.title, this.companyList,this.callBack});
+  CustomDropdown(
+      {super.key, required this.title, this.companyList, this.callBack});
 
   @override
   _CustomDropdownState createState() => _CustomDropdownState();
@@ -487,9 +511,9 @@ class _CustomDropdownState extends State<CustomDropdown> {
           onChanged: (String? newValue) {
             setState(() {
               _selectedValue = newValue;
-              if(newValue.toString() == "IT"){
+              if (newValue.toString() == "IT") {
                 _selectedId = "1";
-              }else {
+              } else {
                 _selectedId = "2";
               }
             });
