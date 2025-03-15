@@ -11,9 +11,11 @@ import '../../data/repository/auth_repository.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
+import '../../models/contact_details_dto.dart';
 import '../../models/login_dto.dart';
 import '../../models/meeting_details_model.dart';
 import '../../models/my_meetings_model.dart';
+import '../../models/recent_contact_mode.dart';
 import '../../models/social_data.dart';
 import '../../models/team_member.dart';
 import '../../models/team_response.dart';
@@ -45,10 +47,10 @@ class ContactCubit extends Cubit<ResponseState> {
   Future<void> apiGetRecentContact() async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    MyContactDto dto;
+    RecentContactDto dto;
     try {
       httpResponse = await contactRepository.apiGetRecentContact();
-      dto = httpResponse.data as MyContactDto;
+      dto = httpResponse.data as RecentContactDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));
@@ -59,10 +61,10 @@ class ContactCubit extends Cubit<ResponseState> {
   Future<void> apiGetContactDetail(id) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    ContactDatum dto;
+    ContactDetailsDto dto;
     try {
       httpResponse = await contactRepository.apiGetContactDetail(id);
-      dto = httpResponse.data as ContactDatum;
+      dto = httpResponse.data as ContactDetailsDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));
@@ -263,6 +265,20 @@ class ContactCubit extends Cubit<ResponseState> {
     UtilityDto dto;
     try {
       httpResponse = await contactRepository.apiContactFavUnFav(id,body);
+      dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+
+  Future<void> apiUpdateNotes(id,body) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await contactRepository.apiUpdateNotes(id,body);
       dto = httpResponse.data as UtilityDto;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

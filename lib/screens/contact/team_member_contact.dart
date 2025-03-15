@@ -24,12 +24,24 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
   List<Member> teamMember = [];
   GroupCubit? getGroupCubit;
   List<MyGroupListDatum> myGroupList = [];
+  TextEditingController searchController = TextEditingController();
 
 
   void getTeamMembers(int page, String keyword) async {
+    List<int> myGroupListId = [];
+    myGroupList.forEach(
+          (element) {
+        if (element.isCheck == true) {
+          myGroupListId.add(element.id ?? 0);
+        }
+      },
+    );
+    String group_ids = myGroupListId.join(',');
     Map<String, dynamic> data = {
       "key_word": keyword.toString(),
       "page": page.toString(),
+      "group_ids":group_ids
+
     };
     _getTeamMember?.apiGetTeamMember(data);
   }
@@ -121,6 +133,7 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                           child: TextField(onChanged: (value) {
                             getTeamMembers(0,value);
                           },
+                            controller: searchController,
                             decoration: InputDecoration(
                               hintText: 'Search...',
                               border: InputBorder.none,
@@ -173,19 +186,29 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200], // Light background color
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
-                    ),
-                    child: Center(
-                      child: Text(
-                        myGroupList[index].groupName ?? "",
-                        style: const TextStyle(
-                          color: Colors.black, // Text color
-                          fontSize: 14,
+                  child: InkWell(
+                    onTap: (){
+                      myGroupList[index].isCheck =
+                      myGroupList[index].isCheck == false ? true : false;
+                      setState(() {
+
+                      });
+                      getTeamMembers(1,searchController.text);
+                    },
+                    child: Container(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200], // Light background color
+                        borderRadius: BorderRadius.circular(8), // Rounded corners
+                      ),
+                      child: Center(
+                        child: Text(
+                          myGroupList[index].groupName ?? "",
+                          style: const TextStyle(
+                            color: Colors.black, // Text color
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ),

@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
+import '../../models/contact_details_dto.dart';
 import '../../models/my_contact_model.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/widgets/network.dart';
@@ -246,7 +247,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
 }
 
 class ShareOtherCardBottomSheet extends StatefulWidget {
-  final ContactDatum? cardData;
+  final DataContact? cardData;
   const ShareOtherCardBottomSheet({super.key,this.cardData});
 
   @override
@@ -264,7 +265,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
   String? twitterLink,instaLink,faceBookLink,linkdinLink;
 
   setLink(){
-    widget.cardData?.socials?.forEach((action) {
+    widget.cardData?.cardSocials?.forEach((action) {
       if (action.socialName == "Twitter") {
         twitterLink = action.socialLink.toString();
       }
