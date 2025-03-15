@@ -35,6 +35,7 @@ class MyGroupListDatum {
   String? groupName;
   String? groupDescription;
   dynamic groupLogo;
+  bool? isCheck;
 
   MyGroupListDatum({
     this.id,
@@ -43,6 +44,7 @@ class MyGroupListDatum {
     this.groupName,
     this.groupDescription,
     this.groupLogo,
+    this.isCheck = false,
   });
 
   factory MyGroupListDatum.fromJson(Map<String, dynamic> json) => MyGroupListDatum(

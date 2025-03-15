@@ -7,6 +7,7 @@ import '../../localStorage/storage.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
+import '../../models/contact_details_dto.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
@@ -14,6 +15,7 @@ import '../../models/meeting_details_model.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/my_meetings_model.dart';
+import '../../models/recent_contact_mode.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -42,7 +44,7 @@ class ContactRepository {
     return _apiClient.apiGetMyContact(dto,token2,body);
   }
 
-  Future<HttpResponse<MyContactDto>> apiGetRecentContact() async {
+  Future<HttpResponse<RecentContactDto>> apiGetRecentContact() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
@@ -50,7 +52,7 @@ class ContactRepository {
   }
 
 
-  Future<HttpResponse<ContactDatum>> apiGetContactDetail(id) async {
+  Future<HttpResponse<ContactDetailsDto>> apiGetContactDetail(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
@@ -64,11 +66,37 @@ class ContactRepository {
     return _apiClient.apiAddContact(dto,token2,body);
   }
 
-  Future<HttpResponse<UtilityDto>> apiAddPhysicalCard(body) async {
+
+  Future<HttpResponse<UtilityDto>> apiAddPhysicalCard(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiAddPhysicalCard(dto,token2,body);
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': token2
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      dto+"contact/store/by-physical-card",
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: body,
+    );
+
+    // if (response.statusCode == 200) {
+    print(" responce "+ json.encode(response.data));
+    late UtilityDto _value;
+    try {
+      _value = UtilityDto.fromJson(response.data!);
+    } on Object catch (e, s) {
+      // errorLogger?.logError(e, s,);
+      print(" error "+ json.encode(response.statusMessage));
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, response);
+    return httpResponse;
   }
 
   Future<HttpResponse<UtilityDto>> apiDeleteContact(id) async {
@@ -163,6 +191,14 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiContactFavUnFav(dto,token2,id,body);
+  }
+
+
+  Future<HttpResponse<UtilityDto>> apiUpdateNotes(id,body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiUpdateNotes(dto,token2,id,body);
   }
 
 

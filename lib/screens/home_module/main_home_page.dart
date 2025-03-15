@@ -25,6 +25,7 @@ import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../add_card_module/share_card_bottom_sheet.dart';
+import '../contact/contact_details_screen.dart';
 import '../profile_mosule/profile_new.dart';
 import '../add_card_module/add_new_card.dart';
 import '../contact/contact_home.dart';
@@ -569,7 +570,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "0",
+                                                cardList!.data![index].contactCount.toString()
+                                                    ?? "0",
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 18,
@@ -813,65 +815,79 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: myContactList.length,
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 2),
-                              leading: CircleAvatar(
-                                radius: 25,
-                                backgroundImage: NetworkImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
-                                backgroundColor: Colors.grey.shade200,
+                            return InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                    builder: (builder) =>
+                                    ContactDetails(contactId: myContactList[index]
+                                        .id ?? 0,
+                                      contactIdForMeeting: myContactList[index].id,
+                                      tags: [],),
+                                ));
+                              },
+                              child: ListTile(
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 2),
+                                leading: CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: NetworkImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
+                                  backgroundColor: Colors.grey.shade200,
 
-                              ),
-                              title: Text(
-                                myContactList[index].firstName ?? "",
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    color: Colors.black,
-                                  ),
                                 ),
-                              ),
-                              subtitle: Text(
-                                myContactList[index].jobTitle ?? "",
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    color: Colors.black45,
-                                  ),
-                                ),
-                              ),
-                              trailing: const Icon(Icons.more_vert),
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(25.0),
+                                title: Text(
+                                  "${myContactList[index].firstName}${ myContactList[index].lastName}",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      color: Colors.black,
                                     ),
                                   ),
-                                  builder: (context) {
-                                    return  Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                      ListTile(
-                                      title: const Text(
-                                      'Add to favorites',
-                                        style: TextStyle(color: Colors.black, fontSize: 14),
-                                      ),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        selectedIndex = index;
-                                        setState(() {
+                                ),
+                                subtitle: Text(
+                                  myContactList[index].jobTitle ?? "",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      color: Colors.black45,
+                                    ),
+                                  ),
+                                ),
+                                trailing: InkWell(
+                                    onTap: (){
+                                      showModalBottomSheet(
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(25.0),
+                                          ),
+                                        ),
+                                        builder: (context) {
+                                          return  Padding(
+                                              padding: const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    ListTile(
+                                                      title: const Text(
+                                                        'Un-favorite',
+                                                        style: TextStyle(color: Colors.black, fontSize: 14),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        selectedIndex = index;
+                                                        setState(() {
 
-                                        });
-                                        Utility.showLoader(context);
-                                        apiContactFavUnFav(myContactList[index].id.toString());
-                                        // Add functionality here
-                                      },
-                                    ),SizedBox(height: 16,)]));
-                                  },
-                                );
-                              },
+                                                        });
+                                                        Utility.showLoader(context);
+                                                        apiContactFavUnFav(myContactList[index].id.toString());
+                                                        // Add functionality here
+                                                      },
+                                                    ),SizedBox(height: 16,)]));
+                                        },
+                                      );
+                                    },
+                                    child: const Icon(Icons.more_vert)),
+                              ),
                             );
                           },
                         ):Center(child: Text("No record found")),

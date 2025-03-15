@@ -1,102 +1,38 @@
 // To parse this JSON data, do
 //
-//     final myContactDto = myContactDtoFromJson(jsonString);
+//     final recentContactDto = recentContactDtoFromJson(jsonString);
 
 import 'dart:convert';
 
-MyContactDto myContactDtoFromJson(String str) => MyContactDto.fromJson(json.decode(str));
+RecentContactDto recentContactDtoFromJson(String str) => RecentContactDto.fromJson(json.decode(str));
 
-String myContactDtoToJson(MyContactDto data) => json.encode(data.toJson());
+String recentContactDtoToJson(RecentContactDto data) => json.encode(data.toJson());
 
-class MyContactDto {
+class RecentContactDto {
   bool? status;
   String? message;
-  Data? data;
+  List<RecentDatum>? data;
 
-  MyContactDto({
+  RecentContactDto({
     this.status,
     this.message,
     this.data,
   });
 
-  factory MyContactDto.fromJson(Map<String, dynamic> json) => MyContactDto(
+  factory RecentContactDto.fromJson(Map<String, dynamic> json) => RecentContactDto(
     status: json["status"],
     message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    data: json["data"] == null ? [] : List<RecentDatum>.from(json["data"]!.map((x) => RecentDatum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
     "message": message,
-    "data": data?.toJson(),
-  };
-}
-
-class Data {
-  int? currentPage;
-  List<ContactDatum>? data;
-  String? firstPageUrl;
-  int? from;
-  int? lastPage;
-  String? lastPageUrl;
-  List<Link>? links;
-  dynamic nextPageUrl;
-  String? path;
-  int? perPage;
-  dynamic prevPageUrl;
-  int? to;
-  int? total;
-
-  Data({
-    this.currentPage,
-    this.data,
-    this.firstPageUrl,
-    this.from,
-    this.lastPage,
-    this.lastPageUrl,
-    this.links,
-    this.nextPageUrl,
-    this.path,
-    this.perPage,
-    this.prevPageUrl,
-    this.to,
-    this.total,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<ContactDatum>.from(json["data"]!.map((x) => ContactDatum.fromJson(x))),
-    firstPageUrl: json["first_page_url"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    lastPageUrl: json["last_page_url"],
-    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-    nextPageUrl: json["next_page_url"],
-    path: json["path"],
-    perPage: json["per_page"],
-    prevPageUrl: json["prev_page_url"],
-    to: json["to"],
-    total: json["total"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
     "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-    "first_page_url": firstPageUrl,
-    "from": from,
-    "last_page": lastPage,
-    "last_page_url": lastPageUrl,
-    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
-    "next_page_url": nextPageUrl,
-    "path": path,
-    "per_page": perPage,
-    "prev_page_url": prevPageUrl,
-    "to": to,
-    "total": total,
   };
 }
 
-class ContactDatum {
+class RecentDatum {
   int? id;
   int? userId;
   int? cardId;
@@ -104,9 +40,7 @@ class ContactDatum {
   String? cardImage;
   String? firstName;
   String? lastName;
-  String? notes;
   String? companyName;
-  String? qrCode;
   dynamic companyLogo;
   int? companyTypeId;
   String? jobTitle;
@@ -119,19 +53,20 @@ class ContactDatum {
   String? cardName;
   int? contactStatus;
   int? favorite;
-  List<dynamic>? documents;
+  int? cardTypeId;
+  String? notes;
+  dynamic qrCode;
+  List<Document>? documents;
   List<Social>? socials;
 
-  ContactDatum({
+  RecentDatum({
     this.id,
     this.userId,
     this.cardId,
-    this.qrCode,
     this.languageId,
     this.cardImage,
     this.firstName,
     this.lastName,
-    this.notes,
     this.companyName,
     this.companyLogo,
     this.companyTypeId,
@@ -145,20 +80,21 @@ class ContactDatum {
     this.cardName,
     this.contactStatus,
     this.favorite,
+    this.cardTypeId,
+    this.notes,
+    this.qrCode,
     this.documents,
     this.socials,
   });
 
-  factory ContactDatum.fromJson(Map<String, dynamic> json) => ContactDatum(
+  factory RecentDatum.fromJson(Map<String, dynamic> json) => RecentDatum(
     id: json["id"],
     userId: json["user_id"],
     cardId: json["card_id"],
     languageId: json["language_id"],
     cardImage: json["card_image"],
     firstName: json["first_name"],
-    qrCode: json["qr_code"],
     lastName: json["last_name"],
-    notes: json["notes"],
     companyName: json["company_name"],
     companyLogo: json["company_logo"],
     companyTypeId: json["company_type_id"],
@@ -172,7 +108,10 @@ class ContactDatum {
     cardName: json["card_name"],
     contactStatus: json["contact_status"],
     favorite: json["favorite"],
-    documents: json["documents"] == null ? [] : List<dynamic>.from(json["documents"]!.map((x) => x)),
+    cardTypeId: json["card_type_id"],
+    notes: json["notes"],
+    qrCode: json["qr_code"],
+    documents: json["documents"] == null ? [] : List<Document>.from(json["documents"]!.map((x) => Document.fromJson(x))),
     socials: json["socials"] == null ? [] : List<Social>.from(json["socials"]!.map((x) => Social.fromJson(x))),
   );
 
@@ -181,11 +120,9 @@ class ContactDatum {
     "user_id": userId,
     "card_id": cardId,
     "language_id": languageId,
-    "qr_code": qrCode,
     "card_image": cardImage,
     "first_name": firstName,
     "last_name": lastName,
-    "notes": notes,
     "company_name": companyName,
     "company_logo": companyLogo,
     "company_type_id": companyTypeId,
@@ -199,8 +136,35 @@ class ContactDatum {
     "card_name": cardName,
     "contact_status": contactStatus,
     "favorite": favorite,
-    "documents": documents == null ? [] : List<dynamic>.from(documents!.map((x) => x)),
+    "card_type_id": cardTypeId,
+    "notes": notes,
+    "qr_code": qrCode,
+    "documents": documents == null ? [] : List<dynamic>.from(documents!.map((x) => x.toJson())),
     "socials": socials == null ? [] : List<dynamic>.from(socials!.map((x) => x.toJson())),
+  };
+}
+
+class Document {
+  int? id;
+  int? contactId;
+  String? document;
+
+  Document({
+    this.id,
+    this.contactId,
+    this.document,
+  });
+
+  factory Document.fromJson(Map<String, dynamic> json) => Document(
+    id: json["id"],
+    contactId: json["contact_id"],
+    document: json["document"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "contact_id": contactId,
+    "document": document,
   };
 }
 
@@ -237,29 +201,5 @@ class Social {
     "social_link": socialLink,
     "social_name": socialName,
     "social_logo": socialLogo,
-  };
-}
-
-class Link {
-  String? url;
-  String? label;
-  bool? active;
-
-  Link({
-    this.url,
-    this.label,
-    this.active,
-  });
-
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "url": url,
-    "label": label,
-    "active": active,
   };
 }

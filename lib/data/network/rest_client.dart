@@ -9,6 +9,7 @@ import 'package:retrofit/retrofit.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
+import '../../models/contact_details_dto.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
@@ -16,6 +17,7 @@ import '../../models/meeting_details_model.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/my_meetings_model.dart';
+import '../../models/recent_contact_mode.dart';
 import '../../models/social_data.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
@@ -318,6 +320,7 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiDeleteTag(@Path("url") url,
       @Header(authorization) token,@Path("id") id,);
 
+
   @POST("{url}contact/get-my-contact")
   @Header(headerValue)
   @Header(headerContentType)
@@ -327,13 +330,13 @@ abstract class RestClient {
   @POST("{url}contact/get-recent-contact")
   @Header(headerValue)
   @Header(headerContentType)
-  Future<HttpResponse<MyContactDto>> apiGetRecentContact(@Path("url") url,
+  Future<HttpResponse<RecentContactDto>> apiGetRecentContact(@Path("url") url,
       @Header(authorization) token );
 
-  @GET("{url}card/show/{id}")
+  @GET("{url}contact/get/{id}")
   @Header(headerValue)
   @Header(headerContentType)
-  Future<HttpResponse<ContactDatum>> apiGetContactDetail(@Path("url") url,
+  Future<HttpResponse<ContactDetailsDto>> apiGetContactDetail(@Path("url") url,
       @Header(authorization) token,@Path("id") id ,);
 
   @POST("{url}contact/store")
@@ -343,11 +346,6 @@ abstract class RestClient {
       @Header(authorization) token,@Body() body ,);
 
 
-  @POST("{url}card/store-physical-card")
-  @Header(headerValue)
-  @Header(headerContentType)
-  Future<HttpResponse<UtilityDto>> apiAddPhysicalCard(@Path("url") url,
-      @Header(authorization) token,@Body() body ,);
 
 
   @POST("{url}contact/destroy/{id}")
@@ -434,6 +432,12 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiContactFavUnFav(@Path("url") url,
+      @Header(authorization) token,@Path("id") id,@Body() body,);
+
+  @POST("{url}contact/update-notes/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiUpdateNotes(@Path("url") url,
       @Header(authorization) token,@Path("id") id,@Body() body,);
 
 }

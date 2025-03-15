@@ -16,6 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
+import '../../models/recent_contact_mode.dart';
 import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
 import '../home_module/add_new_contact.dart';
@@ -37,7 +38,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
   int selectedIndex = 0;
   List<TagDatum> tags = [];
   List<ContactDatum> myContactList = [];
-  List<ContactDatum> recentContactList = [];
+  List<RecentDatum> recentContactList = [];
   bool isLoad = true;
   TextEditingController controller = TextEditingController();
 
@@ -52,7 +53,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
     _favCubit = ContactCubit(ContactRepository());
     apiTagList();
     apiGetRecentContact();
-    apiGetMyContact("", false);
+    apiGetMyContact("", false,"");
     // TODO: implement initState
     super.initState();
   }
@@ -85,7 +86,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
     _addContactCubit?.apiAddContact(data);
   }
 
-  Future<void> apiGetMyContact(key, hide) async {
+  Future<void> apiGetMyContact(key, hide,companyTypeId) async {
     List<int> tagId = [];
     tags.forEach(
           (element) {
@@ -97,8 +98,8 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
     String contactTagIdsString = tagId.join(',');
     Map<String, dynamic> data = {
       "key_word": key,
-      "tag_ids": "",
-      "company_type_id": contactTagIdsString,
+      "tag_ids": contactTagIdsString,
+      "company_type_id": companyTypeId ?? "",
       "contact_status": hide == true ? "2" : "1",
       "favorite": ""
     };
@@ -177,7 +178,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
               var dto = state.data as UtilityDto;
               Utility()
                   .showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact("", false);
+              apiGetMyContact("", false,"");
             }
             setState(() {});
           },
@@ -238,9 +239,9 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              var dto = state.data as MyContactDto;
+              var dto = state.data as RecentContactDto;
               recentContactList = [];
-              recentContactList = dto.data?.data ?? [];
+              recentContactList = dto.data ?? [];
               isLoad = false;
             }
             setState(() {});
@@ -270,7 +271,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
               var dto = state.data as UtilityDto;
               Utility().showFlushBar(
                   context: context, message: dto.message ?? "");
-              apiGetMyContact("", false);
+              apiGetMyContact("", false,"");
             }
             setState(() {});
           },
@@ -369,7 +370,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                         child: TextField(
                           controller: controller,
                           onChanged: (v) {
-                            apiGetMyContact(v, false);
+                            apiGetMyContact(v, false,"");
                           },
                           decoration: InputDecoration(
                             hintText: 'Search...',
@@ -394,10 +395,10 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     isScrollControlled: true,
                     backgroundColor:
                     Colors.transparent, // To make corners rounded
-                    builder: (context) => FullScreenBottomSheet(),
-                  ).then((value) {
-                    apiGetMyContact(controller.text, value);
-                  },);
+                    builder: (context) => FullScreenBottomSheet(callBack: (isHide, companyTypeId,companyName) {
+                      apiGetMyContact(controller.text, isHide,companyTypeId);
+                    },),
+                  );
                 },
               ),
             ],
@@ -449,7 +450,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     setState(() {
 
                     });
-                    apiGetMyContact(controller.text, false);
+                    apiGetMyContact(controller.text, false,"");
                   },
                   child: Container(
                     padding:
@@ -505,29 +506,46 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: recentContactList.length,
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: NetworkImage(
-                          "${Network.imgUrl}${recentContactList[index].cardImage ??
-                              ""}"),
+              return InkWell(onTap: (){
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (builder) =>
+                        ContactDetails(contactId: recentContactList[index]
+                            .id ?? 0,
+                          contactIdForMeeting: recentContactList[index].id,
+                          tags: tags,),
+                  ),
+                ).then((value) {
+                  if (value == 2) {
+                    apiGetMyContact(controller.text, false,"");
+                  }
+                },);
+              },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                            "${Network.imgUrl}${recentContactList[index].cardImage ??
+                                ""}"),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Text(
-                    recentContactList[index].firstName.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 8,
-                        color: Colors.black),
-                  ),
-                ],
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Text(
+                      recentContactList[index].firstName.toString(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 8,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -557,7 +575,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
 
                 ),
                 title: Text(
-                  myContactList[index].firstName ?? "",
+                  "${myContactList[index].firstName}${ myContactList[index].lastName}",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -592,13 +610,13 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     CupertinoPageRoute(
                       builder: (builder) =>
                           ContactDetails(contactId: myContactList[index]
-                              .cardId ?? 0,
+                              .id ?? 0,
                             contactIdForMeeting: myContactList[index].id,
                             tags: tags,),
                     ),
                   ).then((value) {
                     if (value == 2) {
-                      apiGetMyContact(controller.text, false);
+                      apiGetMyContact(controller.text, false,"");
                     }
                   },);
                   // Add your onTap functionality here if needed
@@ -631,7 +649,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
       // Create a new contact
       final newContact = Contact()
         ..name.first = firstName
-        ..name.last = firstName
+        ..name.last = lastName
         ..phones = [Phone(mobileNumber)]; // Add the phone number here
 
       try {

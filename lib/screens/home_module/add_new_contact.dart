@@ -258,6 +258,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                       child: SizedBox(
                         height: 45,
                         child: TextField(
+                          controller: firstNameController,
                           decoration: InputDecoration(
                             fillColor: Colors.grey.shade200,
                             filled: true,
@@ -276,6 +277,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                       child: SizedBox(
                         height: 45,
                         child: TextField(
+                          controller: lastNameController,
                           decoration: InputDecoration(
                             labelText: 'Last Name',
                             fillColor: Colors.grey.shade200,
@@ -383,7 +385,12 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                        child: ElevatedButton(
                          // iconAlignment: IconAlignment.start,
                          onPressed: () {
-                           submitData(firstName: firstNameController.text,context: context,lastName: lastNameController.text,cardImage: _selectedImage ?? File(""));
+                           if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty && _selectedImage != null){
+                           Utility.showLoader(context);
+                           submitData(firstName: firstNameController.text,context: context,lastName: lastNameController.text,cardImage: _selectedImage ?? File(""));}
+                           else{
+                             Utility().showFlushBar(context: context, message: "please fill all field",isError: true);
+                           }
                            // Handle button press
                          },
                          style: ElevatedButton.styleFrom(
@@ -424,7 +431,6 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
     required BuildContext context,
     required File cardImage, // Card image file
   }) async {
-    Utility.showLoader(context);
     var data=null;
     if (!cardImage.path.contains("storage")) {
       data = FormData.fromMap({
@@ -436,8 +442,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
       });
     }else{
       data = FormData.fromMap({
-        'team_name': firstName,
-        'team_description': lastName
+        'first_name': firstName,
+        'last_name': lastName
       });
     }
     _contactCubit?.apiAddPhysicalCard(data);

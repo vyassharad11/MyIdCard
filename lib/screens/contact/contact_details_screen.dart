@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../data/repository/contact_repository.dart';
+import '../../models/contact_details_dto.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../models/tag_model.dart';
@@ -25,31 +26,42 @@ class ContactDetails extends StatefulWidget {
   final int contactId;
   final int? contactIdForMeeting;
   final List<TagDatum> tags;
-  const ContactDetails({super.key,required this.contactId,this.contactIdForMeeting,required this.tags});
+
+  const ContactDetails(
+      {super.key,
+      required this.contactId,
+      this.contactIdForMeeting,
+      required this.tags});
 
   @override
   State<ContactDetails> createState() => _ContactDetailsState();
 }
 
 class _ContactDetailsState extends State<ContactDetails> {
-  ContactCubit? _contactDetailCubit,deleteContactCubit,_favCubit;
-  ContactDatum?contactDetailsDatum;
+  ContactCubit? _contactDetailCubit,
+      deleteContactCubit,
+      _favCubit,
+      _updateNotesCubit;
+  DataContact? contactDetailsDatum;
   ContactCubit? meetingCubit;
   List<MeetingDatum> meetings = [];
+  TextEditingController notesController = TextEditingController();
+  bool isEdit = false;
 
   @override
-  initState(){
+  initState() {
     _contactDetailCubit = ContactCubit(ContactRepository());
     deleteContactCubit = ContactCubit(ContactRepository());
     meetingCubit = ContactCubit(ContactRepository());
     _favCubit = ContactCubit(ContactRepository());
+    _updateNotesCubit = ContactCubit(ContactRepository());
     getContactDetail();
     apiGetMyMeetings();
     super.initState();
   }
 
   @override
-  dispose(){
+  dispose() {
     _contactDetailCubit?.close();
     deleteContactCubit?.close();
     meetingCubit?.close();
@@ -59,17 +71,26 @@ class _ContactDetailsState extends State<ContactDetails> {
     super.dispose();
   }
 
-  Future<void> apiContactFavUnFav(cardId,fav) async {
+  Future<void> apiContactFavUnFav(cardId, fav) async {
     Map<String, dynamic> data = {
       "favorite": fav.toString(),
     };
-    _favCubit?.apiContactFavUnFav(cardId,data);
+    _favCubit?.apiContactFavUnFav(cardId, data);
   }
 
-  String? twitterLink,instaLink,faceBookLink,linkdinLink;
+  Future<void> apiUpdateNotes(
+    cardId,
+  ) async {
+    Map<String, dynamic> data = {
+      "notes": notesController.text.toString(),
+    };
+    _updateNotesCubit?.apiUpdateNotes(widget.contactIdForMeeting, data);
+  }
 
-  setLink(){
-    contactDetailsDatum?.socials?.forEach((action) {
+  String? twitterLink, instaLink, faceBookLink, linkdinLink;
+
+  setLink() {
+    contactDetailsDatum?.cardSocials?.forEach((action) {
       if (action.socialName == "Twitter") {
         twitterLink = action.socialLink.toString();
       }
@@ -81,7 +102,8 @@ class _ContactDetailsState extends State<ContactDetails> {
       }
       if (action.socialName == "LinkedIn") {
         linkdinLink = action.socialLink.toString();
-      }});
+      }
+    });
   }
 
   Future<void> getContactDetail() async {
@@ -113,7 +135,8 @@ class _ContactDetailsState extends State<ContactDetails> {
     } else {
       print('Could not launch $url');
       throw 'Could not launch $url';
-    }}
+    }
+  }
 
   Future<void> openGmail({String? email, String? subject, String? body}) async {
     final Uri emailUri = Uri(
@@ -139,14 +162,17 @@ class _ContactDetailsState extends State<ContactDetails> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title:  Text(
-              contactDetailsDatum?.favorite == 1?'Add to favorites':'UnFavorite',
+            title: Text(
+              contactDetailsDatum?.favorite == 1
+                  ? 'Add to favorites'
+                  : 'UnFavorite',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
               Utility.showLoader(context);
-              apiContactFavUnFav(widget.contactIdForMeeting,contactDetailsDatum?.favorite == 1 ? 2: 1);
+              apiContactFavUnFav(widget.contactIdForMeeting,
+                  contactDetailsDatum?.favorite == 1 ? 2 : 1);
               // Add functionality here
             },
           ),
@@ -164,10 +190,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                 context: context,
                 useSafeArea: true,
                 isScrollControlled: true,
-                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 100,minHeight: 10),
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height - 100,
+                    minHeight: 10),
                 shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(20)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
                 builder: (context) => AddTagInContactBottomSheet(
                   tags: widget.tags,
@@ -182,14 +209,15 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           ListTile(
-            title:  Text(
-              '${contactDetailsDatum?.contactStatus == 1 ? "Hide":"Un-hide"} Contact',
+            title: Text(
+              '${contactDetailsDatum?.contactStatus == 1 ? "Hide" : "Un-hide"} Contact',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
               Utility.showLoader(context);
-              apiContactHideUnHide(contactDetailsDatum?.id.toString(),contactDetailsDatum?.contactStatus == 1?"2":"1");
+              apiContactHideUnHide(contactDetailsDatum?.id.toString(),
+                  contactDetailsDatum?.contactStatus == 1 ? "2" : "1");
               // Add functionality here
             },
           ),
@@ -204,9 +232,14 @@ class _ContactDetailsState extends State<ContactDetails> {
             ),
             onTap: () {
               Navigator.pop(context);
-              requestPermissions().then((value) {
-                addContact(contactDetailsDatum?.firstName ?? "",contactDetailsDatum?.lastName ?? "",contactDetailsDatum?.phoneNo ?? "");
-              },);            // Add functionality here
+              requestPermissions().then(
+                (value) {
+                  addContact(
+                      contactDetailsDatum?.firstName ?? "",
+                      contactDetailsDatum?.lastName ?? "",
+                      contactDetailsDatum?.phoneNo ?? "");
+                },
+              ); // Add functionality here
             },
           ),
           const Divider(
@@ -232,7 +265,6 @@ class _ContactDetailsState extends State<ContactDetails> {
     );
   }
 
-
   Future<void> requestPermissions() async {
     PermissionStatus permission = await Permission.contacts.request();
     if (!permission.isGranted) {
@@ -240,24 +272,24 @@ class _ContactDetailsState extends State<ContactDetails> {
     }
   }
 
-
-  Future<void> addContact(firstName,lastName,mobileNumber) async {
+  Future<void> addContact(firstName, lastName, mobileNumber) async {
     // Make sure permissions are granted
     if (await FlutterContacts.requestPermission()) {
       // Create a new contact
       final newContact = Contact()
         ..name.first = firstName
-        ..name.last = firstName
-        ..phones = [Phone(mobileNumber)];  // Add the phone number here
+        ..name.last = lastName
+        ..phones = [Phone(mobileNumber)]; // Add the phone number here
 
       try {
         await FlutterContacts.insertContact(newContact);
-        Utility().showFlushBar(context: context,message: 'Contact added successfully');
+        Utility().showFlushBar(
+            context: context, message: 'Contact added successfully');
       } catch (e) {
         print('Error adding contact: $e');
       }
-    }}
-
+    }
+  }
 
   Future<void> _openMap(address) async {
     if (address.isEmpty) {
@@ -270,7 +302,8 @@ class _ContactDetailsState extends State<ContactDetails> {
         double latitude = locations.first.latitude;
         double longitude = locations.first.longitude;
 
-        String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+        String googleMapsUrl =
+            "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
         if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
           await launchUrl(Uri.parse(googleMapsUrl));
         } else {
@@ -282,13 +315,12 @@ class _ContactDetailsState extends State<ContactDetails> {
     }
   }
 
-  Future<void> apiContactHideUnHide(cardId,hide) async {
+  Future<void> apiContactHideUnHide(cardId, hide) async {
     Map<String, dynamic> data = {
-      "contact_status":hide,
+      "contact_status": hide,
     };
-    _favCubit?.apiContactHideUnHide(cardId,data);
+    _favCubit?.apiContactHideUnHide(cardId, data);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -321,6 +353,33 @@ class _ContactDetailsState extends State<ContactDetails> {
           },
         ),
         BlocListener<ContactCubit, ResponseState>(
+          bloc: _updateNotesCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              isEdit = false;
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+              getContactDetail();
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
           bloc: _contactDetailCubit,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
@@ -332,8 +391,9 @@ class _ContactDetailsState extends State<ContactDetails> {
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              var dto = state.data as ContactDatum;
-              contactDetailsDatum = dto;
+              var dto = state.data as ContactDetailsDto;
+              contactDetailsDatum = dto.data;
+              notesController.text = contactDetailsDatum?.notes ?? "";
               setLink();
             }
             setState(() {});
@@ -352,8 +412,9 @@ class _ContactDetailsState extends State<ContactDetails> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
-              Navigator.pop(context,2);
-              Utility().showFlushBar(context: context, message: dto.message ?? "");
+              Navigator.pop(context, 2);
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
             }
             setState(() {});
           },
@@ -386,7 +447,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           actionsIconTheme: const IconThemeData(color: Colors.black),
           automaticallyImplyLeading: true,
           backgroundColor: Colors.white,
-          title:  Text(
+          title: Text(
             "${contactDetailsDatum?.firstName ?? ""} ${contactDetailsDatum?.lastName ?? ""}",
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
@@ -450,7 +511,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                 Column(
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(
@@ -483,17 +544,18 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   height: 35,
                                   width: 90,
                                   child: ElevatedButton(
-                                   // iconAlignment: IconAlignment.start,
+                                    // iconAlignment: IconAlignment.start,
                                     onPressed: () {
                                       showModalBottomSheet(
                                         context: context,
                                         useSafeArea: true,
                                         isScrollControlled: true,
                                         shape: const RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.vertical(top: Radius.circular(20)),
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20)),
                                         ),
-                                        builder: (context) => ShareOtherCardBottomSheet(
+                                        builder: (context) =>
+                                            ShareOtherCardBottomSheet(
                                           cardData: contactDetailsDatum,
                                         ),
                                       );
@@ -509,7 +571,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                       ),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
@@ -524,7 +587,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         const Text(
                                           "Send", // Right side text
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 13),
+                                              color: Colors.white,
+                                              fontSize: 13),
                                         ),
                                       ],
                                     ),
@@ -542,8 +606,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 InkWell(
-                                  onTap: (){
-                                    dialNumber(contactDetailsDatum?.phoneNo.toString() ?? "");
+                                  onTap: () {
+                                    dialNumber(contactDetailsDatum?.phoneNo
+                                            .toString() ??
+                                        "");
                                   },
                                   child: Image.asset(
                                     "assets/images/call.png",
@@ -552,9 +618,13 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    openGmail(body: "",email: contactDetailsDatum?.workEmail ?? "",subject: "");
-                                    },
+                                  onTap: () {
+                                    openGmail(
+                                        body: "",
+                                        email: contactDetailsDatum?.workEmail ??
+                                            "",
+                                        subject: "");
+                                  },
                                   child: Image.asset(
                                     "assets/images/mail.png",
                                     height: 55,
@@ -562,8 +632,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    openSMS(contactDetailsDatum?.phoneNo.toString() ?? "");
+                                  onTap: () {
+                                    openSMS(contactDetailsDatum?.phoneNo
+                                            .toString() ??
+                                        "");
                                   },
                                   child: Image.asset(
                                     "assets/images/message.png",
@@ -572,8 +644,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    _openMap(contactDetailsDatum?.companyAddress ?? "");
+                                  onTap: () {
+                                    _openMap(
+                                        contactDetailsDatum?.companyAddress ??
+                                            "");
                                   },
                                   child: Image.asset(
                                     "assets/images/location.png",
@@ -582,10 +656,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    // launchUrlGet(
-                                    //   linkdinLink ?? "",
-                                    // );
+                                  onTap: () {
+                                    launchUrlGet(
+                                      contactDetailsDatum?.companyWebsite ?? "",
+                                    );
                                   },
                                   child: Image.asset(
                                     "assets/images/link.png",
@@ -600,7 +674,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     launchUrlGet(
                                       linkdinLink ?? "",
                                     );
@@ -612,7 +686,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     launchUrlGet(
                                       faceBookLink ?? "",
                                     );
@@ -624,7 +698,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     launchUrlGet(
                                       twitterLink ?? "",
                                     );
@@ -636,7 +710,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     launchUrlGet(
                                       instaLink ?? "",
                                     );
@@ -648,7 +722,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     launchUrlGet(
                                       linkdinLink ?? "",
                                     );
@@ -668,35 +742,106 @@ class _ContactDetailsState extends State<ContactDetails> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
-                child: Text(
-                  "Notes",
-                  style: TextStyle(
-                    color: Colors.black, // Text color
-                    fontSize: 14,
-                  ),
-                ),
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200], // Light background color
-                    borderRadius: BorderRadius.circular(8), // Rounded corners
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Two driven jocks help fax my big quiz. Quick, Baz, get my woven flax jodhpurs! Now fax quiz Jack!",
+                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      contactDetailsDatum != null &&
+                              contactDetailsDatum?.notes != null &&
+                              contactDetailsDatum!.notes!.isNotEmpty
+                          ? "Notes"
+                          : "Add  Notes",
                       style: TextStyle(
                         color: Colors.black, // Text color
                         fontSize: 14,
                       ),
                     ),
-                  ),
+                    contactDetailsDatum == null ||
+                        contactDetailsDatum?.notes == null ||
+                        contactDetailsDatum!.notes!.isEmpty
+                        ?   InkWell(
+                      onTap: (){
+                        Utility.showLoader(context);
+                        apiUpdateNotes(
+                            contactDetailsDatum?.id.toString() ?? "");
+                      },
+                          child: Text(
+                                                "Add", // Right side text
+                                                style: TextStyle(
+                            color: Colors.blue, fontSize: 16),
+                                              ),
+                        )
+                        : isEdit == true
+                        ? InkWell(
+                      onTap: (){
+                        Utility.showLoader(context);
+                        apiUpdateNotes(
+                            contactDetailsDatum?.id.toString() ?? "");
+                      },
+                      child: Text(
+                        "Update", // Right side text
+                        style: TextStyle(
+                            color: Colors.blue, fontSize: 16),
+                      ),
+                    )
+                        : SizedBox(),
+                    if (contactDetailsDatum != null &&
+                        contactDetailsDatum?.notes != null &&
+                        contactDetailsDatum!.notes!.isNotEmpty && isEdit == false)
+                      IconButton(
+                        icon: Image.asset(
+                          "assets/images/edit-05.png",
+                          color: Colors.grey,
+                          height: 20,
+                          width: 20,
+                        ),
+                        onPressed: () {
+                          isEdit = true;
+                          setState(() {});
+                        },
+                      )
+                  ],
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: contactDetailsDatum != null &&
+                        contactDetailsDatum?.notes != null &&
+                        contactDetailsDatum!.notes!.isNotEmpty && isEdit== false
+                    ? Container(
+                  width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200], // Light background color
+                          borderRadius:
+                              BorderRadius.circular(8), // Rounded corners
+                        ),
+                        child: Text(
+                          contactDetailsDatum?.notes ?? "",
+                          style: TextStyle(
+                            color: Colors.black, // Text color
+                            fontSize: 14,
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 45,
+                        child: TextField(
+                          controller: notesController,
+                          decoration: InputDecoration(
+                            fillColor: Colors.grey.shade200,
+                            filled: true,
+                            labelText: 'Enter note',
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
               ),
               const SizedBox(
                 height: 16,
@@ -727,9 +872,20 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   child: InkWell(
                                     splashColor: Colors.blue, // Splash color
                                     onTap: () {
-                                     Navigator.push(context, MaterialPageRoute(builder: (context) => CreateEditMeeting(contactId: widget.contactIdForMeeting.toString(),),)).then((value) {
-                                       apiGetMyMeetings();
-                                     },);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreateEditMeeting(
+                                              contactId: widget
+                                                  .contactIdForMeeting
+                                                  .toString(),
+                                            ),
+                                          )).then(
+                                        (value) {
+                                          apiGetMyMeetings();
+                                        },
+                                      );
                                     },
                                     child: const SizedBox(
                                         width: 40,
@@ -744,51 +900,58 @@ class _ContactDetailsState extends State<ContactDetails> {
                             ),
                           ],
                         ),
-                    if(meetings.isNotEmpty)    SizedBox(
-                          height: 200,
-                          child: ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            separatorBuilder: (ctx, index) {
-                              return Container(
-                                color: Colors.black12,
-                                height: 1,
-                              );
-                            },
-                            itemCount: meetings.length,
-                            itemBuilder: (context, index) {
-                              final meeting = meetings[index];
-                              return ListTile(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (builder) =>
-                                          MeetingDetailsScreen(meetingId: meetings[index].id ?? 0,contactId: contactDetailsDatum?.id.toString(),),
-                                    ),
-                                  );
-                                },
-                                title: Text(
-                                  meeting.notes?? '',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                subtitle: Text(
-                                  meeting.link ?? '',
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                trailing: Text(
-                                     DateFormat('d MMMM yyyy').format(meeting.dateTime ?? DateTime.now()),
-                                  style: TextStyle(color: Colors.blue, fontSize: 14),
-                                ),
-                              );
-                            },
+                        if (meetings.isNotEmpty)
+                          SizedBox(
+                            height: 200,
+                            child: ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder: (ctx, index) {
+                                return Container(
+                                  color: Colors.black12,
+                                  height: 1,
+                                );
+                              },
+                              itemCount: meetings.length,
+                              itemBuilder: (context, index) {
+                                final meeting = meetings[index];
+                                return ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (builder) =>
+                                            MeetingDetailsScreen(
+                                          meetingId: meetings[index].id ?? 0,
+                                          contactId: contactDetailsDatum?.id
+                                              .toString(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  title: Text(
+                                    meeting.title ?? '',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  subtitle: Text(
+                                    meeting.purpose ?? '',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  trailing: Text(
+                                    DateFormat('d MMMM yyyy').format(
+                                        meeting.dateTime ?? DateTime.now()),
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 14),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
-                        ),
                         const SizedBox(
                           height: 30,
                         ),
@@ -797,7 +960,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (builder) =>  MeetingsScreen(contactId: contactDetailsDatum?.id ?? 0,),
+                                builder: (builder) => MeetingsScreen(
+                                  contactId: contactDetailsDatum?.id ?? 0,
+                                ),
                               ),
                             );
                           },
@@ -836,9 +1001,6 @@ class _ContactDetailsState extends State<ContactDetails> {
       ),
     );
   }
-
 }
-
-
 
 // Bottom Sheet content

@@ -40,6 +40,7 @@ class CardData {
   dynamic companyLogo;
   dynamic companyTypeId;
   dynamic jobTitle;
+  dynamic contactCount;
   dynamic companyAddress;
   dynamic companyWebsite;
   dynamic workEmail;
@@ -65,6 +66,7 @@ class CardData {
       this.companyLogo,
       this.companyTypeId,
       this.jobTitle,
+      this.contactCount,
       this.companyAddress,
       this.companyWebsite,
       this.workEmail,
@@ -90,6 +92,7 @@ class CardData {
     companyLogo = json['company_logo'];
     companyTypeId = json['company_type_id'];
     jobTitle = json['job_title'];
+    contactCount = json['contact_count'];
     companyAddress = json['company_address'];
     companyWebsite = json['company_website'];
     workEmail = json['work_email'];
@@ -127,6 +130,7 @@ class CardData {
     data['company_logo'] = companyLogo;
     data['company_type_id'] = companyTypeId;
     data['job_title'] = jobTitle;
+    data['contact_count'] = contactCount;
     data['company_address'] = companyAddress;
     data['company_website'] = companyWebsite;
     data['work_email'] = workEmail;
