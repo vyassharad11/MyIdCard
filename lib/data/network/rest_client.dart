@@ -324,6 +324,12 @@ abstract class RestClient {
   Future<HttpResponse<MyContactDto>> apiGetMyContact(@Path("url") url,
       @Header(authorization) token,@Body() body );
 
+  @POST("{url}contact/get-recent-contact")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<MyContactDto>> apiGetRecentContact(@Path("url") url,
+      @Header(authorization) token );
+
   @GET("{url}card/show/{id}")
   @Header(headerValue)
   @Header(headerContentType)
@@ -334,6 +340,13 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddContact(@Path("url") url,
+      @Header(authorization) token,@Body() body ,);
+
+
+  @POST("{url}card/store-physical-card")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiAddPhysicalCard(@Path("url") url,
       @Header(authorization) token,@Body() body ,);
 
 

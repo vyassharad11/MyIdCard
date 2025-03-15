@@ -442,7 +442,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       final box = context.findRenderObject() as RenderBox?;
 
                                       await Share.share(
-                                          "hello",
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
                                         subject: "Share your card",
                                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
@@ -458,7 +458,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       final box = context.findRenderObject() as RenderBox?;
 
                                       await Share.share(
-                                        "hello",
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
                                         subject: "Share your card",
                                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
@@ -474,7 +474,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       final box = context.findRenderObject() as RenderBox?;
 
                                       await Share.share(
-                                        "hello",
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
                                         subject: "Share your card",
                                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
@@ -490,7 +490,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       final box = context.findRenderObject() as RenderBox?;
 
                                       await Share.share(
-                                        "hello",
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
                                         subject: "Share your card",
                                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
@@ -506,7 +506,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       final box = context.findRenderObject() as RenderBox?;
 
                                       await Share.share(
-                                        "hello",
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
                                         subject: "Share your card",
                                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );

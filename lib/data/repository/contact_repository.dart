@@ -42,6 +42,13 @@ class ContactRepository {
     return _apiClient.apiGetMyContact(dto,token2,body);
   }
 
+  Future<HttpResponse<MyContactDto>> apiGetRecentContact() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetRecentContact(dto,token2,);
+  }
+
 
   Future<HttpResponse<ContactDatum>> apiGetContactDetail(id) async {
     token = await Storage().getToken() ?? "";
@@ -55,6 +62,13 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiAddContact(dto,token2,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiAddPhysicalCard(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiAddPhysicalCard(dto,token2,body);
   }
 
   Future<HttpResponse<UtilityDto>> apiDeleteContact(id) async {

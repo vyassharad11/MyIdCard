@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:app_links/app_links.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,6 +41,38 @@ class BottomNavBarExample extends StatefulWidget {
 
 class _BottomNavBarExampleState extends State<BottomNavBarExample> {
   int _selectedIndex = 0;
+  StreamSubscription<Uri>? _linkSubscription;
+  late AppLinks _appLinks;
+
+  @override
+  initState(){
+    _initUniLinkStream();
+    super.initState();
+  }
+  _initUniLinkStream() async
+  {
+    _appLinks = AppLinks();
+    await Future.delayed(Duration(seconds: 2));
+    // Handle links
+    _linkSubscription = _appLinks.uriLinkStream.listen((link) {
+      if (link == null) return;
+      // String? url = Uri.parse(link).queryParameters['link'] ?? "";
+      // if (link.path.contains('events')) {
+      //   var id = link.pathSegments[1];
+      //   Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (context) => PostEventDetailPage(
+      //             eventId: id,
+      //           )));
+      // } else if (link.path.contains('user')) {
+      //   var id = link.pathSegments[0];
+      //
+      // }
+    }, onError: (err) {
+    });
+  }
+
 
   // List of pages corresponding to each tabutil
   static final List<Widget> _pages = <Widget>[
@@ -137,7 +171,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<ContactDatum> myContactList = [];
   int selectedIndex = 0;
 
-
   @override
   void initState() {
     _getCardCubit = CardCubit(CardRepository());
@@ -148,6 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
     apiGetMyContact("");
     super.initState();
   }
+
+  // Handle links
+  // _linkSubscription = AppLinks().uriLinkStream.listen((uri) {
+  //
+  // });
 
   Future<void> getMyCard() async {
     _getCardCubit?.apiGetMyCard();

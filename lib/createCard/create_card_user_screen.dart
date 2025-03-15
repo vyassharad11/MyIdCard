@@ -481,7 +481,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
         // final responseData = await response.stream.bytesToString();
         // final data = jsonDecode(responseData);
          Utility.hideLoader(context);
-        await Storage().setFirstCardSkip(false);
+        await Storage().setFirstCardSkip(true);
         debugPrint("Data submitted successfully:");
         Navigator.push(
           context,

@@ -20,7 +20,7 @@ class ShareCardBottomSheet extends StatefulWidget {
 class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
   @override
   void initState() {
-    setLink();
+    // setLink();
     // TODO: implement initState
     super.initState();
   }
@@ -163,7 +163,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id.toString()}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -179,7 +179,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id.toString()}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -195,7 +195,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id.toString()}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -211,7 +211,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id.toString()}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -227,7 +227,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id.toString()}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -399,7 +399,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -415,7 +415,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -431,7 +431,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -447,7 +447,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
@@ -463,7 +463,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "hello",
+                      "${Network.shareUrl}${widget.cardData?.id}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );

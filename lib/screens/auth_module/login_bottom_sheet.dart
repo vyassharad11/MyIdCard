@@ -296,8 +296,9 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         Storage().saveToken(dto.token ?? "");
         FocusScope.of(context).unfocus();
    if(dto.user != null && dto.user!.cards != null && dto.user!.cards!.isNotEmpty){
-   }else{
      await Storage().setFirstCardSkip(false);
+   }else{
+     await Storage().setFirstCardSkip(true);
    }
         if (dto.user != null && dto.user!.firstName == null) {
           showModalBottomSheet(

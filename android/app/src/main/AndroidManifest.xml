@@ -34,12 +34,19 @@
               />
             <meta-data
               android:name="com.google.android.gms.client_id"
-              android:value="1026288895623-vptcpp82na7qhicqk3ho6socecsbs07j.apps.googleusercontent.com" 
+              android:value="1026288895623-vptcpp82na7qhicqk3ho6socecsbs07j.apps.googleusercontent.com"
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="mydicard" android:host="*mydicard.com"   android:pathPrefix="/"
+                android:pathPattern=".*" />
+        </intent-filter>
         </activity>>
         <provider
             android:name="androidx.core.content.FileProvider"
