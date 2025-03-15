@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../data/repository/contact_repository.dart';
@@ -30,8 +32,8 @@ class ContactDetails extends StatefulWidget {
 }
 
 class _ContactDetailsState extends State<ContactDetails> {
-  ContactCubit? _contactDetailCubit,deleteContactCubit;
-  ContactDetailsDatum?contactDetailsDatum;
+  ContactCubit? _contactDetailCubit,deleteContactCubit,_favCubit;
+  ContactDatum?contactDetailsDatum;
   ContactCubit? meetingCubit;
   List<MeetingDatum> meetings = [];
 
@@ -40,6 +42,7 @@ class _ContactDetailsState extends State<ContactDetails> {
     _contactDetailCubit = ContactCubit(ContactRepository());
     deleteContactCubit = ContactCubit(ContactRepository());
     meetingCubit = ContactCubit(ContactRepository());
+    _favCubit = ContactCubit(ContactRepository());
     getContactDetail();
     apiGetMyMeetings();
     super.initState();
@@ -54,6 +57,13 @@ class _ContactDetailsState extends State<ContactDetails> {
     deleteContactCubit = null;
     meetingCubit = null;
     super.dispose();
+  }
+
+  Future<void> apiContactFavUnFav(cardId,fav) async {
+    Map<String, dynamic> data = {
+      "favorite": fav.toString(),
+    };
+    _favCubit?.apiContactFavUnFav(cardId,data);
   }
 
   String? twitterLink,instaLink,faceBookLink,linkdinLink;
@@ -86,6 +96,42 @@ class _ContactDetailsState extends State<ContactDetails> {
     meetingCubit?.apiGetMyMeetings(widget.contactId);
   }
 
+  Future<void> dialNumber(String phoneNumber) async {
+    final Uri url = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> openSMS(String phoneNumber) async {
+    final Uri url = Uri.parse('sms:$phoneNumber');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      print('Could not launch $url');
+      throw 'Could not launch $url';
+    }}
+
+  Future<void> openGmail({String? email, String? subject, String? body}) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email ?? '',
+      queryParameters: {
+        'subject': subject ?? '',
+        'body': body ?? '',
+      },
+    );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      throw 'Could not launch $emailUri';
+    }
+  }
+
   Widget buildContactBottomSheetContent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -93,12 +139,14 @@ class _ContactDetailsState extends State<ContactDetails> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text(
-              'Add to favorites',
+            title:  Text(
+              contactDetailsDatum?.favorite == 1?'Add to favorites':'UnFavorite',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactFavUnFav(widget.contactIdForMeeting,contactDetailsDatum?.favorite == 1 ? 2: 1);
               // Add functionality here
             },
           ),
@@ -134,12 +182,14 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Hide Contact',
+            title:  Text(
+              '${contactDetailsDatum?.contactStatus == 1 ? "Hide":"Un-hide"} Contact',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactHideUnHide(contactDetailsDatum?.id.toString(),contactDetailsDatum?.contactStatus == 1?"2":"1");
               // Add functionality here
             },
           ),
@@ -155,7 +205,7 @@ class _ContactDetailsState extends State<ContactDetails> {
             onTap: () {
               Navigator.pop(context);
               requestPermissions().then((value) {
-                addContact();
+                addContact(contactDetailsDatum?.firstName ?? "",contactDetailsDatum?.lastName ?? "",contactDetailsDatum?.phoneNo ?? "");
               },);            // Add functionality here
             },
           ),
@@ -191,14 +241,14 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
 
-  Future<void> addContact() async {
+  Future<void> addContact(firstName,lastName,mobileNumber) async {
     // Make sure permissions are granted
     if (await FlutterContacts.requestPermission()) {
       // Create a new contact
       final newContact = Contact()
-        ..name.first = 'John'
-        ..name.last = 'Doe'
-        ..phones = [Phone('')];  // Add the phone number here
+        ..name.first = firstName
+        ..name.last = firstName
+        ..phones = [Phone(mobileNumber)];  // Add the phone number here
 
       try {
         await FlutterContacts.insertContact(newContact);
@@ -206,13 +256,70 @@ class _ContactDetailsState extends State<ContactDetails> {
       } catch (e) {
         print('Error adding contact: $e');
       }
+    }}
+
+
+  Future<void> _openMap(address) async {
+    if (address.isEmpty) {
+      return;
+    }
+
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        double latitude = locations.first.latitude;
+        double longitude = locations.first.longitude;
+
+        String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+        if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+          await launchUrl(Uri.parse(googleMapsUrl));
+        } else {
+          throw 'Could not launch $googleMapsUrl';
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
     }
   }
+
+  Future<void> apiContactHideUnHide(cardId,hide) async {
+    Map<String, dynamic> data = {
+      "contact_status":hide,
+    };
+    _favCubit?.apiContactHideUnHide(cardId,data);
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _favCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+              getContactDetail();
+            }
+            setState(() {});
+          },
+        ),
         BlocListener<ContactCubit, ResponseState>(
           bloc: _contactDetailCubit,
           listener: (context, state) {
@@ -225,7 +332,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              var dto = state.data as ContactDetailsDatum;
+              var dto = state.data as ContactDatum;
               contactDetailsDatum = dto;
               setLink();
             }
@@ -436,12 +543,70 @@ class _ContactDetailsState extends State<ContactDetails> {
                               children: [
                                 InkWell(
                                   onTap: (){
+                                    dialNumber(contactDetailsDatum?.phoneNo.toString() ?? "");
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/call.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    openGmail(body: "",email: contactDetailsDatum?.workEmail ?? "",subject: "");
+                                    },
+                                  child: Image.asset(
+                                    "assets/images/mail.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    openSMS(contactDetailsDatum?.phoneNo.toString() ?? "");
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/message.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    _openMap(contactDetailsDatum?.companyAddress ?? "");
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/location.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    // launchUrlGet(
+                                    //   linkdinLink ?? "",
+                                    // );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/link.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: (){
                                     launchUrlGet(
                                       linkdinLink ?? "",
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/linkedin.png",
+                                    "assets/images/linkdin.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -453,7 +618,19 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/facebook.png",
+                                    "assets/images/fb.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    launchUrlGet(
+                                      twitterLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/x_fill.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -465,7 +642,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/insta.png",
+                                    "assets/images/insta.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -477,19 +654,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     );
                                   },
                                   child: Image.asset(
-                                    "assets/social/whats.png",
-                                    height: 55,
-                                    width: 45,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: (){
-                                    launchUrlGet(
-                                      linkdinLink ?? "",
-                                    );
-                                  },
-                                  child: Image.asset(
-                                    "assets/social/applew.png",
+                                    "assets/images/other.png",
                                     height: 55,
                                     width: 45,
                                   ),
@@ -598,7 +763,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     context,
                                     CupertinoPageRoute(
                                       builder: (builder) =>
-                                          MeetingDetailsScreen(meetingDatum: meetings[index],contactId: contactDetailsDatum?.id.toString(),),
+                                          MeetingDetailsScreen(meetingId: meetings[index].id ?? 0,contactId: contactDetailsDatum?.id.toString(),),
                                     ),
                                   );
                                 },
@@ -632,7 +797,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (builder) => const MeetingsScreen(),
+                                builder: (builder) =>  MeetingsScreen(contactId: contactDetailsDatum?.id ?? 0,),
                               ),
                             );
                           },

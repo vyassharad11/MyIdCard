@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_di_card/screens/add_card_module/card_details.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../bloc/api_resp_state.dart';
@@ -437,9 +438,13 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   InkWell(
-                                    onTap: (){
-                                      launchUrlGet(
-                                        linkdinLink ?? "",
+                                    onTap: () async {
+                                      final box = context.findRenderObject() as RenderBox?;
+
+                                      await Share.share(
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
+                                        subject: "Share your card",
+                                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
                                     },
                                     child: Image.asset(
@@ -449,9 +454,13 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
-                                      launchUrlGet(
-                                        faceBookLink ?? "",
+                                    onTap: () async {
+                                      final box = context.findRenderObject() as RenderBox?;
+
+                                      await Share.share(
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
+                                        subject: "Share your card",
+                                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
                                     },
                                     child: Image.asset(
@@ -461,9 +470,13 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
-                                      launchUrlGet(
-                                        instaLink ?? "",
+                                    onTap: () async {
+                                      final box = context.findRenderObject() as RenderBox?;
+
+                                      await Share.share(
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
+                                        subject: "Share your card",
+                                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
                                     },
                                     child: Image.asset(
@@ -473,9 +486,13 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
-                                      launchUrlGet(
-                                        linkdinLink ?? "",
+                                    onTap: () async {
+                                      final box = context.findRenderObject() as RenderBox?;
+
+                                      await Share.share(
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
+                                        subject: "Share your card",
+                                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
                                     },
                                     child: Image.asset(
@@ -485,9 +502,13 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
-                                      launchUrlGet(
-                                        linkdinLink ?? "",
+                                    onTap: () async {
+                                      final box = context.findRenderObject() as RenderBox?;
+
+                                      await Share.share(
+                                        "${Network.shareUrl}${cardList!.data![index].id}",
+                                        subject: "Share your card",
+                                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );
                                     },
                                     child: Image.asset(

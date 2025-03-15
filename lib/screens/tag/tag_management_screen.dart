@@ -648,10 +648,10 @@ Future<void> apiGetCardTag(keyword) async {
                       child: InkWell(
                         splashColor: Colors.blue, // Splash color
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (builder) => AddContactNotes()));
+                          // Navigator.push(
+                          //     context,
+                          //     CupertinoPageRoute(
+                          //         builder: (builder) => AddContactNotes()));
                         },
                         child: const SizedBox(
                             width: 40,

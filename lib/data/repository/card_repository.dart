@@ -89,7 +89,7 @@ class CardRepository {
     return _apiClient.apiGetMyCard(url, token2,);
   }
 
- Future<HttpResponse<Social>> apiGetSocials() async {
+ Future<HttpResponse<SocialForCard>> apiGetSocials() async {
     var url = await Network.baseUrl;
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";

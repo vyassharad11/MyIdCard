@@ -11,7 +11,8 @@ import '../../models/my_meetings_model.dart';
 import '../../utils/utility.dart';
 
 class MeetingsScreen extends StatefulWidget {
-  const MeetingsScreen({super.key});
+  int contactId;
+   MeetingsScreen({super.key,required this.contactId});
 
   @override
   State<MeetingsScreen> createState() => _MeetingsScreenState();
@@ -99,7 +100,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (builder) => MeetingDetailsScreen(),
+                    builder: (builder) =>  MeetingDetailsScreen(meetingId: meetings[index].id ?? 0,contactId: widget.contactId.toString(),),
                   ),
                 );
               },

@@ -115,7 +115,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
               Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
-              var dto = state.data as Social;
+              var dto = state.data as SocialForCard;
               socials = dto.data ?? [];
             }
             setState(() {});

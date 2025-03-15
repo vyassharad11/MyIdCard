@@ -6,6 +6,23 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>sms</string>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>tel</string>
+    </array>
+     <key>CFBundleURLTypes</key>
+     <array>
+     <dict>
+    <key>CFBundleURLSchemes</key>
+      <array>
+      <string>myapp</string>
+    </array>
+  </dict>
+</array>
 	<key>CFBundleDisplayName</key>
 	<string>My Di Card</string>
 	<key>CFBundleExecutable</key>

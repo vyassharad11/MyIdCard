@@ -4,20 +4,20 @@
 
 import 'dart:convert';
 
-Social socialFromJson(String str) => Social.fromJson(json.decode(str));
+SocialForCard socialFromJson(String str) => SocialForCard.fromJson(json.decode(str));
 
-String socialToJson(Social data) => json.encode(data.toJson());
+String socialToJson(SocialForCard data) => json.encode(data.toJson());
 
-class Social {
+class SocialForCard {
   bool? status;
   List<SocialDatum>? data;
 
-  Social({
+  SocialForCard({
     this.status,
     this.data,
   });
 
-  factory Social.fromJson(Map<String, dynamic> json) => Social(
+  factory SocialForCard.fromJson(Map<String, dynamic> json) => SocialForCard(
     status: json["status"],
     data: json["data"] == null ? [] : List<SocialDatum>.from(json["data"]!.map((x) => SocialDatum.fromJson(x))),
   );

@@ -10,6 +10,7 @@ import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/models/my_contact_model.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/contact/contact_details_screen.dart';
+import 'package:my_di_card/screens/contact/team_member_contact.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -31,11 +32,14 @@ class ContactHomeScreen extends StatefulWidget {
 
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
   ContactCubit? _getTagCubit;
-  ContactCubit? _getMyContact,_addContactCubit,deleteContactCubit;
-int selectedIndex = 0;
+  ContactCubit? _getRecentContact, _getMyContact, _addContactCubit,
+      deleteContactCubit, _favCubit;
+  int selectedIndex = 0;
   List<TagDatum> tags = [];
-  List<ContactDetailsDatum> myContactList = [];
+  List<ContactDatum> myContactList = [];
+  List<ContactDatum> recentContactList = [];
   bool isLoad = true;
+  TextEditingController controller = TextEditingController();
 
 
   @override
@@ -44,19 +48,24 @@ int selectedIndex = 0;
     _getMyContact = ContactCubit(ContactRepository());
     _addContactCubit = ContactCubit(ContactRepository());
     deleteContactCubit = ContactCubit(ContactRepository());
+    _getRecentContact = ContactCubit(ContactRepository());
+    _favCubit = ContactCubit(ContactRepository());
     apiTagList();
-    apiGetMyContact();
+    apiGetRecentContact();
+    apiGetMyContact("", false);
     // TODO: implement initState
     super.initState();
   }
 
   @override
-  dispose(){
+  dispose() {
     _getTagCubit?.close();
     deleteContactCubit?.close();
     _addContactCubit?.close();
+    _getRecentContact?.close();
     _addContactCubit = null;
     _getTagCubit = null;
+    _getRecentContact = null;
     deleteContactCubit = null;
     super.dispose();
   }
@@ -76,8 +85,28 @@ int selectedIndex = 0;
     _addContactCubit?.apiAddContact(data);
   }
 
-  Future<void> apiGetMyContact() async {
-    _getMyContact?.apiGetMyContact();
+  Future<void> apiGetMyContact(key, hide) async {
+    List<int> tagId = [];
+    tags.forEach(
+          (element) {
+        if (element.isCheck == true) {
+          tagId.add(element.id ?? 0);
+        }
+      },
+    );
+    String contactTagIdsString = tagId.join(',');
+    Map<String, dynamic> data = {
+      "key_word": key,
+      "tag_ids": "",
+      "company_type_id": contactTagIdsString,
+      "contact_status": hide == true ? "2" : "1",
+      "favorite": ""
+    };
+    _getMyContact?.apiGetMyContact(data);
+  }
+
+  Future<void> apiGetRecentContact() async {
+    _getRecentContact?.apiGetRecentContact();
   }
 
 
@@ -86,7 +115,23 @@ int selectedIndex = 0;
   }
 
 
+  Future<void> apiContactFavUnFav(cardId, fav) async {
+    Map<String, dynamic> data = {
+      "favorite": fav.toString(),
+    };
+    _favCubit?.apiContactFavUnFav(cardId, data);
+  }
+
+  Future<void> apiContactHideUnHide(cardId, hide) async {
+    Map<String, dynamic> data = {
+      "contact_status": hide,
+    };
+    _favCubit?.apiContactHideUnHide(cardId, data);
+  }
+
+
   int selectIndec = 0;
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -94,8 +139,8 @@ int selectedIndex = 0;
         BlocListener<ContactCubit, ResponseState>(
           bloc: deleteContactCubit,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
@@ -105,7 +150,34 @@ int selectedIndex = 0;
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
               myContactList.removeAt(selectedIndex);
-              Utility().showFlushBar(context: context, message: dto.message ?? "");
+              Utility().showFlushBar(
+                  context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _favCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+              apiGetMyContact("", false);
             }
             setState(() {});
           },
@@ -113,8 +185,8 @@ int selectedIndex = 0;
         BlocListener<ContactCubit, ResponseState>(
           bloc: _getTagCubit,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
@@ -131,8 +203,8 @@ int selectedIndex = 0;
         BlocListener<ContactCubit, ResponseState>(
           bloc: _getMyContact,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               isLoad = false;
               Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
@@ -145,7 +217,30 @@ int selectedIndex = 0;
               Utility.hideLoader(context);
               var dto = state.data as MyContactDto;
               myContactList = [];
-              myContactList = dto.data ?? [];
+              myContactList = dto.data?.data ?? [];
+              isLoad = false;
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _getRecentContact,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
+              isLoad = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              isLoad = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              isLoad = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as MyContactDto;
+              recentContactList = [];
+              recentContactList = dto.data?.data ?? [];
               isLoad = false;
             }
             setState(() {});
@@ -154,24 +249,28 @@ int selectedIndex = 0;
         BlocListener<ContactCubit, ResponseState>(
           bloc: _addContactCubit,
           listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
+            if (state is ResponseStateLoading) {} else
+            if (state is ResponseStateEmpty) {
               Utility.hideLoader(context);
               Navigator.pop(context);
-              Utility().showFlushBar(context: context,message: state.message,isError: true);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
             } else if (state is ResponseStateNoInternet) {
               Utility.hideLoader(context);
               Navigator.pop(context);
-              Utility().showFlushBar(context: context,message: state.message,isError: true);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
             } else if (state is ResponseStateError) {
               Utility.hideLoader(context);
               Navigator.pop(context);
-              Utility().showFlushBar(context: context,message: state.errorMessage,isError: true);
-                  } else if (state is ResponseStateSuccess) {
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
-              Utility().showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact();
+              Utility().showFlushBar(
+                  context: context, message: dto.message ?? "");
+              apiGetMyContact("", false);
             }
             setState(() {});
           },
@@ -206,11 +305,12 @@ int selectedIndex = 0;
                           borderRadius:
                           BorderRadius.vertical(top: Radius.circular(20)),
                         ),
-                        builder: (context) => ScanQrCodeBottomSheet(callBack: (v){
-                          Navigator.pop(context);
-                          context.loaderOverlay.show();
-                          apiAddContact(v);
-                        },),
+                        builder: (context) =>
+                            ScanQrCodeBottomSheet(callBack: (v) {
+                              Navigator.pop(context);
+                              context.loaderOverlay.show();
+                              apiAddContact(v);
+                            },),
                       );
                     },
                     child: const SizedBox(
@@ -235,8 +335,7 @@ int selectedIndex = 0;
                 height: 20,
               ),
               tabBarWidget(context),
-              tabBarTile(selectIndec == 0 ? "Tags" : "Groups",
-                  selectIndec == 0 ? true : false),
+              tabBarView()
             ],
           ),
         ),
@@ -262,12 +361,16 @@ int selectedIndex = 0;
                     borderRadius: BorderRadius.circular(18),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Icon(Icons.search, color: Colors.grey),
                       SizedBox(width: 10),
                       Expanded(
                         child: TextField(
+                          controller: controller,
+                          onChanged: (v) {
+                            apiGetMyContact(v, false);
+                          },
                           decoration: InputDecoration(
                             hintText: 'Search...',
                             border: InputBorder.none,
@@ -290,9 +393,11 @@ int selectedIndex = 0;
                     context: context,
                     isScrollControlled: true,
                     backgroundColor:
-                        Colors.transparent, // To make corners rounded
+                    Colors.transparent, // To make corners rounded
                     builder: (context) => FullScreenBottomSheet(),
-                  );
+                  ).then((value) {
+                    apiGetMyContact(controller.text, value);
+                  },);
                 },
               ),
             ],
@@ -319,7 +424,8 @@ int selectedIndex = 0;
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (builder) => TagManagementScreen(isFromCard: true,)));
+                            builder: (builder) =>
+                                TagManagementScreen(isFromCard: true,)));
                     // Edit button functionality
                   },
                 ),
@@ -336,19 +442,32 @@ int selectedIndex = 0;
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200], // Light background color
-                    borderRadius: BorderRadius.circular(8), // Rounded corners
-                  ),
-                  child: Center(
-                    child: Text(
-                      tags[index].tag ?? "",
-                      style: const TextStyle(
-                        color: Colors.black, // Text color
-                        fontSize: 14,
+                child: InkWell(
+                  onTap: () {
+                    tags[index].isCheck =
+                    tags[index].isCheck == false ? true : false;
+                    setState(() {
+
+                    });
+                    apiGetMyContact(controller.text, false);
+                  },
+                  child: Container(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200], // Light background color
+                      border: Border.all(color: tags[index].isCheck == true
+                          ? Colors.blue
+                          : Colors.transparent),
+                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                    ),
+                    child: Center(
+                      child: Text(
+                        tags[index].tag ?? "",
+                        style: const TextStyle(
+                          color: Colors.black, // Text color
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),
@@ -373,7 +492,7 @@ int selectedIndex = 0;
         const SizedBox(
           height: 12,
         ),
-        Container(
+        if(recentContactList.isNotEmpty)Container(
           height: 70,
           margin: const EdgeInsets.symmetric(horizontal: 18),
           child: ListView.separated(
@@ -384,7 +503,7 @@ int selectedIndex = 0;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: peopleHori.length,
+            itemCount: recentContactList.length,
             itemBuilder: (context, index) {
               return Column(
                 children: [
@@ -393,15 +512,16 @@ int selectedIndex = 0;
                     width: 50,
                     child: CircleAvatar(
                       radius: 25,
-                      backgroundImage:
-                          AssetImage(peopleHori[index].imageUrl.toString()),
+                      backgroundImage: NetworkImage(
+                          "${Network.imgUrl}${recentContactList[index].cardImage ??
+                              ""}"),
                     ),
                   ),
                   SizedBox(
                     height: 6,
                   ),
                   Text(
-                    peopleHori[index].name.toString().substring(0, 5),
+                    recentContactList[index].firstName.toString(),
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 8,
@@ -412,12 +532,15 @@ int selectedIndex = 0;
             },
           ),
         ),
-        isLoad == true?
-        Padding(padding: EdgeInsets.symmetric(horizontal: 20),child:
-        Utility.userListShimmer()):
-        myContactList.isNotEmpty?
+        isLoad == true ?
+        Padding(padding: EdgeInsets.symmetric(horizontal: 20), child:
+        Utility.userListShimmer()) :
+        myContactList.isNotEmpty ?
         SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
           child: ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -427,7 +550,9 @@ int selectedIndex = 0;
                 contentPadding: const EdgeInsets.all(10),
                 leading: CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
+                  backgroundImage: NetworkImage(
+                      "${Network.imgUrl}${myContactList[index].cardImage ??
+                          ""}"),
                   backgroundColor: Colors.grey.shade200,
 
                 ),
@@ -440,34 +565,40 @@ int selectedIndex = 0;
                 ),
                 subtitle: Text(
                   myContactList[index].jobTitle ?? "",
-                 style: const TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 13,
                       color: Colors.black),
                 ),
                 trailing: InkWell(
-                  onTap: (){ showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(25.0),
-                      ),
-                    ),
-                    builder: (context) {
-                      return buildContactBottomSheetContent(context,myContactList[index].id,index);
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(25.0),
+                          ),
+                        ),
+                        builder: (context) {
+                          return buildContactBottomSheetContent(
+                              context, myContactList[index].id, index);
+                        },
+                      );
                     },
-                  );
-                  },
-                                  child: const Icon(Icons.more_vert)),
+                    child: const Icon(Icons.more_vert)),
                 onTap: () {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,contactIdForMeeting: myContactList[index].id,tags: tags,),
+                      builder: (builder) =>
+                          ContactDetails(contactId: myContactList[index]
+                              .cardId ?? 0,
+                            contactIdForMeeting: myContactList[index].id,
+                            tags: tags,),
                     ),
                   ).then((value) {
-                    if(value == 2){
-                      apiGetMyContact();
+                    if (value == 2) {
+                      apiGetMyContact(controller.text, false);
                     }
                   },);
                   // Add your onTap functionality here if needed
@@ -475,12 +606,16 @@ int selectedIndex = 0;
               );
             },
           ),
-        ):SizedBox(),
+        ) : SizedBox(),
       ],
     );
   }
 
-
+  Widget tabBarView() {
+    return selectIndec == 0 || selectIndec == 1 ? tabBarTile("Tags",
+        true) :
+    TeamMemberContact();
+  }
 
   Future<void> requestPermissions() async {
     PermissionStatus permission = await Permission.contacts.request();
@@ -490,37 +625,44 @@ int selectedIndex = 0;
   }
 
 
-  Future<void> addContact() async {
+  Future<void> addContact(firstName, lastName, mobileNumber) async {
     // Make sure permissions are granted
     if (await FlutterContacts.requestPermission()) {
       // Create a new contact
       final newContact = Contact()
-        ..name.first = 'John'
-        ..name.last = 'Doe'
-        ..phones = [Phone('')];  // Add the phone number here
+        ..name.first = firstName
+        ..name.last = firstName
+        ..phones = [Phone(mobileNumber)]; // Add the phone number here
 
       try {
         await FlutterContacts.insertContact(newContact);
-        Utility().showFlushBar(context: context,message: 'Contact added successfully');
+        Utility().showFlushBar(
+            context: context, message: 'Contact added successfully');
       } catch (e) {
         print('Error adding contact: $e');
       }
     }
   }
 
-  Widget buildContactBottomSheetContent(BuildContext context,contactIdForMeeting,index) {
+  Widget buildContactBottomSheetContent(BuildContext context,
+      contactIdForMeeting, index) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text(
-              'Add to favorites',
+            title: Text(
+              myContactList[index].favorite == 1
+                  ? 'Add to favorites'
+                  : 'UnFavorite',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactFavUnFav(contactIdForMeeting,
+                  myContactList[index].favorite == 1 ? 2 : 1);
               // Add functionality here
             },
           ),
@@ -538,15 +680,19 @@ int selectedIndex = 0;
                 context: context,
                 useSafeArea: true,
                 isScrollControlled: true,
-                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 100,minHeight: 10),
+                constraints: BoxConstraints(maxHeight: MediaQuery
+                    .of(context)
+                    .size
+                    .height - 100, minHeight: 10),
                 shape: const RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.vertical(top: Radius.circular(20)),
                 ),
-                builder: (context) => AddTagInContactBottomSheet(
-                  tags: tags,
-                  contactId: contactIdForMeeting ?? 0,
-                ),
+                builder: (context) =>
+                    AddTagInContactBottomSheet(
+                      tags: tags,
+                      contactId: contactIdForMeeting ?? 0,
+                    ),
               );
 
               // Add functionality here
@@ -556,12 +702,17 @@ int selectedIndex = 0;
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Hide Contact',
+            title: Text(
+              '${myContactList[index].contactStatus == 1
+                  ? "Hide"
+                  : "Un-hide"} Contact',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
               Navigator.pop(context);
+              Utility.showLoader(context);
+              apiContactHideUnHide(myContactList[index].id.toString(),
+                  myContactList[index].contactStatus == 1 ? "2" : "1");
               // Add functionality here
             },
           ),
@@ -577,8 +728,10 @@ int selectedIndex = 0;
             onTap: () {
               Navigator.pop(context);
               requestPermissions().then((value) {
-                addContact();
-              },);            // Add functionality here
+                addContact(myContactList[index].firstName ?? "",
+                    myContactList[index].lastName ?? "",
+                    myContactList[index].phoneNo ?? "");
+              },); // Add functionality here
             },
           ),
           const Divider(
@@ -619,13 +772,13 @@ int selectedIndex = 0;
             style: TextStyle(
                 color: Colors.black,
                 fontWeight:
-                    selectIndec == 1 ? FontWeight.bold : FontWeight.normal),
+                selectIndec == 1 ? FontWeight.bold : FontWeight.normal),
           ),
           2: Text('Team Contacts',
               style: TextStyle(
                   color: Colors.black,
                   fontWeight:
-                      selectIndec == 2 ? FontWeight.bold : FontWeight.normal)),
+                  selectIndec == 2 ? FontWeight.bold : FontWeight.normal)),
         },
         decoration: BoxDecoration(
           color: CupertinoColors.lightBackgroundGray,
@@ -656,31 +809,4 @@ int selectedIndex = 0;
       ),
     );
   }
-
-
-  final List<Person> peopleHori = [
-    Person('Janice Schneider Sr.', 'Product Solutions Manager',
-        'assets/images/user_dummy.png'),
-    Person(
-        'Delbert Wyman', 'Corporate Web Agent', 'assets/images/user_dummy.png'),
-    Person('Delia Wolff', 'Dynamic Directives Analyst',
-        'assets/images/user_dummy.png'),
-    Person('Angelica Nikolaus', 'Dynamic Mobility Executive',
-        'assets/images/user_dummy.png'),
-    Person('Rachel Purdy', 'National Program Supervisor',
-        'assets/images/user_dummy.png'),
-    Person('Alejandro Kuphal', 'Chief Applications Liaison',
-        'assets/images/user_dummy.png'),
-    Person('Cody Lind', 'National Web Officer', 'assets/images/user_dummy.png'),
-    Person('Toby Von', 'District Identity Orchestrator',
-        'assets/images/user_dummy.png'),
-  ];
-}
-
-class Person {
-  final String name;
-  final String description;
-  final String imageUrl;
-
-  Person(this.name, this.description, this.imageUrl);
 }

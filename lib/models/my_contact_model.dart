@@ -1,17 +1,17 @@
 // To parse this JSON data, do
 //
-//     final myContact = myContactFromJson(jsonString);
+//     final myContactDto = myContactDtoFromJson(jsonString);
 
 import 'dart:convert';
 
-MyContactDto myContactFromJson(String str) => MyContactDto.fromJson(json.decode(str));
+MyContactDto myContactDtoFromJson(String str) => MyContactDto.fromJson(json.decode(str));
 
-String myContactToJson(MyContactDto data) => json.encode(data.toJson());
+String myContactDtoToJson(MyContactDto data) => json.encode(data.toJson());
 
 class MyContactDto {
   bool? status;
   String? message;
-  List<ContactDetailsDatum>? data;
+  Data? data;
 
   MyContactDto({
     this.status,
@@ -22,17 +22,81 @@ class MyContactDto {
   factory MyContactDto.fromJson(Map<String, dynamic> json) => MyContactDto(
     status: json["status"],
     message: json["message"],
-    data: json["data"] == null ? [] : List<ContactDetailsDatum>.from(json["data"]!.map((x) => ContactDetailsDatum.fromJson(x))),
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
     "message": message,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": data?.toJson(),
   };
 }
 
-class ContactDetailsDatum {
+class Data {
+  int? currentPage;
+  List<ContactDatum>? data;
+  String? firstPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
+  List<Link>? links;
+  dynamic nextPageUrl;
+  String? path;
+  int? perPage;
+  dynamic prevPageUrl;
+  int? to;
+  int? total;
+
+  Data({
+    this.currentPage,
+    this.data,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.links,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+    currentPage: json["current_page"],
+    data: json["data"] == null ? [] : List<ContactDatum>.from(json["data"]!.map((x) => ContactDatum.fromJson(x))),
+    firstPageUrl: json["first_page_url"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    lastPageUrl: json["last_page_url"],
+    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+    nextPageUrl: json["next_page_url"],
+    path: json["path"],
+    perPage: json["per_page"],
+    prevPageUrl: json["prev_page_url"],
+    to: json["to"],
+    total: json["total"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "current_page": currentPage,
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "first_page_url": firstPageUrl,
+    "from": from,
+    "last_page": lastPage,
+    "last_page_url": lastPageUrl,
+    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
+    "next_page_url": nextPageUrl,
+    "path": path,
+    "per_page": perPage,
+    "prev_page_url": prevPageUrl,
+    "to": to,
+    "total": total,
+  };
+}
+
+class ContactDatum {
   int? id;
   int? userId;
   int? cardId;
@@ -41,6 +105,7 @@ class ContactDetailsDatum {
   String? firstName;
   String? lastName;
   String? companyName;
+  String? qrCode;
   dynamic companyLogo;
   int? companyTypeId;
   String? jobTitle;
@@ -49,17 +114,18 @@ class ContactDetailsDatum {
   String? workEmail;
   String? phoneNo;
   String? cardStyle;
-  dynamic qrCode;
   String? backgroungImage;
   String? cardName;
-  int? contactTypeId;
-  List<Document>? documents;
-  List<SocialDto>? socials;
+  int? contactStatus;
+  int? favorite;
+  List<dynamic>? documents;
+  List<Social>? socials;
 
-  ContactDetailsDatum({
+  ContactDatum({
     this.id,
     this.userId,
     this.cardId,
+    this.qrCode,
     this.languageId,
     this.cardImage,
     this.firstName,
@@ -74,20 +140,21 @@ class ContactDetailsDatum {
     this.phoneNo,
     this.cardStyle,
     this.backgroungImage,
-    this.qrCode,
     this.cardName,
-    this.contactTypeId,
+    this.contactStatus,
+    this.favorite,
     this.documents,
     this.socials,
   });
 
-  factory ContactDetailsDatum.fromJson(Map<String, dynamic> json) => ContactDetailsDatum(
+  factory ContactDatum.fromJson(Map<String, dynamic> json) => ContactDatum(
     id: json["id"],
     userId: json["user_id"],
     cardId: json["card_id"],
     languageId: json["language_id"],
     cardImage: json["card_image"],
     firstName: json["first_name"],
+    qrCode: json["qr_code"],
     lastName: json["last_name"],
     companyName: json["company_name"],
     companyLogo: json["company_logo"],
@@ -98,12 +165,12 @@ class ContactDetailsDatum {
     workEmail: json["work_email"],
     phoneNo: json["phone_no"],
     cardStyle: json["card_style"],
-    qrCode : json['qr_code'],
     backgroungImage: json["backgroung_image"],
     cardName: json["card_name"],
-    contactTypeId: json["contact_type_id"],
-    documents: json["documents"] == null ? [] : List<Document>.from(json["documents"]!.map((x) => Document.fromJson(x))),
-    socials: json["socials"] == null ? [] : List<SocialDto>.from(json["socials"]!.map((x) => SocialDto.fromJson(x))),
+    contactStatus: json["contact_status"],
+    favorite: json["favorite"],
+    documents: json["documents"] == null ? [] : List<dynamic>.from(json["documents"]!.map((x) => x)),
+    socials: json["socials"] == null ? [] : List<Social>.from(json["socials"]!.map((x) => Social.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -111,6 +178,7 @@ class ContactDetailsDatum {
     "user_id": userId,
     "card_id": cardId,
     "language_id": languageId,
+    "qr_code": qrCode,
     "card_image": cardImage,
     "first_name": firstName,
     "last_name": lastName,
@@ -124,39 +192,15 @@ class ContactDetailsDatum {
     "phone_no": phoneNo,
     "card_style": cardStyle,
     "backgroung_image": backgroungImage,
-    'qr_code': qrCode,
-  "card_name": cardName,
-    "contact_type_id": contactTypeId,
-    "documents": documents == null ? [] : List<dynamic>.from(documents!.map((x) => x.toJson())),
+    "card_name": cardName,
+    "contact_status": contactStatus,
+    "favorite": favorite,
+    "documents": documents == null ? [] : List<dynamic>.from(documents!.map((x) => x)),
     "socials": socials == null ? [] : List<dynamic>.from(socials!.map((x) => x.toJson())),
   };
 }
 
-class Document {
-  int? id;
-  int? contactId;
-  String? document;
-
-  Document({
-    this.id,
-    this.contactId,
-    this.document,
-  });
-
-  factory Document.fromJson(Map<String, dynamic> json) => Document(
-    id: json["id"],
-    contactId: json["contact_id"],
-    document: json["document"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "contact_id": contactId,
-    "document": document,
-  };
-}
-
-class SocialDto {
+class Social {
   int? id;
   int? contactId;
   int? socialId;
@@ -164,7 +208,7 @@ class SocialDto {
   String? socialName;
   String? socialLogo;
 
-  SocialDto({
+  Social({
     this.id,
     this.contactId,
     this.socialId,
@@ -173,7 +217,7 @@ class SocialDto {
     this.socialLogo,
   });
 
-  factory SocialDto.fromJson(Map<String, dynamic> json) => SocialDto(
+  factory Social.fromJson(Map<String, dynamic> json) => Social(
     id: json["id"],
     contactId: json["contact_id"],
     socialId: json["social_id"],
@@ -189,5 +233,29 @@ class SocialDto {
     "social_link": socialLink,
     "social_name": socialName,
     "social_logo": socialLogo,
+  };
+}
+
+class Link {
+  String? url;
+  String? label;
+  bool? active;
+
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
+
+  factory Link.fromJson(Map<String, dynamic> json) => Link(
+    url: json["url"],
+    label: json["label"],
+    active: json["active"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "url": url,
+    "label": label,
+    "active": active,
   };
 }

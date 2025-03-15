@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_di_card/screens/add_card_module/create_card_user.dart';
 import 'package:my_di_card/screens/add_card_module/share_card_bottom_sheet.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
 import '../../utils/url_lancher.dart';
+import '../../utils/widgets/network.dart';
 import '../meetings/metting_details.dart';
 
 class CardDetails extends StatefulWidget {
   final CardData? cardData;
-  const CardDetails({super.key,this.cardData});
+
+  const CardDetails({super.key, this.cardData});
 
   @override
   State<CardDetails> createState() => _CardDetailsState();
@@ -24,9 +27,9 @@ class _CardDetailsState extends State<CardDetails> {
     super.initState();
   }
 
-  String? twitterLink,instaLink,faceBookLink,linkdinLink;
+  String? twitterLink, instaLink, faceBookLink, linkdinLink;
 
-  setLink(){
+  setLink() {
     widget.cardData?.cardSocials?.forEach((action) {
       if (action.socialName == "Twitter") {
         twitterLink = action.socialLink.toString();
@@ -39,7 +42,8 @@ class _CardDetailsState extends State<CardDetails> {
       }
       if (action.socialName == "LinkedIn") {
         linkdinLink = action.socialLink.toString();
-      }});
+      }
+    });
   }
 
   @override
@@ -121,7 +125,7 @@ class _CardDetailsState extends State<CardDetails> {
                                       height: 17,
                                     ),
                                     Text(
-                                    widget.cardData?.firstName ?? "",
+                                      widget.cardData?.firstName ?? "",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,
@@ -148,20 +152,22 @@ class _CardDetailsState extends State<CardDetails> {
                                   height: 35,
                                   width: 90,
                                   child: ElevatedButton(
-                                   // iconAlignment: IconAlignment.start,
+                                    // iconAlignment: IconAlignment.start,
                                     onPressed: () {
                                       showModalBottomSheet(
                                         context: context,
                                         useSafeArea: true,
                                         isScrollControlled: true,
                                         shape: const RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.vertical(top: Radius.circular(20)),
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20)),
                                         ),
-                                        builder: (context) => ShareCardBottomSheet(
+                                        builder: (context) =>
+                                            ShareCardBottomSheet(
                                           cardData: widget.cardData,
                                         ),
-                                      );                                    },
+                                      );
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Colors.blue, // Background color
@@ -184,9 +190,10 @@ class _CardDetailsState extends State<CardDetails> {
                                         const SizedBox(
                                           width: 6,
                                         ), // Space between icon and text
-                                         Text(
-                                        AppLocalizations.of(context)
-                                              .translate('Send'), // Right side text
+                                        Text(
+                                          AppLocalizations.of(context)
+                                              .translate('Send'),
+                                          // Right side text
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 13),
@@ -207,9 +214,16 @@ class _CardDetailsState extends State<CardDetails> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 InkWell(
-                                  onTap: (){
-                                    launchUrlGet(
-                                      linkdinLink ?? "",
+                                  onTap: () async {
+                                    final box = context.findRenderObject()
+                                        as RenderBox?;
+
+                                    await Share.share(
+                                      "${Network.shareUrl}${widget.cardData?.id}",
+                                      subject: "Share your card",
+                                      sharePositionOrigin:
+                                          box!.localToGlobal(Offset.zero) &
+                                              box.size,
                                     );
                                   },
                                   child: Image.asset(
@@ -219,9 +233,16 @@ class _CardDetailsState extends State<CardDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    launchUrlGet(
-                                      faceBookLink ?? "",
+                                  onTap: () async {
+                                    final box = context.findRenderObject()
+                                        as RenderBox?;
+
+                                    await Share.share(
+                                      "${Network.shareUrl}${widget.cardData?.id}",
+                                      subject: "Share your card",
+                                      sharePositionOrigin:
+                                          box!.localToGlobal(Offset.zero) &
+                                              box.size,
                                     );
                                   },
                                   child: Image.asset(
@@ -231,9 +252,16 @@ class _CardDetailsState extends State<CardDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    launchUrlGet(
-                                      instaLink ?? "",
+                                  onTap: () async {
+                                    final box = context.findRenderObject()
+                                        as RenderBox?;
+
+                                    await Share.share(
+                                      "${Network.shareUrl}${widget.cardData?.id}",
+                                      subject: "Share your card",
+                                      sharePositionOrigin:
+                                          box!.localToGlobal(Offset.zero) &
+                                              box.size,
                                     );
                                   },
                                   child: Image.asset(
@@ -243,9 +271,16 @@ class _CardDetailsState extends State<CardDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    launchUrlGet(
-                                      linkdinLink ?? "",
+                                  onTap: () async {
+                                    final box = context.findRenderObject()
+                                        as RenderBox?;
+
+                                    await Share.share(
+                                      "${Network.shareUrl}${widget.cardData?.id}",
+                                      subject: "Share your card",
+                                      sharePositionOrigin:
+                                          box!.localToGlobal(Offset.zero) &
+                                              box.size,
                                     );
                                   },
                                   child: Image.asset(
@@ -255,9 +290,16 @@ class _CardDetailsState extends State<CardDetails> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    launchUrlGet(
-                                      linkdinLink ?? "",
+                                  onTap: () async {
+                                    final box = context.findRenderObject()
+                                        as RenderBox?;
+
+                                    await Share.share(
+                                      "${Network.shareUrl}${widget.cardData?.id}",
+                                      subject: "Share your card",
+                                      sharePositionOrigin:
+                                          box!.localToGlobal(Offset.zero) &
+                                              box.size,
                                     );
                                   },
                                   child: Image.asset(

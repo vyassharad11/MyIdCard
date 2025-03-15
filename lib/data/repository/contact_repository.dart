@@ -10,6 +10,7 @@ import '../../models/company_type_model.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
+import '../../models/meeting_details_model.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/my_meetings_model.dart';
@@ -34,15 +35,22 @@ class ContactRepository {
   }
 
 
-  Future<HttpResponse<MyContactDto>> apiGetMyContact() async {
+  Future<HttpResponse<MyContactDto>> apiGetMyContact(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyContact(dto,token2,);
+    return _apiClient.apiGetMyContact(dto,token2,body);
+  }
+
+  Future<HttpResponse<MyContactDto>> apiGetRecentContact() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetRecentContact(dto,token2,);
   }
 
 
-  Future<HttpResponse<ContactDetailsDatum>> apiGetContactDetail(id) async {
+  Future<HttpResponse<ContactDatum>> apiGetContactDetail(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
@@ -54,6 +62,13 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiAddContact(dto,token2,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiAddPhysicalCard(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiAddPhysicalCard(dto,token2,body);
   }
 
   Future<HttpResponse<UtilityDto>> apiDeleteContact(id) async {
@@ -91,6 +106,13 @@ class ContactRepository {
     return _apiClient.apiGetMyMeetings(dto,token2,body);
   }
 
+  Future<HttpResponse<MeetingDetailsModel>> apiGetMeetingDetails(id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetMeetingDetails(dto,token2,id);
+  }
+
 
   Future<HttpResponse<TagModel>> apiGetCardTag(body) async {
     token = await Storage().getToken() ?? "";
@@ -126,6 +148,21 @@ class ContactRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiAddTagInContact(dto,token2,body);
+  }
+
+
+  Future<HttpResponse<UtilityDto>> apiContactHideUnHide(id,body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiContactHideUnHide(dto,token2,id,body);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiContactFavUnFav(id,body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiContactFavUnFav(dto,token2,id,body);
   }
 
 

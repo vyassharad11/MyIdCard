@@ -1,6 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/card_cubit.dart';
+import '../../data/repository/card_repository.dart';
+import '../../data/repository/card_repository.dart';
+import '../../models/company_type_model.dart';
+import '../../utils/utility.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
 
@@ -206,7 +213,7 @@ class _AddContactNotesState extends State<AddContactNotes> {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (builder) => const MeetingsScreen(),
+                              builder: (builder) =>  MeetingsScreen(contactId: 0,),
                             ),
                           );
                         },
@@ -269,120 +276,179 @@ class _AddContactNotesState extends State<AddContactNotes> {
   ];
 }
 
-class FullScreenBottomSheet extends StatelessWidget {
+class FullScreenBottomSheet extends StatefulWidget {
   const FullScreenBottomSheet({super.key});
 
   @override
+  State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
+}
+
+class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
+  CardCubit?_getGetCompanyTypeCubit;
+  bool isCheck = false;
+  List<DataCompany> companyList = []; // List to hold parsed data
+
+  @override
+  void initState() {
+    _getGetCompanyTypeCubit = CardCubit(CardRepository());
+    fetchData();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  CompanyTypeModel? companyTypeModel;
+  Future<void> fetchData() async {
+    _getGetCompanyTypeCubit?.apiGetCompanyType();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      expand: false,
-      initialChildSize: 0.9, // Adjust this value to control initial height
-      maxChildSize: 0.9,
-      minChildSize: 0.5,
-      builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            children: [
-              // Top bar with close icon
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Filters',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.pop(context); // Close the bottom sheet
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 18),
-                  child: ListView(
-                    controller: scrollController,
-                    children: const [
-                      // Company dropdown
-                      SizedBox(height: 10),
-                      CustomDropdown(title: 'Company'),
-                      SizedBox(height: 20),
-                      // Type of Company dropdown
-                      CustomDropdown(title: 'Type of Company'),
-                      SizedBox(height: 20),
-                      // Function dropdown
-                      CustomDropdown(title: 'Function'),
+    return   BlocListener<CardCubit, ResponseState>(
+      bloc: _getGetCompanyTypeCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+          var dto = state.data as CompanyTypeModel;
+          companyTypeModel = dto;
+          companyList = dto.data ?? [];
+        }
+        setState(() {});
+      },
+      child: DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.9, // Adjust this value to control initial height
+        maxChildSize: 0.9,
+        minChildSize: 0.5,
+        builder: (context, scrollController) {
+          return Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                // Top bar with close icon
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Filters',
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context); // Close the bottom sheet
+                        },
+                      ),
                     ],
                   ),
                 ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Outlined Button
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          debugPrint("Outlined Button Pressed");
-                        },
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          side: const BorderSide(
-                              color: Colors.black38), // Border color
-                        ),
-                        child: const Text(
-                          'Cancel',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18.0, vertical: 18),
+                    child: ListView(
+                      controller: scrollController,
+                      children: [
+                        // Company dropdown
+                        const SizedBox(height: 10),
+                        const SizedBox(height: 20),
+                        // Type of Company dropdown
+                         CustomDropdown(title: 'Type of Company'),
+                        const SizedBox(height: 20),
+                        // Function dropdown
+                         CustomDropdown(title: 'Function'),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Text("Hide"),
+                            SizedBox(width: 10,),
+                            Container(
+                              height: 20,
+                              width: 20,
+                              child: Checkbox(
+                                value: isCheck ?? false,
+                                onChanged: (value) {
+                                  isCheck = !isCheck;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    const SizedBox(width: 10), // Space between buttons
-                    // Filled Button (ElevatedButton)
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          debugPrint("Filled Button Pressed");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Colors.blueAccent, // Background color
-                        ),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Outlined Button
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(context,false);
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            side: const BorderSide(
+                                color: Colors.black38), // Border color
+                          ),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10), // Space between buttons
+                      // Filled Button (ElevatedButton)
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context,isCheck);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Colors.blueAccent, // Background color
+                          ),
+                          child: const Text(
+                            'Save',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
 class CustomDropdown extends StatefulWidget {
   final String title;
+  List<DataCompany>? companyList ; // List to hold parsed data
 
-  const CustomDropdown({super.key, required this.title});
+   CustomDropdown({super.key, required this.title, this.companyList});
 
   @override
   _CustomDropdownState createState() => _CustomDropdownState();
@@ -411,7 +477,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
               _selectedValue = newValue;
             });
           },
-          items: ['Option 1', 'Option 2', 'Option 3'].map((String value) {
+          items: ['IT', 'Finance'].map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
