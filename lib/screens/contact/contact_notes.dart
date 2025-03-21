@@ -279,11 +279,12 @@ class _AddContactNotesState extends State<AddContactNotes> {
 }
 
 class FullScreenBottomSheet extends StatefulWidget {
+  bool? isHowPhysical;
   bool? isHide;
   String? companyTypeId,companyName;
-  Function(bool ishide, String companyTypeId, String companyName)? callBack;
+  Function(bool ishide, String companyTypeId, String companyName,bool isPhysic)? callBack;
 
-  FullScreenBottomSheet({super.key, this.callBack,this.isHide,this.companyName,this.companyTypeId});
+  FullScreenBottomSheet({super.key, this.callBack,this.isHide,this.companyName,this.companyTypeId,this.isHowPhysical});
 
   @override
   State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
@@ -310,6 +311,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
     companyId = widget.companyTypeId ?? "";
     companyNameController.text = widget.companyName ?? "";
     isCheck = widget.isHide ?? false;
+    isHowPhysical = widget.isHowPhysical ?? false;
     setState(() {
 
     });
@@ -464,7 +466,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {
-                            widget.callBack?.call(false, "", "");
+                            widget.callBack?.call(false, "", "",false);
                             Navigator.pop(context, false);
                           },
                           style: OutlinedButton.styleFrom(
@@ -484,7 +486,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         child: ElevatedButton(
                           onPressed: () {
                             widget.callBack?.call(
-                                isCheck, companyId, companyNameController.text);
+                                isCheck, companyId, companyNameController.text,isHowPhysical);
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(

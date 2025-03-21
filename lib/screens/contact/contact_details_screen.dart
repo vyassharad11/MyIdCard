@@ -1,4 +1,4 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -488,13 +488,13 @@ class _ContactDetailsState extends State<ContactDetails> {
                 ClipRRect(
                   borderRadius:
                   const BorderRadius.all(
-                      Radius.circular(50)),
+                      Radius.circular(8)),
                   child: CachedNetworkImage(
                     height: 170,
                     width: double.infinity,
                     fit: BoxFit.fitWidth,
                     imageUrl:
-                    "${Network.imgUrl}${contactDetailsDatum!.cardImage}",
+                    "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
                     progressIndicatorBuilder:
                         (context, url,
                         downloadProgress) =>
@@ -751,7 +751,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                       dialNumber(contactDetailsDatum?.phoneNo
                                           .toString() ??
                                           "");
-                                    },"Call",contactDetailsDatum?.phoneNo
+                                    },"Phone",contactDetailsDatum?.phoneNo
                                         .toString() ??
                                         "");
                                   },
@@ -1167,8 +1167,7 @@ class _ContactDetailsState extends State<ContactDetails> {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.white,
-        isScrollControlled: true,
-        constraints: BoxConstraints(minHeight: 300,maxHeight: MediaQuery.of(context).size.height-200),
+        isScrollControlled: false,
     shape: const RoundedRectangleBorder(
     borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -1189,14 +1188,19 @@ class _ContactDetailsState extends State<ContactDetails> {
           callBack.call();
           Navigator.pop(context);
         },
-        child: Text(title)),
+        child: Container(
+            height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),
+            child: Text(title))),
+      SizedBox(height: 6,),
       Divider(height: 1,color: Colors.grey,),
+      SizedBox(height: 6,),
       InkWell(
           onTap: (){
               Clipboard.setData(ClipboardData(text:link ));
               Navigator.pop(context);
           },
-          child: Text("Copy $title"))
+          child: Container(
+              height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),child: Text("Copy $title")))
     ]));});}
 }
 
