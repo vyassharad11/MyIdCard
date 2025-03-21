@@ -41,7 +41,8 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
   List<RecentDatum> recentContactList = [];
   bool isLoad = true;
   TextEditingController controller = TextEditingController();
-
+bool isHideF = false;
+  String companyTypeIdF = "",companyNameF = "";
 
   @override
   void initState() {
@@ -396,6 +397,12 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     backgroundColor:
                     Colors.transparent, // To make corners rounded
                     builder: (context) => FullScreenBottomSheet(callBack: (isHide, companyTypeId,companyName) {
+                      isHideF = isHide;
+                      companyTypeIdF = companyTypeId;
+                      companyNameF = companyName;
+                      setState(() {
+
+                      });
                       apiGetMyContact(controller.text, isHide,companyTypeId);
                     },),
                   );
@@ -426,7 +433,8 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                         context,
                         CupertinoPageRoute(
                             builder: (builder) =>
-                                TagManagementScreen(isFromCard: true,)));
+                                TagManagementScreen(isFromCard: true,))).then((value) {
+                      apiTagList();                          },);
                     // Edit button functionality
                   },
                 ),
@@ -513,6 +521,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     builder: (builder) =>
                         ContactDetails(contactId: recentContactList[index]
                             .id ?? 0,
+                          isPhysicalContact: recentContactList[index].cardTypeId == 2,
                           contactIdForMeeting: recentContactList[index].id,
                           tags: tags,),
                   ),
@@ -575,7 +584,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
 
                 ),
                 title: Text(
-                  "${myContactList[index].firstName}${ myContactList[index].lastName}",
+                  "${myContactList[index].firstName} ${myContactList[index].lastName}",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -611,6 +620,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                       builder: (builder) =>
                           ContactDetails(contactId: myContactList[index]
                               .id ?? 0,
+                            isPhysicalContact: myContactList[index].cardTypeId == 2,
                             contactIdForMeeting: myContactList[index].id,
                             tags: tags,),
                     ),

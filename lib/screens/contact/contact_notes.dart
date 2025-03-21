@@ -279,9 +279,11 @@ class _AddContactNotesState extends State<AddContactNotes> {
 }
 
 class FullScreenBottomSheet extends StatefulWidget {
+  bool? isHide;
+  String? companyTypeId,companyName;
   Function(bool ishide, String companyTypeId, String companyName)? callBack;
 
-  FullScreenBottomSheet({super.key, this.callBack});
+  FullScreenBottomSheet({super.key, this.callBack,this.isHide,this.companyName,this.companyTypeId});
 
   @override
   State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
@@ -290,6 +292,7 @@ class FullScreenBottomSheet extends StatefulWidget {
 class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   CardCubit? _getGetCompanyTypeCubit;
   bool isCheck = false;
+  bool isHowPhysical = false;
   String companyId = "";
   List<DataCompany> companyList = []; // List to hold parsed data
   TextEditingController companyNameController = TextEditingController();
@@ -297,9 +300,19 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   @override
   void initState() {
     _getGetCompanyTypeCubit = CardCubit(CardRepository());
+    seData();
     fetchData();
     // TODO: implement initState
     super.initState();
+  }
+
+  seData(){
+    companyId = widget.companyTypeId ?? "";
+    companyNameController.text = widget.companyName ?? "";
+    isCheck = widget.isHide ?? false;
+    setState(() {
+
+    });
   }
 
   CompanyTypeModel? companyTypeModel;
@@ -412,6 +425,25 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                                 value: isCheck ?? false,
                                 onChanged: (value) {
                                   isCheck = !isCheck;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ), const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Text("Show Physical Contact"),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              height: 20,
+                              width: 20,
+                              child: Checkbox(
+                                value: isHowPhysical ?? false,
+                                onChanged: (value) {
+                                  isHowPhysical = !isHowPhysical;
                                   setState(() {});
                                 },
                               ),

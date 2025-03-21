@@ -287,6 +287,7 @@ class _AccountPageState extends State<AccountPage> {
               Utility.hideLoader(context);
               var dto = state.data as User;
               user = dto;
+              Storage().setIsIndivisual(user != null && user?.role != Role.individual.name);
               if (user != null && user?.role != Role.individual.name) {
                 getTeamMembers();
                 fetchTeamData();
@@ -986,7 +987,7 @@ class _AccountPageState extends State<AccountPage> {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (builder) => TagManagementScreen()));
+                                builder: (builder) => TagManagementScreen(isFromCard: false,)));
                       },
                       child: ListTile(
                         leading: Image.asset(

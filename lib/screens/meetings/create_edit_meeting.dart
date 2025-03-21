@@ -191,13 +191,14 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
               height: 12,
             ),
                 Container(
-              height: 50,
+              height: 120,
               decoration: BoxDecoration(
                 color: ColoursUtils.background, // Light white color
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
+                maxLines: 4,
                 controller: notesController,
                 decoration: const InputDecoration(
                   hintText: 'Enter notes',
@@ -275,7 +276,7 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
                   child: ElevatedButton(
                     // iconAlignment: IconAlignment.start,
                     onPressed: () {
-                          if(titleController.text.isNotEmpty && purposeController.text.isNotEmpty && notesController.text.isNotEmpty && addController.text.isNotEmpty && linkController.text.isNotEmpty && selectedDateTime != null){
+                          if(titleController.text.isNotEmpty && purposeController.text.isNotEmpty &&  selectedDateTime != null){
                             Utility.showLoader(context);
                            widget.isEdit == false ? apiCreateMeeting():apiUpdateMeeting();
                         } else {
@@ -290,12 +291,12 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
                         BorderRadius.circular(30), // Rounded corners
                       ),
                     ),
-                    child: const Row(
+                    child:  Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Continue", // Right side text
+                          widget.isEdit == false ?"Create":"Update", // Right side text
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],

@@ -15,7 +15,7 @@ import '../../utils/utility.dart';
 
 class TagManagementScreen extends StatefulWidget {
   bool? isFromCard;
-   TagManagementScreen({super.key,this.isFromCard = false});
+   TagManagementScreen({super.key,this.isFromCard});
 
   @override
   _TagManagementScreenState createState() => _TagManagementScreenState();
@@ -310,10 +310,7 @@ Future<void> apiGetCardTag(keyword) async {
                 context: context,
                 message: dto.message ?? "",
               );
-              if(widget.isFromCard == false){
-                apiTagList("");}else {
-                apiGetCardTag("");
-              }
+              apiTagList("");
 
             }
             setState(() {});
@@ -342,7 +339,7 @@ Future<void> apiGetCardTag(keyword) async {
                 context: context,
                 message: dto.message ?? "",
               );
-              apiTagList("");
+              apiGetCardTag("");
 
             }
             setState(() {});
@@ -448,7 +445,7 @@ Future<void> apiGetCardTag(keyword) async {
                               onSelected: (String value) {
                                 switch (value) {
                                   case 'Edit':
-                                    _editTag(index);
+                                    editNottomSheet(context,index);
                                     break;
                                   case 'Delete':
                                     _deleteTag(index);
@@ -495,15 +492,17 @@ Future<void> apiGetCardTag(keyword) async {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      isScrollControlled: false,
+      isScrollControlled: true,
+      constraints: BoxConstraints(minHeight: 300,maxHeight: MediaQuery.of(context).size.height-200),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext context) {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.only(right: 16.0,left: 16,top: 16,bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // Add Tag Input Field
               const SizedBox(
@@ -533,6 +532,7 @@ Future<void> apiGetCardTag(keyword) async {
                       ),
                       onPressed: () {
                         if(controller.text.isNotEmpty) {
+                          Navigator.pop(context);
                           if(widget.isFromCard == false) {
                             apiAddTag(controller.text);
                           }else{
@@ -625,46 +625,236 @@ Future<void> apiGetCardTag(keyword) async {
                 ),
               ),
 
-              const Spacer(),
-              // Contact Information
-              ListTile(
-                contentPadding: const EdgeInsets.only(right: 0),
-                leading: const CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage("assets/images/user_dummy.png"),
-                ),
-                title: const Text(
-                  "Janice Schneider",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Colors.black),
-                ),
-                subtitle: const Text("Sr. Product Solutions Manager"),
-                trailing: Container(
-                  child: ClipOval(
-                    child: Material(
-                      color: Colors.blue, // Button color
-                      child: InkWell(
-                        splashColor: Colors.blue, // Splash color
-                        onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     CupertinoPageRoute(
-                          //         builder: (builder) => AddContactNotes()));
-                        },
-                        child: const SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            )),
+              // const Spacer(),
+              // // Contact Information
+              // ListTile(
+              //   contentPadding: const EdgeInsets.only(right: 0),
+              //   leading: const CircleAvatar(
+              //     radius: 30,
+              //     backgroundImage: AssetImage("assets/images/user_dummy.png"),
+              //   ),
+              //   title: const Text(
+              //     "Janice Schneider",
+              //     style: TextStyle(
+              //         fontWeight: FontWeight.w600,
+              //         fontSize: 16,
+              //         color: Colors.black),
+              //   ),
+              //   subtitle: const Text("Sr. Product Solutions Manager"),
+              //   trailing: Container(
+              //     child: ClipOval(
+              //       child: Material(
+              //         color: Colors.blue, // Button color
+              //         child: InkWell(
+              //           splashColor: Colors.blue, // Splash color
+              //           onTap: () {
+              //             // Navigator.push(
+              //             //     context,
+              //             //     CupertinoPageRoute(
+              //             //         builder: (builder) => AddContactNotes()));
+              //           },
+              //           child: const SizedBox(
+              //               width: 40,
+              //               height: 40,
+              //               child: Icon(
+              //                 Icons.add,
+              //                 color: Colors.white,
+              //               )),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+
+            ],
+          ),
+        );
+      },
+    );
+  }
+  void editNottomSheet(BuildContext context,index) {
+    TextEditingController controller =
+    TextEditingController(text: tags[index].tag);
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      constraints: BoxConstraints(minHeight: 300,maxHeight: MediaQuery.of(context).size.height-200),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding:  EdgeInsets.only(right: 16.0,left: 16,top: 16,bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Add Tag Input Field
+              const SizedBox(
+                height: 18,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // const Text(
+                  //   "",
+                  //   style: TextStyle(color: Colors.black, fontSize: 14),
+                  // ),
+                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 25,
+                    width: 100,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 0),
+                        elevation: 0,
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      onPressed: () {
+                        if(controller.text.isNotEmpty){
+                        setState(() {
+                          selectedIndex = 0;
+                        });
+                        Navigator.pop(context);
+                        if(widget.isFromCard == false) {
+                          apiUpdateTag(
+                              tagName: controller.text, id: tags[index].id.toString());
+                        }else{
+                          apiUpdateCardTag(
+                              tagName: controller.text, id: tags[index].id.toString());
+                        }
+                        controller.clear();}
+                      },
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(fontSize: 12),
                       ),
                     ),
                   ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.clear_rounded))
+                ],
+              ),
+              const Text(
+                "Edit Tag",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Light white color
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: controller,
+                        onTapOutside: (v){
+                          Utility.hideKeyboard(context);
+                        },
+                        onChanged: (v) {
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Edit Tag',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
+              const SizedBox(height: 16),
+              const Text(
+                "Add Contacts",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 10),
+              // Search Input Field
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Light white color
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: const Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // const Spacer(),
+              // // Contact Information
+              // ListTile(
+              //   contentPadding: const EdgeInsets.only(right: 0),
+              //   leading: const CircleAvatar(
+              //     radius: 30,
+              //     backgroundImage: AssetImage("assets/images/user_dummy.png"),
+              //   ),
+              //   title: const Text(
+              //     "Janice Schneider",
+              //     style: TextStyle(
+              //         fontWeight: FontWeight.w600,
+              //         fontSize: 16,
+              //         color: Colors.black),
+              //   ),
+              //   subtitle: const Text("Sr. Product Solutions Manager"),
+              //   trailing: Container(
+              //     child: ClipOval(
+              //       child: Material(
+              //         color: Colors.blue, // Button color
+              //         child: InkWell(
+              //           splashColor: Colors.blue, // Splash color
+              //           onTap: () {
+              //             // Navigator.push(
+              //             //     context,
+              //             //     CupertinoPageRoute(
+              //             //         builder: (builder) => AddContactNotes()));
+              //           },
+              //           child: const SizedBox(
+              //               width: 40,
+              //               height: 40,
+              //               child: Icon(
+              //                 Icons.add,
+              //                 color: Colors.white,
+              //               )),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
             ],
           ),

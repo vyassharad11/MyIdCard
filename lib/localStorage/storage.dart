@@ -87,4 +87,14 @@ class Storage {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('firstCardSkip') ?? true;
   }
+
+  Future<void> setIsIndivisual(bool isTrue) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isIndivisual', isTrue);
+  }
+
+  Future<bool> getIsIndivisual() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isIndivisual') ?? true;
+  }
 }
