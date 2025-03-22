@@ -823,6 +823,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     builder: (builder) =>
                                     ContactDetails(contactId: myContactList[index]
                                         .id ?? 0,
+                                      isPhysicalContact:myContactList[index].phoneNo == null ||  myContactList[index].phoneNo!.isEmpty,
                                       contactIdForMeeting: myContactList[index].id,
                                       tags: [],),
                                 ));
@@ -837,7 +838,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 ),
                                 title: Text(
-                                  "${myContactList[index].firstName}${ myContactList[index].lastName}",
+                                  "${myContactList[index].firstName} ${myContactList[index].lastName}",
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
                                       color: Colors.black,

@@ -1,5 +1,9 @@
+
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:geocoding/geocoding.dart';
@@ -16,6 +20,7 @@ import '../../models/my_meetings_model.dart';
 import '../../models/tag_model.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
+import '../../utils/widgets/network.dart';
 import '../add_card_module/share_card_bottom_sheet.dart';
 import '../meetings/create_edit_meeting.dart';
 import '../meetings/metting_details.dart';
@@ -25,11 +30,13 @@ import 'add_tag_in_contact_bottom_sheet.dart';
 class ContactDetails extends StatefulWidget {
   final int contactId;
   final int? contactIdForMeeting;
+ final bool isPhysicalContact;
   final List<TagDatum> tags;
 
   const ContactDetails(
       {super.key,
       required this.contactId,
+      required this.isPhysicalContact,
       this.contactIdForMeeting,
       required this.tags});
 
@@ -453,7 +460,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
           actions: [
-            IconButton(
+           if(widget.isPhysicalContact == false) IconButton(
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
@@ -477,7 +484,39 @@ class _ContactDetailsState extends State<ContactDetails> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-                child: Card(
+                child: widget.isPhysicalContact ?
+                ClipRRect(
+                  borderRadius:
+                  const BorderRadius.all(
+                      Radius.circular(8)),
+                  child: CachedNetworkImage(
+                    height: 170,
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth,
+                    imageUrl:
+                    "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
+                    progressIndicatorBuilder:
+                        (context, url,
+                        downloadProgress) =>
+                        Center(
+                          child:
+                          CircularProgressIndicator(
+                              value:
+                              downloadProgress
+                                  .progress),
+                        ),
+                    errorWidget:
+                        (context, url, error) =>
+                        Image.asset(
+                          "assets/logo/Central icon.png",
+                          height: 80,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                        ),
+                  ),
+                )
+                    :
+                Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18), // if you need this
                     side: const BorderSide(
@@ -491,16 +530,117 @@ class _ContactDetailsState extends State<ContactDetails> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(18),
-                            topRight: Radius.circular(18)),
-                        child: Image.asset(
-                          "assets/images/card_header.png",
-                          height: 80,
-                          fit: BoxFit.fitWidth,
-                          width: double.infinity,
-                        ),
+                      contactDetailsDatum?.backgroungImage != null
+                          ? Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(18),
+                                topRight: Radius.circular(18)),
+                            child: CachedNetworkImage(
+                              height: 80,
+                              width: double.infinity,
+                              fit: BoxFit.fitWidth,
+                              imageUrl:
+                              "${Network.imgUrl}${contactDetailsDatum?.backgroungImage}",
+                              progressIndicatorBuilder: (context,
+                                  url, downloadProgress) =>
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                        value: downloadProgress
+                                            .progress),
+                                  ),
+                              errorWidget:
+                                  (context, url, error) =>
+                                  Image.asset(
+                                    "assets/logo/Top with a picture.png",
+                                    height: 80,
+                                    fit: BoxFit.fill,
+                                    width: double.infinity,
+                                  ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 12.0, left: 12),
+                                child: ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(50)),
+                                  child: CachedNetworkImage(
+                                    height: 55,
+                                    width: 55,
+                                    fit: BoxFit.fitWidth,
+                                    imageUrl:
+                                    "${Network.imgUrl}${contactDetailsDatum?.cardImage}",
+                                    progressIndicatorBuilder:
+                                        (context, url,
+                                        downloadProgress) =>
+                                        Center(
+                                          child:
+                                          CircularProgressIndicator(
+                                              value:
+                                              downloadProgress
+                                                  .progress),
+                                        ),
+                                    errorWidget:
+                                        (context, url, error) =>
+                                        Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 80,
+                                          fit: BoxFit.fill,
+                                          width: double.infinity,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                          : Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(18),
+                                topRight: Radius.circular(18)),
+                            child: Image.asset(
+                              "assets/logo/Top with a picture.png",
+                              height: 80,
+                              width: double.infinity,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 10.0, left: 8),
+                                child: ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(50)),
+                                  child: Image.asset(
+                                    "assets/logo/Central icon.png",
+                                    height: 55,
+                                    width: 55,
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -607,8 +747,12 @@ class _ContactDetailsState extends State<ContactDetails> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    dialNumber(contactDetailsDatum?.phoneNo
-                                            .toString() ??
+                                    _showBottomSheet(context,(){
+                                      dialNumber(contactDetailsDatum?.phoneNo
+                                          .toString() ??
+                                          "");
+                                    },"Phone",contactDetailsDatum?.phoneNo
+                                        .toString() ??
                                         "");
                                   },
                                   child: Image.asset(
@@ -619,11 +763,15 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    openGmail(
-                                        body: "",
-                                        email: contactDetailsDatum?.workEmail ??
-                                            "",
-                                        subject: "");
+                                    _showBottomSheet(context,(){
+                                      openGmail(
+                                          body: "",
+                                          email: contactDetailsDatum?.workEmail ??
+                                              "",
+                                          subject: "");
+                                    },"Send Email",contactDetailsDatum?.workEmail
+                                        .toString() ??
+                                        "");
                                   },
                                   child: Image.asset(
                                     "assets/images/mail.png",
@@ -633,8 +781,12 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    openSMS(contactDetailsDatum?.phoneNo
-                                            .toString() ??
+                                    _showBottomSheet(context,(){
+                                      openSMS(contactDetailsDatum?.phoneNo
+                                          .toString() ??
+                                          "");
+                                    },"Send Message",contactDetailsDatum?.phoneNo
+                                        .toString() ??
                                         "");
                                   },
                                   child: Image.asset(
@@ -645,9 +797,13 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    _openMap(
-                                        contactDetailsDatum?.companyAddress ??
-                                            "");
+                                    _showBottomSheet(context,(){
+                                      _openMap(
+                                          contactDetailsDatum?.companyAddress ??
+                                              "");
+                                    },"Send Location",contactDetailsDatum?.companyAddress
+                                        .toString() ??
+                                        "");
                                   },
                                   child: Image.asset(
                                     "assets/images/location.png",
@@ -748,11 +904,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      contactDetailsDatum != null &&
-                              contactDetailsDatum?.notes != null &&
-                              contactDetailsDatum!.notes!.isNotEmpty
-                          ? "Notes"
-                          : "Add  Notes",
+                     "Notes",
                       style: TextStyle(
                         color: Colors.black, // Text color
                         fontSize: 14,
@@ -763,9 +915,13 @@ class _ContactDetailsState extends State<ContactDetails> {
                         contactDetailsDatum!.notes!.isEmpty
                         ?   InkWell(
                       onTap: (){
-                        Utility.showLoader(context);
-                        apiUpdateNotes(
-                            contactDetailsDatum?.id.toString() ?? "");
+                        if(notesController.text.isNotEmpty) {
+                          Utility.showLoader(context);
+                          apiUpdateNotes(
+                              contactDetailsDatum?.id.toString() ?? "");
+                        }else{
+                          Utility().showFlushBar(context: context, message: "Enter notes",isError: true);
+                        }
                       },
                           child: Text(
                                                 "Add", // Right side text
@@ -776,9 +932,13 @@ class _ContactDetailsState extends State<ContactDetails> {
                         : isEdit == true
                         ? InkWell(
                       onTap: (){
-                        Utility.showLoader(context);
-                        apiUpdateNotes(
-                            contactDetailsDatum?.id.toString() ?? "");
+                        if(notesController.text.isNotEmpty) {
+                          Utility.showLoader(context);
+                          apiUpdateNotes(
+                              contactDetailsDatum?.id.toString() ?? "");
+                        }else{
+                          Utility().showFlushBar(context: context, message: "Enter notes",isError: true);
+                        }
                       },
                       child: Text(
                         "Update", // Right side text
@@ -828,8 +988,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                         ),
                       )
                     : SizedBox(
-                        height: 45,
+                        height: 100,
                         child: TextField(
+                          maxLines: 3,
                           controller: notesController,
                           decoration: InputDecoration(
                             fillColor: Colors.grey.shade200,
@@ -1001,6 +1162,46 @@ class _ContactDetailsState extends State<ContactDetails> {
       ),
     );
   }
+
+  void _showBottomSheet(BuildContext context,Function callBack,title,link) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.white,
+        isScrollControlled: false,
+    shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (BuildContext context) {
+    return Padding(
+    padding:  EdgeInsets.only(right: 16.0,left: 16,top: 16,bottom: MediaQuery.of(context).viewInsets.bottom),
+    child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+    // Add Tag Input Field
+    const SizedBox(
+    height: 18,
+    ),
+    InkWell
+      (
+        onTap: (){
+          callBack.call();
+          Navigator.pop(context);
+        },
+        child: Container(
+            height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),
+            child: Text(title))),
+      SizedBox(height: 6,),
+      Divider(height: 1,color: Colors.grey,),
+      SizedBox(height: 6,),
+      InkWell(
+          onTap: (){
+              Clipboard.setData(ClipboardData(text:link ));
+              Navigator.pop(context);
+          },
+          child: Container(
+              height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),child: Text("Copy $title")))
+    ]));});}
 }
 
 // Bottom Sheet content

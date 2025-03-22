@@ -100,6 +100,7 @@ class ContactDatum {
   int? id;
   int? userId;
   int? cardId;
+  int? cardTypeId;
   int? languageId;
   String? cardImage;
   String? firstName;
@@ -127,6 +128,7 @@ class ContactDatum {
     this.userId,
     this.cardId,
     this.qrCode,
+    this.cardTypeId,
     this.languageId,
     this.cardImage,
     this.firstName,
@@ -153,6 +155,7 @@ class ContactDatum {
     id: json["id"],
     userId: json["user_id"],
     cardId: json["card_id"],
+    cardTypeId: json["card_type_id"],
     languageId: json["language_id"],
     cardImage: json["card_image"],
     firstName: json["first_name"],
@@ -180,6 +183,7 @@ class ContactDatum {
     "id": id,
     "user_id": userId,
     "card_id": cardId,
+    "card_type_id": cardTypeId,
     "language_id": languageId,
     "qr_code": qrCode,
     "card_image": cardImage,

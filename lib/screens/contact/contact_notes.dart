@@ -279,9 +279,12 @@ class _AddContactNotesState extends State<AddContactNotes> {
 }
 
 class FullScreenBottomSheet extends StatefulWidget {
-  Function(bool ishide, String companyTypeId, String companyName)? callBack;
+  bool? isHowPhysical;
+  bool? isHide;
+  String? companyTypeId,companyName;
+  Function(bool ishide, String companyTypeId, String companyName,bool isPhysic)? callBack;
 
-  FullScreenBottomSheet({super.key, this.callBack});
+  FullScreenBottomSheet({super.key, this.callBack,this.isHide,this.companyName,this.companyTypeId,this.isHowPhysical});
 
   @override
   State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
@@ -290,6 +293,7 @@ class FullScreenBottomSheet extends StatefulWidget {
 class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   CardCubit? _getGetCompanyTypeCubit;
   bool isCheck = false;
+  bool isHowPhysical = false;
   String companyId = "";
   List<DataCompany> companyList = []; // List to hold parsed data
   TextEditingController companyNameController = TextEditingController();
@@ -297,9 +301,20 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   @override
   void initState() {
     _getGetCompanyTypeCubit = CardCubit(CardRepository());
+    seData();
     fetchData();
     // TODO: implement initState
     super.initState();
+  }
+
+  seData(){
+    companyId = widget.companyTypeId ?? "";
+    companyNameController.text = widget.companyName ?? "";
+    isCheck = widget.isHide ?? false;
+    isHowPhysical = widget.isHowPhysical ?? false;
+    setState(() {
+
+    });
   }
 
   CompanyTypeModel? companyTypeModel;
@@ -417,6 +432,25 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                               ),
                             ),
                           ],
+                        ), const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Text("Show Physical Contact"),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              height: 20,
+                              width: 20,
+                              child: Checkbox(
+                                value: isHowPhysical ?? false,
+                                onChanged: (value) {
+                                  isHowPhysical = !isHowPhysical;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
@@ -432,7 +466,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {
-                            widget.callBack?.call(false, "", "");
+                            widget.callBack?.call(false, "", "",false);
                             Navigator.pop(context, false);
                           },
                           style: OutlinedButton.styleFrom(
@@ -452,7 +486,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         child: ElevatedButton(
                           onPressed: () {
                             widget.callBack?.call(
-                                isCheck, companyId, companyNameController.text);
+                                isCheck, companyId, companyNameController.text,isHowPhysical);
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(

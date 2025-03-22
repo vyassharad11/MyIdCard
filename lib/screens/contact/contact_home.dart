@@ -16,6 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
+import '../../localStorage/storage.dart';
 import '../../models/recent_contact_mode.dart';
 import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
@@ -41,10 +42,19 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
   List<RecentDatum> recentContactList = [];
   bool isLoad = true;
   TextEditingController controller = TextEditingController();
-
+bool isHideF = false;
+bool isPhisical = false;
+bool isInTeam = false;
+  String companyTypeIdF = "",companyNameF = "";
 
   @override
   void initState() {
+    Storage().getIsIndivisual().then((value) {
+      isInTeam = value;
+      setState(() {
+
+      });
+    },);
     _getTagCubit = ContactCubit(ContactRepository());
     _getMyContact = ContactCubit(ContactRepository());
     _addContactCubit = ContactCubit(ContactRepository());
@@ -395,7 +405,19 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     isScrollControlled: true,
                     backgroundColor:
                     Colors.transparent, // To make corners rounded
-                    builder: (context) => FullScreenBottomSheet(callBack: (isHide, companyTypeId,companyName) {
+                    builder: (context) => FullScreenBottomSheet(
+                      companyName: companyNameF,
+                      isHowPhysical: isPhisical,
+                      companyTypeId: companyTypeIdF,
+                      isHide: isHideF,
+                      callBack: (isHide, companyTypeId,companyName,isPhisica) {
+                      isHideF = isHide;
+                      isPhisical = isPhisica;
+                      companyTypeIdF = companyTypeId;
+                      companyNameF = companyName;
+                      setState(() {
+
+                      });
                       apiGetMyContact(controller.text, isHide,companyTypeId);
                     },),
                   );
@@ -426,7 +448,8 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                         context,
                         CupertinoPageRoute(
                             builder: (builder) =>
-                                TagManagementScreen(isFromCard: true,)));
+                                TagManagementScreen(isFromCard: true,))).then((value) {
+                      apiTagList();                          },);
                     // Edit button functionality
                   },
                 ),
@@ -513,6 +536,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                     builder: (builder) =>
                         ContactDetails(contactId: recentContactList[index]
                             .id ?? 0,
+                          isPhysicalContact: recentContactList[index].phoneNo == null ||  recentContactList[index].phoneNo!.isEmpty,
                           contactIdForMeeting: recentContactList[index].id,
                           tags: tags,),
                   ),
@@ -575,7 +599,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
 
                 ),
                 title: Text(
-                  "${myContactList[index].firstName}${ myContactList[index].lastName}",
+                  "${myContactList[index].firstName} ${myContactList[index].lastName}",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -611,6 +635,8 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
                       builder: (builder) =>
                           ContactDetails(contactId: myContactList[index]
                               .id ?? 0,
+                            isPhysicalContact:
+                            myContactList[index].phoneNo == null ||  myContactList[index].phoneNo!.isEmpty,
                             contactIdForMeeting: myContactList[index].id,
                             tags: tags,),
                     ),
@@ -820,9 +846,11 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.linear,
         onValueChanged: (v) {
-          setState(() {
+          if(isInTeam) {
+            setState(() {
             selectIndec = v;
           });
+          }
         },
       ),
     );
