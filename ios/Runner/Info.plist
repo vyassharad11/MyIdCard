@@ -7,22 +7,22 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>sms</string>
-    </array>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>tel</string>
-    </array>
-     <key>CFBundleURLTypes</key>
-     <array>
-     <dict>
-    <key>CFBundleURLSchemes</key>
-      <array>
-      <string>myapp</string>
-    </array>
-  </dict>
-</array>
+	<array>
+		<string>google</string>
+		<string>com.googleusercontent.apps.1026288895623-cumdfsmfdfct1jqeert2bfrrss7mhh8t</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1026288895623-cumdfsmfdfct1jqeert2bfrrss7mhh8t</string>
+				<string>myapp</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDisplayName</key>
 	<string>My Di Card</string>
 	<key>CFBundleExecutable</key>
@@ -40,35 +40,19 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>NSContactsUsageDescription</key>
-    <string>Your message to the user about why you need contacts access</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.1026288895623-cumdfsmfdfct1jqeert2bfrrss7mhh8t</string>
-			</array>
-		</dict>
-	</array>
+	<string>Your message to the user about why you need contacts access</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>google</string>
-		<string>com.googleusercontent.apps.1026288895623-cumdfsmfdfct1jqeert2bfrrss7mhh8t</string>
-	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Play using while you are hiking</string>
 	<key>NSCameraUsageDescription</key>
-	<string>MyDicard app requires camera access to take photos and videos.</string>
+	<string>This app needs camera access to scan QR codes</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>MyDicard app requires permission to save photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App needs access to your photos for profile setup.</string>
+	<string>This app needs photos access to get QR code from photo library</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -88,10 +72,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-    <string>This app needs camera access to scan QR codes</string>
-
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>This app needs photos access to get QR code from photo library</string>
 </dict>
 </plist>
