@@ -309,6 +309,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   }
 
   seData(){
+    print("selectedValue${widget.selectedValue}");
     companyId = widget.companyTypeId ?? "";
     selectedValue = widget.selectedValue ?? "";
     companyNameController.text = widget.companyName ?? "";
@@ -394,8 +395,9 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         CustomDropdown(
                           title: 'Type of Company',
                           selectedValue: selectedValue,
-                          callBack: (v) {
+                          callBack: (v,value) {
                             companyId = v;
+                            selectedValue = value;
                             setState(() {});
                           },
                         ),
@@ -517,7 +519,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
 class CustomDropdown extends StatefulWidget {
   final String title;
    String? selectedValue;
-  Function? callBack;
+  Function(String id,String value)? callBack;
   List<DataCompany>? companyList; // List to hold parsed data
 
   CustomDropdown(
@@ -563,7 +565,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
                 _selectedId = "2";
               }
             });
-            widget.callBack?.call(_selectedId);
+            widget.callBack?.call(_selectedId ?? "",_selectedValue ?? "");
           },
           items: ['IT', 'Finance'].map((String value) {
             return DropdownMenuItem<String>(
