@@ -1182,7 +1182,7 @@ class _ContactDetailsState extends State<ContactDetails> {
     children: [
     // Add Tag Input Field
     const SizedBox(
-    height: 18,
+    height: 20,
     ),
     InkWell
       (
@@ -1193,14 +1193,14 @@ class _ContactDetailsState extends State<ContactDetails> {
         child: Container(
             height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),
             child: Text(title))),
-      SizedBox(height: 6,),
+      SizedBox(height: 10,),
       Divider(height: 1,color: Colors.grey,),
-      SizedBox(height: 6,),
+      SizedBox(height: 10,),
       InkWell(
           onTap: (){
               Clipboard.setData(ClipboardData(text:link ));
               Navigator.pop(context);
-              Utility().showFlushBar(context: context, message: "copy to clipboard");
+              Utility().showFlushBar(context: context, message: "copy into clipboard");
           },
           child: Container(
               height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),child: Text("Copy $title"))),
