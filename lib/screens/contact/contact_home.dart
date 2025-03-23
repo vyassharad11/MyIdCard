@@ -45,7 +45,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
 bool isHideF = false;
 bool isPhisical = false;
 bool isInTeam = false;
-  String companyTypeIdF = "",companyNameF = "",cardTypeId ="";
+  String companyTypeIdF = "",companyNameF = "",cardTypeId ="",selectedValueF = "";
 
   @override
   void initState() {
@@ -409,12 +409,14 @@ bool isInTeam = false;
                     builder: (context) => FullScreenBottomSheet(
                       companyName: companyNameF,
                       isHowPhysical: isPhisical,
+                      selectedValue: selectedValueF,
                       companyTypeId: companyTypeIdF,
                       isHide: isHideF,
-                      callBack: (isHide, companyTypeId,companyName,isPhisica,) {
+                      callBack: (isHide, companyTypeId,companyName,isPhisica,selectedValue) {
                       isHideF = isHide;
                       isPhisical = isPhisica;
                       companyTypeIdF = companyTypeId;
+                      selectedValueF = selectedValue;
                       companyNameF = companyName;
                       setState(() {
 

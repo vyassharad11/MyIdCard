@@ -46,8 +46,9 @@ class _WelcomePageState extends State<WelcomePage> {
   void checkLoginStatus() async {
     var token = await Storage().getToken();
     var isFirstCardSkip = await Storage().getFirstCardSkip();
-    if (token.isNotEmpty && token.toString().length > 3) {
-      if (isFirstCardSkip) {
+    if (token.isNotEmpty) {
+      print("isFirstCardSkip>>>>$isFirstCardSkip");
+      if (!isFirstCardSkip) {
         Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute(builder: (builder) => FirstCardScreen()),
