@@ -265,12 +265,18 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
             dto.user!.cards != null &&
             dto.user!.cards!.isNotEmpty) {
           Cards cardData = dto.user!.cards![0];
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (builder) => FirstCardScreen(
-                    cardData: cardData,
-                  )));
+          Navigator.pushAndRemoveUntil(
+            context,
+            CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                (route) => false,
+          );
+
+          // Navigator.push(
+          //     context,
+          //     CupertinoPageRoute(
+          //         builder: (builder) => FirstCardScreen(
+          //           cardData: cardData,
+          //         )));
         } else {
           Navigator.push(
             context,

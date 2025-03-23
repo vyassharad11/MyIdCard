@@ -70,7 +70,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    widget.cardData!.backgroungImage != null
+                    widget.cardData != null&& widget.cardData!.backgroungImage != null
                         ? Stack(
                       children: [
                         ClipRRect(
