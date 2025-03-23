@@ -102,7 +102,9 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                   CupertinoPageRoute(
                     builder: (builder) =>  MeetingDetailsScreen(meetingId: meetings[index].id ?? 0,contactId: widget.contactId.toString(),),
                   ),
-                );
+                ).then((value) {
+                  apiGetMyMeetings();
+                },);
               },
               title: Text(
                 meeting.title?? '',

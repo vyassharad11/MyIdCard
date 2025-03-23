@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_di_card/data/repository/contact_repository.dart';
+import 'package:my_di_card/models/utility_dto.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import '../../bloc/api_resp_state.dart';
@@ -20,12 +21,13 @@ class MeetingDetailsScreen extends StatefulWidget {
 }
 
 class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
-  ContactCubit?_getMeetingCubit;
+  ContactCubit?_getMeetingCubit,deleteMeetingCubit;
   MeetingDetailsModel?meetingDetailsModel;
 
   @override
   void initState() {
     _getMeetingCubit = ContactCubit(ContactRepository());
+    deleteMeetingCubit = ContactCubit(ContactRepository());
     apiGetMeetingDetails();
     // TODO: implement initState
     super.initState();
@@ -35,26 +37,51 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
     _getMeetingCubit?.apiGetMeetingDetails(widget.meetingId?? 0);
   }
 
+  apiDeleteMeeting(){
+    deleteMeetingCubit?.apiDeleteMeeting(widget.meetingId?? 0);
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return   BlocListener<ContactCubit, ResponseState>(
-      bloc: _getMeetingCubit,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
+    return
+      MultiBlocListener(listeners: [
+          BlocListener<ContactCubit, ResponseState>(
+              bloc: _getMeetingCubit,
+              listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
           Utility.hideLoader(context);
-        } else if (state is ResponseStateNoInternet) {
+          } else if (state is ResponseStateNoInternet) {
           Utility.hideLoader(context);
-        } else if (state is ResponseStateError) {
+          } else if (state is ResponseStateError) {
           Utility.hideLoader(context);
-        } else if (state is ResponseStateSuccess) {
+          } else if (state is ResponseStateSuccess) {
           Utility.hideLoader(context);
           var dto = state.data as MeetingDetailsModel;
           meetingDetailsModel = dto;
-        }
-        setState(() {});
-      },
+          }
+          setState(() {});
+          },),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: deleteMeetingCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+            Navigator.pop(context);
+            Utility().showFlushBar(context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },),
+      ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -79,7 +106,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                   children: <Widget>[
                     const SizedBox(height: 8),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
@@ -90,6 +117,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                               fontWeight: FontWeight.w600,
                               fontStyle: FontStyle.normal),
                         ),
+                        Spacer(),
                         GestureDetector(
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => CreateEditMeeting(
@@ -118,6 +146,12 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                               width: 16,
                               color: Colors.black,
                             )),
+                        SizedBox(width: 6,),
+                        InkWell(
+                            onTap: (){
+                              showDeleteDialog(context);
+                            },
+                            child: Icon(Icons.delete_outline,color: Colors.black,size: 20,))
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -244,6 +278,34 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
           ),
         ),
       ),
+    );
+  }
+  void showDeleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Meeting'),
+          content: Text('Are you sure you want to delete this meeting?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform delete action here
+                Navigator.of(context).pop();
+                Utility.showLoader(context);
+                apiDeleteMeeting();
+              },
+              child: Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
     );
   }
 
