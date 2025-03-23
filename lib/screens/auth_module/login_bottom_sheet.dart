@@ -24,6 +24,7 @@ import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../home_module/first_card.dart';
+import '../home_module/main_home_page.dart';
 import '../profile_mosule/profile_new.dart';
 import 'profile_bottom_sheet.dart';
 
@@ -223,7 +224,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
       listeners: [
       BlocListener<AuthCubit, ResponseState>(
     bloc: _authCubit,
-    listener: (context, state) {
+    listener: (context, state) async {
       if (state is ResponseStateLoading) {
       } else if (state is ResponseStateEmpty) {
         Utility.hideLoader(context);
@@ -241,6 +242,11 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         Storage().setIsIndivisual(dto != null && dto?.user?.role != Role.individual.name);
         if(dto.user != null) {
           Storage().saveUserToPreferences(dto.user!);
+        }
+        if(dto.user != null && dto.user!.cards != null && dto.user!.cards!.isNotEmpty){
+          await Storage().setFirstCardSkip(false);
+        }else{
+          await Storage().setFirstCardSkip(true);
         }
         FocusScope.of(context).unfocus();
         Navigator.pop(context);
@@ -327,7 +333,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
           Navigator.push(
               context,
               CupertinoPageRoute(
-                  builder: (builder) => const FirstCardScreen()));
+                  builder: (builder) => const BottomNavBarExample()));
         }
         Utility().showFlushBar(context: context, message: dto.message ?? "");
       } setState(() {});

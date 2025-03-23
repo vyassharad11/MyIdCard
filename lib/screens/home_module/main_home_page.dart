@@ -44,9 +44,11 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
   int _selectedIndex = 0;
   StreamSubscription<Uri>? _linkSubscription;
   late AppLinks _appLinks;
+  ContactCubit? _addContactCubit;
 
   @override
   initState(){
+    _addContactCubit = ContactCubit(ContactRepository());
     _initUniLinkStream();
     super.initState();
   }
@@ -57,21 +59,24 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
     // Handle links
     _linkSubscription = _appLinks.uriLinkStream.listen((link) {
       if (link == null) return;
-      // String? url = Uri.parse(link).queryParameters['link'] ?? "";
-      // if (link.path.contains('events')) {
-      //   var id = link.pathSegments[1];
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => PostEventDetailPage(
-      //             eventId: id,
-      //           )));
-      // } else if (link.path.contains('user')) {
-      //   var id = link.pathSegments[0];
-      //
-      // }
+      String url = "$link";
+      RegExp regExp = RegExp(r'\d+$'); // Matches digits at the end of the string
+      Match? match = regExp.firstMatch(url);
+
+      if (match != null) {
+        String numberString = match.group(0)!;
+        apiAddContact(numberString);
+      }
     }, onError: (err) {
     });
+  }
+
+
+  Future<void> apiAddContact(cardId) async {
+    Map<String, dynamic> data = {
+      "card_id": cardId,
+    };
+    _addContactCubit?.apiAddContact(data);
   }
 
 
@@ -92,65 +97,90 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 8,
-        backgroundColor: Colors.white,
-        iconSize: 30,
+    return   BlocListener<ContactCubit, ResponseState>(
+      bloc: _addContactCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(
+              context: context, message: state.message, isError: true);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(
+              context: context, message: state.message, isError: true);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(
+              context: context, message: state.errorMessage, isError: true);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+          var dto = state.data as UtilityDto;
+          Utility()
+              .showFlushBar(context: context, message: dto.message ?? "");
+        }
+        setState(() {});
+      },
+      child: Scaffold(
+        body: _pages.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 8,
+          backgroundColor: Colors.white,
+          iconSize: 30,
 
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 0 ? Icons.home : Icons.home_outlined,
-              color: _selectedIndex == 0 ? Colors.blue : Colors.grey,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                _selectedIndex == 0 ? Icons.home : Icons.home_outlined,
+                color: _selectedIndex == 0 ? Colors.blue : Colors.grey,
+              ),
+              label: '',
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              "assets/images/users-03.png",
-              height: 24,
-              width: 24,
-              color: _selectedIndex == 1 ? Colors.blue : Colors.grey,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Image.asset(
-                "assets/images/credit-card-02.png",
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                "assets/images/users-03.png",
                 height: 24,
                 width: 24,
-                color: _selectedIndex == 2 ? Colors.blue : Colors.grey,
+                color: _selectedIndex == 1 ? Colors.blue : Colors.grey,
               ),
+              label: '',
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              "assets/images/Frame 415 (1).png",
-              height: 28,
-              width: 28,
-              color: _selectedIndex == 3 ? Colors.blue : Colors.grey,
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(
+                  "assets/images/credit-card-02.png",
+                  height: 24,
+                  width: 24,
+                  color: _selectedIndex == 2 ? Colors.blue : Colors.grey,
+                ),
+              ),
+              label: '',
             ),
-            label: '',
-          ),
-        ],
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                "assets/images/Frame 415 (1).png",
+                height: 28,
+                width: 28,
+                color: _selectedIndex == 3 ? Colors.blue : Colors.grey,
+              ),
+              label: '',
+            ),
+          ],
 
-        currentIndex: _selectedIndex,
-        // Set the current selected index
-        selectedItemColor: Colors.blue,
-        // Selected item color
-        unselectedItemColor: Colors.grey,
-        // Unselected item color
-        showUnselectedLabels: true,
-        // Show labels for unselected items
-        onTap: _onItemTapped,
-        // Handle item tap
-        type: BottomNavigationBarType
-            .fixed, // Use fixed type for more than 3 items
+          currentIndex: _selectedIndex,
+          // Set the current selected index
+          selectedItemColor: Colors.blue,
+          // Selected item color
+          unselectedItemColor: Colors.grey,
+          // Unselected item color
+          showUnselectedLabels: true,
+          // Show labels for unselected items
+          onTap: _onItemTapped,
+          // Handle item tap
+          type: BottomNavigationBarType
+              .fixed, // Use fixed type for more than 3 items
+        ),
       ),
     );
   }

@@ -281,10 +281,10 @@ class _AddContactNotesState extends State<AddContactNotes> {
 class FullScreenBottomSheet extends StatefulWidget {
   bool? isHowPhysical;
   bool? isHide;
-  String? companyTypeId,companyName;
-  Function(bool ishide, String companyTypeId, String companyName,bool isPhysic)? callBack;
+  String? companyTypeId,companyName,selectedValue;
+  Function(bool ishide, String companyTypeId, String companyName,bool isPhysic,String selectedValue)? callBack;
 
-  FullScreenBottomSheet({super.key, this.callBack,this.isHide,this.companyName,this.companyTypeId,this.isHowPhysical});
+  FullScreenBottomSheet({super.key, this.callBack,this.isHide,this.companyName,this.companyTypeId,this.isHowPhysical,this.selectedValue});
 
   @override
   State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
@@ -295,6 +295,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   bool isCheck = false;
   bool isHowPhysical = false;
   String companyId = "";
+  String selectedValue = "";
   List<DataCompany> companyList = []; // List to hold parsed data
   TextEditingController companyNameController = TextEditingController();
 
@@ -309,6 +310,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
 
   seData(){
     companyId = widget.companyTypeId ?? "";
+    selectedValue = widget.selectedValue ?? "";
     companyNameController.text = widget.companyName ?? "";
     isCheck = widget.isHide ?? false;
     isHowPhysical = widget.isHowPhysical ?? false;
@@ -391,6 +393,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         // Type of Company dropdown
                         CustomDropdown(
                           title: 'Type of Company',
+                          selectedValue: selectedValue,
                           callBack: (v) {
                             companyId = v;
                             setState(() {});
@@ -466,7 +469,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {
-                            widget.callBack?.call(false, "", "",false);
+                            widget.callBack?.call(false, "", "",false,"");
                             Navigator.pop(context, false);
                           },
                           style: OutlinedButton.styleFrom(
@@ -486,7 +489,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         child: ElevatedButton(
                           onPressed: () {
                             widget.callBack?.call(
-                                isCheck, companyId, companyNameController.text,isHowPhysical);
+                                isCheck, companyId, companyNameController.text,isHowPhysical,selectedValue);
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
@@ -513,17 +516,26 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
 
 class CustomDropdown extends StatefulWidget {
   final String title;
+   String? selectedValue;
   Function? callBack;
   List<DataCompany>? companyList; // List to hold parsed data
 
   CustomDropdown(
-      {super.key, required this.title, this.companyList, this.callBack});
+      {super.key, required this.title, this.companyList, this.callBack,this.selectedValue});
 
   @override
   _CustomDropdownState createState() => _CustomDropdownState();
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
+  @override
+  initState(){
+    if(widget.selectedValue != null && widget.selectedValue!.isNotEmpty){
+      _selectedValue = widget.selectedValue ?? "";
+    }
+    super.initState();
+  }
+
   String? _selectedValue;
   String? _selectedId;
 
