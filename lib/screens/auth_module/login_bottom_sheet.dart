@@ -24,6 +24,7 @@ import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../home_module/first_card.dart';
+import '../profile_mosule/profile_new.dart';
 import 'profile_bottom_sheet.dart';
 
 class LoginBottomSheetContent extends StatefulWidget {
@@ -237,6 +238,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         Utility.hideLoader(context);
         var dto = state.data as LoginDto;
         Storage().saveToken(dto.token.toString());
+        Storage().setIsIndivisual(dto != null && dto?.user?.role != Role.individual.name);
         if(dto.user != null) {
           Storage().saveUserToPreferences(dto.user!);
         }

@@ -45,7 +45,7 @@ class _ContactHomeScreenState extends State<ContactHomeScreen> {
 bool isHideF = false;
 bool isPhisical = false;
 bool isInTeam = false;
-  String companyTypeIdF = "",companyNameF = "";
+  String companyTypeIdF = "",companyNameF = "",cardTypeId ="";
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ bool isInTeam = false;
     _favCubit = ContactCubit(ContactRepository());
     apiTagList();
     apiGetRecentContact();
-    apiGetMyContact("", false,"");
+    apiGetMyContact("", false,"","");
     // TODO: implement initState
     super.initState();
   }
@@ -96,7 +96,7 @@ bool isInTeam = false;
     _addContactCubit?.apiAddContact(data);
   }
 
-  Future<void> apiGetMyContact(key, hide,companyTypeId) async {
+  Future<void> apiGetMyContact(key, hide,companyTypeId,cardTypeId) async {
     List<int> tagId = [];
     tags.forEach(
           (element) {
@@ -111,6 +111,7 @@ bool isInTeam = false;
       "tag_ids": contactTagIdsString,
       "company_type_id": companyTypeId ?? "",
       "contact_status": hide == true ? "2" : "1",
+      "card_type_id":cardTypeId,
       "favorite": ""
     };
     _getMyContact?.apiGetMyContact(data);
@@ -188,7 +189,7 @@ bool isInTeam = false;
               var dto = state.data as UtilityDto;
               Utility()
                   .showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact("", false,"");
+              apiGetMyContact("", false,"","");
             }
             setState(() {});
           },
@@ -281,7 +282,7 @@ bool isInTeam = false;
               var dto = state.data as UtilityDto;
               Utility().showFlushBar(
                   context: context, message: dto.message ?? "");
-              apiGetMyContact("", false,"");
+              apiGetMyContact("", false,"","");
             }
             setState(() {});
           },
@@ -380,7 +381,7 @@ bool isInTeam = false;
                         child: TextField(
                           controller: controller,
                           onChanged: (v) {
-                            apiGetMyContact(v, false,"");
+                            apiGetMyContact(v, false,"","");
                           },
                           decoration: InputDecoration(
                             hintText: 'Search...',
@@ -410,7 +411,7 @@ bool isInTeam = false;
                       isHowPhysical: isPhisical,
                       companyTypeId: companyTypeIdF,
                       isHide: isHideF,
-                      callBack: (isHide, companyTypeId,companyName,isPhisica) {
+                      callBack: (isHide, companyTypeId,companyName,isPhisica,) {
                       isHideF = isHide;
                       isPhisical = isPhisica;
                       companyTypeIdF = companyTypeId;
@@ -418,7 +419,7 @@ bool isInTeam = false;
                       setState(() {
 
                       });
-                      apiGetMyContact(controller.text, isHide,companyTypeId);
+                      apiGetMyContact(controller.text, isHide,companyTypeId,isPhisica == true?"2":"");
                     },),
                   );
                 },
@@ -473,7 +474,7 @@ bool isInTeam = false;
                     setState(() {
 
                     });
-                    apiGetMyContact(controller.text, false,"");
+                    apiGetMyContact(controller.text, false,"","");
                   },
                   child: Container(
                     padding:
@@ -542,7 +543,7 @@ bool isInTeam = false;
                   ),
                 ).then((value) {
                   if (value == 2) {
-                    apiGetMyContact(controller.text, false,"");
+                    apiGetMyContact(controller.text, false,"","");
                   }
                 },);
               },
@@ -642,7 +643,7 @@ bool isInTeam = false;
                     ),
                   ).then((value) {
                     if (value == 2) {
-                      apiGetMyContact(controller.text, false,"");
+                      apiGetMyContact(controller.text, false,"","");
                     }
                   },);
                   // Add your onTap functionality here if needed

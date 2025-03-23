@@ -1087,7 +1087,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                                               .toString(),
                                         ),
                                       ),
-                                    );
+                                    ).then((value) {
+                                      apiGetMyMeetings();
+                                    },);
                                   },
                                   title: Text(
                                     meeting.title ?? '',
@@ -1198,9 +1200,11 @@ class _ContactDetailsState extends State<ContactDetails> {
           onTap: (){
               Clipboard.setData(ClipboardData(text:link ));
               Navigator.pop(context);
+              Utility().showFlushBar(context: context, message: "copy to clipboard");
           },
           child: Container(
-              height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),child: Text("Copy $title")))
+              height: 20,width: MediaQuery.of(context).size.width -30,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),child: Text("Copy $title"))),
+       SizedBox(height: 20,)
     ]));});}
 }
 
