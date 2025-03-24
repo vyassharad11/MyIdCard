@@ -99,16 +99,16 @@ class _ContactDetailsState extends State<ContactDetails> {
   setLink() {
     contactDetailsDatum?.cardSocials?.forEach((action) {
       if (action.socialName == "Twitter") {
-        twitterLink = action.socialLink.toString();
+        twitterLink = action.socialUrl.toString()+action.socialLink.toString();
       }
       if (action.socialName == "Instagram") {
-        instaLink = action.socialLink.toString();
+        instaLink = action.socialUrl.toString()+action.socialLink.toString();
       }
       if (action.socialName == "Facebook") {
-        faceBookLink = action.socialLink.toString();
+        faceBookLink = action.socialUrl.toString()+action.socialLink.toString();
       }
       if (action.socialName == "LinkedIn") {
-        linkdinLink = action.socialLink.toString();
+        linkdinLink = action.socialUrl.toString()+action.socialLink.toString();
       }
     });
   }
@@ -122,7 +122,12 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   Future<void> apiGetMyMeetings() async {
-    meetingCubit?.apiGetMyMeetings(widget.contactId);
+    Map<String, dynamic> data = {
+      "key_word": "",
+      "page": 1,
+      "contact_id":widget.contactId.toString()
+    };
+    meetingCubit?.apiGetMyMeetings(data);
   }
 
   Future<void> dialNumber(String phoneNumber) async {

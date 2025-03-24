@@ -173,6 +173,8 @@ class CardSocial {
   int? contactId;
   int? socialId;
   String? socialLink;
+  String? socialUrl;
+
   String? socialName;
   String? socialLogo;
 
@@ -181,6 +183,7 @@ class CardSocial {
     this.contactId,
     this.socialId,
     this.socialLink,
+    this.socialUrl,
     this.socialName,
     this.socialLogo,
   });
@@ -190,6 +193,7 @@ class CardSocial {
     contactId: json["contact_id"],
     socialId: json["social_id"],
     socialLink: json["social_link"],
+    socialUrl: json["social_url"],
     socialName: json["social_name"],
     socialLogo: json["social_logo"],
   );
@@ -199,6 +203,7 @@ class CardSocial {
     "contact_id": contactId,
     "social_id": socialId,
     "social_link": socialLink,
+    "social_url": socialUrl,
     "social_name": socialName,
     "social_logo": socialLogo,
   };

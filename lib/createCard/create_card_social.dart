@@ -426,48 +426,48 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                       // iconAlignment: IconAlignment.start,
-                        onPressed: () {
-                          // Handle button press
-                          setState(() {
-                            _controllers.add(TextEditingController());
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.white, // Background color
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // Rounded corners
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add, // Left side icon
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 6,
-                            ), // Space between icon and text
-                            Text(
-                              "Add New", // Right side text
-                              style: TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.symmetric(horizontal: 20),
+                  //   child: SizedBox(
+                  //     height: 45,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     child: ElevatedButton(
+                  //      // iconAlignment: IconAlignment.start,
+                  //       onPressed: () {
+                  //         // Handle button press
+                  //         setState(() {
+                  //           _controllers.add(TextEditingController());
+                  //         });
+                  //       },
+                  //       style: ElevatedButton.styleFrom(
+                  //         elevation: 0,
+                  //         backgroundColor: Colors.white, // Background color
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius:
+                  //               BorderRadius.circular(30), // Rounded corners
+                  //         ),
+                  //       ),
+                  //       child: const Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: [
+                  //           Icon(
+                  //             Icons.add, // Left side icon
+                  //             color: Colors.black,
+                  //             size: 20,
+                  //           ),
+                  //           SizedBox(
+                  //             width: 6,
+                  //           ), // Space between icon and text
+                  //           Text(
+                  //             "Add New", // Right side text
+                  //             style: TextStyle(color: Colors.black, fontSize: 16),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 8
                   ),

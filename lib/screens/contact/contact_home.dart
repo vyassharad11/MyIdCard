@@ -111,9 +111,10 @@ bool isInTeam = false;
       "tag_ids": contactTagIdsString,
       "company_type_id": companyTypeId ?? "",
       "contact_status": hide == true ? "2" : "1",
-      "card_type_id":cardTypeId,
+      "contact_type_id":cardTypeId,
       "favorite": ""
     };
+
     _getMyContact?.apiGetMyContact(data);
   }
 

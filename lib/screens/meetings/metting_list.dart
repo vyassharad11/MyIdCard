@@ -44,6 +44,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
     Map<String, dynamic> data = {
       "key_word": "",
       "page": 1,
+      "contact_id":widget.contactId.toString()
     };
     meetingCubit?.apiGetMyMeetings(data);
   }
