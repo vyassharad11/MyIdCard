@@ -74,56 +74,85 @@ class _AddTagInContactBottomSheetState
         ),
       ],
       child: Container(
+        // constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 100,minHeight: 20),
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20))),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(),
-                Text("Add Tag",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 14),),
-                InkWell(
-                    onTap: (){
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context); // Close the bottom sheet
+                  },
+                ),
+                Text("Tags",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 14),),
+                SizedBox(
+                  height: 40,
+                  width: 85,
+                  child: ElevatedButton(
+                    // iconAlignment: IconAlignment.start,
+                    onPressed: () {
                       Utility.showLoader(context);
                       apiAddTag();
                     },
-                    child: Text("Add",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 14),))
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // Background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(30), // Rounded corners
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Add", // Right side text
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
-            SizedBox(height: 20,),
-            Expanded(
-              child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(widget.tags[index].tag ?? ""),
-                        Container(
-                          height: 20,
-                          width: 20,
-                          child: Checkbox(
-                            value: widget.tags[index].isCheck ?? false,
-                            onChanged: (value) {
-                              widget.tags[index].isCheck =
-                                  widget.tags[index].isCheck == true ? false : true;
-                              setState(() {});
-                            },
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(
-                      height: 10,
-                    );
-                  },
-                  itemCount: widget.tags.length),
-            ),
+            SizedBox(height: 36,),
+            ListView.separated(
+              shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, index) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(widget.tags[index].tag ?? ""),
+                      Container(
+                        height: 20,
+                        width: 20,
+                        child: Checkbox(
+                          value: widget.tags[index].isCheck ?? false,
+                          onChanged: (value) {
+                            widget.tags[index].isCheck =
+                                widget.tags[index].isCheck == true ? false : true;
+                            setState(() {});
+                          },
+                        ),
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: 10,
+                  );
+                },
+                itemCount: widget.tags.length),
           ],
         ),
       ),

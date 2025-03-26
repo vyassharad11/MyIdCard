@@ -71,10 +71,14 @@ bool isInTeam = false;
   @override
   dispose() {
     _getTagCubit?.close();
+    _getMyContact?.close();
     deleteContactCubit?.close();
     _addContactCubit?.close();
     _getRecentContact?.close();
+    _favCubit?.close();
     _addContactCubit = null;
+    _getMyContact = null;
+    _favCubit = null;
     _getTagCubit = null;
     _getRecentContact = null;
     deleteContactCubit = null;
@@ -727,7 +731,7 @@ bool isInTeam = false;
               showModalBottomSheet(
                 context: context,
                 useSafeArea: true,
-                isScrollControlled: true,
+                isScrollControlled: false,
                 constraints: BoxConstraints(maxHeight: MediaQuery
                     .of(context)
                     .size

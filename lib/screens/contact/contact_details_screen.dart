@@ -71,9 +71,13 @@ class _ContactDetailsState extends State<ContactDetails> {
   dispose() {
     _contactDetailCubit?.close();
     deleteContactCubit?.close();
+    _updateNotesCubit?.close();
     meetingCubit?.close();
+    _favCubit?.close();
     _contactDetailCubit = null;
+    _updateNotesCubit = null;
     deleteContactCubit = null;
+    _favCubit = null;
     meetingCubit = null;
     super.dispose();
   }
@@ -201,7 +205,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               showModalBottomSheet(
                 context: context,
                 useSafeArea: true,
-                isScrollControlled: true,
+                isScrollControlled: false,
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height - 100,
                     minHeight: 10),
@@ -236,7 +240,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           const Divider(
             color: Colors.grey,
           ),
-          ListTile(
+          if(widget.isPhysicalContact == false)      ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 12),
             title: const Text(
               'Export to Contacts App',
@@ -465,7 +469,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
           actions: [
-           if(widget.isPhysicalContact == false) IconButton(
+          IconButton(
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
