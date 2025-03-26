@@ -122,6 +122,7 @@ class ContactDatum {
   int? favorite;
   List<dynamic>? documents;
   List<Social>? socials;
+  List<ContactTag>? contactTags;
 
   ContactDatum({
     this.id,
@@ -149,6 +150,7 @@ class ContactDatum {
     this.favorite,
     this.documents,
     this.socials,
+    this.contactTags,
   });
 
   factory ContactDatum.fromJson(Map<String, dynamic> json) => ContactDatum(
@@ -177,6 +179,7 @@ class ContactDatum {
     favorite: json["favorite"],
     documents: json["documents"] == null ? [] : List<dynamic>.from(json["documents"]!.map((x) => x)),
     socials: json["socials"] == null ? [] : List<Social>.from(json["socials"]!.map((x) => Social.fromJson(x))),
+    contactTags: json["contactTags"] == null ? [] : List<ContactTag>.from(json["contactTags"]!.map((x) => ContactTag.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -205,6 +208,32 @@ class ContactDatum {
     "favorite": favorite,
     "documents": documents == null ? [] : List<dynamic>.from(documents!.map((x) => x)),
     "socials": socials == null ? [] : List<dynamic>.from(socials!.map((x) => x.toJson())),
+    "contactTags": contactTags == null ? [] : List<dynamic>.from(contactTags!.map((x) => x.toJson())),
+  };
+}
+
+
+class ContactTag {
+  int? id;
+  int? contactId;
+  int? contactTagId;
+
+  ContactTag({
+    this.id,
+    this.contactId,
+    this.contactTagId,
+  });
+
+  factory ContactTag.fromJson(Map<String, dynamic> json) => ContactTag(
+    id: json["id"],
+    contactId: json["contact_id"],
+    contactTagId: json["contact_tag_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "contact_id": contactId,
+    "contact_tag_id": contactTagId,
   };
 }
 

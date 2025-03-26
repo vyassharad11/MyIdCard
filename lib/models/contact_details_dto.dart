@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'my_contact_model.dart';
+
 ContactDetailsDto contactDetailsDtoFromJson(String str) => ContactDetailsDto.fromJson(json.decode(str));
 
 String contactDetailsDtoToJson(ContactDetailsDto data) => json.encode(data.toJson());
@@ -58,6 +60,7 @@ class DataContact {
   String? qrCode;
   List<CardDocument>? cardDocuments;
   List<CardSocial>? cardSocials;
+  List<ContactTag>? contactTags;
 
   DataContact({
     this.id,
@@ -85,6 +88,7 @@ class DataContact {
     this.notes,
     this.cardDocuments,
     this.cardSocials,
+    this.contactTags,
   });
 
   factory DataContact.fromJson(Map<String, dynamic> json) => DataContact(
@@ -113,6 +117,7 @@ class DataContact {
     notes: json["notes"],
     cardDocuments: json["cardDocuments"] == null ? [] : List<CardDocument>.from(json["cardDocuments"]!.map((x) => CardDocument.fromJson(x))),
     cardSocials: json["cardSocials"] == null ? [] : List<CardSocial>.from(json["cardSocials"]!.map((x) => CardSocial.fromJson(x))),
+    contactTags: json["contactTags"] == null ? [] : List<ContactTag>.from(json["contactTags"]!.map((x) => ContactTag.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -141,6 +146,7 @@ class DataContact {
     "notes": notes,
     "cardDocuments": cardDocuments == null ? [] : List<dynamic>.from(cardDocuments!.map((x) => x.toJson())),
     "cardSocials": cardSocials == null ? [] : List<dynamic>.from(cardSocials!.map((x) => x.toJson())),
+    "contactTags": contactTags == null ? [] : List<dynamic>.from(contactTags!.map((x) => x.toJson())),
   };
 }
 

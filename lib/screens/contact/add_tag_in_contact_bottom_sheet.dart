@@ -5,15 +5,17 @@ import 'package:my_di_card/data/repository/contact_repository.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 
 import '../../bloc/api_resp_state.dart';
+import '../../models/my_contact_model.dart';
 import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
 
 class AddTagInContactBottomSheet extends StatefulWidget {
   List<TagDatum> tags;
   final int contactId;
+  List<ContactTag> contactTags;
 
   AddTagInContactBottomSheet(
-      {super.key, required this.tags, required this.contactId});
+      {super.key, required this.tags, required this.contactId,required this.contactTags});
 
   @override
   State<AddTagInContactBottomSheet> createState() =>
@@ -27,6 +29,16 @@ class _AddTagInContactBottomSheetState
   @override
   void initState() {
     contactCubit = ContactCubit(ContactRepository());
+    widget.contactTags.forEach((element) {
+      widget.tags.forEach((element1) {
+        if(element.contactTagId == element1.id){
+            element1.isCheck = true;
+        }
+      },);
+    },);
+    setState(() {
+
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -75,7 +87,7 @@ class _AddTagInContactBottomSheetState
       ],
       child: Container(
         // constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 100,minHeight: 20),
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.only(bottom: 30,top: 16,left: 16,right: 16),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -95,7 +107,7 @@ class _AddTagInContactBottomSheetState
                 Text("Tags",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 14),),
                 SizedBox(
                   height: 40,
-                  width: 85,
+                  width:  widget.contactTags.isNotEmpty ?105:85,
                   child: ElevatedButton(
                     // iconAlignment: IconAlignment.start,
                     onPressed: () {
@@ -109,12 +121,12 @@ class _AddTagInContactBottomSheetState
                         BorderRadius.circular(30), // Rounded corners
                       ),
                     ),
-                    child: const Row(
+                    child:  Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Add", // Right side text
+                          widget.contactTags.isNotEmpty ?"Update":"Add", // Right side text
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],
@@ -149,7 +161,7 @@ class _AddTagInContactBottomSheetState
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(
-                    height: 10,
+                    height: 16,
                   );
                 },
                 itemCount: widget.tags.length),

@@ -31,7 +31,6 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
 
   @override
   void initState() {
-    Utility.showLoader(context);
     getCardTagCubit = ContactCubit(ContactRepository());
     addCardTagCubit = ContactCubit(ContactRepository());
     deleteCardTag = ContactCubit(ContactRepository());
@@ -63,6 +62,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
   }
 
   Future<void> apiTagList(keyword) async {
+    // Utility.showLoader(context);
     Map<String, dynamic> data = {
       "key_word": keyword.toString(),
       "page": 1,
@@ -72,7 +72,7 @@ class _TagManagementScreenState extends State<TagManagementScreen> {
 
 
 Future<void> apiGetCardTag(keyword) async {
-    Map<String, dynamic> data = {
+  Map<String, dynamic> data = {
       "key_word": keyword.toString(),
       "page": 1,
     };
