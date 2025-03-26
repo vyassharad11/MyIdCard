@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -123,63 +124,63 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
       },
       child: Scaffold(
         body: _pages.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 8,
-          backgroundColor: Colors.white,
-          iconSize: 30,
+        bottomNavigationBar: SizedBox(
+          height: Platform.isAndroid ? 464:6,
+          child: BottomNavigationBar(
+            elevation: 8,
+            backgroundColor: Colors.white,
+            iconSize: 30,
 
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                _selectedIndex == 0 ? Icons.home : Icons.home_outlined,
-                color: _selectedIndex == 0 ? Colors.blue : Colors.grey,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(
+                  _selectedIndex == 0 ? Icons.home : Icons.home_outlined,
+                  color: _selectedIndex == 0 ? Colors.blue : Colors.grey,
+                ),
+                label: '',
               ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                "assets/images/users-03.png",
-                height: 24,
-                width: 24,
-                color: _selectedIndex == 1 ? Colors.blue : Colors.grey,
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  "assets/images/users-03.png",
+                  height: 24,
+                  width: 24,
+                  color: _selectedIndex == 1 ? Colors.blue : Colors.grey,
+                ),
+                label: '',
               ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Image.asset(
+              BottomNavigationBarItem(
+                icon: Image.asset(
                   "assets/images/credit-card-02.png",
                   height: 24,
                   width: 24,
                   color: _selectedIndex == 2 ? Colors.blue : Colors.grey,
                 ),
+                label: '',
               ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                "assets/images/Frame 415 (1).png",
-                height: 28,
-                width: 28,
-                color: _selectedIndex == 3 ? Colors.blue : Colors.grey,
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  "assets/images/Frame 415 (1).png",
+                  height: 28,
+                  width: 28,
+                  color: _selectedIndex == 3 ? Colors.blue : Colors.grey,
+                ),
+                label: '',
               ),
-              label: '',
-            ),
-          ],
+            ],
 
-          currentIndex: _selectedIndex,
-          // Set the current selected index
-          selectedItemColor: Colors.blue,
-          // Selected item color
-          unselectedItemColor: Colors.grey,
-          // Unselected item color
-          showUnselectedLabels: true,
-          // Show labels for unselected items
-          onTap: _onItemTapped,
-          // Handle item tap
-          type: BottomNavigationBarType
-              .fixed, // Use fixed type for more than 3 items
+            currentIndex: _selectedIndex,
+            // Set the current selected index
+            selectedItemColor: Colors.blue,
+            // Selected item color
+            unselectedItemColor: Colors.grey,
+            // Unselected item color
+            showUnselectedLabels: true,
+            // Show labels for unselected items
+            onTap: _onItemTapped,
+            // Handle item tap
+            type: BottomNavigationBarType
+                .fixed, // Use fixed type for more than 3 items
+          ),
         ),
       ),
     );
@@ -641,7 +642,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                 );                                                },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors
+                                                backgroundColor: cardList!.data![index].cardStyle != null ?Color(int.parse('0xFF${cardList!.data![index].cardStyle!}')):Colors
                                                     .blue, // Background color
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:

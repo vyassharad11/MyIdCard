@@ -56,7 +56,13 @@ class _MyAppState extends State<MyApp> {
       closeOnBackButton: true,
       overlayHeight: MediaQuery.sizeOf(context).height / 2,
       useBackButtonInterceptor: true,
-
+      overlayWidgetBuilder: (progress) {
+        return Center(
+          child:  CircularProgressIndicator(
+               color: Colors.blue,
+          ),
+        );
+      },
       useDefaultLoading: true,
       
       overlayColor: Colors.transparent,
