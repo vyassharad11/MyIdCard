@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
+import '../../createCard/create_card_final_preview.dart';
 import '../../data/repository/contact_repository.dart';
 import '../../models/contact_details_dto.dart';
 import '../../models/my_contact_model.dart';
@@ -197,8 +198,8 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Add tag',
+            title:  Text(
+              contactDetailsDatum != null && contactDetailsDatum!.contactTags != null &&  contactDetailsDatum!.contactTags!.isNotEmpty ? "Remove tag":'Add tag',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -216,8 +217,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                 builder: (context) => AddTagInContactBottomSheet(
                   tags: widget.tags,
                   contactId: widget.contactIdForMeeting ?? 0,
+                  contactTags: contactDetailsDatum?.contactTags ?? [],
                 ),
-              );
+              ).whenComplete(() {
+                getContactDetail();
+                },);
 
               // Add functionality here
             },
@@ -566,7 +570,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -602,11 +606,21 @@ class _ContactDetailsState extends State<ContactDetails> {
                                               ),
                                             ),
                                           ),
-                                          Icon(
+                                          IconButton(onPressed: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (builder) => CreateCardFinalPreview(
+                                                  cardId: contactDetailsDatum?.cardId.toString() ?? "",
+isOtherCard: true,
+                                                ),
+                                              ),
+                                            );
+                                          }, icon: Icon(
                                             Icons.info_rounded,
                                             color: Colors.white,
                                             size: 20,
-                                          )
+                                          ))
                                         ],
                                       ),
                                     ],
@@ -916,9 +930,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          launchUrlGet(
-                                            linkdinLink ?? "",
-                                          );
+                                          // launchUrlGet(
+                                          //   linkdinLink ?? "",
+                                          // );
                                         },
                                         child: Image.asset(
                                           "assets/images/other.png",
@@ -1249,14 +1263,14 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 borderRadius: BorderRadius.circular(8)),
                             child: Text(title))),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     Divider(
                       height: 1,
                       color: Colors.grey,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     InkWell(
                         onTap: () {
@@ -1273,7 +1287,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 borderRadius: BorderRadius.circular(8)),
                             child: Text("Copy $title"))),
                     SizedBox(
-                      height: 20,
+                      height: 30,
                     )
                   ]));
         });

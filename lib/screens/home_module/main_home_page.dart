@@ -125,12 +125,12 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
       child: Scaffold(
         body: _pages.elementAt(_selectedIndex),
         bottomNavigationBar: SizedBox(
-          height: Platform.isAndroid ? 64:64,
+          height: 68,
           child: BottomNavigationBar(
             elevation: 8,
             backgroundColor: Colors.white,
             iconSize: 30,
-
+            selectedFontSize: 0,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(

@@ -23,7 +23,8 @@ import 'create_card_user_screen.dart';
 
 class CreateCardFinalPreview extends StatefulWidget {
   final String cardId;
-  const CreateCardFinalPreview({super.key, required this.cardId});
+  final bool isOtherCard;
+  const CreateCardFinalPreview({super.key, required this.cardId,this.isOtherCard = false});
 
   @override
   State<CreateCardFinalPreview> createState() => _CreateCardFinalPreviewState();
@@ -154,7 +155,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              GestureDetector(
+                          if(widget.isOtherCard == false)    GestureDetector(
                                   onTap: () {
                                     Navigator.push(
                                         context,
@@ -764,7 +765,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
+                      if(widget.isOtherCard == false)      Row(
                         children: [
                           Expanded(
                             child: Container(

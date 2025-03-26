@@ -550,6 +550,11 @@ bool isInTeam = false;
                   ),
                 ).then((value) {
                   if (value == 2) {
+                    tags.forEach((element) {
+                      element.isCheck = false;setState(() {
+
+                      });
+                    },);
                     apiGetMyContact(controller.text, false,"","");
                   }
                 },);
@@ -722,8 +727,8 @@ bool isInTeam = false;
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Add tag',
+            title:  Text(
+              myContactList[index].contactTags != null && myContactList[index].contactTags!.isNotEmpty  ? "Remove tag":'Add tag',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -743,9 +748,18 @@ bool isInTeam = false;
                 builder: (context) =>
                     AddTagInContactBottomSheet(
                       tags: tags,
+                      contactTags:
+                      myContactList[index].contactTags ?? [],
                       contactId: contactIdForMeeting ?? 0,
                     ),
-              );
+              ).then((value) {
+                tags.forEach((element) {
+                  element.isCheck = false;setState(() {
+
+                  });
+                },);
+                apiGetMyContact("", false,"","");
+              },);
 
               // Add functionality here
             },
