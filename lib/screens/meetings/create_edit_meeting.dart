@@ -280,7 +280,13 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
                             Utility.showLoader(context);
                            widget.isEdit == false ? apiCreateMeeting():apiUpdateMeeting();
                         } else {
-                          Fluttertoast.showToast(msg: "Please enter all field");
+                          Fluttertoast.showToast(msg:
+                          titleController.text.isEmpty?
+                          "Please enter title":
+                          purposeController.text.isEmpty?
+                          "Please enter purpose":
+                          "Please select date"
+                          );
                         }
                       // Handle button press
                     },

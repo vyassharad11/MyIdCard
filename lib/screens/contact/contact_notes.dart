@@ -475,12 +475,15 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                             Navigator.pop(context, false);
                           },
                           style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(30),),
                             foregroundColor: Colors.black,
                             side: const BorderSide(
                                 color: Colors.black38), // Border color
                           ),
                           child: const Text(
-                            'Cancel',
+                            'Clear',
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
@@ -495,6 +498,9 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+          borderRadius:
+          BorderRadius.circular(30), ),
                             backgroundColor:
                                 Colors.blueAccent, // Background color
                           ),

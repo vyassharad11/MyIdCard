@@ -205,7 +205,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Share your new ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.black),),
+                Flexible(child: Text("Share the card of your contact",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),overflow: TextOverflow.fade,)),
                 InkWell(
                   onTap: (){
                     Navigator.pop(context);
@@ -224,8 +224,6 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                 ),
               ],
             ),
-            Text("Digital Business Card ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),),
-            Text("with people ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),),
             SizedBox(height: 24,),
             Center(
               child: CachedNetworkImage(

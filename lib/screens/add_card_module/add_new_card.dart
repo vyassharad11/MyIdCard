@@ -134,7 +134,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CardDetails(cardData: cardList?.data?[index] ,),));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => CardDetails(cardData: cardList?.data?[index] ,),));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6.0),

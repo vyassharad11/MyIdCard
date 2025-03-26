@@ -71,10 +71,14 @@ bool isInTeam = false;
   @override
   dispose() {
     _getTagCubit?.close();
+    _getMyContact?.close();
     deleteContactCubit?.close();
     _addContactCubit?.close();
     _getRecentContact?.close();
+    _favCubit?.close();
     _addContactCubit = null;
+    _getMyContact = null;
+    _favCubit = null;
     _getTagCubit = null;
     _getRecentContact = null;
     deleteContactCubit = null;
@@ -143,7 +147,7 @@ bool isInTeam = false;
   }
 
 
-  int selectIndec = 0;
+  int selectIndec = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -660,7 +664,7 @@ bool isInTeam = false;
   }
 
   Widget tabBarView() {
-    return selectIndec == 0 || selectIndec == 1 ? tabBarTile("Tags",
+    return  selectIndec == 1 ? tabBarTile("Tags",
         true) :
     TeamMemberContact();
   }
@@ -727,7 +731,7 @@ bool isInTeam = false;
               showModalBottomSheet(
                 context: context,
                 useSafeArea: true,
-                isScrollControlled: true,
+                isScrollControlled: false,
                 constraints: BoxConstraints(maxHeight: MediaQuery
                     .of(context)
                     .size
@@ -809,53 +813,66 @@ bool isInTeam = false;
   }
 
   Widget tabBarWidget(BuildContext context) {
-    return Center(
-      child: CustomSlidingSegmentedControl<int>(
-        initialValue: 1,
-        fixedWidth: 150,
-        innerPadding: const EdgeInsets.all(3),
-        children: {
-          1: Text(
-            'Private Contact',
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight:
-                selectIndec == 1 ? FontWeight.bold : FontWeight.normal),
-          ),
-          2: Text('Team Contacts',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight:
-                  selectIndec == 2 ? FontWeight.bold : FontWeight.normal)),
-        },
-        decoration: BoxDecoration(
-          color: CupertinoColors.lightBackgroundGray,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        thumbDecoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.3),
-              blurRadius: 4.0,
-              spreadRadius: 1.0,
-              offset: const Offset(
-                0.0,
-                2.0,
+    return Container(
+      width: double.infinity,
+      height: 50,
+      margin: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 2),
+      decoration: BoxDecoration(
+        color: Color(0xFFEEF0F3),
+        borderRadius: BorderRadius.circular(12)
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: (){
+                  setState(() {
+                    selectIndec = 1;
+                  });
+              },
+              child: Container(
+                height: 46,
+                decoration: BoxDecoration(
+                    color: selectIndec == 1 ? Colors.white :Colors.transparent,
+                    borderRadius: BorderRadius.circular(12)
+                ),
+                child: Center(
+                  child: Text( 'Private Contact',
+                    style: TextStyle(
+                        color: selectIndec == 1 ? Colors.black : Color(0xFF949494),
+                        fontWeight:
+                        selectIndec == 1 ? FontWeight.bold : FontWeight.normal)),
+                )
               ),
             ),
-          ],
-        ),
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.linear,
-        onValueChanged: (v) {
-          if(isInTeam) {
-            setState(() {
-            selectIndec = v;
-          });
-          }
-        },
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: (){
+                if(isInTeam) {
+                  setState(() {
+                    selectIndec = 2;
+                  });
+                }
+              },
+              child: Container(
+                height: 46,
+                decoration: BoxDecoration(
+                    color: selectIndec == 2 ? Colors.white :Colors.transparent,
+                    borderRadius: BorderRadius.circular(12)
+                ),
+                child: Center(
+                  child: Text( 'Team Contacts',
+                    style: TextStyle(
+                        color: selectIndec == 2 ? Colors.black : Color(0xFF949494),
+                        fontWeight:
+                        selectIndec == 2 ? FontWeight.bold : FontWeight.normal)),
+                )
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

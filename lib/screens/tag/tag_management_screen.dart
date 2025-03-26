@@ -422,7 +422,7 @@ Future<void> apiGetCardTag(keyword) async {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              width: 100,
+                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width -40),
                               padding: const EdgeInsets.all(
                                   10), // Add padding inside the container
 
@@ -486,9 +486,9 @@ Future<void> apiGetCardTag(keyword) async {
       ),
     );
   }
-  TextEditingController controller = TextEditingController();
 
   void _showBottomSheet(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -594,36 +594,36 @@ Future<void> apiGetCardTag(keyword) async {
               ),
 
               const SizedBox(height: 16),
-              const Text(
-                "Add Contacts",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 10),
-              // Search Input Field
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200], // Light white color
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: const Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search...',
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // const Text(
+              //   "Add Contacts",
+              //   style: TextStyle(
+              //       color: Colors.black,
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w500),
+              // ),
+              // const SizedBox(height: 10),
+              // // Search Input Field
+              // Container(
+              //   height: 50,
+              //   decoration: BoxDecoration(
+              //     color: Colors.grey[200], // Light white color
+              //     borderRadius: BorderRadius.circular(30),
+              //   ),
+              //   padding: const EdgeInsets.symmetric(horizontal: 16),
+              //   child: const Row(
+              //     children: [
+              //       Expanded(
+              //         child: TextField(
+              //           decoration: InputDecoration(
+              //             hintText: 'Search...',
+              //             border: InputBorder.none,
+              //             hintStyle: TextStyle(color: Colors.grey),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // const Spacer(),
               // // Contact Information
@@ -769,6 +769,7 @@ Future<void> apiGetCardTag(keyword) async {
                         onTapOutside: (v){
                           Utility.hideKeyboard(context);
                         },
+                        inputFormatters: [],
                         onChanged: (v) {
                           setState(() {});
                         },
@@ -784,36 +785,36 @@ Future<void> apiGetCardTag(keyword) async {
               ),
 
               const SizedBox(height: 16),
-              const Text(
-                "Add Contacts",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 10),
-              // Search Input Field
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200], // Light white color
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: const Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search...',
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // const Text(
+              //   "Add Contacts",
+              //   style: TextStyle(
+              //       color: Colors.black,
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w500),
+              // ),
+              // const SizedBox(height: 10),
+              // // Search Input Field
+              // Container(
+              //   height: 50,
+              //   decoration: BoxDecoration(
+              //     color: Colors.grey[200], // Light white color
+              //     borderRadius: BorderRadius.circular(30),
+              //   ),
+              //   padding: const EdgeInsets.symmetric(horizontal: 16),
+              //   child: const Row(
+              //     children: [
+              //       Expanded(
+              //         child: TextField(
+              //           decoration: InputDecoration(
+              //             hintText: 'Search...',
+              //             border: InputBorder.none,
+              //             hintStyle: TextStyle(color: Colors.grey),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // const Spacer(),
               // // Contact Information
