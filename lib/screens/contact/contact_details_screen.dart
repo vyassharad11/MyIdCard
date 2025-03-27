@@ -792,7 +792,7 @@ isOtherCard: true,
                                               "Phone",
                                               contactDetailsDatum?.phoneNo
                                                       .toString() ??
-                                                  "");
+                                                  "",false);
                                         },
                                         child: Image.asset(
                                           "assets/images/call.png",
@@ -813,7 +813,7 @@ isOtherCard: true,
                                               "Send Email",
                                               contactDetailsDatum?.workEmail
                                                       .toString() ??
-                                                  "");
+                                                  "",false);
                                         },
                                         child: Image.asset(
                                           "assets/images/mail.png",
@@ -831,7 +831,7 @@ isOtherCard: true,
                                               "Send Message",
                                               contactDetailsDatum?.phoneNo
                                                       .toString() ??
-                                                  "");
+                                                  "",false);
                                         },
                                         child: Image.asset(
                                           "assets/images/message.png",
@@ -850,7 +850,7 @@ isOtherCard: true,
                                               contactDetailsDatum
                                                       ?.companyAddress
                                                       .toString() ??
-                                                  "");
+                                                  "",true);
                                         },
                                         child: Image.asset(
                                           "assets/images/location.png",
@@ -1227,7 +1227,7 @@ isOtherCard: true,
     );
   }
 
-  void _showBottomSheet(BuildContext context, Function callBack, title, link) {
+  void _showBottomSheet(BuildContext context, Function callBack, title, link, isLocation,) {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.white,
@@ -1242,7 +1242,7 @@ isOtherCard: true,
                   left: 16,
                   top: 16,
                   bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Column(
+              child: !isLocation? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -1255,13 +1255,13 @@ isOtherCard: true,
                           callBack.call();
                           Navigator.pop(context);
                         },
-                        child: Container(
+                        child:!isLocation? Container(
                             height: 20,
                             width: MediaQuery.of(context).size.width - 30,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8)),
-                            child: Text(title))),
+                            child: Text(title)):null),
                     SizedBox(
                       height: 20,
                     ),
@@ -1288,6 +1288,37 @@ isOtherCard: true,
                             child: Text("Copy $title"))),
                     SizedBox(
                       height: 30,
+                    )
+                  ]): Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Add Tag Input Field
+                    SizedBox(
+                      height: 20,
+                    ),
+
+
+                    InkWell(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: link));
+                          Navigator.pop(context);
+                          Utility().showFlushBar(
+                              context: context, message: "copy into clipboard");
+                        },
+                        child: Container(
+                            height: 20,
+                            width: MediaQuery.of(context).size.width - 30,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text("Copy $title"))),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    SizedBox(
+                      height: 40,
                     )
                   ]));
         });

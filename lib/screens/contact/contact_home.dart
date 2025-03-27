@@ -327,7 +327,9 @@ bool isInTeam = false;
                               Navigator.pop(context);
                               context.loaderOverlay.show();
                               apiAddContact(v);
-                            },),
+                            },callBack1: (){
+                              apiGetMyContact("", false,"","");
+                            },)
                       );
                     },
                     child: const SizedBox(

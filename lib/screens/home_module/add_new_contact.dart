@@ -22,7 +22,9 @@ import '../../utils/widgets/network.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 class ScanQrCodeBottomSheet extends StatefulWidget {
   Function callBack;
-   ScanQrCodeBottomSheet({super.key,required this.callBack});
+  Function? callBack1;
+
+  ScanQrCodeBottomSheet({super.key,required this.callBack,this.callBack1});
 
   @override
   State<ScanQrCodeBottomSheet> createState() => _ScanQrCodeBottomSheetState();
@@ -57,6 +59,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
         } else if (state is ResponseStateSuccess) {
           var dto = state.data as UtilityDto;
           Utility.hideLoader(context);
+          widget.callBack1?.call();
           Navigator.pop(context);
           Utility().showFlushBar(context: context, message: dto.message ?? "");
         }
