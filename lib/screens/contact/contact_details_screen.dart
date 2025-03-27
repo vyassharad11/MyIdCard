@@ -802,13 +802,19 @@ isOtherCard: true,
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          _showBottomSheet(context, () {
-                                            openGmail(
-                                                body: "",
-                                                email: contactDetailsDatum
-                                                        ?.workEmail ??
-                                                    "",
-                                                subject: "");
+                                          _showBottomSheet(context, () async {
+                                            // await launch("${contactDetailsDatum
+                                            //     ?.workEmail ??
+                                            //     ""}?subject=&body=");
+                                            await launch("mailto:${contactDetailsDatum
+                                                ?.workEmail ??
+                                                ""}?subject=&body=");
+                                            // openGmail(
+                                            //     body: "",
+                                            //     email: contactDetailsDatum
+                                            //             ?.workEmail ??
+                                            //         "",
+                                            //     subject: "");
                                           },
                                               "Send Email",
                                               contactDetailsDatum?.workEmail
@@ -823,10 +829,14 @@ isOtherCard: true,
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          _showBottomSheet(context, () {
-                                            openSMS(contactDetailsDatum?.phoneNo
-                                                    .toString() ??
-                                                "");
+                                          _showBottomSheet(context, () async {
+                                            // openSMS(contactDetailsDatum?.phoneNo
+                                            //         .toString() ??
+                                            //     "");
+
+                                            await launch("sms:${contactDetailsDatum?.phoneNo
+                                                .toString() ??
+                                                ""}?body=");
                                           },
                                               "Send Message",
                                               contactDetailsDatum?.phoneNo
