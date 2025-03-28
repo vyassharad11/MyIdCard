@@ -795,7 +795,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
           toolbarColor: Colors.blueGrey,
           toolbarWidgetColor: Colors.white,
           showCropGrid: false,
-          cropStyle: CropStyle.circle,
+          cropStyle: CropStyle.rectangle,
           aspectRatioPresets: [
             CropAspectRatioPreset.original,
             CropAspectRatioPreset.square,
@@ -804,7 +804,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
         ),
         IOSUiSettings(
           title: 'MyDicard Croper',
-          cropStyle: CropStyle.circle,
+          cropStyle: CropStyle.rectangle,
           aspectRatioPresets: [
             CropAspectRatioPreset.original,
             CropAspectRatioPreset.square,
