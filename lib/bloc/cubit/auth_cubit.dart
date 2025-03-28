@@ -4,6 +4,7 @@ import 'package:retrofit/retrofit.dart';
 import '../../data/network/server_error.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../models/login_dto.dart';
+import '../../models/signup_dto.dart';
 import '../../models/user_data_model.dart';
 import '../../models/utility_dto.dart';
 import '../api_resp_state.dart';
@@ -133,10 +134,10 @@ class AuthCubit extends Cubit<ResponseState> {
   Future<void> completeProfileApiNew(body,) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;
-    LoginDto dto;
+    SignupDto dto;
     try {
       httpResponse = await authRepository.completeProfileApiNew(body,);
-      dto = httpResponse.data as LoginDto;
+      dto = httpResponse.data as SignupDto;
       // await AppSession().storeAccessToken(dto.token ?? "");
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

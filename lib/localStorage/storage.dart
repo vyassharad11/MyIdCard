@@ -11,6 +11,7 @@ class Storage {
     // Convert User object to JSON
     final String userJson = jsonEncode(user.toJson());
     // Save JSON string to SharedPreferences
+    print("userDataSave>>>>>${user.firstName}");
     await prefs.setString('user', userJson);
   }
 

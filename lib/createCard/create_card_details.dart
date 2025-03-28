@@ -379,6 +379,7 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                       child: ElevatedButton(
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
+                          Utility.showLoader(context);
                           submitData(_selectedImage ?? File(""));
 
                           // Handle button press

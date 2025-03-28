@@ -22,6 +22,7 @@ import '../../bloc/cubit/auth_cubit.dart';
 import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/login_dto.dart';
+import '../../models/signup_dto.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/image_cropo.dart';
 import '../../utils/url_lancher.dart';
@@ -127,9 +128,9 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
            Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
         } else if (state is ResponseStateSuccess) {
            Utility.hideLoader(context);
-          var dto = state.data as LoginDto;
-          if(dto.user != null) {
-            Storage().saveUserToPreferences(dto.user!);
+          var dto = state.data as SignupDto;
+          if(dto.data != null) {
+            Storage().saveUserToPreferences(dto.data as User);
           }
           if(teamCode.text.isNotEmpty) {
             Navigator.push(context,
@@ -140,7 +141,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                 CupertinoPageRoute(builder: (builder) =>
                     SubscriptionScreen(isFromCreateProfile: true,)));
           }
-           Utility().showFlushBar(context: context, message: dto.message ?? "");
+           Utility().showFlushBar(context: context, message: "Profile Complete Successfully");
         }
         setState(() {});
       },

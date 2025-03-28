@@ -388,6 +388,7 @@ class _CreateCardScreenDetailsOtherState
                       child: ElevatedButton(
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
+                          Utility.showLoader(context);
                           submitData();
                           // Handle button press
                         },
@@ -458,7 +459,6 @@ class _CreateCardScreenDetailsOtherState
 
   Future<void> submitData() async {
     var token = await Storage().getToken();
-    Utility.showLoader(context);
     String apiUrl =
         "${Network.baseUrl}card/update/${widget.cardId}"; // Replace with your API endpoint
 
