@@ -480,6 +480,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
                           if(linkedin.text.isNotEmpty || twitter.text.isNotEmpty || facebook.text.isNotEmpty || instagram.text.isNotEmpty) {
+                            Utility.showLoader(context);
                             submitSocialLinks();
                           }else{
                             Utility().showFlushBar(context: context, message: "Please enter atleast one social link",isError: true);

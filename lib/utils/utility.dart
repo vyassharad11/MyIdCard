@@ -124,7 +124,7 @@ class Utility {
   }
 
   static void showLoader(BuildContext context) {
-    if (!context.loaderOverlay.visible) {
+    if (context.mounted && !context.loaderOverlay.visible) {
       context.loaderOverlay.show();
     }
   }

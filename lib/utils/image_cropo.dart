@@ -12,7 +12,7 @@ Future<CroppedFile> imageCropperFunc(filePath) async {
         toolbarColor: Colors.blueGrey,
         toolbarWidgetColor: Colors.white,
         showCropGrid: true,
-        cropStyle: CropStyle.circle,
+        cropStyle: CropStyle.rectangle,
         aspectRatioPresets: [
           CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
@@ -21,7 +21,7 @@ Future<CroppedFile> imageCropperFunc(filePath) async {
       ),
       IOSUiSettings(
         title: 'MyDiCard Cropper',
-        cropStyle: CropStyle.circle,
+        cropStyle: CropStyle.rectangle,
         aspectRatioPresets: [
           CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,

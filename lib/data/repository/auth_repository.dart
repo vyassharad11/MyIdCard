@@ -5,6 +5,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../localStorage/storage.dart';
 import '../../models/login_dto.dart';
+import '../../models/signup_dto.dart';
 import '../../models/user_data_model.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/widgets/network.dart';
@@ -84,7 +85,7 @@ class AuthRepository {
     var dto = await Network.baseUrl;
     return _apiClient.completeProfileApi(dto,body,token2,);
   }
-  Future<HttpResponse<LoginDto>> completeProfileApiNew(body,) async {
+  Future<HttpResponse<SignupDto>> completeProfileApiNew(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
@@ -104,9 +105,9 @@ class AuthRepository {
 
     // if (response.statusCode == 200) {
     print(" responce "+ json.encode(response.data));
-    late LoginDto _value;
+    late SignupDto _value;
     try {
-      _value = LoginDto.fromJson(response.data!);
+      _value = SignupDto.fromJson(response.data!);
     } on Object catch (e, s) {
       // errorLogger?.logError(e, s,);
       print(" error "+ json.encode(response.statusMessage));
