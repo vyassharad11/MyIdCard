@@ -106,12 +106,6 @@ class Utility {
     }
   }
 
-  static void hideLoader(BuildContext context) {
-    if (context.loaderOverlay
-        .visible /* && context.loaderOverlay.overlayWidgetType == ReconnectingOverlay*/) {
-      context.loaderOverlay.hide();
-    }
-  }
 
 
   static hideKeyboard(BuildContext context) {
@@ -123,12 +117,16 @@ class Utility {
     }
   }
 
-  static void showLoader(BuildContext context) {
-    if (context.mounted && !context.loaderOverlay.visible) {
-      context.loaderOverlay.show();
+  static void hideLoader(BuildContext context) {
+    if (context.loaderOverlay
+        .visible /* && context.loaderOverlay.overlayWidgetType == ReconnectingOverlay*/) {
+      navigatorKey.currentState?.overlay?.context.loaderOverlay.hide();
     }
   }
 
+  static void showLoader(BuildContext context) {
+    navigatorKey.currentState?.overlay?.context.loaderOverlay.show();
+  }
   static Flushbar? flushBar;
 
 
