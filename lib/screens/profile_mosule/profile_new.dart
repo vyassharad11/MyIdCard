@@ -38,6 +38,8 @@ import '../tag/tag_management_screen.dart';
 import '../team/edit_team.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'edit_profile.dart';
+
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -288,6 +290,9 @@ class _AccountPageState extends State<AccountPage> {
               var dto = state.data as User;
               user = dto;
               Storage().setIsIndivisual(user != null && user?.role != Role.individual.name);
+              if(user != null) {
+                Storage().saveUserToPreferences(user!);
+              }
               if (user != null && user?.role != Role.individual.name) {
                 getTeamMembers();
                 fetchTeamData();
@@ -372,7 +377,18 @@ class _AccountPageState extends State<AccountPage> {
                 isLoad ? _getShimmerView() :
                 // Profile Picture and Name
                 Column(
-                  children: [ user != null && user!.avatar != null
+                  children: [
+                    InkWell(
+
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(user: user,),)).then((value) {
+                            if(value != null && value == 2) {
+                              fetchUserData();
+                            }
+                          },);
+                        },
+                        child:
+                    user != null && user!.avatar != null
                       ? ClipRRect(
                     borderRadius: BorderRadius.circular(
                         10000.0),
@@ -410,7 +426,7 @@ class _AccountPageState extends State<AccountPage> {
                             size: 15, color: Colors.white),
                       ),
                     ),
-                  ),
+                  )),
 
                     const SizedBox(height: 10),
                     Text(

@@ -650,7 +650,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
             preferredCameraDevice: CameraDevice.front,
           );
           if (pickedFile != null) {
-            final value = await imageCropperFunc(pickedFile.path);
+            final value = await imageCropperFunc(pickedFile.path,isCircle: true);
             setState(() {
               _selectedImage = File(value.path);
             });

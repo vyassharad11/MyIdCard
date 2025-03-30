@@ -422,7 +422,7 @@ Future<void> apiGetCardTag(keyword) async {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width -40),
+                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width -70,minWidth: 30),
                               padding: const EdgeInsets.all(
                                   10), // Add padding inside the container
 
@@ -434,7 +434,7 @@ Future<void> apiGetCardTag(keyword) async {
                               ),
                               child: Text(
                                 tags[index].tag ?? "",
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 style: const TextStyle(
                                   color: Colors.black, // Text color
                                   fontSize: 14,
