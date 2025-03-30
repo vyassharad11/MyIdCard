@@ -118,68 +118,6 @@ class _EditProfileState extends State<EditProfile> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Text(
-                      "Personal Details",
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   Center(
                     child: GestureDetector(
                       onTap: () {
@@ -405,6 +343,7 @@ class _EditProfileState extends State<EditProfile> {
       if (widget.user != null) {
         setState(() {
           firstname.text = widget.user?.firstName ?? '';
+          // selectedLanguag = widget.user?.la ?? '';
           lastName.text = widget.user?.lastName ?? '';
           _selectedImage =
           widget.user?.avatar != null ? File(widget.user?.avatar) : null;
@@ -436,13 +375,15 @@ class _EditProfileState extends State<EditProfile> {
         ,
         'first_name': firstName.toString().trim(),
         'last_name': lastName.toString(),
-        'team_code': teamCode.toString()
+        'team_code': teamCode.toString(),
+        'language_id': selectedLanguage == 'French'?"2":"1"
       });
     }else{
       data = FormData.fromMap({
         'first_name': firstName.toString().trim(),
         'last_name': lastName.toString(),
-        'team_code': teamCode.toString()
+        'team_code': teamCode.toString(),
+        'language_id': selectedLanguage == 'French'?"2":"1"
       });
     }
 
@@ -481,7 +422,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-
+String selectedLanguage = "";
   Widget bottomSheetDropdown(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -517,7 +458,7 @@ class _EditProfileState extends State<EditProfile> {
                     setState(() {
                       // _selectedValue = 'English';
                       // _selectedLanguageId = '1';
-                      // title = 'English';
+                      selectedLanguage = 'English';
                     });
                     Navigator.pop(context);
                   },
@@ -531,7 +472,7 @@ class _EditProfileState extends State<EditProfile> {
                     setState(() {
                       // _selectedValue = 'French';
                       // _selectedLanguageId = '2';
-                      // title = 'French';
+                      selectedLanguage = 'French';
                     });
                     Navigator.pop(context);
                   },
@@ -552,8 +493,8 @@ class _EditProfileState extends State<EditProfile> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("",
-              // title.isEmpty ? "Select Language" : title,
+            Text(
+              selectedLanguage.isEmpty ? "Select Language" : selectedLanguage,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 16,

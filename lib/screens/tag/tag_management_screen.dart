@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_di_card/bloc/cubit/contact_cubit.dart';
 import 'package:my_di_card/data/repository/contact_repository.dart';
@@ -435,6 +436,8 @@ Future<void> apiGetCardTag(keyword) async {
                               child: Text(
                                 tags[index].tag ?? "",
                                 textAlign: TextAlign.start,
+                                overflow: TextOverflow.fade,
+                                maxLines: 2,
                                 style: const TextStyle(
                                   color: Colors.black, // Text color
                                   fontSize: 14,
@@ -493,7 +496,7 @@ Future<void> apiGetCardTag(keyword) async {
       context: context,
       backgroundColor: Colors.white,
       isScrollControlled: true,
-      constraints: BoxConstraints(minHeight: 300,maxHeight: MediaQuery.of(context).size.height-200),
+      constraints: BoxConstraints(minHeight: 200,maxHeight: MediaQuery.of(context).size.height-200),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -512,11 +515,14 @@ Future<void> apiGetCardTag(keyword) async {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // const Text(
-                  //   "",
-                  //   style: TextStyle(color: Colors.black, fontSize: 14),
-                  // ),
-                  SizedBox(height: 10,),
+                  const Text(
+                    "Add Tag",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Spacer(),
                   SizedBox(
                     height: 25,
                     width: 100,
@@ -554,13 +560,6 @@ Future<void> apiGetCardTag(keyword) async {
                       icon: const Icon(Icons.clear_rounded))
                 ],
               ),
-              const Text(
-                "Add Tag",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -571,29 +570,26 @@ Future<void> apiGetCardTag(keyword) async {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: controller,
-                        onTapOutside: (v){
-                          Utility.hideKeyboard(context);
-                        },
-                        onChanged: (v) {
-                          setState(() {});
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Add Tag',
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                child: TextField(
+                  controller: controller,
+                  onTapOutside: (v){
+                    Utility.hideKeyboard(context);
+                  },
+                  onChanged: (v) {
+                    setState(() {});
+                  },
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(30),
                   ],
+                  decoration: InputDecoration(
+                    hintText: 'Add Tag',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              // const SizedBox(height: 16),
               // const Text(
               //   "Add Contacts",
               //   style: TextStyle(
@@ -679,7 +675,7 @@ Future<void> apiGetCardTag(keyword) async {
       context: context,
       backgroundColor: Colors.white,
       isScrollControlled: true,
-      constraints: BoxConstraints(minHeight: 300,maxHeight: MediaQuery.of(context).size.height-200),
+      constraints: BoxConstraints(minHeight: 200,maxHeight: MediaQuery.of(context).size.height-200),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -698,11 +694,15 @@ Future<void> apiGetCardTag(keyword) async {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // const Text(
-                  //   "",
-                  //   style: TextStyle(color: Colors.black, fontSize: 14),
-                  // ),
-                  SizedBox(height: 10,),
+                  const Text(
+                    "Edit Tag",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  // SizedBox(w: 10,),
+                  Spacer(),
                   SizedBox(
                     height: 25,
                     width: 100,
@@ -744,13 +744,6 @@ Future<void> apiGetCardTag(keyword) async {
                       icon: const Icon(Icons.clear_rounded))
                 ],
               ),
-              const Text(
-                "Edit Tag",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -761,30 +754,26 @@ Future<void> apiGetCardTag(keyword) async {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: controller,
-                        onTapOutside: (v){
-                          Utility.hideKeyboard(context);
-                        },
-                        inputFormatters: [],
-                        onChanged: (v) {
-                          setState(() {});
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Edit Tag',
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                child: TextField(
+                  controller: controller,
+                  onTapOutside: (v){
+                    Utility.hideKeyboard(context);
+                  },
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(30),
                   ],
+                  onChanged: (v) {
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Edit Tag',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              // const SizedBox(height: 16),
               // const Text(
               //   "Add Contacts",
               //   style: TextStyle(

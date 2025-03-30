@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/screens/setting_module/terms_policy_page.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../language/app_localizations.dart';
+import '../../main.dart';
 import '../../utils/utility.dart';
 import '../auth_module/welcome_screen.dart';
+import '../subscription_module/subscription_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -63,7 +67,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   Center(
                     child: Text(
-                      "Settings",
+                      AppLocalizations.of(context)
+                          .translate('Settings'),
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w600),
@@ -78,7 +83,6 @@ class _SettingScreenState extends State<SettingScreen> {
               const SizedBox(
                 height: 25,
               ),
-
               const SizedBox(height: 14),
               // Delete Account (Separate Widget)
               Card(
@@ -102,6 +106,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     size: 20,
                   ),
                   onTap: () {
+                    bottomSheetDropdown(context);
                     // Handle delete account action
                   },
                 ),
@@ -129,8 +134,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     size: 20,
                   ),
                   onTap: () {
-                    // Handle delete account action
-                  },
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionScreen(),));
+                 },
                 ),
               ),
               const SizedBox(height: 14),
@@ -156,6 +161,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     size: 20,
                   ),
                   onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TermsPolicyPage(title: 'Privacy Policy',),));
                     // Handle delete account action
                   },
                 ),
@@ -183,6 +189,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     size: 20,
                   ),
                   onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TermsPolicyPage(title: 'Terms and Conditions',),));
                     // Handle delete account action
                   },
                 ),
@@ -266,6 +273,68 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         ),
       ),
+    );
+  }
+
+
+  String selectedLanguage = "";
+   bottomSheetDropdown(BuildContext context) {
+    return    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      ),
+      builder: (BuildContext context) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Select any language',
+                style: const TextStyle(color: Colors.black, fontSize: 18),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ListTile(
+              title: Text(
+                'English',
+                style: const TextStyle(color: Colors.black),
+              ),
+              onTap: () {
+                setState(() {
+                  // _selectedValue = 'English';
+                  // _selectedLanguageId = '1';
+                  selectedLanguage = 'English';
+                  MyApp.setLocale(context, Locale('en'));
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text(
+                'French',
+                style: const TextStyle(color: Colors.black),
+              ),
+              onTap: () {
+                setState(() {
+                  // _selectedValue = 'French';
+                  // _selectedLanguageId = '2';
+                  selectedLanguage = 'French';
+                  MyApp.setLocale(context, Locale('fr'));
+                });
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
