@@ -119,13 +119,13 @@ class Utility {
 
   static void hideLoader(BuildContext context) {
     if (context.loaderOverlay
-        .visible /* && context.loaderOverlay.overlayWidgetType == ReconnectingOverlay*/ ) {
-      navigatorKey.currentState?.overlay?.context.loaderOverlay.hide();
+        .visible /* && context.loaderOverlay.overlayWidgetType == ReconnectingOverlay*/) {
+      context.loaderOverlay.hide();
     }
   }
 
   static void showLoader(BuildContext context) {
-    navigatorKey.currentState?.overlay?.context.loaderOverlay.show();
+    context.loaderOverlay.show();
   }
   static Flushbar? flushBar;
 

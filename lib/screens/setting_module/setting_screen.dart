@@ -351,7 +351,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 // Perform delete action here
                 Utility.showLoader(context);
 
-                clearSharedPreferences();
+                clearSharedPreferences(context);
                 // Close the dialog
               },
               child: Text('Logout'),
@@ -395,7 +395,7 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  Future<void> clearSharedPreferences() async {
+  Future<void> clearSharedPreferences(context) async {
 
     bool success = await prefs.clear(); // Clears all key-value pairs
     if (success) {

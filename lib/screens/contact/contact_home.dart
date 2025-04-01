@@ -204,13 +204,9 @@ bool isInTeam = false;
           listener: (context, state) {
             if (state is ResponseStateLoading) {} else
             if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as TagModel;
               tags = dto.data?.data ?? [];
             }
@@ -317,7 +313,7 @@ bool isInTeam = false;
                         builder: (context) =>
                             ScanQrCodeBottomSheet(callBack: (v) {
                               Navigator.pop(context);
-                              context.loaderOverlay.show();
+                              Utility.showLoader(context);
                               apiAddContact(v);
                             },callBack1: (){
                               apiGetMyContact("", false,"","");

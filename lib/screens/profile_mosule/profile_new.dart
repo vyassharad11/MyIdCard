@@ -234,19 +234,15 @@ class _AccountPageState extends State<AccountPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {} else
             if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
               Utility().showFlushBar(
                   context: context, message: state.message, isError: true);
             } else if (state is ResponseStateNoInternet) {
               Utility().showFlushBar(
                   context: context, message: state.message, isError: true);
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
               Utility().showFlushBar(
                   context: context, message: state.errorMessage, isError: true);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as TeamMembersResponse;
               teamMember.clear();
               teamMember.addAll(dto.data.members);
@@ -259,13 +255,9 @@ class _AccountPageState extends State<AccountPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {} else
             if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as TeamResponse;
               teamResponse = dto;
             }
@@ -278,15 +270,11 @@ class _AccountPageState extends State<AccountPage> {
             if (state is ResponseStateLoading) {} else
             if (state is ResponseStateEmpty) {
               isLoad = false;
-              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               isLoad = false;
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
               isLoad = false;
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as User;
               user = dto;
               Storage().setIsIndivisual(user != null && user?.role != Role.individual.name);
@@ -308,13 +296,9 @@ class _AccountPageState extends State<AccountPage> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {} else
             if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as MyGroupListModel;
               myGroupList = dto.data ?? [];
             }

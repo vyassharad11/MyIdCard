@@ -125,16 +125,12 @@ Future<void> apiGetCardTag(keyword) async {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
               isLoad = false;
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
               isLoad = false;
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
               isLoad = false;
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as TagModel;
               tags = dto.data?.data ?? [];
               isLoad = false;
@@ -147,16 +143,12 @@ Future<void> apiGetCardTag(keyword) async {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
               isLoad = false;
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
               isLoad = false;
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
               isLoad = false;
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as TagModel;
               tags = dto.data?.data ?? [];
               isLoad = false;
@@ -445,7 +437,7 @@ Future<void> apiGetCardTag(keyword) async {
                                     editNottomSheet(context,index);
                                     break;
                                   case 'Delete':
-                                    _deleteTag(index);
+                                    _deleteTag(index,context);
                                     break;
                                 }
                               },
@@ -891,7 +883,7 @@ Future<void> apiGetCardTag(keyword) async {
   }
 
   // Function to handle deleting a tag
-  void _deleteTag(int index) {
+  void _deleteTag(int index,context) {
     setState(() {
       selectedIndex = index;
       if(widget.isFromCard == false) {
