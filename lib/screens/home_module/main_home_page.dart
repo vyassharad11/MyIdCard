@@ -259,15 +259,11 @@ class _HomeScreenState extends State<HomeScreen> {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
               isLoadFav = false;
-              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
               isLoadFav = false;
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
               isLoadFav = false;
-              Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as MyContactDto;
               myContactList = [];
               myContactList = dto.data?.data ?? [];
@@ -765,7 +761,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           builder: (context) => ScanQrCodeBottomSheet(
                             callBack: (v) {Navigator.pop(context);
-                            context.loaderOverlay.show();
+                            Utility.showLoader(context);
                             apiAddContact(v);},
                           ),
                         );

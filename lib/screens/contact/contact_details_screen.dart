@@ -120,6 +120,7 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   Future<void> getContactDetail() async {
+    Utility.showLoader(context);
     _contactDetailCubit?.apiGetContactDetail(widget.contactId);
   }
 
@@ -446,13 +447,9 @@ class _ContactDetailsState extends State<ContactDetails> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as MyMeetingModel;
               meetings = [];
               meetings = dto.data?.data ?? [];

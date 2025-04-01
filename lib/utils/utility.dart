@@ -119,7 +119,7 @@ class Utility {
 
   static void hideLoader(BuildContext context) {
     if (context.loaderOverlay
-        .visible /* && context.loaderOverlay.overlayWidgetType == ReconnectingOverlay*/) {
+        .visible /* && context.loaderOverlay.overlayWidgetType == ReconnectingOverlay*/ ) {
       navigatorKey.currentState?.overlay?.context.loaderOverlay.hide();
     }
   }

@@ -81,7 +81,6 @@ Future<void> apiGetCardTag(keyword) async {
   }
 
   Future<void> apiAddTag(tagName) async {
-    Utility.showLoader(context);
     Map<String, dynamic> data = {
       "tag": tagName,
     };
@@ -89,7 +88,6 @@ Future<void> apiGetCardTag(keyword) async {
   }
 
   Future<void> apAddCardTag(tagName) async {
-    Utility.showLoader(context);
     Map<String, dynamic> data = {
       "tag": tagName,
     };
@@ -97,7 +95,6 @@ Future<void> apiGetCardTag(keyword) async {
   }
 
   Future<void> apiUpdateTag({tagName, id}) async {
-    Utility.showLoader(context);
     Map<String, dynamic> data = {
       "tag": tagName,
     };
@@ -105,7 +102,6 @@ Future<void> apiGetCardTag(keyword) async {
   }
 
   Future<void> apiUpdateCardTag({tagName, id}) async {
-    Utility.showLoader(context);
     Map<String, dynamic> data = {
       "tag": tagName,
     };
@@ -113,12 +109,10 @@ Future<void> apiGetCardTag(keyword) async {
   }
 
   Future<void> apiDeleteTag({id}) async {
-    Utility.showLoader(context);
     deleteTag?.apiDeleteTag(id);
   }
 
   Future<void> apiDeleteCardTag({id}) async {
-    Utility.showLoader(context);
     deleteCardTag?.apiDeleteCardTag(id);
   }
 
@@ -540,8 +534,10 @@ Future<void> apiGetCardTag(keyword) async {
                         if(controller.text.isNotEmpty) {
                           Navigator.pop(context);
                           if(widget.isFromCard == false) {
+                            Utility.showLoader(context);
                             apiAddTag(controller.text);
                           }else{
+                            Utility.showLoader(context);
                             apAddCardTag(controller.text);
                           }
                         }
@@ -723,9 +719,11 @@ Future<void> apiGetCardTag(keyword) async {
                         });
                         Navigator.pop(context);
                         if(widget.isFromCard == false) {
+                          Utility.showLoader(context);
                           apiUpdateTag(
                               tagName: controller.text, id: tags[index].id.toString());
                         }else{
+                          Utility.showLoader(context);
                           apiUpdateCardTag(
                               tagName: controller.text, id: tags[index].id.toString());
                         }
@@ -897,8 +895,10 @@ Future<void> apiGetCardTag(keyword) async {
     setState(() {
       selectedIndex = index;
       if(widget.isFromCard == false) {
+        Utility.showLoader(context);
         apiDeleteTag(id: tags[index].id.toString());
       }else{
+        Utility.showLoader(context);
         apiDeleteCardTag(id: tags[index].id.toString());
       }
     });
