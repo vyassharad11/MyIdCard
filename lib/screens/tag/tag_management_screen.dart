@@ -8,6 +8,7 @@ import 'package:my_di_card/data/repository/group_repository.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/contact/contact_notes.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
@@ -394,7 +395,8 @@ Future<void> apiGetCardTag(keyword) async {
                 SizedBox(
                   height: 12,
                 ),
-             if(tags.isNotEmpty && isLoad == false)   Expanded(
+                isLoad ? _getShimmerView():
+             tags.isNotEmpty && isLoad == false ?   Expanded(
                   child: ListView.separated(
                     separatorBuilder: (context, index) => Divider(
                       thickness: 1,
@@ -466,8 +468,8 @@ Future<void> apiGetCardTag(keyword) async {
                       // );
                     },
                   ),
-                ),
-                if(tags.isEmpty && isLoad == false)Expanded(child: Center(child: Text("No tag found")))
+                ):
+               Expanded(child: Center(child: Text("No tag found")))
               ],
             ),
           ),
@@ -476,6 +478,42 @@ Future<void> apiGetCardTag(keyword) async {
     );
   }
 
+  Widget _getShimmerView() {
+    return Shimmer.fromColors(
+        baseColor: Color(0x72231532),
+        highlightColor: Color(0xFF463B5C), child:  ListView.separated(
+      shrinkWrap: true,physics: NeverScrollableScrollPhysics(),
+          separatorBuilder: (context, index) => Divider(
+            thickness: 1,
+            color: Colors.grey.withOpacity(0.7),
+          ),
+          itemCount: 8,
+          itemBuilder: (context, index) {
+            return Container(
+              margin:
+              EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 150,height: 30,
+                    padding: const EdgeInsets.all(
+                        10), // Add padding inside the container
+
+                    decoration: BoxDecoration(
+                      color:  Color(0x72231532),
+                      // Light background color
+                      borderRadius:
+                      BorderRadius.circular(8), // Rounded corners
+                    ),
+                  ),
+                  Container(height: 30,width: 30,decoration: BoxDecoration(color:  Color(0x72231532),borderRadius: BorderRadius.circular(30)),)
+                ],
+              ),
+            );
+          },
+        ));
+  }
   void _showBottomSheet(BuildContext context) {
     TextEditingController controller = TextEditingController();
     showModalBottomSheet(
