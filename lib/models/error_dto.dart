@@ -10,12 +10,14 @@ class ErrorDto {
     this.message,
     this.type,
     this.code,
+    this.errors,
     this.success,
   });
 
   dynamic? message;
   String? type;
   int? code;
+  Errors? errors;
   bool? success;
 
   factory ErrorDto.fromJson(Map<String, dynamic> json) => ErrorDto(
@@ -23,6 +25,7 @@ class ErrorDto {
     type: json["type"],
     code: json["code"],
     success: json["success"],
+    errors: json["errors"] == null ? null : Errors.fromJson(json["errors"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -30,6 +33,23 @@ class ErrorDto {
     "type": type,
     "code": code,
     "success": success,
+    "errors": errors?.toJson(),
+  };
+}
+
+class Errors {
+  List<String>? emailVerificationCode;
+
+  Errors({
+    this.emailVerificationCode,
+  });
+
+  factory Errors.fromJson(Map<String, dynamic> json) => Errors(
+    emailVerificationCode: json["email_verification_code"] == null ? [] : List<String>.from(json["email_verification_code"]!.map((x) => x)),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "email_verification_code": emailVerificationCode == null ? [] : List<dynamic>.from(emailVerificationCode!.map((x) => x)),
   };
 }
 

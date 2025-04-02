@@ -120,6 +120,7 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   Future<void> getContactDetail() async {
+    // Utility.showLoader(context);
     _contactDetailCubit?.apiGetContactDetail(widget.contactId);
   }
 
@@ -406,13 +407,13 @@ class _ContactDetailsState extends State<ContactDetails> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
+              // Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
+              // Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
+              // Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
+              // Utility.hideLoader(context);
               var dto = state.data as ContactDetailsDto;
               contactDetailsDatum = dto.data;
               notesController.text = contactDetailsDatum?.notes ?? "";
@@ -446,13 +447,9 @@ class _ContactDetailsState extends State<ContactDetails> {
           listener: (context, state) {
             if (state is ResponseStateLoading) {
             } else if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
             } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
               var dto = state.data as MyMeetingModel;
               meetings = [];
               meetings = dto.data?.data ?? [];
@@ -475,7 +472,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
           actions: [
-            IconButton(
+         if(contactDetailsDatum != null)   IconButton(
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
@@ -794,11 +791,18 @@ isOtherCard: true,
                                                       .toString() ??
                                                   "",false);
                                         },
-                                        child: Image.asset(
-                                          "assets/images/call.png",
-                                          height: 55,
-                                          width: 45,
-                                        ),
+                                        child:Container(
+                                            height: 45,
+                                            width: 45,
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(45),
+                                            color:  contactDetailsDatum
+                                                ?.cardStyle !=
+                                                null
+                                                ? Color(int.parse(
+                                                '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                                : Colors
+                                                .blue),
+                                            child: Icon(Icons.call,color: Colors.white,)),
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -821,11 +825,18 @@ isOtherCard: true,
                                                       .toString() ??
                                                   "",false);
                                         },
-                                        child: Image.asset(
-                                          "assets/images/mail.png",
-                                          height: 55,
-                                          width: 45,
-                                        ),
+                                        child: Container(
+                                            height: 45,
+                                            width: 45,
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(45),
+                                                color:  contactDetailsDatum
+                                                    ?.cardStyle !=
+                                                    null
+                                                    ? Color(int.parse(
+                                                    '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                                    : Colors
+                                                    .blue),
+                                            child: Icon(Icons.mail_outline_outlined,color: Colors.white,)),
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -843,11 +854,18 @@ isOtherCard: true,
                                                       .toString() ??
                                                   "",false);
                                         },
-                                        child: Image.asset(
-                                          "assets/images/message.png",
-                                          height: 55,
-                                          width: 45,
-                                        ),
+                                        child:  Container(
+                                            height: 45,
+                                            width: 45,
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(45),
+                                                color:  contactDetailsDatum
+                                                    ?.cardStyle !=
+                                                    null
+                                                    ? Color(int.parse(
+                                                    '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                                    : Colors
+                                                    .blue),
+                                          child: Center(child: Image.asset("assets/images/message_ic.png",color: Colors.white,width: 24,height: 24,)),),
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -862,11 +880,18 @@ isOtherCard: true,
                                                       .toString() ??
                                                   "",true);
                                         },
-                                        child: Image.asset(
-                                          "assets/images/location.png",
-                                          height: 55,
-                                          width: 45,
-                                        ),
+                                        child:  Container(
+                                            height: 45,
+                                            width: 45,
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(45),
+                                                color:  contactDetailsDatum
+                                                    ?.cardStyle !=
+                                                    null
+                                                    ? Color(int.parse(
+                                                    '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                                    : Colors
+                                                    .blue),
+                                            child: Icon(Icons.location_on_outlined,color: Colors.white,size: 28,)),
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -876,12 +901,18 @@ isOtherCard: true,
                                                 "",
                                           );
                                         },
-                                        child: Image.asset(
-                                          "assets/images/link.png",
-                                          height: 55,
-                                          width: 45,
-                                        ),
-                                      ),
+                                        child:  Container(
+                                            height: 45,
+                                            width: 45,
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(45),
+                                                color:  contactDetailsDatum
+                                                    ?.cardStyle !=
+                                                    null
+                                                    ? Color(int.parse(
+                                                    '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                                    : Colors
+                                                    .blue),
+                                          child: Center(child: Image.asset("assets/images/link_ic.png",width: 24,height: 24,color: Colors.white,)),),                                      ),
                                     ],
                                   ),
                                   Row(
