@@ -469,7 +469,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
           final XFile? pickedFile = await _picker.pickImage(
               source: source, preferredCameraDevice: CameraDevice.front);
           if (pickedFile != null) {
-            final value = await imageCropperFunc(pickedFile.path);
+            final value = await imageCropperFunc(pickedFile.path,isCircle: true);
             setState(() {
               _selectedImage = File(value.path);
             });

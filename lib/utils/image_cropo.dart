@@ -3,7 +3,7 @@ import 'package:image_cropper/image_cropper.dart';
 
 import '../screens/utils_crop.dart';
 
-Future<CroppedFile> imageCropperFunc(filePath,{bool? isCircle = false}) async {
+Future<CroppedFile>  imageCropperFunc(filePath,{bool? isCircle = false}) async {
   CroppedFile? imageCropper = await ImageCropper().cropImage(
     sourcePath: filePath,
     uiSettings: [

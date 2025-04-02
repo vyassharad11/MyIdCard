@@ -125,7 +125,11 @@ class Utility {
   }
 
   static void showLoader(BuildContext context) {
+    if (context.loaderOverlay.visible)
+      context.loaderOverlay.hide();
+    // First hide any existing overlay
     context.loaderOverlay.show();
+    // context.loaderOverlay.show();
   }
   static Flushbar? flushBar;
 

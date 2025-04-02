@@ -98,8 +98,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: false,
         ),
-        home: LoaderOverlay(
-          child: WelcomePage()),
+        home: WelcomePage(),
         //  home:  BottomNavBarExample(),
       ),
     );
