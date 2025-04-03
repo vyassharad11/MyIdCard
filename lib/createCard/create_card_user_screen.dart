@@ -375,6 +375,8 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
   TextEditingController firstname = TextEditingController();
   TextEditingController lastName = TextEditingController();
 
+String cardImageF = "";
+
   Future<void> fetchEditData() async {
     var token = await Storage().getToken();
     String apiUrl =
@@ -395,6 +397,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
         setState(() {
           firstname.text = getCardModel.data?.firstName ?? "";
           lastName.text = getCardModel.data?.lastName ?? "";
+          cardImageF = getCardModel.data?.cardImage ?? "";
           _selectedLanguageId = getCardModel.data?.languageId?.toString() ?? "";
           if (getCardModel.data?.cardImage != null) {
             debugPrint("${getCardModel.data?.cardImage}");

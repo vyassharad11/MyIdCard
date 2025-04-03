@@ -179,7 +179,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
     //   'phone_no' : workPhone.text.toString().trim(),
     //   'company_logo':fileData.toString()
     // };
-
+    Utility.showLoader(context);
     var data=null;
     if (_selectedImage != null &&
         _selectedImage!.path != "" &&
@@ -719,7 +719,6 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
                           // Handle button press
-                          Utility.showLoader(context);
                           submitData();
                         },
                         style: ElevatedButton.styleFrom(
