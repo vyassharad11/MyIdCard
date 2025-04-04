@@ -310,7 +310,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     await Share.share(
-                      "${Network.shareUrl}${widget.cardData?.id.toString()}",
+                      "${Network.shareUrl}${widget.cardData?.cardId.toString()}",
                       subject: "Share your card",
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );                  },

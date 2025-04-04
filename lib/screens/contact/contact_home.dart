@@ -63,7 +63,7 @@ bool isInTeam = false;
     _favCubit = ContactCubit(ContactRepository());
     apiTagList();
     apiGetRecentContact();
-    apiGetMyContact("", false,"","");
+    apiGetMyContact("", false,"","","");
     // TODO: implement initState
     super.initState();
   }
@@ -100,7 +100,7 @@ bool isInTeam = false;
     _addContactCubit?.apiAddContact(data);
   }
 
-  Future<void> apiGetMyContact(key, hide,companyTypeId,cardTypeId) async {
+  Future<void> apiGetMyContact(key, hide,companyTypeId,cardTypeId,jobTitle) async {
     List<int> tagId = [];
     tags.forEach(
           (element) {
@@ -116,7 +116,8 @@ bool isInTeam = false;
       "company_type_id": companyTypeId ?? "",
       "contact_status": hide == true ? "2" : "1",
       "contact_type_id":cardTypeId,
-      "favorite": ""
+      "favorite": "",
+      "job_title": jobTitle
     };
 
     _getMyContact?.apiGetMyContact(data);
@@ -194,7 +195,7 @@ bool isInTeam = false;
               var dto = state.data as UtilityDto;
               Utility()
                   .showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
             }
             setState(() {});
           },
@@ -275,7 +276,7 @@ bool isInTeam = false;
               var dto = state.data as UtilityDto;
               Utility().showFlushBar(
                   context: context, message: dto.message ?? "");
-              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
             }
             setState(() {});
           },
@@ -316,7 +317,7 @@ bool isInTeam = false;
                               Utility.showLoader(context);
                               apiAddContact(v);
                             },callBack1: (){
-                              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+                              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                             },)
                       );
                     },
@@ -376,7 +377,7 @@ bool isInTeam = false;
                         child: TextField(
                           controller: controller,
                           onChanged: (v) {
-                            apiGetMyContact(v, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+                            apiGetMyContact(v, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                           },
                           decoration: InputDecoration(
                             hintText: 'Search...',
@@ -419,14 +420,14 @@ bool isInTeam = false;
                           setState(() {
 
                           });
-                          apiGetMyContact(controller.text, isHide,companyTypeId,isPhisica == true?"2":"");
+                          apiGetMyContact(controller.text, isHide,companyTypeId,isPhisica == true?"2":"",companyNameF);
                         },),
                       );
                     },
                   ),
                 if(companyNameF.isNotEmpty || isHideF != false || isPhisical != false
                 || companyTypeIdF.isNotEmpty || selectedValueF.isNotEmpty  )  Positioned(
-                    right: 0,left: 0,top: 0,bottom: 0,
+                    right: 10,left: 0,top: 0,bottom: 10,
                     child: Icon(Icons.circle,color: Colors.green,size: 10,))
                 ],
               ),
@@ -480,7 +481,7 @@ bool isInTeam = false;
                     setState(() {
 
                     });
-                    apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+                    apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                   },
                   child: Container(
                     padding:
@@ -554,7 +555,7 @@ bool isInTeam = false;
 
                       });
                     },);
-                    apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+                    apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                   }
                 },);
               },
@@ -654,7 +655,7 @@ bool isInTeam = false;
                     ),
                   ).then((value) {
                     if (value == 2) {
-                      apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+                      apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                     }
                   },);
                   // Add your onTap functionality here if needed
@@ -757,7 +758,7 @@ bool isInTeam = false;
 
                   });
                 },);
-                apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
+                apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
               },);
 
               // Add functionality here
