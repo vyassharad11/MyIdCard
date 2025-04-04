@@ -194,7 +194,7 @@ bool isInTeam = false;
               var dto = state.data as UtilityDto;
               Utility()
                   .showFlushBar(context: context, message: dto.message ?? "");
-              apiGetMyContact("", false,"","");
+              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
             }
             setState(() {});
           },
@@ -275,7 +275,7 @@ bool isInTeam = false;
               var dto = state.data as UtilityDto;
               Utility().showFlushBar(
                   context: context, message: dto.message ?? "");
-              apiGetMyContact("", false,"","");
+              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
             }
             setState(() {});
           },
@@ -316,7 +316,7 @@ bool isInTeam = false;
                               Utility.showLoader(context);
                               apiAddContact(v);
                             },callBack1: (){
-                              apiGetMyContact("", false,"","");
+                              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
                             },)
                       );
                     },
@@ -376,7 +376,7 @@ bool isInTeam = false;
                         child: TextField(
                           controller: controller,
                           onChanged: (v) {
-                            apiGetMyContact(v, false,"","");
+                            apiGetMyContact(v, isHideF,companyTypeIdF,isPhisical == true?"2":"");
                           },
                           decoration: InputDecoration(
                             hintText: 'Search...',
@@ -392,34 +392,43 @@ bool isInTeam = false;
               const SizedBox(
                   width: 10), // Space between search box and filter icon
               // Filter Icon Button
-              IconButton(
-                icon: const Icon(Icons.filter_list, color: Colors.black),
-                onPressed: () {
-                  // Filter button functionality
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor:
-                    Colors.transparent, // To make corners rounded
-                    builder: (context) => FullScreenBottomSheet(
-                      companyName: companyNameF,
-                      isHowPhysical: isPhisical,
-                      selectedValue: selectedValueF,
-                      companyTypeId: companyTypeIdF,
-                      isHide: isHideF,
-                      callBack: (isHide, companyTypeId,companyName,isPhisica,selectedValue) {
-                      isHideF = isHide;
-                      isPhisical = isPhisica;
-                      companyTypeIdF = companyTypeId;
-                      selectedValueF = selectedValue;
-                      companyNameF = companyName;
-                      setState(() {
+              Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.filter_list, color: Colors.black),
+                    onPressed: () {
+                      // Filter button functionality
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        constraints: BoxConstraints(minHeight: 360,maxHeight: MediaQuery.of(context).size.height - 50),
+                        backgroundColor:
+                        Colors.transparent, // To make corners rounded
+                        builder: (context) => FullScreenBottomSheet(
+                          companyName: companyNameF,
+                          isHowPhysical: isPhisical,
+                          selectedValue: selectedValueF,
+                          companyTypeId: companyTypeIdF,
+                          isHide: isHideF,
+                          callBack: (isHide, companyTypeId,companyName,isPhisica,selectedValue) {
+                          isHideF = isHide;
+                          isPhisical = isPhisica;
+                          companyTypeIdF = companyTypeId;
+                          selectedValueF = selectedValue;
+                          companyNameF = companyName;
+                          setState(() {
 
-                      });
-                      apiGetMyContact(controller.text, isHide,companyTypeId,isPhisica == true?"2":"");
-                    },),
-                  );
-                },
+                          });
+                          apiGetMyContact(controller.text, isHide,companyTypeId,isPhisica == true?"2":"");
+                        },),
+                      );
+                    },
+                  ),
+                if(companyNameF.isNotEmpty || isHideF != false || isPhisical != false
+                || companyTypeIdF.isNotEmpty || selectedValueF.isNotEmpty  )  Positioned(
+                    right: 0,left: 0,top: 0,bottom: 0,
+                    child: Icon(Icons.circle,color: Colors.green,size: 10,))
+                ],
               ),
             ],
           ),
@@ -471,7 +480,7 @@ bool isInTeam = false;
                     setState(() {
 
                     });
-                    apiGetMyContact(controller.text, false,"","");
+                    apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
                   },
                   child: Container(
                     padding:
@@ -545,7 +554,7 @@ bool isInTeam = false;
 
                       });
                     },);
-                    apiGetMyContact(controller.text, false,"","");
+                    apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
                   }
                 },);
               },
@@ -645,7 +654,7 @@ bool isInTeam = false;
                     ),
                   ).then((value) {
                     if (value == 2) {
-                      apiGetMyContact(controller.text, false,"","");
+                      apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
                     }
                   },);
                   // Add your onTap functionality here if needed
@@ -718,7 +727,7 @@ bool isInTeam = false;
           ),
           ListTile(
             title:  Text(
-              myContactList[index].contactTags != null && myContactList[index].contactTags!.isNotEmpty  ? "Remove tag":'Add tag',
+              myContactList[index].contactTags != null && myContactList[index].contactTags!.isNotEmpty  ? "Edit tag":'Add tag',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -748,7 +757,7 @@ bool isInTeam = false;
 
                   });
                 },);
-                apiGetMyContact("", false,"","");
+                apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"");
               },);
 
               // Add functionality here

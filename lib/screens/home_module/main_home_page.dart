@@ -46,6 +46,7 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
   StreamSubscription<Uri>? _linkSubscription;
   late AppLinks _appLinks;
   ContactCubit? _addContactCubit;
+  bool isApiStart = false;
 
   @override
   initState(){
@@ -66,7 +67,13 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
 
       if (match != null) {
         String numberString = match.group(0)!;
-        apiAddContact(numberString);
+        if(isApiStart == false) {
+          isApiStart = true;
+          setState(() {
+
+          });
+          apiAddContact(numberString);
+        }
       }
     }, onError: (err) {
     });
@@ -104,13 +111,16 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
         if (state is ResponseStateLoading) {
         } else if (state is ResponseStateEmpty) {
           Utility.hideLoader(context);
+          isApiStart = false;
           Utility().showFlushBar(
               context: context, message: state.message, isError: true);
         } else if (state is ResponseStateNoInternet) {
+          isApiStart = false;
           Utility.hideLoader(context);
           Utility().showFlushBar(
               context: context, message: state.message, isError: true);
         } else if (state is ResponseStateError) {
+          isApiStart = false;
           Utility.hideLoader(context);
           Utility().showFlushBar(
               context: context, message: state.errorMessage, isError: true);
@@ -119,6 +129,7 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
           var dto = state.data as UtilityDto;
           Utility()
               .showFlushBar(context: context, message: dto.message ?? "");
+          isApiStart = false;
         }
         setState(() {});
       },

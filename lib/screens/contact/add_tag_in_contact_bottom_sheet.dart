@@ -104,10 +104,10 @@ class _AddTagInContactBottomSheetState
                     Navigator.pop(context); // Close the bottom sheet
                   },
                 ),
-                Text("Tags",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 14),),
+                Text("Tags",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 16),),
                 SizedBox(
-                  height: 40,
-                  width:  widget.contactTags.isNotEmpty ?105:85,
+                  height: 24,
+                  width:  widget.contactTags.isNotEmpty ?95:85,
                   child: ElevatedButton(
                     // iconAlignment: IconAlignment.start,
                     onPressed: () {
@@ -160,8 +160,10 @@ class _AddTagInContactBottomSheetState
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return SizedBox(
-                    height: 16,
+                  return Container(
+                    height: 1,
+                    color: Colors.grey,
+                    margin: EdgeInsets.symmetric(vertical: 20),
                   );
                 },
                 itemCount: widget.tags.length),

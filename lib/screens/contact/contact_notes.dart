@@ -281,10 +281,18 @@ class _AddContactNotesState extends State<AddContactNotes> {
 class FullScreenBottomSheet extends StatefulWidget {
   bool? isHowPhysical;
   bool? isHide;
-  String? companyTypeId,companyName,selectedValue;
-  Function(bool ishide, String companyTypeId, String companyName,bool isPhysic,String selectedValue)? callBack;
+  String? companyTypeId, companyName, selectedValue;
+  Function(bool ishide, String companyTypeId, String companyName, bool isPhysic,
+      String selectedValue)? callBack;
 
-  FullScreenBottomSheet({super.key, this.callBack,this.isHide,this.companyName,this.companyTypeId,this.isHowPhysical,this.selectedValue});
+  FullScreenBottomSheet(
+      {super.key,
+      this.callBack,
+      this.isHide,
+      this.companyName,
+      this.companyTypeId,
+      this.isHowPhysical,
+      this.selectedValue});
 
   @override
   State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
@@ -308,16 +316,14 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
     super.initState();
   }
 
-  seData(){
+  seData() {
     print("selectedValue${widget.selectedValue}");
     companyId = widget.companyTypeId ?? "";
     selectedValue = widget.selectedValue ?? "";
     companyNameController.text = widget.companyName ?? "";
     isCheck = widget.isHide ?? false;
     isHowPhysical = widget.isHowPhysical ?? false;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   CompanyTypeModel? companyTypeModel;
@@ -329,207 +335,208 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CardCubit, ResponseState>(
-      bloc: _getGetCompanyTypeCubit,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateNoInternet) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateError) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateSuccess) {
-          Utility.hideLoader(context);
-          var dto = state.data as CompanyTypeModel;
-          companyTypeModel = dto;
-          companyList = dto.data ?? [];
-        }
-        setState(() {});
-      },
-      child: DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.9,
-        // Adjust this value to control initial height
-        maxChildSize: 0.9,
-        minChildSize: 0.5,
-        builder: (context, scrollController) {
-          return Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            child: Column(
-              children: [
-                // Top bar with close icon
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Filters',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () {
-                          Navigator.pop(context); // Close the bottom sheet
-                        },
-                      ),
-                    ],
-                  ),
+        bloc: _getGetCompanyTypeCubit,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateNoInternet) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateSuccess) {
+            Utility.hideLoader(context);
+            var dto = state.data as CompanyTypeModel;
+            companyTypeModel = dto;
+            companyList = dto.data ?? [];
+          }
+          setState(() {});
+        },
+        child: Container(
+          constraints: BoxConstraints(minHeight: 360,maxHeight: MediaQuery.of(context).size.height - 50),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Top bar with close icon
+              SizedBox(height: 10,),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric( horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Filters',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 18.0, vertical: 18),
-                    child: ListView(
-                      controller: scrollController,
-                      children: [
-                        // Company dropdown
-                        const SizedBox(height: 10),
-                        const SizedBox(height: 20),
-                        // Type of Company dropdown
-                        CustomDropdown(
-                          title: 'Type of Company',
-                          selectedValue: selectedValue,
-                          callBack: (v,value) {
-                            companyId = v;
-                            selectedValue = value;
-                            setState(() {});
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        // Function dropdown
-                        SizedBox(
-                          height: 45,
-                          child: TextField(
-                            controller: companyNameController,
-                            decoration: InputDecoration(
-                              fillColor: Colors.grey.shade200,
-                              filled: true,
-                              labelText: 'Enter job title',
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 18.0, vertical: 0),
+                child: Column(
+                  children: [
+                    // Company dropdown
+                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
+                    // Type of Company dropdown
+                    CustomDropdown(
+                      title: 'Type of Company',
+                      selectedValue: selectedValue,
+                      callBack: (v, value) {
+                        companyId = v;
+                        selectedValue = value;
+                        setState(() {});
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    // Function dropdown
+                    SizedBox(
+                      height: 45,
+                      child: TextField(
+                        controller: companyNameController,
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey.shade200,
+                          filled: true,
+                          labelText: 'Enter job title',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Text("Show Hidden Contact"),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              child: Checkbox(
-                                value: isCheck ?? false,
-                                onChanged: (value) {
-                                  isCheck = !isCheck;
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                          ],
-                        ), const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Text("Show Physical Contact"),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              child: Checkbox(
-                                value: isHowPhysical ?? false,
-                                onChanged: (value) {
-                                  isHowPhysical = !isHowPhysical;
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                          ],
-                        )
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text("Only Show Hidden Contact"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          height: 20,
+                          width: 20,
+                          child: Checkbox(
+                            value: isCheck ?? false,
+                            onChanged: (value) {
+                              isCheck = !isCheck;
+                              setState(() {});
+                            },
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Outlined Button
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            widget.callBack?.call(false, "", "",false,"");
-                            Navigator.pop(context, false);
-                          },
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(30),),
-                            foregroundColor: Colors.black,
-                            side: const BorderSide(
-                                color: Colors.black38), // Border color
-                          ),
-                          child: const Text(
-                            'Clear',
-                            style: TextStyle(color: Colors.black),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text("Only Show Physical Contact"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          height: 20,
+                          width: 20,
+                          child: Checkbox(
+                            value: isHowPhysical ?? false,
+                            onChanged: (value) {
+                              isHowPhysical = !isHowPhysical;
+                              setState(() {});
+                            },
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10), // Space between buttons
-                      // Filled Button (ElevatedButton)
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            widget.callBack?.call(
-                                isCheck, companyId, companyNameController.text,isHowPhysical,selectedValue);
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-          borderRadius:
-          BorderRadius.circular(30), ),
-                            backgroundColor:
-                                Colors.blueAccent, // Background color
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              // const Spacer(),
+              SizedBox(height: 10,),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Outlined Button
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          widget.callBack?.call(false, "", "", false, "");
+                          Navigator.pop(context, false);
+                        },
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          child: const Text(
-                            'Save',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(
+                              color: Colors.black38), // Border color
+                        ),
+                        child: const Text(
+                          'Clear',
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 10), // Space between buttons
+                    // Filled Button (ElevatedButton)
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          widget.callBack?.call(
+                              isCheck,
+                              companyId,
+                              companyNameController.text,
+                              isHowPhysical,
+                              selectedValue);
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          backgroundColor:
+                              Colors.blueAccent, // Background color
+                        ),
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
+              ),
+            ],
+          ),
+        ));
   }
 }
 
 class CustomDropdown extends StatefulWidget {
   final String title;
-   String? selectedValue;
-  Function(String id,String value)? callBack;
+  String? selectedValue;
+  Function(String id, String value)? callBack;
   List<DataCompany>? companyList; // List to hold parsed data
 
   CustomDropdown(
-      {super.key, required this.title, this.companyList, this.callBack,this.selectedValue});
+      {super.key,
+      required this.title,
+      this.companyList,
+      this.callBack,
+      this.selectedValue});
 
   @override
   _CustomDropdownState createState() => _CustomDropdownState();
@@ -537,8 +544,8 @@ class CustomDropdown extends StatefulWidget {
 
 class _CustomDropdownState extends State<CustomDropdown> {
   @override
-  initState(){
-    if(widget.selectedValue != null && widget.selectedValue!.isNotEmpty){
+  initState() {
+    if (widget.selectedValue != null && widget.selectedValue!.isNotEmpty) {
       _selectedValue = widget.selectedValue ?? "";
     }
     super.initState();
@@ -571,7 +578,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
                 _selectedId = "2";
               }
             });
-            widget.callBack?.call(_selectedId ?? "",_selectedValue ?? "");
+            widget.callBack?.call(_selectedId ?? "", _selectedValue ?? "");
           },
           items: ['IT', 'Finance'].map((String value) {
             return DropdownMenuItem<String>(

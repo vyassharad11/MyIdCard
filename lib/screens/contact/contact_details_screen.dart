@@ -91,10 +91,10 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   Future<void> apiUpdateNotes(
-    cardId,
+    cardId,text
   ) async {
     Map<String, dynamic> data = {
-      "notes": notesController.text.toString(),
+      "notes": text,
     };
     _updateNotesCubit?.apiUpdateNotes(widget.contactIdForMeeting, data);
   }
@@ -204,7 +204,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               contactDetailsDatum != null &&
                       contactDetailsDatum!.contactTags != null &&
                       contactDetailsDatum!.contactTags!.isNotEmpty
-                  ? "Remove tag"
+                  ? "Edit tag"
                   : 'Add tag',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
@@ -334,11 +334,7 @@ class _ContactDetailsState extends State<ContactDetails> {
 
         String googleMapsUrl =
             "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
-        if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
-          await launchUrl(Uri.parse(googleMapsUrl));
-        } else {
-          throw 'Could not launch $googleMapsUrl';
-        }
+        launch(googleMapsUrl);
       }
     } catch (e) {
       print("Error: $e");
@@ -947,7 +943,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                             ?.companyAddress
                                                             .toString() ??
                                                         "",
-                                                    true);
+                                                    false);
                                               },
                                               child: Container(
                                                   height: 45,
@@ -1079,7 +1075,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "Notes",
@@ -1088,6 +1084,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                               fontSize: 14,
                             ),
                           ),
+                          Spacer(),
                           contactDetailsDatum == null ||
                                   contactDetailsDatum?.notes == null ||
                                   contactDetailsDatum!.notes!.isEmpty
@@ -1097,7 +1094,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                       Utility.showLoader(context);
                                       apiUpdateNotes(
                                           contactDetailsDatum?.id.toString() ??
-                                              "");
+                                              "",notesController.text);
                                     } else {
                                       Utility().showFlushBar(
                                           context: context,
@@ -1118,7 +1115,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                           Utility.showLoader(context);
                                           apiUpdateNotes(contactDetailsDatum?.id
                                                   .toString() ??
-                                              "");
+                                              "",notesController.text);
                                         } else {
                                           Utility().showFlushBar(
                                               context: context,
@@ -1137,17 +1134,37 @@ class _ContactDetailsState extends State<ContactDetails> {
                               contactDetailsDatum?.notes != null &&
                               contactDetailsDatum!.notes!.isNotEmpty &&
                               isEdit == false)
-                            IconButton(
-                              icon: Image.asset(
-                                "assets/images/edit-05.png",
-                                color: Colors.grey,
-                                height: 20,
-                                width: 20,
+                               InkWell(
+                                 onTap: (){
+                                   isEdit = true;
+                                   setState(() {});
+                                 },
+                                 child: Image.asset(
+                                  "assets/images/edit-05.png",
+                                  color: Colors.grey,
+                                  height: 20,
+                                  width: 20,
+                                                             ),
+                               ), if (contactDetailsDatum != null &&
+                              contactDetailsDatum?.notes != null &&
+                              contactDetailsDatum!.notes!.isNotEmpty &&
+                              isEdit == false)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: InkWell(
+                                onTap: (){
+                                  Utility.showLoader(context);
+                                  apiUpdateNotes(contactDetailsDatum?.id
+                                      .toString() ??
+                                      "","");
+                                },
+                                child: Image.asset(
+                                    "assets/images/delete_icon.png",
+                                    color: Colors.grey,
+                                    height: 20,
+                                    width: 20,
+                                ),
                               ),
-                              onPressed: () {
-                                isEdit = true;
-                                setState(() {});
-                              },
                             )
                         ],
                       ),

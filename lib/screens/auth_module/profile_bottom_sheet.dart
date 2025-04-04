@@ -30,6 +30,7 @@ import '../../utils/utility.dart';
 import '../../utils/widgets/button_primary.dart';
 import '../../utils/widgets/network.dart';
 import '../home_module/first_card.dart';
+import '../profile_mosule/profile_new.dart';
 import '../subscription_module/subscription_screen.dart';
 
 class ProfileBottomSheet extends StatefulWidget {
@@ -106,6 +107,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
 
   @override
   void initState() {
+    Storage().setIsIndivisual(false);
     _completeProfileCubit = AuthCubit(AuthRepository());
     FocusManager.instance.primaryFocus?.unfocus();
     super.initState();
@@ -129,7 +131,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
         } else if (state is ResponseStateSuccess) {
            Utility.hideLoader(context);
           var dto = state.data as SignupDto;
-          if(dto.data != null) {
+           if(dto.data != null) {
             Storage().saveUserToPreferences(dto.data as User);
           }
           if(teamCode.text.isNotEmpty) {
