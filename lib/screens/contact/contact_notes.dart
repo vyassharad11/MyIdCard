@@ -422,7 +422,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Text("Only Show Hidden Contact"),
+                        Text("Show Hidden Contact Only"),
                         SizedBox(
                           width: 10,
                         ),
@@ -442,7 +442,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Text("Only Show Physical Contact"),
+                        Text("Show Physical Contact Only"),
                         SizedBox(
                           width: 10,
                         ),
