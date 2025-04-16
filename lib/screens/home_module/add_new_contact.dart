@@ -15,6 +15,7 @@ import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/api_resp_state.dart';
+import '../../language/app_localizations.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/image_cropo.dart';
 import '../../utils/utility.dart';
@@ -83,9 +84,10 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                     Expanded(
                       child: Wrap(
                         children: [
-                          const Text(
+                           Text(
                             softWrap: true,
-                            'Scan ',
+                            AppLocalizations.of(context)
+                                .translate('scan'),
                             textDirection: TextDirection.ltr,
                             style: TextStyle(
                               fontSize: 22,
@@ -95,7 +97,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                           ),
                           Text(
                             softWrap: true,
-                            'QR Code',
+                            AppLocalizations.of(context)
+                                .translate('qrCode'),
                             textDirection: TextDirection.ltr,
                             style: TextStyle(
                               fontSize: 22,
@@ -104,9 +107,10 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                             ),
                             textAlign: TextAlign.start,
                           ),
-                          const Text(
+                           Text(
                             softWrap: true,
-                            'to add in your Contacts',
+                              AppLocalizations.of(context)
+                                  .translate('toAddCont'),
                             textDirection: TextDirection.ltr,
                             style: TextStyle(
                               fontSize: 22,
@@ -232,8 +236,9 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Scan ',
+                     Text(
+                    AppLocalizations.of(context)
+                    .translate('scan'),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -241,7 +246,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      ' Physical Card',
+                      ' ${AppLocalizations.of(context)
+                          .translate('physicalCard')}',
                       style: TextStyle(
                         fontSize: 18,
                         color: ColoursUtils.primaryColor,
@@ -265,7 +271,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                           decoration: InputDecoration(
                             fillColor: Colors.grey.shade200,
                             filled: true,
-                            labelText: 'First Name',
+                            labelText: AppLocalizations.of(context)
+                                .translate('firstName1'),
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(10),
@@ -282,7 +289,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                         child: TextField(
                           controller: lastNameController,
                           decoration: InputDecoration(
-                            labelText: 'Last Name',
+                            labelText: AppLocalizations.of(context)
+                                .translate('lastName1'),
                             fillColor: Colors.grey.shade200,
                             filled: true,
                             border: OutlineInputBorder(
@@ -358,8 +366,9 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                                 const SizedBox(
                                     height: 20), // Space between icon and text
                                 // Text below the icon
-                                const Text(
-                                  'Upload Physical Card',
+                                 Text(
+                                  AppLocalizations.of(context)
+                                      .translate('uploadPhysicalCard'),
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.normal,
@@ -402,12 +411,13 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                              BorderRadius.circular(30), // Rounded corners
                            ),
                          ),
-                         child: const Row(
+                         child:  Row(
                            mainAxisAlignment: MainAxisAlignment.center,
                            crossAxisAlignment: CrossAxisAlignment.center,
                            children: [
                              Text(
-                               "Continue", // Right side text
+                             AppLocalizations.of(context)
+                             .translate('continue'),
                                style: TextStyle(color: Colors.white, fontSize: 16),
                              ),
                            ],
@@ -521,8 +531,9 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
   // Function to show permission denied message
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Permission denied. Please enable it from settings.'),
+       SnackBar(
+        content: Text(AppLocalizations.of(context)
+            .translate('permissionText'),),
       ),
     );
   }
@@ -550,7 +561,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Use Camera'),
+                  child:  Text(AppLocalizations.of(context)
+                      .translate('useCamera'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.camera);
@@ -571,7 +583,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Choose from Library'),
+                  child:  Text(AppLocalizations.of(context)
+                      .translate('chooseFromLibrary'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.gallery);

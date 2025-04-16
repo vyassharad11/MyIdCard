@@ -225,7 +225,8 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                                         color: Colors.black),
                                   ),
                                   Text(
-                                    "Connections",
+                                    AppLocalizations.of(context)
+                                        .translate('connections'),
                                     style: TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.normal,

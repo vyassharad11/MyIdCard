@@ -12,6 +12,7 @@ import 'package:my_di_card/utils/common_utils.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 
 import '../bloc/api_resp_state.dart';
+import '../language/app_localizations.dart';
 import '../localStorage/storage.dart';
 import '../models/card_get_model.dart';
 import '../models/social_data.dart';
@@ -182,9 +183,10 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                           ),
                         ),
                       ),
-                      const Center(
+                       Center(
                         child: Text(
-                          "Create Card",
+                          AppLocalizations.of(context)
+                              .translate('createCardOn'),
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -238,9 +240,10 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Center(
+                   Center(
                     child: Text(
-                      "Social Media",
+                      AppLocalizations.of(context)
+                          .translate('socialMedia'),
                       textAlign: TextAlign.center,
                       softWrap: true,
                       style: TextStyle(
@@ -493,12 +496,13 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                 BorderRadius.circular(30), // Rounded corners
                           ),
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Continue", // Right side text
+                              AppLocalizations.of(context)
+                                  .translate("continue"), // Right side text
                               style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],

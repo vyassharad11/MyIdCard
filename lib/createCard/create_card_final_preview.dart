@@ -240,10 +240,11 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Padding(
+                               Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Image',
+                                    AppLocalizations.of(context)
+                                        .translate('image'),
                                   style: TextStyle(
                                       fontSize: 18, fontWeight: FontWeight.bold),
                                 ),
@@ -577,11 +578,12 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Padding(
+                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 14.0, vertical: 8),
                                     child: Text(
-                                      "Social Media",
+                                        AppLocalizations.of(context)
+                                            .translate('socialMedia'),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14,
@@ -671,11 +673,12 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Padding(
+                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 14.0, vertical: 8),
                                   child: Text(
-                                    "Your Uploads",
+                                      AppLocalizations.of(context)
+                                          .translate('yourupload'),
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 14,
@@ -793,7 +796,8 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Delete", // Right side text
+                                      AppLocalizations.of(context)
+                                      .translate('delete'),
                                         style: TextStyle(
                                             color: Colors.black45, fontSize: 16),
                                       ),
@@ -827,12 +831,13 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                           30), // Rounded corners
                                     ),
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Finish", // Right side text
+                                        AppLocalizations.of(context)
+                                            .translate('finish'), // Right side text
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 16),
                                       ),
@@ -860,8 +865,10 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Card'),
-          content: Text('Are you sure you want to delete this card?'),
+          title: Text(  AppLocalizations.of(context)
+              .translate('deleteCard')),
+          content: Text(  AppLocalizations.of(context)
+              .translate('deleteAlert')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -870,13 +877,15 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                 deleteCardApiCalling();
                 // Close the dialog
               },
-              child: Text('Delete'),
+              child: Text(  AppLocalizations.of(context)
+                  .translate('delete')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text(  AppLocalizations.of(context)
+                  .translate('cancel')),
             ),
           ],
         );

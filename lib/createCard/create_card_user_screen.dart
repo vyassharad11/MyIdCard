@@ -17,6 +17,7 @@ import 'package:my_di_card/utils/common_utils.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../language/app_localizations.dart';
 import '../models/ard_id.dart';
 import '../models/card_get_model.dart';
 import '../utils/utility.dart';
@@ -76,7 +77,8 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                     ),
                     Center(
                       child: Text(
-                        "Create Card",
+                        AppLocalizations.of(context)
+                            .translate('createCardOn'),
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w600),
@@ -139,7 +141,8 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                 ),
                 Center(
                   child: Text(
-                    "Personal Details",
+                    AppLocalizations.of(context)
+                        .translate('personal'),
                     textAlign: TextAlign.center,
                     softWrap: true,
                     style: GoogleFonts.poppins(
@@ -242,7 +245,8 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                 ),
                 Center(
                   child: Text(
-                    "Profile Picture",
+                    AppLocalizations.of(context)
+                        .translate('profilePicture'),
                     textAlign: TextAlign.center,
                     softWrap: true,
                     style: GoogleFonts.poppins(
@@ -340,12 +344,13 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                               BorderRadius.circular(30), // Rounded corners
                         ),
                       ),
-                      child: const Row(
+                      child:  Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Continue", // Right side text
+                            AppLocalizations.of(context)
+                                .translate('continue'), // Right side text
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ],
@@ -654,7 +659,8 @@ String cardImageF = "";
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    'Select any language',
+                    AppLocalizations.of(context)
+                        .translate('selectAnyLanguage'),
                     style: const TextStyle(color: Colors.black, fontSize: 18),
                   ),
                 ),
@@ -706,7 +712,8 @@ String cardImageF = "";
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title.isEmpty ? "Select Language" : title,
+              title.isEmpty ?   AppLocalizations.of(context)
+                  .translate('selectLanguage') : title,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 16,
@@ -822,8 +829,9 @@ String cardImageF = "";
   // Function to show permission denied message
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Permission denied. Please enable it from settings.'),
+       SnackBar(
+        content: Text(  AppLocalizations.of(context)
+            .translate('permissionText')),
       ),
     );
   }
@@ -851,7 +859,8 @@ String cardImageF = "";
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Use Camera'),
+                  child:  Text(  AppLocalizations.of(context)
+                      .translate('useCamera')),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.camera);
@@ -872,7 +881,8 @@ String cardImageF = "";
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Choose from Library'),
+                  child:  Text(AppLocalizations.of(context)
+                      .translate('chooseFromLibrary')),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
@@ -889,7 +899,8 @@ String cardImageF = "";
                   leading: Icon(Icons.delete_outline_outlined, color: Colors.black,),
                   title: Padding(
                     padding: const EdgeInsets.only(bottom: 4.0),
-                    child: const Text('Remove Picture'),
+                    child:  Text(AppLocalizations.of(context)
+                        .translate('removePicture')),
                   ),
                   onTap: () {
                     setState(() {

@@ -280,7 +280,8 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                           ),
                           // Space between text and row
                           ListTile(
-                            title: Text('Select Card Color'),
+                            title: Text(AppLocalizations.of(context)
+                                .translate('selectCardColor'),),
                             contentPadding: EdgeInsets.symmetric(horizontal: 5),
                             onTap: colorPickerDialog,
                             trailing: Container(
@@ -391,12 +392,13 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                                 BorderRadius.circular(30), // Rounded corners
                           ),
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Continue", // Right side text
+                              AppLocalizations.of(context)
+                                  .translate('continue'),// Right side text
                               style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],
@@ -426,15 +428,18 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
       runSpacing: 5,
       wheelDiameter: 155,
       heading: Text(
-        'Select card color',
+          AppLocalizations.of(context)
+              .translate('selectCardColor'),
         style: Theme.of(context).textTheme.titleSmall,
       ),
       subheading: Text(
-        'Select color shade',
+          AppLocalizations.of(context)
+              .translate('selectColorShade'),
         style: Theme.of(context).textTheme.titleSmall,
       ),
       wheelSubheading: Text(
-        'Selected color and its shades',
+          AppLocalizations.of(context)
+              .translate('selectedColorAndshades'),
         style: Theme.of(context).textTheme.titleSmall,
       ),
       showMaterialName: true,
@@ -568,7 +573,8 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Permission denied. Please enable it from settings.'),
+        content: Text(AppLocalizations.of(context)
+            .translate('permissionText')),
       ),
     );
   }
@@ -594,7 +600,8 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                   width: 20,
                   height: 20,
                 ),
-                title: const Text('Use Camera'),
+                title:  Text(AppLocalizations.of(context)
+                    .translate('useCamera'),),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   // Add your logic for opening the camera
@@ -612,7 +619,8 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                   width: 20,
                   height: 20,
                 ),
-                title: const Text('Choose from Library'),
+                title:  Text(AppLocalizations.of(context)
+                    .translate('chooseFromLibrary'),),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
                   // Add your logic for picking an image from the gallery
@@ -625,7 +633,8 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                   contentPadding: EdgeInsets.zero,
                   minLeadingWidth: 10,
                   leading: Icon(Icons.delete_outline, color: Colors.black),
-                  title: const Text('Remove Picture'),
+                  title:  Text(AppLocalizations.of(context)
+                      .translate('removePicture'),),
                   onTap: () {
                     setState(() {
                       _selectedImage = null;
