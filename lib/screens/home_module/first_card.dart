@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../createCard/create_card_user_screen.dart';
+import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/card_list.dart' as card;
 import '../../models/my_card_get.dart';
@@ -178,7 +179,7 @@ class _FirstCardScreenState extends State<FirstCardScreen> {
                           ),
                         ),
                         Text(
-                          "Connections",
+                          AppLocalizations.of(context).translate('connections'),
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 14,
@@ -216,8 +217,8 @@ class _FirstCardScreenState extends State<FirstCardScreen> {
               ),
               child: Text(
                 widget.cardData != null && widget.cardData!.firstName != null
-                    ? "+ Create card"
-                    : '+ Create my first card',
+                    ? AppLocalizations.of(context).translate('createCard1')
+                    : AppLocalizations.of(context).translate('createMyFirstCard'),
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(color: Colors.white),
                 ),
@@ -239,7 +240,7 @@ class _FirstCardScreenState extends State<FirstCardScreen> {
                     fontSize: 14, fontWeight: FontWeight.w500), // Text size
               ),
               child: Text(
-                'Skip for now',
+                AppLocalizations.of(context).translate('skipForNow'),
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.w500),

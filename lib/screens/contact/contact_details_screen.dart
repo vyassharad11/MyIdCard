@@ -14,6 +14,7 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../createCard/create_card_final_preview.dart';
 import '../../data/repository/contact_repository.dart';
+import '../../language/app_localizations.dart';
 import '../../models/contact_details_dto.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_meetings_model.dart';
@@ -184,8 +185,8 @@ class _ContactDetailsState extends State<ContactDetails> {
           ListTile(
             title: Text(
               contactDetailsDatum?.favorite == 1
-                  ? 'Add to favorites'
-                  : 'UnFavorite',
+                  ?AppLocalizations.of(context).translate('addToFavorites')
+                  : AppLocalizations.of(context).translate('unFavorite'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -204,8 +205,8 @@ class _ContactDetailsState extends State<ContactDetails> {
               contactDetailsDatum != null &&
                       contactDetailsDatum!.contactTags != null &&
                       contactDetailsDatum!.contactTags!.isNotEmpty
-                  ? "Edit tag"
-                  : 'Add tag',
+                  ? AppLocalizations.of(context).translate('editTag')
+                  : AppLocalizations.of(context).translate('addTag'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -239,7 +240,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           ),
           ListTile(
             title: Text(
-              '${contactDetailsDatum?.contactStatus == 1 ? "Hide" : "Un-hide"} Contact',
+              '${contactDetailsDatum?.contactStatus == 1 ? AppLocalizations.of(context).translate('hide') : AppLocalizations.of(context).translate('unHide')} ${AppLocalizations.of(context).translate('contact')}',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -256,8 +257,8 @@ class _ContactDetailsState extends State<ContactDetails> {
           if (widget.isPhysicalContact == false)
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-              title: const Text(
-                'Export to Contacts App',
+              title:  Text(
+                AppLocalizations.of(context).translate('exportToContactsApp'),
                 style: TextStyle(color: Colors.black, fontSize: 14),
               ),
               onTap: () {
@@ -276,8 +277,8 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Delete Contact',
+            title:  Text(
+              AppLocalizations.of(context).translate('deleteContact'),
               style: TextStyle(color: Colors.red, fontSize: 14),
             ),
             onTap: () {
@@ -795,8 +796,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                     const SizedBox(
                                                       width: 6,
                                                     ), // Space between icon and text
-                                                    const Text(
-                                                      "Send", // Right side text
+                                                     Text(
+                                                      AppLocalizations.of(context).translate('Send'), // Right side text
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 13),
@@ -1078,7 +1079,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Notes",
+                            AppLocalizations.of(context).translate('notes'),
                             style: TextStyle(
                               color: Colors.black, // Text color
                               fontSize: 14,
@@ -1098,12 +1099,12 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     } else {
                                       Utility().showFlushBar(
                                           context: context,
-                                          message: "Enter notes",
+                                          message: AppLocalizations.of(context).translate('enterNotes'),
                                           isError: true);
                                     }
                                   },
                                   child: Text(
-                                    "Add", // Right side text
+                                    AppLocalizations.of(context).translate('add'), // Right side text
                                     style: TextStyle(
                                         color: Colors.blue, fontSize: 16),
                                   ),
@@ -1119,12 +1120,12 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         } else {
                                           Utility().showFlushBar(
                                               context: context,
-                                              message: "Enter notes",
+                                              message: AppLocalizations.of(context).translate('enterNotes'),
                                               isError: true);
                                         }
                                       },
                                       child: Text(
-                                        "Update", // Right side text
+                                        AppLocalizations.of(context).translate('update'), // Right side text
                                         style: TextStyle(
                                             color: Colors.blue, fontSize: 16),
                                       ),
@@ -1224,11 +1225,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  const Padding(
+                                   Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 12.0),
                                     child: Text(
-                                      'Mettings',
+                                      AppLocalizations.of(context).translate('meetings'),
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500),
@@ -1346,11 +1347,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     ),
                                   );
                                 },
-                                child: const Row(
+                                child:  Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "View All meetings",
+                                      AppLocalizations.of(context).translate('viewAllMeetings'),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14,

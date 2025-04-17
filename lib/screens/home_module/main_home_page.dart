@@ -20,6 +20,7 @@ import '../../bloc/cubit/contact_cubit.dart';
 import '../../createCard/create_card_final_preview.dart';
 import '../../createCard/create_card_user_screen.dart';
 import '../../data/repository/contact_repository.dart';
+import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/utility_dto.dart';
@@ -619,7 +620,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                "Connections",
+                                                AppLocalizations.of(context).translate('connections'),
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 12,
@@ -672,8 +673,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     width: 6,
                                                   ),
                                                   // Space between icon and text
-                                                  const Text(
-                                                    "Send", // Right side text
+                                                   Text(
+                                                    AppLocalizations.of(context).translate('Send'), // Right side text
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 13),
@@ -741,7 +742,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 20), // Space between icon and text
                               // Text below the icon
                               Text(
-                                'New Card',
+                                AppLocalizations.of(context).translate('newCard'),
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 18,
@@ -799,7 +800,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 20), // Space between icon and text
                               // Text below the icon
                               Text(
-                                'New Contact',
+                                AppLocalizations.of(context).translate('emailAddress'),
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 18,
@@ -831,7 +832,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         // Title of the card
                         Text(
-                          'Favorite Contacts',
+                          AppLocalizations.of(context).translate('favoriteContacts'),
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                               fontSize: 18,
@@ -907,8 +908,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
                                                     ListTile(
-                                                      title: const Text(
-                                                        'Un-favorite',
+                                                      title:  Text(
+                                                        AppLocalizations.of(context).translate('unfavoriteD'),
                                                         style: TextStyle(color: Colors.black, fontSize: 14),
                                                       ),
                                                       onTap: () {
@@ -929,7 +930,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             );
                           },
-                        ):Center(child: Text("No record found")),
+                        ):Center(child: Text(AppLocalizations.of(context).translate('noRecordFound'))),
                       ],
                     ),
                   ),

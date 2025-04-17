@@ -16,6 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/recent_contact_mode.dart';
 import '../../models/tag_model.dart';
@@ -288,8 +289,8 @@ bool isInTeam = false;
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           centerTitle: false,
-          title: const Text(
-            'Contacts',
+          title:  Text(
+            AppLocalizations.of(context).translate('contacts'),
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
@@ -509,13 +510,13 @@ bool isInTeam = false;
           ),
         ),
         const SizedBox(height: 10),
-        const Row(
+         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.only(left: 20.0),
               child: Text(
-                'Recent',
+                AppLocalizations.of(context).translate('recent'),
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
             ),
@@ -711,8 +712,8 @@ bool isInTeam = false;
           ListTile(
             title: Text(
               myContactList[index].favorite == 1
-                  ? 'Add to favorites'
-                  : 'UnFavorite',
+                  ?AppLocalizations.of(context).translate('addToFavorites')
+                  : AppLocalizations.of(context).translate('unFavorite'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -728,7 +729,8 @@ bool isInTeam = false;
           ),
           ListTile(
             title:  Text(
-              myContactList[index].contactTags != null && myContactList[index].contactTags!.isNotEmpty  ? "Edit tag":'Add tag',
+              myContactList[index].contactTags != null && myContactList[index].contactTags!.isNotEmpty  ?  AppLocalizations.of(context).translate('editTag')
+                  : AppLocalizations.of(context).translate('addTag'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -769,9 +771,8 @@ bool isInTeam = false;
           ),
           ListTile(
             title: Text(
-              '${myContactList[index].contactStatus == 1
-                  ? "Hide"
-                  : "Un-hide"} Contact',
+              '${myContactList[index].contactStatus == 1?
+    AppLocalizations.of(context).translate('hide') : AppLocalizations.of(context).translate('unHide')} ${AppLocalizations.of(context).translate('contact')}',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -787,8 +788,8 @@ bool isInTeam = false;
           ),
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-            title: const Text(
-              'Export to Contacts App',
+            title:  Text(
+              AppLocalizations.of(context).translate('exportToContactsApp'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -804,8 +805,8 @@ bool isInTeam = false;
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Delete Contact',
+            title:  Text(
+              AppLocalizations.of(context).translate('deleteContact'),
               style: TextStyle(color: Colors.red, fontSize: 14),
             ),
             onTap: () {
@@ -852,7 +853,7 @@ bool isInTeam = false;
                     borderRadius: BorderRadius.circular(12)
                 ),
                 child: Center(
-                  child: Text( 'Private Contact',
+                  child: Text( AppLocalizations.of(context).translate('privateContact'),
                     style: TextStyle(
                         color: selectIndec == 1 ? Colors.black : Color(0xFF949494),
                         fontWeight:
@@ -877,7 +878,7 @@ bool isInTeam = false;
                     borderRadius: BorderRadius.circular(12)
                 ),
                 child: Center(
-                  child: Text( 'Team Contacts',
+                  child: Text( AppLocalizations.of(context).translate('teamContacts'),
                     style: TextStyle(
                         color: selectIndec == 2 ? Colors.black : Color(0xFF949494),
                         fontWeight:

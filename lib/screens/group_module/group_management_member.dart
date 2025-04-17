@@ -20,6 +20,7 @@ import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import '../../bloc/api_resp_state.dart';
+import '../../language/app_localizations.dart';
 import '../../models/group_member_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../utils/utility.dart';
@@ -213,7 +214,7 @@ int selectedIndex = 0;
                         width: MediaQuery.sizeOf(context).width / 1.3,
                         child: Center(
                           child: Text(
-                            "GROUP AND MEMBERS MANAGEMENT",
+                            AppLocalizations.of(context).translate('gROUPANDMEMBERSMANAGEMENT'),
                             style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.w600),
@@ -240,10 +241,10 @@ int selectedIndex = 0;
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Padding(
+                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12.0),
                               child: Text(
-                                'Your Groups',
+                                AppLocalizations.of(context).translate('yourGroups'),
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w700),
                               ),
@@ -320,14 +321,14 @@ int selectedIndex = 0;
                                 },
                                 itemBuilder: (BuildContext context) =>
                                 <PopupMenuEntry<String>>[
-                                  const PopupMenuItem<String>(
+                                   PopupMenuItem<String>(
                                     value: 'Edit',
-                                    child: Text('Edit'),
+                                    child: Text(AppLocalizations.of(context).translate('edit')),
                                   ),
-                                  const PopupMenuItem<String>(
+                                   PopupMenuItem<String>(
                                     value: 'Delete',
                                     child: Text(
-                                      'Delete',
+                                      AppLocalizations.of(context).translate('delete'),
                                       style: TextStyle(color: Colors.redAccent),
                                     ),
                                   ),
@@ -362,10 +363,10 @@ int selectedIndex = 0;
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        const Align(
+                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Members',
+                            AppLocalizations.of(context).translate('members'),
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -528,8 +529,8 @@ int selectedIndex = 0;
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Group'),
-          content: Text('Do you want to delete this group ?'),
+          title: Text(AppLocalizations.of(context).translate('deleteGroup')),
+          content: Text(AppLocalizations.of(context).translate('doYouWantDeleteGroup')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -539,13 +540,13 @@ int selectedIndex = 0;
                 apiDeleteGroup(myGroupList[index].id);
                 // Close the dialog
               },
-              child: Text('Delete'),
+              child: Text(AppLocalizations.of(context).translate('delete')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context).translate('cancel')),
             ),
           ],
         );
