@@ -113,6 +113,7 @@
   "enterNotes": "Enter notes",
   "update": "Update",
   "meetings": "Meetings",
+  "meeting": "Meeting",
   "viewAllMeetings": "View All meetings",
   "contacts": "Contacts",
   "recent": "Recent",
@@ -132,6 +133,12 @@
   "newContact": "New Contact",
   "favoriteContacts": "Favorite Contacts",
   "unfavoriteD": "Un-favorite",
-  "noRecordFound": "No record found"
+  "noRecordFound": "No record found",
+  "meetingPurpose": "Meeting Purpose",
+  "address": "Address",
+  "link": "Link",
+  "deleteMeeting": "Delete Meeting",
+  "deleteMeetingAlert":"Are you sure you want to delete this meeting?",
+  "tapped": "tapped"
 
 }

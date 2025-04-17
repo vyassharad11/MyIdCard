@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../models/meeting_details_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../utils/utility.dart';
@@ -88,7 +89,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
           title:  Text(
-            "${meetingDetailsModel?.data?.firstName ?? ""} Meeting",
+            "${meetingDetailsModel?.data?.firstName ?? ""} ${AppLocalizations.of(context).translate('meeting')}",
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
@@ -166,7 +167,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildSectionTitle(
-                                Icons.meeting_room_outlined, 'Meeting Purpose'),
+                                Icons.meeting_room_outlined, AppLocalizations.of(context).translate('meetingPurpose')),
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0, top: 6),
                               child: Text(
@@ -211,7 +212,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildSectionTitle(Icons.location_city, 'Address'),
+                            _buildSectionTitle(Icons.location_city, AppLocalizations.of(context).translate('address')),
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0, top: 6),
                               child: Text(meetingDetailsModel?.data?.address ?? "",
@@ -232,7 +233,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildSectionTitle(Icons.link, 'Link'),
+                            _buildSectionTitle(Icons.link, AppLocalizations.of(context).translate('link')),
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0, top: 6),
                               child: InkWell(
@@ -261,7 +262,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildSectionTitle(Icons.notes, 'Notes'),
+                            _buildSectionTitle(Icons.notes, AppLocalizations.of(context).translate('notes')),
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0, top: 6),
                               child: Text(meetingDetailsModel?.data?.notes ?? "",
@@ -285,8 +286,8 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Meeting'),
-          content: Text('Are you sure you want to delete this meeting?'),
+          title: Text(AppLocalizations.of(context).translate('deleteMeeting')),
+          content: Text(AppLocalizations.of(context).translate('deleteMeetingAlert')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -295,13 +296,13 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
                 Utility.showLoader(context);
                 apiDeleteMeeting();
               },
-              child: Text('Delete'),
+              child: Text(AppLocalizations.of(context).translate('delete')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context).translate('cancel')),
             ),
           ],
         );
@@ -368,7 +369,7 @@ class BottomSheetContentAddContact extends StatelessWidget {
               style: const TextStyle(fontSize: 15),
             ),
             onTap: () {
-              debugPrint('${items[index]} tapped');
+              debugPrint('${items[index]} ${AppLocalizations.of(context).translate('tapped')}');
               Navigator.pop(context); // Close the bottom sheet after tap
             },
           );

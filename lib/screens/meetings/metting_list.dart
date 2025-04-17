@@ -7,6 +7,7 @@ import 'package:my_di_card/screens/meetings/metting_details.dart';
 import 'package:intl/intl.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/card_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../models/my_meetings_model.dart';
 import '../../utils/utility.dart';
 
@@ -80,8 +81,8 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
           elevation: 0,
           centerTitle: true,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: const Text(
-            "Meeting",
+          title:  Text(
+            AppLocalizations.of(context).translate('meeting'),
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
