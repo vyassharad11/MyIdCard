@@ -724,6 +724,7 @@ bool isInTeam = false;
               // Add functionality here
             },
           ),
+
           const Divider(
             color: Colors.grey,
           ),
