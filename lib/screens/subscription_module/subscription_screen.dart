@@ -10,6 +10,7 @@ import 'package:my_di_card/screens/team/create_team.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/auth_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
@@ -89,7 +90,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           foregroundColor: Colors.white,
           backgroundColor: ColoursUtils.background,
           title: Text(
-            "Upgrade to Premium",
+              AppLocalizations.of(context).translate('upgradeToPremium'),
             style: GoogleFonts.poppins(
               textStyle: const TextStyle(
                   color: Colors.black, fontWeight: FontWeight.w600),
@@ -235,8 +236,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               minimumSize: const Size(double.infinity, 50),
               backgroundColor: Colors.blue.withOpacity(0.5),
             ),
-            child: const Text(
-              'Subscribe',
+            child: Text(
+                AppLocalizations.of(context).translate('subscribe'),
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -246,8 +247,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               // Skip for now logic
               submitPlanId();
             },
-            child: const Text(
-              'Skip for now',
+            child:  Text(
+                AppLocalizations.of(context).translate('skipForNow'),
               style: TextStyle(color: Colors.black87),
             ),
           ),

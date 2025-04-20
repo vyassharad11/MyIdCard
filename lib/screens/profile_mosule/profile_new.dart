@@ -325,7 +325,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     Center(
                       child: Text(
-                        "My Account",
+                          AppLocalizations.of(context).translate('myaccount'),
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w500),
@@ -494,8 +494,8 @@ class _AccountPageState extends State<AccountPage> {
                                       Navigator.push(context, MaterialPageRoute(
                                         builder: (context) => EditTeamPage(),));
                                     },
-                                    child: const Text(
-                                      'Upgrade',
+                                    child:  Text(
+                                        AppLocalizations.of(context).translate('upgrade'),
                                       style: TextStyle(fontSize: 12),
                                     ),
                                   ),
@@ -511,8 +511,8 @@ class _AccountPageState extends State<AccountPage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "(${ user?.role == Role.tadmin.name ? "Team Admin" :
-                        user?.role == Role.towner.name ? "Team Owner" : user?.role.toString()})",
+                        "(${ user?.role == Role.tadmin.name ?  AppLocalizations.of(context).translate('teamAdmin') :
+                        user?.role == Role.towner.name ?  AppLocalizations.of(context).translate('teamOwner') : user?.role.toString()})",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -704,12 +704,12 @@ class _AccountPageState extends State<AccountPage> {
                           SizedBox(
                             width: 14,
                           ),
-                          Text("No Team Added",
+                          Text( AppLocalizations.of(context).translate("noTeamAdded"),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500)),
-                          Text("Create a team to access all the features",
+                          Text( AppLocalizations.of(context).translate('createTeamFeature'),
                               style: TextStyle(
                                   color: Color(0xFF667085))),
                           SizedBox(height: 10,),
@@ -734,8 +734,8 @@ class _AccountPageState extends State<AccountPage> {
                                   fetchTeamData();
                                 },);
                               },
-                              child: const Text(
-                                'Create Team',
+                              child:  Text(
+                                  AppLocalizations.of(context).translate('createTeam2'),
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
@@ -857,7 +857,7 @@ class _AccountPageState extends State<AccountPage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.grey.withOpacity(0.2)),
-                        child: Text("Create Group", style: TextStyle(
+                        child: Text( AppLocalizations.of(context).translate('createGroup'), style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 14),),),
                     ),
                     if(user?.role != Role.individual.name &&
@@ -877,7 +877,7 @@ class _AccountPageState extends State<AccountPage> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
-                                'Team code',
+                                  AppLocalizations.of(context).translate('teamCode1'),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -926,7 +926,7 @@ class _AccountPageState extends State<AccountPage> {
                                   _completeProfileCubit?.completeProfileApi(
                                     data,);
                                 },
-                                child: const Text('Join'),
+                                child: Text( AppLocalizations.of(context).translate('join')),
                               ),
                             ),
                             SizedBox(
@@ -992,7 +992,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: ListTile(
                         leading: Image.asset(
                           "assets/images/tag_icon.png", height: 22, width: 22,),
-                        title: Text("Manage Team Tags"),
+                        title: Text( AppLocalizations.of(context).translate('manageTeamTags')),
                         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       ),
                     ),
@@ -1015,7 +1015,7 @@ class _AccountPageState extends State<AccountPage> {
                               height: 20,
                             ),
                             SizedBox(width: 14,),
-                            Text("Delete Team",
+                            Text( AppLocalizations.of(context).translate('deleteTeam'),
                                 style: TextStyle(color: Colors.redAccent)),
 
                           ],
@@ -1042,7 +1042,7 @@ class _AccountPageState extends State<AccountPage> {
                               height: 20,
                             ),
                             SizedBox(width: 14,),
-                            Text("Leave Team",
+                            Text( AppLocalizations.of(context).translate('leaveTeam'),
                                 style: TextStyle(color: Colors.redAccent)),
 
                           ],
@@ -1065,8 +1065,8 @@ class _AccountPageState extends State<AccountPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Leave Team'),
-          content: Text('Do you want to leave this team ?'),
+          title: Text( AppLocalizations.of(context).translate('leaveTeam'),),
+          content: Text( AppLocalizations.of(context).translate('doYouWLeave'),),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -1076,13 +1076,13 @@ class _AccountPageState extends State<AccountPage> {
                 apiLeaveTeam();
                 // Close the dialog
               },
-              child: Text('Leave'),
+              child: Text( AppLocalizations.of(context).translate('leave')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text( AppLocalizations.of(context).translate('cancel')),
             ),
           ],
         );
@@ -1094,8 +1094,8 @@ class _AccountPageState extends State<AccountPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Team'),
-          content: Text('Do you want to delete this team ?'),
+          title: Text( AppLocalizations.of(context).translate('deleteTeam')),
+          content: Text( AppLocalizations.of(context).translate('doYouWDelete')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -1106,13 +1106,13 @@ class _AccountPageState extends State<AccountPage> {
                     teamResponse?.data.id.toString() ?? "");
                 // Close the dialog
               },
-              child: Text('Delete'),
+              child: Text( AppLocalizations.of(context).translate('delete'),),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text( AppLocalizations.of(context).translate('cancel'),),
             ),
           ],
         );
@@ -1213,7 +1213,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    "Approval Pending",
+                    AppLocalizations.of(context).translate('approvalPending'),
                     style: TextStyle(
                       color: Colors.grey.shade500,
                       fontSize: 14,
@@ -1230,7 +1230,7 @@ class _AccountPageState extends State<AccountPage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0),
                     child: Text(
-                      "Manufacturing Team",
+                        AppLocalizations.of(context).translate('manufacturingTeam'),
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 14,

@@ -95,7 +95,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.blue.shade300,
                   ),
                   title: Text(
-                    "Language",
+                    AppLocalizations.of(context).translate('language'),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -123,7 +123,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.blue.shade300,
                   ),
                   title: Text(
-                    "Subscription",
+                    AppLocalizations.of(context).translate('subscription'),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -150,7 +150,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.blue.shade300,
                   ),
                   title: Text(
-                    "Privacy Policy",
+                    AppLocalizations.of(context).translate('privacyPolicy'),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -178,7 +178,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.blue.shade300,
                   ),
                   title: Text(
-                    "Terms and Conditions",
+                    AppLocalizations.of(context).translate('termsAndConditions'),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -210,7 +210,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     size: 20,
                   ),
                   title: Text(
-                    "Linked Account",
+                    AppLocalizations.of(context).translate('linkedAccount'),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -233,7 +233,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.red,
                   ),
                   title: Text(
-                    "Delete Account",
+                    AppLocalizations.of(context).translate('deleteAccount'),
                     style: TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.w600,
@@ -257,7 +257,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Colors.red,
                   ),
                   title: Text(
-                    "Logout Account",
+                    AppLocalizations.of(context).translate('logoutAccount'),
                     style: TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.w600,
@@ -295,7 +295,7 @@ class _SettingScreenState extends State<SettingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Select any language',
+        AppLocalizations.of(context).translate('selectAnyLanguage'),
                 style: const TextStyle(color: Colors.black, fontSize: 18),
               ),
             ),
@@ -343,8 +343,8 @@ class _SettingScreenState extends State<SettingScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Logout ?'),
-          content: Text('Are you sure you want to logout ?'),
+          title: Text( AppLocalizations.of(context).translate('logout1'),),
+          content: Text( AppLocalizations.of(context).translate('areYouWLogout'),),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -353,13 +353,13 @@ class _SettingScreenState extends State<SettingScreen> {
                 clearSharedPreferences(context);
                 // Close the dialog
               },
-              child: Text('Logout'),
+              child: Text( AppLocalizations.of(context).translate('logout'),),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text( AppLocalizations.of(context).translate('cancel'),),
             ),
           ],
         );
@@ -372,21 +372,21 @@ class _SettingScreenState extends State<SettingScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Card'),
-          content: Text('Are you sure you want to delete this card?'),
+          title: Text( AppLocalizations.of(context).translate('deleteAccount'),),
+          content: Text( AppLocalizations.of(context).translate('areYouWDeleteAccount'),),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 // Perform delete action here
                 Navigator.of(context).pop();
               },
-              child: Text('Delete'),
+              child: Text( AppLocalizations.of(context).translate('delete'),),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text( AppLocalizations.of(context).translate('cancel'),),
             ),
           ],
         );

@@ -12,6 +12,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
 
@@ -343,7 +344,7 @@ Future<void> apiGetCardTag(keyword) async {
           automaticallyImplyLeading: true,
           centerTitle: false,
           title: Text(
-            'Tags Management',
+              AppLocalizations.of(context).translate('tagsManagement'),
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
@@ -385,10 +386,10 @@ Future<void> apiGetCardTag(keyword) async {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
+                 Padding(
                   padding: EdgeInsets.only(left: 20.0, top: 13),
                   child: Text(
-                    'Existing Tags',
+                      AppLocalizations.of(context).translate('existingTags'),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -469,7 +470,7 @@ Future<void> apiGetCardTag(keyword) async {
                     },
                   ),
                 ):
-               Expanded(child: Center(child: Text("No tag found")))
+               Expanded(child: Center(child: Text( AppLocalizations.of(context).translate('noTagFound'),)))
               ],
             ),
           ),
@@ -539,8 +540,8 @@ Future<void> apiGetCardTag(keyword) async {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Add Tag",
+                   Text(
+                  AppLocalizations.of(context).translate('addTag1'),
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 14,
@@ -573,8 +574,8 @@ Future<void> apiGetCardTag(keyword) async {
                         }
                         controller.clear();
                       },
-                      child: const Text(
-                        'Save',
+                      child:  Text(
+                           AppLocalizations.of(context).translate('save'),
                         style: TextStyle(fontSize: 12),
                       ),
                     ),
@@ -720,8 +721,8 @@ Future<void> apiGetCardTag(keyword) async {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Edit Tag",
+                   Text(
+                  AppLocalizations.of(context).translate('editTag1'),
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 14,
@@ -759,8 +760,8 @@ Future<void> apiGetCardTag(keyword) async {
                         }
                         controller.clear();}
                       },
-                      child: const Text(
-                        'Save',
+                      child:  Text(
+        AppLocalizations.of(context).translate('save'),
                         style: TextStyle(fontSize: 12),
                       ),
                     ),
@@ -889,10 +890,10 @@ Future<void> apiGetCardTag(keyword) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Edit Tag"),
+        title:  Text( AppLocalizations.of(context).translate('editTag1'),),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(hintText: "Enter new tag name"),
+          decoration:  InputDecoration(hintText:AppLocalizations.of(context).translate('hintTageName'),),
         ),
         actions: [
           TextButton(
@@ -909,11 +910,11 @@ Future<void> apiGetCardTag(keyword) async {
                     tagName: controller.text, id: tags[index].id.toString());
               }
             },
-            child: const Text("Save"),
+            child:  Text( AppLocalizations.of(context).translate('save'),),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child:  Text( AppLocalizations.of(context).translate('cancel'),),
           ),
         ],
       ),
