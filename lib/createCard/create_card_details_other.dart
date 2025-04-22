@@ -501,12 +501,12 @@ class _CreateCardScreenDetailsOtherState
 
         debugPrint("Data submitted successfully: ");
 
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
                 builder: (builder) => CreateCardFinalPreview(
                       cardId: widget.cardId.toString() ?? "",
-                    )));
+                    )), (route) => false,);
       } else {
          Utility.hideLoader(context);
         print(

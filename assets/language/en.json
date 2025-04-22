@@ -180,6 +180,9 @@
   "addTag1": "Add Tag",
   "save": "Save",
   "editTag1": "Edit Tag",
-  "hintTageName": "Enter new tag name"
+  "hintTageName": "Enter new tag name",
+  "helpAndSupport": "Help And Support",
+  "enterTitle": "Enter Title",
+  "enterDescription": "Enter Description"
 
 }

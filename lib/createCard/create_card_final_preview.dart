@@ -23,8 +23,8 @@ import 'create_card_user_screen.dart';
 
 class CreateCardFinalPreview extends StatefulWidget {
   final String cardId;
-  final bool isOtherCard;
-  const CreateCardFinalPreview({super.key, required this.cardId,this.isOtherCard = false});
+  final bool isEdit;
+  const CreateCardFinalPreview({super.key, required this.cardId,this.isEdit = false});
 
   @override
   State<CreateCardFinalPreview> createState() => _CreateCardFinalPreviewState();
@@ -102,7 +102,12 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
           },),
       ],
       child: Scaffold(
-        backgroundColor: ColoursUtils.whiteLightColor.withOpacity(1.0),
+        backgroundColor:  getCardModel
+            ?.cardStyle !=
+            null
+            ? Color(int.parse(
+            '0xFF${getCardModel!.cardStyle!}'))
+            : ColoursUtils.whiteLightColor.withOpacity(1.0),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16),
@@ -149,13 +154,13 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                 child: Text(
                                   getCardModel?.cardName.toString() ?? "",
                                   style: const TextStyle(
-                                      fontSize: 24, fontWeight: FontWeight.w600),
+                                      fontSize: 24, fontWeight: FontWeight.w600,color: Colors.white),
                                 ),
                               ),
                               const SizedBox(
                                 width: 8,
                               ),
-                          if(widget.isOtherCard == false)    GestureDetector(
+                          if(widget.isEdit == false)    GestureDetector(
                                   onTap: () {
                                     Navigator.push(
                                         context,
@@ -166,11 +171,23 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                                   isEdit: true,
                                                 )));
                                   },
-                                  child: const Icon(Icons.edit_outlined)),
+                                  child: const Icon(Icons.edit_outlined,color: Colors.white,)),
+                              if(widget.isEdit == true)  InkWell(
+                                onTap: (){
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                                        (route) => false,
+                                  );
+                                },
+                                child: Container(height: 44,
+                                width: 44,
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(44)),
+                                  child: Image.asset("assets/images/check_circle.png"),
+                                ),
+                              )
                             ],
-                          ),
-                          const SizedBox(
-                            width: 12,
                           ),
                         ],
                       ),
@@ -178,54 +195,10 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                         height: 20,
                       ),
                       const SizedBox(height: 20),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                            minWidth: MediaQuery.sizeOf(context).width),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 12),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)
-                                      .translate('CardStyle'),
-                                  style: const TextStyle(
-                                      fontSize: 18, fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(
-                                    height: 16), // Space between text and row
-
-                                Container(
-                                  width: 30,
-                                  decoration: BoxDecoration(
-                                    color: getCardModel?.cardStyle == null
-                                        ? Colors.blue
-                                        : Color(
-                                            int.parse(
-                                              '0xFF${getCardModel?.cardStyle!}',
-                                            ),
-                                          ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  height: 30,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
                       Card(
                         shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.circular(18), // if you need this
+                          BorderRadius.circular(18), // if you need this
                           side: const BorderSide(
                             color: Colors.white,
                             width: 2,
@@ -233,197 +206,184 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                         ),
                         elevation: 0,
                         margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 2),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                               Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                    AppLocalizations.of(context)
-                                        .translate('image'),
-                                  style: TextStyle(
-                                      fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(18),
-                                        topRight: Radius.circular(18)),
-                                    child: getCardModel != null &&
-                                            getCardModel!.backgroungImage != null
-                                        ? Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(18),
-                                                        topRight:
-                                                            Radius.circular(18)),
-                                                child: CachedNetworkImage(
-                                                  height: 100,
-                                                  width: double.infinity,
-                                                  fit: BoxFit.fitWidth,
-                                                  imageUrl:
-                                                      "${Network.imgUrl}${getCardModel!.backgroungImage}",
-                                                  progressIndicatorBuilder:
-                                                      (context, url,
-                                                              downloadProgress) =>
-                                                          Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                            value:
-                                                                downloadProgress
-                                                                    .progress),
-                                                  ),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Image.asset(
-                                                    "assets/logo/Top with a picture.png",
-                                                    height: 80,
-                                                    fit: BoxFit.fill,
-                                                    width: double.infinity,
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 12.0, left: 12),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(50)),
-                                                  child: CachedNetworkImage(
-                                                    height: 75,
-                                                    width: 75,
-                                                    fit: BoxFit.fitWidth,
-                                                    imageUrl:
-                                                        "${Network.imgUrl}${getCardModel!.cardImage}",
-                                                    progressIndicatorBuilder:
-                                                        (context, url,
-                                                                downloadProgress) =>
-                                                            Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                              value:
-                                                                  downloadProgress
-                                                                      .progress),
-                                                    ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Image.asset(
-                                                      "assets/logo/Central icon.png",
-                                                      height: 80,
-                                                      fit: BoxFit.fill,
-                                                      width: double.infinity,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : ClipRRect(
-                                            borderRadius: const BorderRadius.only(
-                                                topLeft: Radius.circular(18),
-                                                topRight: Radius.circular(18)),
-                                            child: Image.asset(
-                                              "assets/logo/Central icon.png",
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(18),
+                                    topRight: Radius.circular(18)),
+                                child: getCardModel != null &&
+                                    getCardModel!.backgroungImage != null
+                                    ? Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius:
+                                      const BorderRadius.only(
+                                          topLeft:
+                                          Radius.circular(18),
+                                          topRight:
+                                          Radius.circular(18)),
+                                      child: CachedNetworkImage(
+                                        height: 100,
+                                        width: double.infinity,
+                                        fit: BoxFit.fitWidth,
+                                        imageUrl:
+                                        "${Network.imgUrl}${getCardModel!.backgroungImage}",
+                                        progressIndicatorBuilder:
+                                            (context, url,
+                                            downloadProgress) =>
+                                            Center(
+                                              child:
+                                              CircularProgressIndicator(
+                                                  value:
+                                                  downloadProgress
+                                                      .progress),
+                                            ),
+                                        errorWidget:
+                                            (context, url, error) =>
+                                            Image.asset(
+                                              "assets/logo/Top with a picture.png",
                                               height: 80,
-                                              fit: BoxFit.fitWidth,
+                                              fit: BoxFit.fill,
                                               width: double.infinity,
                                             ),
-                                          )),
-                              ),
-                              const SizedBox(
-                                height: 0,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 4.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: 75,
-                                      width: 75,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ClipRRect(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(50)),
-                                          child: getCardModel != null &&
-                                                  getCardModel!.company_logo !=
-                                                      null
-                                              ? SizedBox(
-                                                  height: 55,
-                                                  child: CachedNetworkImage(
-                                                    height: 350,
-                                                    width: double.infinity,
-                                                    fit: BoxFit.cover,
-                                                    imageUrl:
-                                                        "${Network.imgUrl}${getCardModel!.company_logo}",
-                                                    progressIndicatorBuilder:
-                                                        (context, url,
-                                                                downloadProgress) =>
-                                                            Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                              value:
-                                                                  downloadProgress
-                                                                      .progress),
-                                                    ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Image.asset(
-                                                      "assets/logo/Central icon.png",
-                                                      height: 100,
-                                                      fit: BoxFit.fill,
-                                                      width: double.infinity,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Image.asset(
-                                                  "assets/logo/Central icon.png",
-                                                  height: 35,
-                                                  fit: BoxFit.fill,
-                                                  width: double.infinity,
-                                                ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 12.0, left: 12),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                        const BorderRadius.all(
+                                            Radius.circular(50)),
+                                        child: CachedNetworkImage(
+                                          height: 75,
+                                          width: 75,
+                                          fit: BoxFit.fitWidth,
+                                          imageUrl:
+                                          "${Network.imgUrl}${getCardModel!.cardImage}",
+                                          progressIndicatorBuilder:
+                                              (context, url,
+                                              downloadProgress) =>
+                                              Center(
+                                                child:
+                                                CircularProgressIndicator(
+                                                    value:
+                                                    downloadProgress
+                                                        .progress),
+                                              ),
+                                          errorWidget:
+                                              (context, url, error) =>
+                                              Image.asset(
+                                                "assets/logo/Central icon.png",
+                                                height: 80,
+                                                fit: BoxFit.fill,
+                                                width: double.infinity,
+                                              ),
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 35,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context).translate(
-                                                'companylogo'), // Right side text
-                                            style: const TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   ],
-                                ),
+                                )
+                                    : ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(18),
+                                      topRight: Radius.circular(18)),
+                                  child: Image.asset(
+                                    "assets/logo/Central icon.png",
+                                    height: 80,
+                                    fit: BoxFit.fitWidth,
+                                    width: double.infinity,
+                                  ),
+                                )),
+                            const SizedBox(
+                              height: 0,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 12),
+                              child:  Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 17,
+                                      ),
+                                      Text(
+                                        "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight:
+                                            FontWeight.w500,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        getCardModel
+                                            ?.jobTitle ??
+                                            "",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight:
+                                            FontWeight.normal,
+                                            color: Colors.black45),
+                                      ),
+                                      Text(
+                                        getCardModel
+                                            ?.companyName ??
+                                            "",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight:
+                                            FontWeight.normal,
+                                            color: Colors.black45),
+                                      ),
+                                    ],
+                                  ),
+                                  ClipRRect(
+                                    borderRadius:
+                                    const BorderRadius.all(
+                                        Radius.circular(
+                                            75)),
+                                    child: CachedNetworkImage(
+                                      height: 75,
+                                      width: 75,
+                                      fit: BoxFit.fitWidth,
+                                      imageUrl:
+                                      "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
+                                      progressIndicatorBuilder:
+                                          (context, url,
+                                          downloadProgress) =>
+                                          Center(
+                                            child: CircularProgressIndicator(
+                                                value:
+                                                downloadProgress
+                                                    .progress),
+                                          ),
+                                      errorWidget: (context,
+                                          url, error) =>
+                                          Image.asset(
+                                            "assets/logo/Central icon.png",
+                                            height: 80,
+                                            fit: BoxFit.fill,
+                                            width: double.infinity,
+                                          ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(
@@ -440,65 +400,6 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate('personal'),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 12,
-                              ),
-
-                              Text(
-                                getCardModel!.languageId == "1"
-                                    ? "English"
-                                    : "French",
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                              const Divider(thickness: 1), // Horizontal line
-
-                              Text(
-                                getCardModel?.firstName ?? "",
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                              const Divider(thickness: 1), // Horizontal line
-
-                              Text(
-                                getCardModel?.lastName ?? "",
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Card(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate('companyDetails'),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 12,
-                              ),
                               Text(
                                 getCardModel?.companyName ?? "",
                                 style: const TextStyle(fontSize: 16),
@@ -660,7 +561,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                         height: 20,
                       ),
                       if (getCardModel != null &&
-                          getCardModel!.cardDocuments != null)
+                          getCardModel!.cardDocuments != null && getCardModel!.cardDocuments!.isNotEmpty)
                         Card(
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -768,8 +669,8 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                       const SizedBox(
                         height: 20,
                       ),
-                      if(widget.isOtherCard == false)      Row(
-                        children: [
+                          Row(
+                                                  children: [
                           Expanded(
                             child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -783,10 +684,10 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,
-                                    backgroundColor: Colors.transparent, // Background color
+                                    backgroundColor: Colors.white, // Background color
                                     shadowColor: Colors.transparent,
                                     shape: RoundedRectangleBorder(
-                                      side: const BorderSide(color: Colors.grey),
+                                      side: const BorderSide(color: Colors.red),
                                       borderRadius: BorderRadius.circular(
                                           30), // Rounded corners
                                     ),
@@ -797,7 +698,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                     children: [
                                       Text(
                                       AppLocalizations.of(context)
-                                      .translate('delete'),
+                                      .translate(widget.isEdit == false?'delete':'cancel'),
                                         style: TextStyle(
                                             color: Colors.black45, fontSize: 16),
                                       ),
@@ -816,16 +717,16 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                 child: ElevatedButton(
                                  // iconAlignment: IconAlignment.start,
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (builder) =>
-                                                BottomNavBarExample()));
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                                          (route) => false,
+                                    );
                                     // Handle button press
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        Colors.blue, // Background color
+                                        Colors.white, // Background color
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
                                           30), // Rounded corners
@@ -837,9 +738,9 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                     children: [
                                       Text(
                                         AppLocalizations.of(context)
-                                            .translate('finish'), // Right side text
+                                            .translate(widget.isEdit == false?'finish':"submit"), // Right side text
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
+                                            color: Colors.black, fontSize: 16),
                                       ),
                                     ],
                                   ),
@@ -847,11 +748,9 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                                                  ],
+                                                ),
+                      SizedBox(height: 16,)
                     ],
                   ),
           ),
