@@ -247,6 +247,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
             // Storage().saveToken(dto.token ?? "");
             showModalBottomSheet(
               context: context,
+              enableDrag: false,
               isDismissible: false,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
@@ -284,6 +285,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
              if (dto.user != null && dto.user!.firstName == null) {
                showModalBottomSheet(
                  context: context,
+                 enableDrag: false,
                  shape: const RoundedRectangleBorder(
                    borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
                  ),
@@ -332,6 +334,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
              if (dto.user != null && dto.user!.firstName == null) {
                showModalBottomSheet(
                  context: context,
+                 enableDrag: false,
                  shape: const RoundedRectangleBorder(
                    borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
                  ),

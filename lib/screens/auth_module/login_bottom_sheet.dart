@@ -268,6 +268,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
             isScrollControlled: true,
             useRootNavigator: false,
             isDismissible: false,
+            enableDrag: false,
             builder: (context) => ProfileBottomSheet(),
           );
         } else if (dto.user != null &&
@@ -326,6 +327,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         if (dto.user != null && dto.user!.firstName == null) {
           showModalBottomSheet(
             context: context,
+            enableDrag: false,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
             ),
@@ -378,6 +380,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         if (dto.user != null && dto.user!.firstName == null) {
           showModalBottomSheet(
             context: context,
+            enableDrag: false,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
             ),
@@ -701,6 +704,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      enableDrag: false,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
