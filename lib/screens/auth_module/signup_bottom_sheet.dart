@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/bloc/cubit/auth_cubit.dart';
 import 'package:my_di_card/data/repository/auth_repository.dart';
+import 'package:my_di_card/screens/auth_module/profile_bottom_sheet.dart';
 import 'package:my_di_card/utils/utility.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -80,11 +81,11 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
 
   Future<void> registerVendor() async {
       Utility.showLoader(context);
-    Map<String, dynamic> data = {
-      'language_id': '1',
-      'email': _emailController.text.toString().trim(),
-      'password': _passwordController.text.toString().trim(),
-      'password_confirmation': _passwordController.text.toString().trim(),
+      Map<String, dynamic> data = {
+        'language_id': '1',
+        'email': _emailController.text.toString().trim(),
+        'password': _passwordController.text.toString().trim(),
+        'password_confirmation': _passwordController.text.toString().trim(),
     };
     _authCubit?.apiSignUp(data);
 
@@ -134,9 +135,12 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
     return false;
   }
 
-  googleLogin(idToken){
+  googleLogin(idToken,email,id){
     Map<String, dynamic> data = {
-      'idToken': idToken
+      'idToken': idToken,
+      "email": email,
+      "social_id": id
+
     };
     _googleLoginCubit?.apiSignupGoogle(data);
 }
@@ -145,7 +149,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
 
 
   Future<void> loginWithGoogle() async {
-    Utility.showLoader(context);
+     Utility.showLoader(context);
     final GoogleSignIn googleSignIn = Platform.isAndroid
         ? GoogleSignIn(
       serverClientId: Network.googleKeyAndroid,
@@ -172,8 +176,10 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         return;
       }
 
-      // Step 3: Send the token to your backend
-      googleLogin(idToken);
+      debugPrint("Failed to get tokens from Apple. " +googleUser.id);
+
+    // Step 3: Send the token to your backend
+      googleLogin(idToken,googleUser.email.toString(),googleUser.id);
 
     } catch (e) {
       Utility.hideLoader(context);
@@ -208,6 +214,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         'identityToken': identityToken,
         'authorizationCode': authorizationCode,
         'email': appleCredential.email,
+        'social_id':appleCredential.userIdentifier
       };
       _appleLoginCubit?.apiSignupApple(data);
 
@@ -273,13 +280,24 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
             Storage().saveToken(dto.token ?? "");
             FocusScope.of(context).unfocus();
             Navigator.pop(context);
-            if (dto.user != null && dto.user!.firstName == null) {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => BottomNavBarExample()));
-            } else {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
-            }
+
+             if (dto.user != null && dto.user!.firstName == null) {
+               showModalBottomSheet(
+                 context: context,
+                 shape: const RoundedRectangleBorder(
+                   borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                 ),
+                 isScrollControlled: true,
+                 useRootNavigator: false,
+                 isDismissible: false,
+                 builder: (context) => ProfileBottomSheet(),
+               );
+             } else {
+               Navigator.push(
+                   context,
+                   CupertinoPageRoute(
+                       builder: (builder) => const FirstCardScreen()));
+             }
              Utility().showFlushBar(context: context, message: dto.message ?? "");
           } setState(() {});
         },),
@@ -303,13 +321,32 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
             Storage().saveToken(dto.token ?? "");
             FocusScope.of(context).unfocus();
             Navigator.pop(context);
-            if (dto.user != null && dto.user!.firstName == null) {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => BottomNavBarExample()));
-            } else {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
-            }
+            // if (dto.user != null && dto.user!.firstName == null) {
+            //   Navigator.push(context,
+            //       CupertinoPageRoute(builder: (builder) => BottomNavBarExample()));
+            // } else {
+            //   Navigator.push(context,
+            //       CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+            // }
+
+             if (dto.user != null && dto.user!.firstName == null) {
+               showModalBottomSheet(
+                 context: context,
+                 shape: const RoundedRectangleBorder(
+                   borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                 ),
+                 isScrollControlled: true,
+                 useRootNavigator: false,
+                 isDismissible: false,
+                 builder: (context) => ProfileBottomSheet(),
+               );
+             } else {
+               Navigator.push(
+                   context,
+                   CupertinoPageRoute(
+                       builder: (builder) => const FirstCardScreen()));
+             }
+
              Utility().showFlushBar(context: context, message: dto.message ?? "");
           } setState(() {});
         },),

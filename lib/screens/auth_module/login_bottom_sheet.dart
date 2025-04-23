@@ -131,7 +131,8 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
 
       Map<String, dynamic> data = {
         'idToken': idToken,
-        "email": googleUser.email.toString()
+        "email": googleUser.email.toString(),
+        "social_id": googleUser.id
       };
       _googleLoginCubit?.apiSignupGoogle(data);
 
@@ -142,7 +143,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
   }
 
   Future<void> loginWithApple() async {
-    Utility.showLoader(context);
+     Utility.showLoader(context);
           Storage().removeTokenFromPreferences();
 
     try {
@@ -157,7 +158,13 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
       // Step 2: Obtain the authorization code and identity token
       final String? identityToken = appleCredential.identityToken;
       final String authorizationCode = appleCredential.authorizationCode;
+      // debugPrint("Failed to get tokens from Apple." + appleCredential.userIdentifier.toString());
+      // debugPrint("Failed to get tokens from AppleauthorizationCode." + appleCredential.authorizationCode.toString());
 
+       // debugPrint("Failed to get tokens from Apple." + appleCredential.authorizationCode.toString());
+
+
+      // return ;
       if (identityToken == null) {
         debugPrint("Failed to get tokens from Apple.");
         return;
@@ -165,10 +172,12 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
       // Step 3: Send the tokens to your backend
 
       Map<String, dynamic> data = {
-        'identity_token': identityToken,
-        'authorization_code': authorizationCode,
+        'identityToken': identityToken,
+        'authorizationCode': authorizationCode,
         'email': appleCredential.email,
+        'social_id':appleCredential.userIdentifier
       };
+
       _appleLoginCubit?.apiSignupApple(data);
     } catch (e) {
       Utility.hideLoader(context);

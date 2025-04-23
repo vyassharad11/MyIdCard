@@ -88,7 +88,15 @@ class ServerError implements Exception {
           }
           ErrorDto errorDto = ErrorDto.fromJson(dioError.response?.data);
           if(dioError.response?.statusCode == 401) {
-            return ResponseStateEmpty(errorDto.errors != null && errorDto.errors!.emailVerificationCode != null && errorDto.errors!.emailVerificationCode!.isNotEmpty ? errorDto.errors!.emailVerificationCode![0] :"");
+            if (errorDto.message != null) {
+              log("===errorMessage ${errorDto.message}");
+              return ResponseStateEmpty(errorDto.message.toString());
+            }else {
+              return ResponseStateEmpty(errorDto.errors != null &&
+                  errorDto.errors!.emailVerificationCode != null &&
+                  errorDto.errors!.emailVerificationCode!.isNotEmpty ? errorDto
+                  .errors!.emailVerificationCode![0] : "");
+            }
           } if(dioError.response?.statusCode == 404) {
             return ResponseStateEmpty(errorDto.message ?? "");
           }
