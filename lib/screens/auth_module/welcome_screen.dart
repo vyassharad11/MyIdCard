@@ -60,6 +60,7 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
           isScrollControlled: true,
           useRootNavigator: false,
+          enableDrag: false,
           isDismissible: false,
           builder: (context) => ProfileBottomSheet(),
         );
@@ -158,6 +159,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   onClick: () {
                     showModalBottomSheet(
                       context: context,
+                      enableDrag: false,
                       shape: const RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(20)),
@@ -272,6 +274,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 showModalBottomSheet(
                   context: context,
                   isDismissible: false,
+                  enableDrag: false,
                   shape: const RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(20)),

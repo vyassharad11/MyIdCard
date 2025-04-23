@@ -1,41 +1,433 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/contact_cubit.dart';
+import '../../data/repository/contact_repository.dart';
+import '../../language/app_localizations.dart';
+import '../../models/contact_details_dto.dart';
+import '../../models/utility_dto.dart';
+import '../../utils/colors/colors.dart';
+import '../../utils/utility.dart';
+import '../../utils/widgets/network.dart';
 
 class AddContactPreview extends StatefulWidget {
-  const AddContactPreview({super.key});
+  final String contactId;
+  Function callBack;
+   AddContactPreview({super.key, required this.contactId,required this.callBack});
 
   @override
   State<AddContactPreview> createState() => _AddContactPreviewState();
 }
 
 class _AddContactPreviewState extends State<AddContactPreview> {
+  ContactCubit? _contactDetailCubit,_addContactCubit;
+  bool isLoad = true;
+  DataContact? contactDetailsDatum;
+
+
+  @override
+  void initState() {
+    _contactDetailCubit = ContactCubit(ContactRepository());
+    _addContactCubit = ContactCubit(ContactRepository());
+    getContactDetail();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    _contactDetailCubit?.close();
+    _contactDetailCubit = null;
+  }
+
+  Future<void> apiAddContact() async {
+    Map<String, dynamic> data = {
+      "card_id": widget.contactId,
+    };
+    _addContactCubit?.apiAddContact(data);
+  }
+
+  Future<void> getContactDetail() async {
+    Utility.showLoader(context);
+    _contactDetailCubit?.apiGetContactDetail(widget.contactId);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16,vertical: 30),
-      decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))),
-      child: Column(
-        children: [
-          Container(
-            height: 44,
-            width: 44,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
-            color: Colors.white),
-            child:Image.asset("assets/images/close.png")
-          ),
-          Text(
-            // "${contactDetailsDatum?.cardName ?? ""}",
-            "",
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-          Container(
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _addContactCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.message, isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(
+                  context: context, message: state.errorMessage, isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              widget.callBack.call();
+              Navigator.pop(context);
+              Utility()
+                  .showFlushBar(context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },
+        ),
+        BlocListener<ContactCubit, ResponseState>(
+          bloc: _contactDetailCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              isLoad = false;
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              isLoad = false;
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              isLoad = false;
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              isLoad = false;
+              var dto = state.data as ContactDetailsDto;
+              contactDetailsDatum = dto.data;
+              // setLink();
+            }
+            setState(() {});
+          },
+        ),
+      ],
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 30),
+        decoration: BoxDecoration(
+            color:  contactDetailsDatum
+            ?.cardStyle !=
+        null
+        ? Color(int.parse(
+        '0xFF${contactDetailsDatum!.cardStyle!}'))
+            : ColoursUtils.whiteLightColor.withOpacity(1.0),
+            borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))),
+        child: Column(
+          children: [
+            Container(
               height: 44,
               width: 44,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
-                  color: Colors.white),
-              child:Icon(Icons.add)
-          )
-        ],
+              color: Colors.white),
+              child:Image.asset("assets/images/close.png")
+            ),
+            Text(
+              contactDetailsDatum?.cardName ?? "",
+              style: TextStyle(
+                  fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+            InkWell(
+              onTap: (){
+                Utility.showLoader(context);
+                apiAddContact();
+              },
+              child: Container(
+                  height: 44,
+                  width: 44,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
+                      color: Colors.white),
+                  child:Icon(Icons.add)
+              ),
+            ),
+            SizedBox(height: 20,),
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(18), // if you need this
+                side: const BorderSide(
+                  color: Colors.white,
+                  width: 2,
+                ),
+              ),
+              elevation: 0,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(18),
+                          topRight: Radius.circular(18)),
+                      child: contactDetailsDatum != null &&
+                          contactDetailsDatum!.backgroungImage != null
+                          ? Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius:
+                            const BorderRadius.only(
+                                topLeft:
+                                Radius.circular(18),
+                                topRight:
+                                Radius.circular(18)),
+                            child: CachedNetworkImage(
+                              height: 100,
+                              width: double.infinity,
+                              fit: BoxFit.fitWidth,
+                              imageUrl:
+                              "${Network.imgUrl}${contactDetailsDatum!.backgroungImage}",
+                              progressIndicatorBuilder:
+                                  (context, url,
+                                  downloadProgress) =>
+                                  Center(
+                                    child:
+                                    CircularProgressIndicator(
+                                        value:
+                                        downloadProgress
+                                            .progress),
+                                  ),
+                              errorWidget:
+                                  (context, url, error) =>
+                                  Image.asset(
+                                    "assets/logo/Top with a picture.png",
+                                    height: 80,
+                                    fit: BoxFit.fill,
+                                    width: double.infinity,
+                                  ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 12.0, left: 12),
+                            child: ClipRRect(
+                              borderRadius:
+                              const BorderRadius.all(
+                                  Radius.circular(50)),
+                              child: CachedNetworkImage(
+                                height: 75,
+                                width: 75,
+                                fit: BoxFit.fitWidth,
+                                imageUrl:
+                                "${Network.imgUrl}${contactDetailsDatum!.cardImage}",
+                                progressIndicatorBuilder:
+                                    (context, url,
+                                    downloadProgress) =>
+                                    Center(
+                                      child:
+                                      CircularProgressIndicator(
+                                          value:
+                                          downloadProgress
+                                              .progress),
+                                    ),
+                                errorWidget:
+                                    (context, url, error) =>
+                                    Image.asset(
+                                      "assets/logo/Central icon.png",
+                                      height: 80,
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                    ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                          : ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(18),
+                            topRight: Radius.circular(18)),
+                        child: Image.asset(
+                          "assets/logo/Central icon.png",
+                          height: 80,
+                          fit: BoxFit.fitWidth,
+                          width: double.infinity,
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 4.0, horizontal: 12),
+                    child:  Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment:
+                      CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 17,
+                            ),
+                            Text(
+                              "${contactDetailsDatum?.firstName ?? ""} ${contactDetailsDatum?.lastName ?? ""}",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight:
+                                  FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              contactDetailsDatum
+                                  ?.jobTitle ??
+                                  "",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight:
+                                  FontWeight.normal,
+                                  color: Colors.black45),
+                            ),
+                            Text(
+                              contactDetailsDatum
+                                  ?.companyName ??
+                                  "",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight:
+                                  FontWeight.normal,
+                                  color: Colors.black45),
+                            ),
+                          ],
+                        ),
+                        ClipRRect(
+                          borderRadius:
+                          const BorderRadius.all(
+                              Radius.circular(
+                                  75)),
+                          child: CachedNetworkImage(
+                            height: 75,
+                            width: 75,
+                            fit: BoxFit.fitWidth,
+                            imageUrl:
+                            "${Network.imgUrl}${contactDetailsDatum?.companyLogo ?? ""}",
+                            progressIndicatorBuilder:
+                                (context, url,
+                                downloadProgress) =>
+                                Center(
+                                  child: CircularProgressIndicator(
+                                      value:
+                                      downloadProgress
+                                          .progress),
+                                ),
+                            errorWidget: (context,
+                                url, error) =>
+                                Image.asset(
+                                  "assets/logo/Central icon.png",
+                                  height: 80,
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    child: SizedBox(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        // iconAlignment: IconAlignment.start,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.white, // Background color
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Colors.transparent),
+                            borderRadius: BorderRadius.circular(
+                                30), // Rounded corners
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)
+                                  .translate('cancel'),
+                              style: TextStyle(
+                                  color: Colors.black45, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    child: SizedBox(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        // iconAlignment: IconAlignment.start,
+                        onPressed: () {
+                          Utility.showLoader(context);
+                          apiAddContact();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.white, // Background color
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Colors.transparent),
+                            borderRadius: BorderRadius.circular(
+                                30), // Rounded corners
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)
+                                  .translate('add'),
+                              style: TextStyle(
+                                  color: Colors.black45, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20,)
+          ],
+        ),
       ),
     );
   }

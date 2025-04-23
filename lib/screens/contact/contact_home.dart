@@ -23,6 +23,7 @@ import '../../models/tag_model.dart';
 import '../../utils/utility.dart';
 import '../home_module/add_new_contact.dart';
 import '../tag/tag_management_screen.dart';
+import 'add_contact_preview.dart';
 import 'add_tag_in_contact_bottom_sheet.dart';
 import 'contact_notes.dart';
 
@@ -35,7 +36,7 @@ class ContactHomeScreen extends StatefulWidget {
 
 class _ContactHomeScreenState extends State<ContactHomeScreen> {
   ContactCubit? _getTagCubit;
-  ContactCubit? _getRecentContact, _getMyContact, _addContactCubit,
+  ContactCubit? _getRecentContact, _getMyContact,
       deleteContactCubit, _favCubit;
   int selectedIndex = 0;
   List<TagDatum> tags = [];
@@ -58,7 +59,6 @@ bool isInTeam = false;
     },);
     _getTagCubit = ContactCubit(ContactRepository());
     _getMyContact = ContactCubit(ContactRepository());
-    _addContactCubit = ContactCubit(ContactRepository());
     deleteContactCubit = ContactCubit(ContactRepository());
     _getRecentContact = ContactCubit(ContactRepository());
     _favCubit = ContactCubit(ContactRepository());
@@ -74,10 +74,8 @@ bool isInTeam = false;
     _getTagCubit?.close();
     _getMyContact?.close();
     deleteContactCubit?.close();
-    _addContactCubit?.close();
     _getRecentContact?.close();
     _favCubit?.close();
-    _addContactCubit = null;
     _getMyContact = null;
     _favCubit = null;
     _getTagCubit = null;
@@ -94,12 +92,7 @@ bool isInTeam = false;
     _getTagCubit?.apiGetCardTag(data);
   }
 
-  Future<void> apiAddContact(cardId) async {
-    Map<String, dynamic> data = {
-      "card_id": cardId,
-    };
-    _addContactCubit?.apiAddContact(data);
-  }
+
 
   Future<void> apiGetMyContact(key, hide,companyTypeId,cardTypeId,jobTitle) async {
     List<int> tagId = [];
@@ -253,35 +246,6 @@ bool isInTeam = false;
             setState(() {});
           },
         ),
-        BlocListener<ContactCubit, ResponseState>(
-          bloc: _addContactCubit,
-          listener: (context, state) {
-            if (state is ResponseStateLoading) {} else
-            if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
-              Navigator.pop(context);
-              Utility().showFlushBar(
-                  context: context, message: state.message, isError: true);
-            } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
-              Navigator.pop(context);
-              Utility().showFlushBar(
-                  context: context, message: state.message, isError: true);
-            } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
-              Navigator.pop(context);
-              Utility().showFlushBar(
-                  context: context, message: state.errorMessage, isError: true);
-            } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
-              var dto = state.data as UtilityDto;
-              Utility().showFlushBar(
-                  context: context, message: dto.message ?? "");
-              apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
-            }
-            setState(() {});
-          },
-        ),
       ],
       child: Scaffold(
         appBar: AppBar(
@@ -315,8 +279,19 @@ bool isInTeam = false;
                         builder: (context) =>
                             ScanQrCodeBottomSheet(callBack: (v) {
                               Navigator.pop(context);
-                              Utility.showLoader(context);
-                              apiAddContact(v);
+                              showModalBottomSheet(
+                                  context: context,
+                                  useSafeArea: true,
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.vertical(top: Radius.circular(20)),
+                                  ),
+                                  builder: (context) => AddContactPreview(contactId: v.toString(),
+                                    callBack: (){
+                                      apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
+                                    }
+                                    ,));
                             },callBack1: (){
                               apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                             },)

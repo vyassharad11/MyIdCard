@@ -7,6 +7,7 @@ import 'package:my_di_card/screens/setting_module/help_and_support.dart';
 import 'package:my_di_card/screens/setting_module/terms_policy_page.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/auth_cubit.dart';
@@ -40,10 +41,10 @@ class _SettingScreenState extends State<SettingScreen> {
     prefs = await SharedPreferences.getInstance();
   }
 
-  apiGetTermsAndPolicy(title){
-    if(title == "Privacy Policy"){
+  apiGetTermsAndPolicy(title) {
+    if (title == "Privacy Policy") {
       _termsPolicyCubit?.apiGetPrivacy();
-    }else {
+    } else {
       _termsPolicyCubit?.apiGetTerms();
     }
   }
@@ -56,27 +57,29 @@ class _SettingScreenState extends State<SettingScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
         BlocListener<AuthCubit, ResponseState>(
-        bloc: _termsPolicyCubit,
-        listener: (context, state) {
-    if (state is ResponseStateLoading) {
-    } else if (state is ResponseStateEmpty) {
-    Utility.hideLoader(context);
-    } else if (state is ResponseStateNoInternet) {
-    Utility.hideLoader(context);
-    } else if (state is ResponseStateError) {
-    Utility.hideLoader(context);
-    } else if (state is ResponseStateSuccess) {
-    Utility.hideLoader(context);
-    var dto = state.data as UtilityDto;
-    }
-    setState(() {});
-    },),
+          bloc: _termsPolicyCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              launch(dto.url ?? "");
+              setState(() {});
+            }
+            setState(() {});
+          },
+        ),
       ],
       child: Scaffold(
         backgroundColor: ColoursUtils.background,
@@ -113,8 +116,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                     Center(
                       child: Text(
-                        AppLocalizations.of(context)
-                            .translate('Settings'),
+                        AppLocalizations.of(context).translate('Settings'),
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w600),
@@ -180,8 +182,12 @@ class _SettingScreenState extends State<SettingScreen> {
                       size: 20,
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionScreen(),));
-                   },
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SubscriptionScreen(),
+                          ));
+                    },
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -225,7 +231,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       color: Colors.blue.shade300,
                     ),
                     title: Text(
-                      AppLocalizations.of(context).translate('termsAndConditions'),
+                      AppLocalizations.of(context)
+                          .translate('termsAndConditions'),
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
@@ -264,7 +271,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       size: 20,
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HelpAndSupport(),));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HelpAndSupport(),
+                          ));
                       // Handle delete account action
                     },
                   ),
@@ -352,10 +363,10 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-
   String selectedLanguage = "";
-   bottomSheetDropdown(BuildContext context) {
-    return    showModalBottomSheet(
+
+  bottomSheetDropdown(BuildContext context) {
+    return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
@@ -371,7 +382,7 @@ class _SettingScreenState extends State<SettingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-        AppLocalizations.of(context).translate('selectAnyLanguage'),
+                AppLocalizations.of(context).translate('selectAnyLanguage'),
                 style: const TextStyle(color: Colors.black, fontSize: 18),
               ),
             ),
@@ -419,8 +430,12 @@ class _SettingScreenState extends State<SettingScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text( AppLocalizations.of(context).translate('logout1'),),
-          content: Text( AppLocalizations.of(context).translate('areYouWLogout'),),
+          title: Text(
+            AppLocalizations.of(context).translate('logout1'),
+          ),
+          content: Text(
+            AppLocalizations.of(context).translate('areYouWLogout'),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -429,13 +444,17 @@ class _SettingScreenState extends State<SettingScreen> {
                 clearSharedPreferences(context);
                 // Close the dialog
               },
-              child: Text( AppLocalizations.of(context).translate('logout'),),
+              child: Text(
+                AppLocalizations.of(context).translate('logout'),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text( AppLocalizations.of(context).translate('cancel'),),
+              child: Text(
+                AppLocalizations.of(context).translate('cancel'),
+              ),
             ),
           ],
         );
@@ -448,21 +467,29 @@ class _SettingScreenState extends State<SettingScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text( AppLocalizations.of(context).translate('deleteAccount'),),
-          content: Text( AppLocalizations.of(context).translate('areYouWDeleteAccount'),),
+          title: Text(
+            AppLocalizations.of(context).translate('deleteAccount'),
+          ),
+          content: Text(
+            AppLocalizations.of(context).translate('areYouWDeleteAccount'),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 // Perform delete action here
                 Navigator.of(context).pop();
               },
-              child: Text( AppLocalizations.of(context).translate('delete'),),
+              child: Text(
+                AppLocalizations.of(context).translate('delete'),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text( AppLocalizations.of(context).translate('cancel'),),
+              child: Text(
+                AppLocalizations.of(context).translate('cancel'),
+              ),
             ),
           ],
         );
@@ -472,7 +499,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   Future<void> clearSharedPreferences(context) async {
     Utility.showLoader(context);
-
 
     bool success = await prefs.clear(); // Clears all key-value pairs
     if (success) {
@@ -484,7 +510,7 @@ class _SettingScreenState extends State<SettingScreen> {
             MaterialPageRoute(builder: (builder) => WelcomePage()),
             (route) => false,
           );
-           Utility.hideLoader(context);
+          Utility.hideLoader(context);
         },
       );
 
