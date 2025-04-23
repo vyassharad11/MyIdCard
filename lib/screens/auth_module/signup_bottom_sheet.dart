@@ -244,7 +244,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
           } else if (state is ResponseStateSuccess) {
              Utility.hideLoader(context);
             var dto = state.data as UtilityDto;
-            Storage().saveToken(dto.token ?? "");
+            // Storage().saveToken(dto.token ?? "");
             showModalBottomSheet(
               context: context,
               isDismissible: false,

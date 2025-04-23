@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_di_card/localStorage/storage.dart';
+import 'package:my_di_card/screens/auth_module/profile_bottom_sheet.dart';
 import 'package:my_di_card/screens/auth_module/signup_bottom_sheet.dart';
 import 'package:my_di_card/screens/home_module/first_card.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
@@ -48,7 +49,21 @@ class _WelcomePageState extends State<WelcomePage> {
     var isFirstCardSkip = await Storage().getFirstCardSkip();
     if (token.isNotEmpty) {
       print("isFirstCardSkip>>>>$isFirstCardSkip");
-      if (!isFirstCardSkip) {
+
+      final loginUser = await Storage().getUserFromPreferences();
+
+      if (loginUser != null && loginUser.firstName == null) {
+        showModalBottomSheet(
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          ),
+          isScrollControlled: true,
+          useRootNavigator: false,
+          isDismissible: false,
+          builder: (context) => ProfileBottomSheet(),
+        );
+      }else if (!isFirstCardSkip) {
         Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute(builder: (builder) => FirstCardScreen()),

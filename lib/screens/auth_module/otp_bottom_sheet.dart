@@ -97,8 +97,10 @@ class _EmailVerificationBottomSheetState
             if (dto.user != null) {
               Storage().saveUserToPreferences(dto.user!);
             }
-            Storage().saveToken(widget.token.toString());
-            showModalBottomSheet(
+            // Storage().saveToken(widget.token.toString());
+             Storage().saveToken(dto.token ?? "");
+
+             showModalBottomSheet(
               context: context,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
