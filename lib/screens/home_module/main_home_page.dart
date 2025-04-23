@@ -27,6 +27,7 @@ import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../add_card_module/share_card_bottom_sheet.dart';
+import '../contact/add_contact_preview.dart';
 import '../contact/contact_details_screen.dart';
 import '../profile_mosule/profile_new.dart';
 import '../add_card_module/add_new_card.dart';
@@ -210,7 +211,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   CardCubit? _getCardCubit;
   CardListModel? cardList;
-  ContactCubit? _addContactCubit,_getMyContact,_unFavContact;
+  ContactCubit? _getMyContact,_unFavContact;
   bool isLoad = true,isLoadFav = true;
   List<ContactDatum> myContactList = [];
   int selectedIndex = 0;
@@ -218,7 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _getCardCubit = CardCubit(CardRepository());
-    _addContactCubit = ContactCubit(ContactRepository());
     _getMyContact = ContactCubit(ContactRepository());
     _unFavContact = ContactCubit(ContactRepository());
     getMyCard();
@@ -235,12 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _getCardCubit?.apiGetMyCard();
   }
 
-  Future<void> apiAddContact(cardId) async {
-    Map<String, dynamic> data = {
-      "card_id": cardId,
-    };
-    _addContactCubit?.apiAddContact(data);
-  }
+
 
   Future<void> apiContactFavUnFav(cardId) async {
     Map<String, dynamic> data = {
@@ -306,31 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {});
           },
         ),
-        BlocListener<ContactCubit, ResponseState>(
-          bloc: _addContactCubit,
-          listener: (context, state) {
-            if (state is ResponseStateLoading) {
-            } else if (state is ResponseStateEmpty) {
-              Utility.hideLoader(context);
-              Utility().showFlushBar(
-                  context: context, message: state.message, isError: true);
-            } else if (state is ResponseStateNoInternet) {
-              Utility.hideLoader(context);
-              Utility().showFlushBar(
-                  context: context, message: state.message, isError: true);
-            } else if (state is ResponseStateError) {
-              Utility.hideLoader(context);
-              Utility().showFlushBar(
-                  context: context, message: state.errorMessage, isError: true);
-            } else if (state is ResponseStateSuccess) {
-              Utility.hideLoader(context);
-              var dto = state.data as UtilityDto;
-              Utility()
-                  .showFlushBar(context: context, message: dto.message ?? "");
-            }
-            setState(() {});
-          },
-        ),  BlocListener<ContactCubit, ResponseState>(
+     BlocListener<ContactCubit, ResponseState>(
           bloc: _unFavContact,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
@@ -773,8 +744,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           builder: (context) => ScanQrCodeBottomSheet(
                             callBack: (v) {Navigator.pop(context);
-                            Utility.showLoader(context);
-                            apiAddContact(v);},
+                            showModalBottomSheet(
+                                context: context,
+                                useSafeArea: true,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                              ),
+                              builder: (context) => AddContactPreview(contactId: v.toString(),callBack: (){},));
+                           }
+                            ,
                           ),
                         );
                       },

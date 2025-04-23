@@ -320,14 +320,14 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                   ),
                                   padding: const EdgeInsets.symmetric(horizontal: 16),
                                   child: TextField(
-                                    controller: instagram,
+                                    controller: facebook,
                                     decoration: InputDecoration(
-                                      hintText: 'Instagram',
+                                      hintText: 'Facebook',
                                       suffixIcon: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 12.0, bottom: 12, left: 20),
                                         child: Image.asset(
-                                          "assets/images/instagram.png",
+                                          "assets/images/fi_1384005.png",
                                           height: 14,
                                           fit: BoxFit.contain,
                                           width: 14,
@@ -372,14 +372,14 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                   ),
                                   padding: const EdgeInsets.symmetric(horizontal: 16),
                                   child: TextField(
-                                    controller: facebook,
+                                    controller: instagram,
                                     decoration: InputDecoration(
-                                      hintText: 'Facebook',
+                                      hintText: '@Instagram',
                                       suffixIcon: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 12.0, bottom: 12, left: 20),
                                         child: Image.asset(
-                                          "assets/images/fi_1384005.png",
+                                          "assets/images/instagram.png",
                                           height: 14,
                                           fit: BoxFit.contain,
                                           width: 14,
@@ -396,10 +396,17 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                 ),
                               ),
                               SizedBox(width: 8,),
-                              Icon(
-                                Icons.info_outline,
-                                color: Colors.grey,
-                                size: 20,
+                              InkWell(
+                                onTap: (){
+                                  showMenu(context: context, items: [
+                                    PopupMenuItem(child: Text("Show a popup indicating: “Put your Instagram name indicated by what comes after the @ value on your account."),)
+                                  ],);
+                                },
+                                child: Icon(
+                                  Icons.info_outline,
+                                  color: Colors.grey,
+                                  size: 20,
+                                ),
                               )
                             ],
                           ),
@@ -419,7 +426,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                   child: TextField(
                                     controller: twitter,
                                     decoration: InputDecoration(
-                                      hintText: 'Twitter',
+                                      hintText: '@Twitter',
                                       suffixIcon: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 12.0, bottom: 12, left: 20),
@@ -441,10 +448,17 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                 ),
                               ),
                               SizedBox(width: 8,),
-                              Icon(
-                                Icons.info_outline,
-                                color: Colors.grey,
-                                size: 20,
+                              InkWell(
+                                onTap: (){
+                                  showMenu(context: context, items: [
+                                    PopupMenuItem(child: Text("Show a popup indicating: “Put your Twitter name indicated by what comes after the @ value on your account."),)
+                                  ],);
+                                },
+                                child: Icon(
+                                  Icons.info_outline,
+                                  color: Colors.grey,
+                                  size: 20,
+                                ),
                               )
                             ],
                           ),
