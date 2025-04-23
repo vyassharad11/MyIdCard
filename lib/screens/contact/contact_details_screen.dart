@@ -14,10 +14,12 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
 import '../../createCard/create_card_final_preview.dart';
 import '../../data/repository/contact_repository.dart';
+import '../../language/app_localizations.dart';
 import '../../models/contact_details_dto.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../models/tag_model.dart';
+import '../../utils/colors/colors.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -26,6 +28,7 @@ import '../meetings/create_edit_meeting.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
 import 'add_tag_in_contact_bottom_sheet.dart';
+import 'other_card_details.dart';
 
 class ContactDetails extends StatefulWidget {
   final int contactId;
@@ -184,8 +187,8 @@ class _ContactDetailsState extends State<ContactDetails> {
           ListTile(
             title: Text(
               contactDetailsDatum?.favorite == 1
-                  ? 'Add to favorites'
-                  : 'UnFavorite',
+                  ?AppLocalizations.of(context).translate('addToFavorites')
+                  : AppLocalizations.of(context).translate('unFavorite'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -204,8 +207,8 @@ class _ContactDetailsState extends State<ContactDetails> {
               contactDetailsDatum != null &&
                       contactDetailsDatum!.contactTags != null &&
                       contactDetailsDatum!.contactTags!.isNotEmpty
-                  ? "Edit tag"
-                  : 'Add tag',
+                  ? AppLocalizations.of(context).translate('editTag')
+                  : AppLocalizations.of(context).translate('addTag'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -239,7 +242,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           ),
           ListTile(
             title: Text(
-              '${contactDetailsDatum?.contactStatus == 1 ? "Hide" : "Un-hide"} Contact',
+              '${contactDetailsDatum?.contactStatus == 1 ? AppLocalizations.of(context).translate('hide') : AppLocalizations.of(context).translate('unHide')} ${AppLocalizations.of(context).translate('contact')}',
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -256,8 +259,8 @@ class _ContactDetailsState extends State<ContactDetails> {
           if (widget.isPhysicalContact == false)
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-              title: const Text(
-                'Export to Contacts App',
+              title:  Text(
+                AppLocalizations.of(context).translate('exportToContactsApp'),
                 style: TextStyle(color: Colors.black, fontSize: 14),
               ),
               onTap: () {
@@ -276,8 +279,8 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           ListTile(
-            title: const Text(
-              'Delete Contact',
+            title:  Text(
+              AppLocalizations.of(context).translate('deleteContact'),
               style: TextStyle(color: Colors.red, fontSize: 14),
             ),
             onTap: () {
@@ -466,6 +469,13 @@ class _ContactDetailsState extends State<ContactDetails> {
         ),
       ],
       child: Scaffold(
+        // backgroundColor:  contactDetailsDatum
+        //     ?.cardStyle !=
+        //     null
+        //     ? Color(int.parse(
+        //     '0xFF${contactDetailsDatum!.cardStyle!}'))
+        //     : Colors
+        //     .white,
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
@@ -474,7 +484,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           automaticallyImplyLeading: true,
           backgroundColor: Colors.white,
           title: Text(
-            "${contactDetailsDatum?.firstName ?? ""} ${contactDetailsDatum?.lastName ?? ""}",
+            "${contactDetailsDatum?.cardName ?? ""}",
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
@@ -596,10 +606,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                     borderRadius:
                                                         const BorderRadius.all(
                                                             Radius.circular(
-                                                                50)),
+                                                                60)),
                                                     child: CachedNetworkImage(
-                                                      height: 55,
-                                                      width: 55,
+                                                      height: 60,
+                                                      width: 60,
                                                       fit: BoxFit.fitWidth,
                                                       imageUrl:
                                                           "${Network.imgUrl}${contactDetailsDatum?.cardImage}",
@@ -623,27 +633,58 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                     ),
                                                   ),
                                                 ),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (builder) =>
-                                                              CreateCardFinalPreview(
-                                                            cardId: contactDetailsDatum
-                                                                    ?.cardId
-                                                                    .toString() ??
-                                                                "",
-                                                            isOtherCard: true,
+                                                Column(
+                                                  children: [
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (builder) =>
+                                                                  OtherCardDetails(
+                                                                cardId: contactDetailsDatum
+                                                                        ?.cardId
+                                                                        .toString() ??
+                                                                    "",
+                                                                isOtherCard: true,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.info_rounded,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        )),
+                                                    InkWell(
+                                                      onTap: (){
+                                                        showModalBottomSheet(
+                                                          context: context,
+                                                          useSafeArea: true,
+                                                          isScrollControlled: true,
+                                                          shape:
+                                                          const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                    20)),
                                                           ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.info_rounded,
-                                                      color: Colors.white,
-                                                      size: 20,
-                                                    ))
+                                                          builder: (context) =>
+                                                              ShareOtherCardBottomSheet(
+                                                                cardData:
+                                                                contactDetailsDatum,
+                                                              ),
+                                                        );
+                                                      },
+                                                      child: Image.asset(
+                                                        "assets/images/send-01.png",
+                                                        height: 16,
+                                                        width: 16,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
                                               ],
                                             ),
                                           ],
@@ -720,7 +761,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 ),
                                                 Text(
                                                   contactDetailsDatum
-                                                          ?.cardName ??
+                                                          ?.jobTitle ??
                                                       "",
                                                   style: TextStyle(
                                                       fontSize: 14,
@@ -730,7 +771,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 ),
                                                 Text(
                                                   contactDetailsDatum
-                                                          ?.jobTitle ??
+                                                          ?.companyName ??
                                                       "",
                                                   style: TextStyle(
                                                       fontSize: 14,
@@ -740,69 +781,34 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(
-                                              height: 35,
-                                              width: 90,
-                                              child: ElevatedButton(
-                                                // iconAlignment: IconAlignment.start,
-                                                onPressed: () {
-                                                  showModalBottomSheet(
-                                                    context: context,
-                                                    useSafeArea: true,
-                                                    isScrollControlled: true,
-                                                    shape:
-                                                        const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.vertical(
-                                                              top: Radius
-                                                                  .circular(
-                                                                      20)),
+                                            ClipRRect(
+                                              borderRadius:
+                                              const BorderRadius.all(
+                                                  Radius.circular(
+                                                      60)),
+                                              child: CachedNetworkImage(
+                                                height: 60,
+                                                width: 60,
+                                                fit: BoxFit.fitWidth,
+                                                imageUrl:
+                                                "${Network.imgUrl}${contactDetailsDatum?.companyLogo ?? ""}",
+                                                progressIndicatorBuilder:
+                                                    (context, url,
+                                                    downloadProgress) =>
+                                                    Center(
+                                                      child: CircularProgressIndicator(
+                                                          value:
+                                                          downloadProgress
+                                                              .progress),
                                                     ),
-                                                    builder: (context) =>
-                                                        ShareOtherCardBottomSheet(
-                                                      cardData:
-                                                          contactDetailsDatum,
-                                                    ),
-                                                  );
-
-                                                  // Handle button press
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: contactDetailsDatum
-                                                              ?.cardStyle !=
-                                                          null
-                                                      ? Color(int.parse(
-                                                          '0xFF${contactDetailsDatum!.cardStyle!}'))
-                                                      : Colors
-                                                          .blue, // Background color
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30), // Rounded corners
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
+                                                errorWidget: (context,
+                                                    url, error) =>
                                                     Image.asset(
-                                                      "assets/images/send-01.png",
-                                                      height: 16,
-                                                      width: 16,
+                                                      "assets/logo/Central icon.png",
+                                                      height: 80,
+                                                      fit: BoxFit.fill,
+                                                      width: double.infinity,
                                                     ),
-                                                    const SizedBox(
-                                                      width: 6,
-                                                    ), // Space between icon and text
-                                                    const Text(
-                                                      "Send", // Right side text
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 13),
-                                                    ),
-                                                  ],
-                                                ),
                                               ),
                                             ),
                                           ],
@@ -1002,8 +1008,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            InkWell(
+                                     if(linkdinLink != null && linkdinLink!.isNotEmpty)       InkWell(
                                               onTap: () {
+                                                print("setLink??>sssssss>>>>>>>>>>$linkdinLink");
                                                 launchUrlGet(
                                                   linkdinLink ?? "",
                                                 );
@@ -1014,7 +1021,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 width: 45,
                                               ),
                                             ),
-                                            InkWell(
+                                            if(faceBookLink != null && faceBookLink!.isNotEmpty)           InkWell(
                                               onTap: () {
                                                 launchUrlGet(
                                                   faceBookLink ?? "",
@@ -1026,7 +1033,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 width: 45,
                                               ),
                                             ),
-                                            InkWell(
+                                            if(twitterLink != null && twitterLink!.isNotEmpty)       InkWell(
                                               onTap: () {
                                                 launchUrlGet(
                                                   twitterLink ?? "",
@@ -1038,7 +1045,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 width: 45,
                                               ),
                                             ),
-                                            InkWell(
+                                            if(instaLink != null && instaLink!.isNotEmpty)               InkWell(
                                               onTap: () {
                                                 launchUrlGet(
                                                   instaLink ?? "",
@@ -1050,11 +1057,92 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 width: 45,
                                               ),
                                             ),
-                                            InkWell(
+                                            if (contactDetailsDatum != null &&
+                                                contactDetailsDatum!.cardDocuments != null && contactDetailsDatum!.cardDocuments!.isNotEmpty)    InkWell(
                                               onTap: () {
-                                                // launchUrlGet(
-                                                //   linkdinLink ?? "",
-                                                // );
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    useSafeArea: true,
+                                                    isScrollControlled: true,
+                                                    shape: const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.vertical(top: Radius.circular(20)),
+                                                    ),
+                                                    builder: (context) =>
+                                                       Container(
+                                                         decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))),
+                                                         constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200,minHeight: 70),
+                                                         child: ListView.separated(
+                                                           shrinkWrap: true,
+                                                           physics: const NeverScrollableScrollPhysics(),
+                                                           separatorBuilder: (crtx, index) {
+                                                             return Container(
+                                                               height: 1,
+                                                               color: ColoursUtils.background,
+                                                               margin: const EdgeInsets.symmetric(
+                                                                   horizontal: 12, vertical: 8),
+                                                             );
+                                                           },
+                                                           padding: EdgeInsets.zero,
+                                                           itemCount: contactDetailsDatum!.cardDocuments!.length,
+                                                           itemBuilder: (context, index) {
+                                                             return ListTile(
+                                                               leading: SizedBox(
+                                                                 width: 40,
+                                                                 height: 40,
+                                                                 child: ClipRRect(
+                                                                     borderRadius: BorderRadius.circular(
+                                                                         30), // Rounded corners for image
+                                                                     child: SizedBox(
+                                                                       height: 40,
+                                                                       child: CachedNetworkImage(
+                                                                         height: 40,
+                                                                         fit: BoxFit.fitWidth,
+                                                                         imageUrl:
+                                                                         "${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document.toString()}",
+                                                                         progressIndicatorBuilder:
+                                                                             (context, url,
+                                                                             downloadProgress) =>
+                                                                             Center(
+                                                                               child:
+                                                                               CircularProgressIndicator(
+                                                                                   value: downloadProgress
+                                                                                       .progress),
+                                                                             ),
+                                                                         errorWidget:
+                                                                             (context, url, error) =>
+                                                                             Image.asset(
+                                                                               "assets/images/Frame 508.png",
+                                                                               height: 40,
+                                                                               fit: BoxFit.fill,
+                                                                               width: double.infinity,
+                                                                             ),
+                                                                       ),
+                                                                     )),
+                                                               ),
+                                                               title: Text(
+                                                                 contactDetailsDatum!
+                                                                     .cardDocuments![index].document
+                                                                     .toString(),
+                                                               ),
+                                                               // trailing: IconButton(
+                                                               //   icon: Padding(
+                                                               //     padding: const EdgeInsets.all(4),
+                                                               //     child: Image.asset(
+                                                               //         "assets/images/Frame 415.png"),
+                                                               //   ),
+                                                               //   color: Colors.grey,
+                                                               //   onPressed: () {
+                                                               //     // Handle delete action
+                                                               //   },
+                                                               // ),
+                                                             );
+
+                                                             // return SizedBox();
+                                                           },
+                                                         ),
+                                                       )
+                                                );
                                               },
                                               child: Image.asset(
                                                 "assets/images/other.png",
@@ -1078,7 +1166,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Notes",
+                            AppLocalizations.of(context).translate('notes'),
                             style: TextStyle(
                               color: Colors.black, // Text color
                               fontSize: 14,
@@ -1098,12 +1186,12 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     } else {
                                       Utility().showFlushBar(
                                           context: context,
-                                          message: "Enter notes",
+                                          message: AppLocalizations.of(context).translate('enterNotes'),
                                           isError: true);
                                     }
                                   },
                                   child: Text(
-                                    "Add", // Right side text
+                                    AppLocalizations.of(context).translate('add'), // Right side text
                                     style: TextStyle(
                                         color: Colors.blue, fontSize: 16),
                                   ),
@@ -1119,12 +1207,12 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         } else {
                                           Utility().showFlushBar(
                                               context: context,
-                                              message: "Enter notes",
+                                              message: AppLocalizations.of(context).translate('enterNotes'),
                                               isError: true);
                                         }
                                       },
                                       child: Text(
-                                        "Update", // Right side text
+                                        AppLocalizations.of(context).translate('update'), // Right side text
                                         style: TextStyle(
                                             color: Colors.blue, fontSize: 16),
                                       ),
@@ -1224,11 +1312,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  const Padding(
+                                   Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 12.0),
                                     child: Text(
-                                      'Mettings',
+                                      AppLocalizations.of(context).translate('meetings'),
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500),
@@ -1346,11 +1434,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     ),
                                   );
                                 },
-                                child: const Row(
+                                child:  Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "View All meetings",
+                                      AppLocalizations.of(context).translate('viewAllMeetings'),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14,

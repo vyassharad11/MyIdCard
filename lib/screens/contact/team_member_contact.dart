@@ -6,6 +6,7 @@ import '../../bloc/cubit/group_cubit.dart';
 import '../../bloc/cubit/team_cubit.dart';
 import '../../data/repository/group_repository.dart';
 import '../../data/repository/team_repository.dart';
+import '../../language/app_localizations.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/team_member.dart';
 import '../../utils/utility.dart';
@@ -170,7 +171,7 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Groups",
+                  AppLocalizations.of(context).translate('groups'),
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ],

@@ -10,12 +10,15 @@ import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/common_utils.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../bloc/api_resp_state.dart';
+import '../language/app_localizations.dart';
 import '../localStorage/storage.dart';
 import '../models/card_get_model.dart';
 import '../models/social_data.dart';
 import '../models/utility_dto.dart';
+import '../utils/url_lancher.dart';
 import '../utils/utility.dart';
 import 'create_card_details.dart';
 
@@ -182,9 +185,10 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                           ),
                         ),
                       ),
-                      const Center(
+                       Center(
                         child: Text(
-                          "Create Card",
+                          AppLocalizations.of(context)
+                              .translate('createCardOn'),
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -238,9 +242,10 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Center(
+                   Center(
                     child: Text(
-                      "Social Media",
+                      AppLocalizations.of(context)
+                          .translate('socialMedia'),
                       textAlign: TextAlign.center,
                       softWrap: true,
                       style: TextStyle(
@@ -254,132 +259,194 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: ColoursUtils.background, // Light white color
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: TextField(
-                              controller: linkedin,
-                              decoration: InputDecoration(
-                                hintText: 'Linkedin',
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 12.0, bottom: 12, left: 20),
-                                  child: Image.asset(
-                                    "assets/images/fi_1384014.png",
-                                    height: 14,
-                                    fit: BoxFit.contain,
-                                    width: 14,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: ColoursUtils.background, // Light white color
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                ),
-                                border: InputBorder.none,
-                                hintStyle: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    color: Colors.grey,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: TextField(
+                                    controller: linkedin,
+                                    decoration: InputDecoration(
+                                      hintText: 'Linkedin',
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 12.0, bottom: 12, left: 20),
+                                        child: Image.asset(
+                                          "assets/images/fi_1384014.png",
+                                          height: 14,
+                                          fit: BoxFit.contain,
+                                          width: 14,
+                                        ),
+                                      ),
+                                      border: InputBorder.none,
+                                      hintStyle: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 8,),
+                              InkWell(
+                                onTap: (){
+                                  launch(
+                                   "https://www.youtube.com"
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.info_outline,
+                                  color: Colors.grey,
+                                  size: 20,
+                                ),
+                              )
+                            ],
                           ),
                           const SizedBox(height: 20),
-                          Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: ColoursUtils.background, // Light white color
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: TextField(
-                              controller: instagram,
-                              decoration: InputDecoration(
-                                hintText: 'Instagram',
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 12.0, bottom: 12, left: 20),
-                                  child: Image.asset(
-                                    "assets/images/instagram.png",
-                                    height: 14,
-                                    fit: BoxFit.contain,
-                                    width: 14,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: ColoursUtils.background, // Light white color
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                ),
-                                border: InputBorder.none,
-                                hintStyle: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    color: Colors.grey,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: TextField(
+                                    controller: instagram,
+                                    decoration: InputDecoration(
+                                      hintText: 'Instagram',
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 12.0, bottom: 12, left: 20),
+                                        child: Image.asset(
+                                          "assets/images/instagram.png",
+                                          height: 14,
+                                          fit: BoxFit.contain,
+                                          width: 14,
+                                        ),
+                                      ),
+                                      border: InputBorder.none,
+                                      hintStyle: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 8,),
+                              InkWell(
+                                onTap: (){
+                                  launch(
+                                      "https://www.youtube.com"
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.info_outline,
+                                  color: Colors.grey,
+                                  size: 20,
+                                ),
+                              )
+                            ],
                           ),
                           const SizedBox(
                             height: 20
                           ),
-                          Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: ColoursUtils.background, // Light white color
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: TextField(
-                              controller: facebook,
-                              decoration: InputDecoration(
-                                hintText: 'Facebook',
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 12.0, bottom: 12, left: 20),
-                                  child: Image.asset(
-                                    "assets/images/fi_1384005.png",
-                                    height: 14,
-                                    fit: BoxFit.contain,
-                                    width: 14,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: ColoursUtils.background, // Light white color
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                ),
-                                border: InputBorder.none,
-                                hintStyle: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    color: Colors.grey,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: TextField(
+                                    controller: facebook,
+                                    decoration: InputDecoration(
+                                      hintText: 'Facebook',
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 12.0, bottom: 12, left: 20),
+                                        child: Image.asset(
+                                          "assets/images/fi_1384005.png",
+                                          height: 14,
+                                          fit: BoxFit.contain,
+                                          width: 14,
+                                        ),
+                                      ),
+                                      border: InputBorder.none,
+                                      hintStyle: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 8,),
+                              Icon(
+                                Icons.info_outline,
+                                color: Colors.grey,
+                                size: 20,
+                              )
+                            ],
                           ),
                           const SizedBox(
                             height: 20
                           ),
-                          Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: ColoursUtils.background, // Light white color
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: TextField(
-                              controller: twitter,
-                              decoration: InputDecoration(
-                                hintText: 'Twitter',
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 12.0, bottom: 12, left: 20),
-                                  child: Image.asset(
-                                    "assets/images/x.png",
-                                    height: 14,
-                                    fit: BoxFit.contain,
-                                    width: 14,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: ColoursUtils.background, // Light white color
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                ),
-                                border: InputBorder.none,
-                                hintStyle: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    color: Colors.grey,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: TextField(
+                                    controller: twitter,
+                                    decoration: InputDecoration(
+                                      hintText: 'Twitter',
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 12.0, bottom: 12, left: 20),
+                                        child: Image.asset(
+                                          "assets/images/x.png",
+                                          height: 14,
+                                          fit: BoxFit.contain,
+                                          width: 14,
+                                        ),
+                                      ),
+                                      border: InputBorder.none,
+                                      hintStyle: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 8,),
+                              Icon(
+                                Icons.info_outline,
+                                color: Colors.grey,
+                                size: 20,
+                              )
+                            ],
                           ),
                           ListView.builder(
                             shrinkWrap: true,
@@ -493,12 +560,13 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                 BorderRadius.circular(30), // Rounded corners
                           ),
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Continue", // Right side text
+                              AppLocalizations.of(context)
+                                  .translate("continue"), // Right side text
                               style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],

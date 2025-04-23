@@ -451,9 +451,10 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Center(
+                     Center(
                       child: Text(
-                        "Company Details",
+                          AppLocalizations.of(context)
+                              .translate('companyDetails'),
                         textAlign: TextAlign.center,
                         softWrap: true,
                         style: TextStyle(
@@ -728,12 +729,13 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                                 BorderRadius.circular(30), // Rounded corners
                           ),
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Continue", // Right side text
+                            AppLocalizations.of(context)
+                            .translate('continue'), // Right side text
                               style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],
@@ -811,8 +813,9 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
   // Function to show permission denied message
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Permission denied. Please enable it from settings.'),
+       SnackBar(
+        content: Text(AppLocalizations.of(context)
+            .translate('permissionText'),),
       ),
     );
   }
@@ -842,7 +845,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
             children: [
               SizedBox(height: 20),
               Text(
-                'Select company type',
+                  AppLocalizations.of(context)
+                      .translate('selectCompanyType'),
                 style: const TextStyle(color: Colors.black, fontSize: 18),
               ),
               SizedBox(height: 20),
@@ -894,7 +898,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         children: [
           Text(
             selectedId == null || selectedId!.isEmpty
-                ? "Select Company Type"
+                ? AppLocalizations.of(context)
+          .translate('selectCompanyType')
                 : companyList
                     .firstWhere((item) => item.id.toString() == selectedId)
                     .companyType!,
@@ -970,7 +975,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Use Camera'),
+                  child:  Text(AppLocalizations.of(context)
+                      .translate('useCamera'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.camera);
@@ -991,7 +997,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Choose from Library'),
+                  child:  Text(AppLocalizations.of(context)
+                      .translate('chooseFromLibrary'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
@@ -1005,7 +1012,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                   contentPadding: EdgeInsets.zero,
                   minLeadingWidth: 10,
                   leading: Icon(Icons.delete_outline),
-                  title: const Text('Remove Picture'),
+                  title:  Text(AppLocalizations.of(context)
+                      .translate('removePicture'),),
                   onTap: () {
                     setState(() {
                       _selectedImage = null;

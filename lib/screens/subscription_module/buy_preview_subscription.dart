@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 
+import '../../language/app_localizations.dart';
 import 'buy_subscription_screen.dart';
 
 class BuySubscriptionPreviewScreen extends StatefulWidget {
@@ -21,8 +22,8 @@ class _BuySubscriptionPreviewScreenState
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.black),
-        title: const Text(
-          'Buy Subscription',
+        title:  Text(
+            AppLocalizations.of(context).translate('buySubscription'),
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: false,
@@ -53,8 +54,8 @@ class _BuySubscriptionPreviewScreenState
                     ),
                     const SizedBox(height: 20),
 
-                    const Text(
-                      'Personal Plan',
+                     Text(
+                      AppLocalizations.of(context).translate('personalPlan'),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class _BuySubscriptionPreviewScreenState
 
                     // Trial End Info
                     Text(
-                      'Your free trial will end on July 23, 2024.',
+                      AppLocalizations.of(context).translate('yourFree'),
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -74,7 +75,7 @@ class _BuySubscriptionPreviewScreenState
 
                     // Billing Information
                     Text(
-                      'After that, you will be automatically billed ₹8000.',
+                      '${ AppLocalizations.of(context).translate('afterThePlan')} ₹8000.',
                       softWrap: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -109,9 +110,9 @@ class _BuySubscriptionPreviewScreenState
                       ),
                       side: const BorderSide(color: Colors.grey, width: 2),
                     ),
-                    child: const Center(
+                    child:  Center(
                       child: Text(
-                        'Cancel',
+                          AppLocalizations.of(context).translate('cancel'),
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.black,
@@ -153,9 +154,9 @@ class _BuySubscriptionPreviewScreenState
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    child: const Center(
+                    child:  Center(
                       child: Text(
-                        'Manage Plan',
+                          AppLocalizations.of(context).translate('managePlan'),
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,

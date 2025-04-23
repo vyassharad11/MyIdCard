@@ -440,4 +440,23 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiUpdateNotes(@Path("url") url,
       @Header(authorization) token,@Path("id") id,@Body() body,);
 
+  @POST("{url}support/query")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiSupport(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
+
+  @GET("{url}policies/terms")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiGetTerms(@Path("url") url,
+      @Header(authorization) token);
+
+  @GET("{url}policies/privacy")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiGetPrivacy(@Path("url") url,
+      @Header(authorization) token);
+
 }

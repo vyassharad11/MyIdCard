@@ -242,8 +242,9 @@ class _CreateCardScreenDetailsOtherState
                             const SizedBox(
                                 height: 20), // Space between icon and text
                             // Text below the icon
-                            const Text(
-                              'Upload',
+                             Text(
+                              AppLocalizations.of(context)
+                                  .translate('upload'),
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
@@ -399,12 +400,13 @@ class _CreateCardScreenDetailsOtherState
                                 BorderRadius.circular(30), // Rounded corners
                           ),
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Submit", // Right side text
+                            AppLocalizations.of(context)
+                                .translate('submit'),// Right side text
                               style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],
@@ -499,12 +501,12 @@ class _CreateCardScreenDetailsOtherState
 
         debugPrint("Data submitted successfully: ");
 
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
                 builder: (builder) => CreateCardFinalPreview(
                       cardId: widget.cardId.toString() ?? "",
-                    )));
+                    )), (route) => false,);
       } else {
          Utility.hideLoader(context);
         print(
@@ -544,7 +546,8 @@ class _CreateCardScreenDetailsOtherState
               color: Colors.black,
               height: 24,
             ),
-            title: const Text('Upload Physical Card'),
+            title:  Text(AppLocalizations.of(context)
+                .translate('uploadPhysicalCard'),),
             onTap: () {
               _pickImage(ImageSource.gallery);
 
@@ -563,7 +566,8 @@ class _CreateCardScreenDetailsOtherState
               color: Colors.black,
               height: 24,
             ),
-            title: const Text('Use Camera'),
+            title:  Text(AppLocalizations.of(context)
+                .translate('useCamera'),),
             onTap: () {
               _pickImage(ImageSource.camera);
 
@@ -582,7 +586,8 @@ class _CreateCardScreenDetailsOtherState
               color: Colors.black,
               height: 24,
             ),
-            title: const Text('Upload Photos'),
+            title:  Text(AppLocalizations.of(context)
+                .translate('uploadPhotos'),),
             onTap: () {
               _pickImage(ImageSource.gallery);
               // Handle Upload Photos action
@@ -600,7 +605,8 @@ class _CreateCardScreenDetailsOtherState
               width: 24,
               height: 24,
             ),
-            title: const Text('Upload Files'),
+            title:  Text(AppLocalizations.of(context)
+                .translate('uploadFiles'),),
             onTap: () {
               // Handle Upload Files action
               selectFile();
@@ -692,8 +698,9 @@ class _CreateCardScreenDetailsOtherState
   // Function to show permission denied message
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Permission denied. Please enable it from settings.'),
+       SnackBar(
+        content: Text(AppLocalizations.of(context)
+            .translate('permissionText'),),
       ),
     );
   }

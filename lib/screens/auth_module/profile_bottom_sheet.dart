@@ -328,11 +328,13 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'I agree to ',
+                                  text:   AppLocalizations.of(context)
+                                      .translate('iAgreeTo'),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 TextSpan(
-                                  text: 'Terms and Condition',
+                                  text:   AppLocalizations.of(context)
+                                      .translate('termsAndCondition'),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
@@ -386,11 +388,13 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'I agree to ',
+                                  text:   AppLocalizations.of(context)
+                                .translate('iAgreeTo'),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 TextSpan(
-                                  text: 'Privacy Policy',
+                                  text:   AppLocalizations.of(context)
+                                      .translate('privacyPolicy'),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
@@ -434,13 +438,15 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                             } else {
                               // Show a message to the user
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                 SnackBar(
                                     content: Text(
-                                        'Please fill all fields and agree to terms')),
+                                        AppLocalizations.of(context)
+                                            .translate('fillALL'))),
                               );
                             }
                           },
-                          text: "Next"),
+                          text:   AppLocalizations.of(context)
+                              .translate('next')),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -512,8 +518,9 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
   // Function to show permission denied message
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Permission denied. Please enable it from settings.'),
+       SnackBar(
+        content: Text(AppLocalizations.of(context)
+            .translate('permissionText')),
       ),
     );
   }
@@ -539,7 +546,8 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                   width: 20,
                   height: 20,
                 ),
-                title: const Text('Use Camera'),
+                title:  Text(AppLocalizations.of(context)
+                    .translate('useCamera')),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   // Add your logic for opening the camera
@@ -557,7 +565,8 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                   width: 20,
                   height: 20,
                 ),
-                title: const Text('Choose from Library'),
+                title:  Text( AppLocalizations.of(context)
+                    .translate('chooseFromLibrary')),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
                   // Add your logic for picking an image from the gallery
@@ -570,7 +579,8 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                   contentPadding: EdgeInsets.zero,
                   minLeadingWidth: 10,
                   leading: Icon(Icons.delete_outline, color: Colors.black),
-                  title: const Text('Remove Picture'),
+                  title:  Text( AppLocalizations.of(context)
+                      .translate('removePicture')),
                   onTap: () {
                     setState(() {
                       _selectedImage = null;

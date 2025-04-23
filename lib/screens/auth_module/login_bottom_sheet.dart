@@ -730,7 +730,8 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Forgot Password',
+              AppLocalizations.of(context)
+                  .translate('forgotPassword'),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -738,7 +739,8 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
-                hintText: 'Enter email address',
+                hintText:   AppLocalizations.of(context)
+                    .translate('emailHint'),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 border: OutlineInputBorder(
@@ -766,7 +768,8 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
                 backgroundColor: Colors.blue,
               ),
               child: Text(
-                'Submit',
+                AppLocalizations.of(context)
+                    .translate('submit'),
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),

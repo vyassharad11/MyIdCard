@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_di_card/bloc/cubit/auth_cubit.dart';
+import 'package:my_di_card/data/repository/auth_repository.dart';
+
+import '../../bloc/api_resp_state.dart';
+import '../../utils/utility.dart';
 
 class TermsPolicyPage extends StatefulWidget {
   String title;
@@ -9,11 +15,55 @@ class TermsPolicyPage extends StatefulWidget {
 }
 
 class _TermsPolicyPageState extends State<TermsPolicyPage> {
+ AuthCubit? _termsPolicyCubit;
+  @override
+  void initState() {
+    _termsPolicyCubit = AuthCubit(AuthRepository());
+    apiGetTermsAndPolicy();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _termsPolicyCubit = null;
+    _termsPolicyCubit?.close();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  apiGetTermsAndPolicy(){
+    if(widget.title == "Privacy Policy"){
+      _termsPolicyCubit?.apiGetPrivacy();
+    }else {
+      _termsPolicyCubit?.apiGetTerms();
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  BlocListener<AuthCubit, ResponseState>(
+      bloc: _termsPolicyCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+          // var dto = state.data as ContactDetailsDto;
+        }
+        setState(() {});
+      },
+      child: Scaffold(
 
-      body: _getBody(),
+        body: _getBody(),
+      ),
     );
   }
 

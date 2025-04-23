@@ -43,6 +43,7 @@ class Data {
   dynamic stepNo;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic qrCode;
   List<CardDocuments>? cardDocuments;
   List<CardSocials>? cardSocials;
 
@@ -68,7 +69,8 @@ class Data {
       this.createdAt,
       this.updatedAt,
       this.cardDocuments,
-      this.cardSocials});
+        this.qrCode,
+        this.cardSocials});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -91,6 +93,7 @@ class Data {
     stepNo = json['step_no'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    qrCode = json['qr_code'];
     if (json['cardDocuments'] != null) {
       cardDocuments = <CardDocuments>[];
       json['cardDocuments'].forEach((v) {
@@ -127,6 +130,7 @@ class Data {
     data['step_no'] = stepNo;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['qr_code'] = qrCode;
     if (cardDocuments != null) {
       data['cardDocuments'] =
           cardDocuments!.map((v) => v.toJson()).toList();

@@ -127,5 +127,26 @@ class AuthRepository {
     return _apiClient.apiSetPlan(dto,body,token2,);
   }
 
+  Future<HttpResponse<UtilityDto>> apiSupport(body,) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiSupport(dto,token2,body,);
+  }
+
+  Future<HttpResponse<UtilityDto>> apiGetTerms() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetTerms(dto,token2,);
+  }
+
+ Future<HttpResponse<UtilityDto>> apiGetPrivacy() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetPrivacy(dto,token2,);
+  }
+
 
 }
