@@ -107,7 +107,8 @@ class _EmailVerificationBottomSheetState
               ),
               isDismissible: false,
               isScrollControlled: true,
-              builder: (context) => ProfileBottomSheet(),
+               enableDrag: false,
+               builder: (context) => ProfileBottomSheet(),
             );
 
           }
@@ -187,6 +188,7 @@ class _EmailVerificationBottomSheetState
 
                                 showModalBottomSheet(
                                   context: context,
+                                  enableDrag: false,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
                                         top: Radius.circular(20)),
