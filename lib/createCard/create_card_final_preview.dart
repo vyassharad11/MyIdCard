@@ -101,169 +101,148 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
             setState(() {});
           },),
       ],
-      child: Scaffold(
-        backgroundColor:  getCardModel
-            ?.cardStyle !=
-            null
-            ? Color(int.parse(
-            '0xFF${getCardModel!.cardStyle!}'))
-            : ColoursUtils.whiteLightColor.withOpacity(1.0),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16),
-            child: getCardModel == null
-                ? SizedBox(
-                    height: MediaQuery.sizeOf(context).height,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : Column(
-                    children: [
-                      const SizedBox(
-                        height: 40,
+      child: WillPopScope(
+        onWillPop: () async{
+          Navigator.pushAndRemoveUntil(
+            context,
+            CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                (route) => false,
+          );
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor:  getCardModel
+              ?.cardStyle !=
+              null
+              ? Color(int.parse(
+              '0xFF${getCardModel!.cardStyle!}'))
+              : ColoursUtils.whiteLightColor.withOpacity(1.0),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16),
+              child: getCardModel == null
+                  ? SizedBox(
+                      height: MediaQuery.sizeOf(context).height,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: GestureDetector(
-                              onTap: () => Navigator.pop(
-                                  context), // Default action: Go back
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                elevation: 3,
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    size: 20,
-                                    color: Colors.black,
+                    )
+                  : Column(
+                      children: [
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: GestureDetector(
+                                onTap: () =>   Navigator.pushAndRemoveUntil(
+                                  context,
+                                  CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                                      (route) => false,
+                                ), // Default action: Go back
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  elevation: 3,
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      size: 20,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 200,
-                                child: Text(
-                                  getCardModel?.cardName.toString() ?? "",
-                                  style: const TextStyle(
-                                      fontSize: 24, fontWeight: FontWeight.w600,color: Colors.white),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    getCardModel?.cardName.toString() ?? "",
+                                    style: const TextStyle(
+                                        fontSize: 24, fontWeight: FontWeight.w600,color: Colors.white),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                          if(widget.isEdit == false)    GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (builder) =>
-                                                CreateCardScreen1(
-                                                  cardId: widget.cardId,
-                                                  isEdit: true,
-                                                )));
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                            if(widget.isEdit == false)    GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                              builder: (builder) =>
+                                                  CreateCardScreen1(
+                                                    cardId: widget.cardId,
+                                                    isEdit: true,
+                                                  )));
+                                    },
+                                    child: const Icon(Icons.edit_outlined,color: Colors.white,)),
+                                if(widget.isEdit == true)  InkWell(
+                                  onTap: (){
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                                          (route) => false,
+                                    );
                                   },
-                                  child: const Icon(Icons.edit_outlined,color: Colors.white,)),
-                              if(widget.isEdit == true)  InkWell(
-                                onTap: (){
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
-                                        (route) => false,
-                                  );
-                                },
-                                child: Container(height: 44,
-                                width: 44,
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(44)),
-                                  child: Image.asset("assets/images/check_circle.png"),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const SizedBox(height: 20),
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(18), // if you need this
-                          side: const BorderSide(
-                            color: Colors.white,
-                            width: 2,
-                          ),
+                                  child: Container(height: 44,
+                                  width: 44,
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(44)),
+                                    child: Image.asset("assets/images/check_circle.png"),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
-                        elevation: 0,
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(18),
-                                    topRight: Radius.circular(18)),
-                                child: getCardModel != null &&
-                                    getCardModel!.backgroungImage != null
-                                    ? Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius:
-                                      const BorderRadius.only(
-                                          topLeft:
-                                          Radius.circular(18),
-                                          topRight:
-                                          Radius.circular(18)),
-                                      child: CachedNetworkImage(
-                                        height: 100,
-                                        width: double.infinity,
-                                        fit: BoxFit.fitWidth,
-                                        imageUrl:
-                                        "${Network.imgUrl}${getCardModel!.backgroungImage}",
-                                        progressIndicatorBuilder:
-                                            (context, url,
-                                            downloadProgress) =>
-                                            Center(
-                                              child:
-                                              CircularProgressIndicator(
-                                                  value:
-                                                  downloadProgress
-                                                      .progress),
-                                            ),
-                                        errorWidget:
-                                            (context, url, error) =>
-                                            Image.asset(
-                                              "assets/logo/Top with a picture.png",
-                                              height: 80,
-                                              fit: BoxFit.fill,
-                                              width: double.infinity,
-                                            ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 12.0, left: 12),
-                                      child: ClipRRect(
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const SizedBox(height: 20),
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(18), // if you need this
+                            side: const BorderSide(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                          ),
+                          elevation: 0,
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(18),
+                                      topRight: Radius.circular(18)),
+                                  child: getCardModel != null &&
+                                      getCardModel!.backgroungImage != null
+                                      ? Stack(
+                                    children: [
+                                      ClipRRect(
                                         borderRadius:
-                                        const BorderRadius.all(
-                                            Radius.circular(50)),
+                                        const BorderRadius.only(
+                                            topLeft:
+                                            Radius.circular(18),
+                                            topRight:
+                                            Radius.circular(18)),
                                         child: CachedNetworkImage(
-                                          height: 75,
-                                          width: 75,
+                                          height: 100,
+                                          width: double.infinity,
                                           fit: BoxFit.fitWidth,
                                           imageUrl:
-                                          "${Network.imgUrl}${getCardModel!.cardImage}",
+                                          "${Network.imgUrl}${getCardModel!.backgroungImage}",
                                           progressIndicatorBuilder:
                                               (context, url,
                                               downloadProgress) =>
@@ -277,202 +256,330 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                           errorWidget:
                                               (context, url, error) =>
                                               Image.asset(
-                                                "assets/logo/Central icon.png",
+                                                "assets/logo/Top with a picture.png",
                                                 height: 80,
                                                 fit: BoxFit.fill,
                                                 width: double.infinity,
                                               ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                                    : ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(18),
-                                      topRight: Radius.circular(18)),
-                                  child: Image.asset(
-                                    "assets/logo/Central icon.png",
-                                    height: 80,
-                                    fit: BoxFit.fitWidth,
-                                    width: double.infinity,
-                                  ),
-                                )),
-                            const SizedBox(
-                              height: 0,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 12),
-                              child:  Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 17,
-                                      ),
-                                      Text(
-                                        "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight:
-                                            FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                      Text(
-                                        getCardModel
-                                            ?.jobTitle ??
-                                            "",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight:
-                                            FontWeight.normal,
-                                            color: Colors.black45),
-                                      ),
-                                      Text(
-                                        getCardModel
-                                            ?.companyName ??
-                                            "",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight:
-                                            FontWeight.normal,
-                                            color: Colors.black45),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 12.0, left: 12),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                          const BorderRadius.all(
+                                              Radius.circular(50)),
+                                          child: CachedNetworkImage(
+                                            height: 75,
+                                            width: 75,
+                                            fit: BoxFit.fitWidth,
+                                            imageUrl:
+                                            "${Network.imgUrl}${getCardModel!.cardImage}",
+                                            progressIndicatorBuilder:
+                                                (context, url,
+                                                downloadProgress) =>
+                                                Center(
+                                                  child:
+                                                  CircularProgressIndicator(
+                                                      value:
+                                                      downloadProgress
+                                                          .progress),
+                                                ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                Image.asset(
+                                                  "assets/logo/Central icon.png",
+                                                  height: 80,
+                                                  fit: BoxFit.fill,
+                                                  width: double.infinity,
+                                                ),
+                                          ),
+                                        ),
                                       ),
                                     ],
-                                  ),
-                                  ClipRRect(
-                                    borderRadius:
-                                    const BorderRadius.all(
-                                        Radius.circular(
-                                            75)),
-                                    child: CachedNetworkImage(
-                                      height: 75,
-                                      width: 75,
+                                  )
+                                      : ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(18),
+                                        topRight: Radius.circular(18)),
+                                    child: Image.asset(
+                                      "assets/logo/Central icon.png",
+                                      height: 80,
                                       fit: BoxFit.fitWidth,
-                                      imageUrl:
-                                      "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
-                                      progressIndicatorBuilder:
-                                          (context, url,
-                                          downloadProgress) =>
-                                          Center(
-                                            child: CircularProgressIndicator(
-                                                value:
-                                                downloadProgress
-                                                    .progress),
-                                          ),
-                                      errorWidget: (context,
-                                          url, error) =>
-                                          Image.asset(
-                                            "assets/logo/Central icon.png",
-                                            height: 80,
-                                            fit: BoxFit.fill,
-                                            width: double.infinity,
-                                          ),
+                                      width: double.infinity,
                                     ),
-                                  ),
-                                ],
+                                  )),
+                              const SizedBox(
+                                height: 0,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Card(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                getCardModel?.companyName ?? "",
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              const Divider(thickness: 1),
-                              Text(
-                                getCardModel?.companyTypeId == "1"
-                                    ? "IT"
-                                    : "Finance",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 12),
+                                child:  Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 17,
+                                        ),
+                                        Text(
+                                          "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight:
+                                              FontWeight.w500,
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          getCardModel
+                                              ?.jobTitle ??
+                                              "",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight:
+                                              FontWeight.normal,
+                                              color: Colors.black45),
+                                        ),
+                                        Text(
+                                          getCardModel
+                                              ?.companyName ??
+                                              "",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight:
+                                              FontWeight.normal,
+                                              color: Colors.black45),
+                                        ),
+                                      ],
+                                    ),
+                                    ClipRRect(
+                                      borderRadius:
+                                      const BorderRadius.all(
+                                          Radius.circular(
+                                              75)),
+                                      child: CachedNetworkImage(
+                                        height: 75,
+                                        width: 75,
+                                        fit: BoxFit.fitWidth,
+                                        imageUrl:
+                                        "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
+                                        progressIndicatorBuilder:
+                                            (context, url,
+                                            downloadProgress) =>
+                                            Center(
+                                              child: CircularProgressIndicator(
+                                                  value:
+                                                  downloadProgress
+                                                      .progress),
+                                            ),
+                                        errorWidget: (context,
+                                            url, error) =>
+                                            Image.asset(
+                                              "assets/logo/Central icon.png",
+                                              height: 80,
+                                              fit: BoxFit.fill,
+                                              width: double.infinity,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const Divider(thickness: 1),
-                              Text(
-                                getCardModel?.jobTitle ?? "",
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              // Divider(thickness: 1), // Horizontal line
-                              // Text(
-                              //   'CEO',
-                              //   style:
-                              //       TextStyle(fontSize: 16, color: Colors.black),
-                              // ),
-                              const Divider(thickness: 1),
-                              Text(
-                                getCardModel?.companyAddress ?? "",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const Divider(thickness: 1), // Horizontal line
-                              Text(
-                                getCardModel?.companyWebsite ?? "",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const Divider(thickness: 1),
-                              Text(
-                                getCardModel?.workEmail ?? "",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const Divider(thickness: 1), // Horizontal line
-                              Text(
-                                getCardModel?.phoneNo ?? "",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
+                              const SizedBox(
+                                height: 8,
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      if (getCardModel != null &&
-                          getCardModel!.cardSocials != null)
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Card(
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(20), // Rounded corners
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  getCardModel?.companyName ?? "",
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                const Divider(thickness: 1),
+                                Text(
+                                  getCardModel?.companyTypeId == "1"
+                                      ? "IT"
+                                      : "Finance",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const Divider(thickness: 1),
+                                Text(
+                                  getCardModel?.jobTitle ?? "",
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                // Divider(thickness: 1), // Horizontal line
+                                // Text(
+                                //   'CEO',
+                                //   style:
+                                //       TextStyle(fontSize: 16, color: Colors.black),
+                                // ),
+                                const Divider(thickness: 1),
+                                Text(
+                                  getCardModel?.companyAddress ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const Divider(thickness: 1), // Horizontal line
+                                Text(
+                                  getCardModel?.companyWebsite ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const Divider(thickness: 1),
+                                Text(
+                                  getCardModel?.workEmail ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const Divider(thickness: 1), // Horizontal line
+                                Text(
+                                  getCardModel?.phoneNo ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        if (getCardModel != null &&
+                            getCardModel!.cardSocials != null)
+                          Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(20), // Rounded corners
+                            ),
+                            child: SizedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                     Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 14.0, vertical: 8),
+                                      child: Text(
+                                          AppLocalizations.of(context)
+                                              .translate('socialMedia'),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    ListView.separated(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      separatorBuilder: (crtx, index) {
+                                        return Container(
+                                          height: 1,
+                                          color: ColoursUtils.background,
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 8),
+                                        );
+                                      },
+                                      padding: EdgeInsets.zero,
+                                      itemCount: getCardModel!.cardSocials!.length,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          minLeadingWidth: 10,
+                                          leading: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                15), // Rounded corners for image
+                                            child: Image.asset(
+                                              getCardModel!.cardSocials![index]
+                                                          .socialName ==
+                                                      "Instagram"
+                                                  ? "assets/images/instagram.png"
+                                                  : getCardModel!
+                                                              .cardSocials![index]
+                                                              .socialName ==
+                                                          "LinkedIn"
+                                                      ? "assets/images/fi_1384014.png"
+                                                      : getCardModel!
+                                                                  .cardSocials![
+                                                                      index]
+                                                                  .socialName ==
+                                                              "Twitter"
+                                                          ? "assets/images/x.png"
+                                                          : getCardModel!
+                                                                      .cardSocials![
+                                                                          index]
+                                                                      .socialName ==
+                                                                  "Facebook"
+                                                              ? "assets/images/fi_1384005.png"
+                                                              : "assets/images/browser.png",
+                                              width: 25,
+                                              height: 25,
+                                              color: Colors.black,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          title: Text(
+                                            getCardModel!
+                                                .cardSocials![index].socialLink
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 16, color: Colors.grey),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        if (getCardModel != null &&
+                            getCardModel!.cardDocuments != null && getCardModel!.cardDocuments!.isNotEmpty)
+                          Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(20), // Rounded corners
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 4, vertical: 12),
@@ -484,7 +591,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                         horizontal: 14.0, vertical: 8),
                                     child: Text(
                                         AppLocalizations.of(context)
-                                            .translate('socialMedia'),
+                                            .translate('yourupload'),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14,
@@ -506,253 +613,159 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                       );
                                     },
                                     padding: EdgeInsets.zero,
-                                    itemCount: getCardModel!.cardSocials!.length,
+                                    itemCount: getCardModel!.cardDocuments!.length,
                                     itemBuilder: (context, index) {
+                                      print(
+                                          "image-----${getCardModel!.cardDocuments![index].document.toString()}");
+                                      print(
+                                          "image-----${getCardModel!.cardDocuments![index].cardId.toString()}");
                                       return ListTile(
-                                        minLeadingWidth: 10,
-                                        leading: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              15), // Rounded corners for image
-                                          child: Image.asset(
-                                            getCardModel!.cardSocials![index]
-                                                        .socialName ==
-                                                    "Instagram"
-                                                ? "assets/images/instagram.png"
-                                                : getCardModel!
-                                                            .cardSocials![index]
-                                                            .socialName ==
-                                                        "LinkedIn"
-                                                    ? "assets/images/fi_1384014.png"
-                                                    : getCardModel!
-                                                                .cardSocials![
-                                                                    index]
-                                                                .socialName ==
-                                                            "Twitter"
-                                                        ? "assets/images/x.png"
-                                                        : getCardModel!
-                                                                    .cardSocials![
-                                                                        index]
-                                                                    .socialName ==
-                                                                "Facebook"
-                                                            ? "assets/images/fi_1384005.png"
-                                                            : "assets/images/browser.png",
-                                            width: 25,
-                                            height: 25,
-                                            color: Colors.black,
-                                            fit: BoxFit.cover,
-                                          ),
+                                        leading: SizedBox(
+                                          width: 40,
+                                          height: 40,
+                                          child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                  30), // Rounded corners for image
+                                              child: SizedBox(
+                                                height: 40,
+                                                child: CachedNetworkImage(
+                                                  height: 40,
+                                                  fit: BoxFit.fitWidth,
+                                                  imageUrl:
+                                                      "${Network.imgUrl}${getCardModel!.cardDocuments![index].document.toString()}",
+                                                  progressIndicatorBuilder:
+                                                      (context, url,
+                                                              downloadProgress) =>
+                                                          Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                            value: downloadProgress
+                                                                .progress),
+                                                  ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Image.asset(
+                                                    "assets/images/Frame 508.png",
+                                                    height: 40,
+                                                    fit: BoxFit.fill,
+                                                    width: double.infinity,
+                                                  ),
+                                                ),
+                                              )),
                                         ),
                                         title: Text(
                                           getCardModel!
-                                              .cardSocials![index].socialLink
+                                              .cardDocuments![index].document
                                               .toString(),
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.grey),
                                         ),
+                                        // trailing: IconButton(
+                                        //   icon: Padding(
+                                        //     padding: const EdgeInsets.all(4),
+                                        //     child: Image.asset(
+                                        //         "assets/images/Frame 415.png"),
+                                        //   ),
+                                        //   color: Colors.grey,
+                                        //   onPressed: () {
+                                        //     // Handle delete action
+                                        //   },
+                                        // ),
                                       );
+
+                                      // return SizedBox();
                                     },
                                   ),
                                 ],
                               ),
                             ),
                           ),
+                        const SizedBox(
+                          height: 20,
                         ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      if (getCardModel != null &&
-                          getCardModel!.cardDocuments != null && getCardModel!.cardDocuments!.isNotEmpty)
-                        Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(20), // Rounded corners
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                 Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 14.0, vertical: 8),
-                                  child: Text(
-                                      AppLocalizations.of(context)
-                                          .translate('yourupload'),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                                ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  separatorBuilder: (crtx, index) {
-                                    return Container(
-                                      height: 1,
-                                      color: ColoursUtils.background,
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                    );
-                                  },
-                                  padding: EdgeInsets.zero,
-                                  itemCount: getCardModel!.cardDocuments!.length,
-                                  itemBuilder: (context, index) {
-                                    print(
-                                        "image-----${getCardModel!.cardDocuments![index].document.toString()}");
-                                    print(
-                                        "image-----${getCardModel!.cardDocuments![index].cardId.toString()}");
-                                    return ListTile(
-                                      leading: SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                                30), // Rounded corners for image
-                                            child: SizedBox(
-                                              height: 40,
-                                              child: CachedNetworkImage(
-                                                height: 40,
-                                                fit: BoxFit.fitWidth,
-                                                imageUrl:
-                                                    "${Network.imgUrl}${getCardModel!.cardDocuments![index].document.toString()}",
-                                                progressIndicatorBuilder:
-                                                    (context, url,
-                                                            downloadProgress) =>
-                                                        Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          value: downloadProgress
-                                                              .progress),
-                                                ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(
-                                                  "assets/images/Frame 508.png",
-                                                  height: 40,
-                                                  fit: BoxFit.fill,
-                                                  width: double.infinity,
-                                                ),
-                                              ),
-                                            )),
+                            Row(
+                                                    children: [
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 4),
+                                child: SizedBox(
+                                  height: 45,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ElevatedButton(
+                                   // iconAlignment: IconAlignment.start,
+                                    onPressed: () {
+                                      showDeleteDialog(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: Colors.white, // Background color
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(color: Colors.red),
+                                        borderRadius: BorderRadius.circular(
+                                            30), // Rounded corners
                                       ),
-                                      title: Text(
-                                        getCardModel!
-                                            .cardDocuments![index].document
-                                            .toString(),
-                                      ),
-                                      // trailing: IconButton(
-                                      //   icon: Padding(
-                                      //     padding: const EdgeInsets.all(4),
-                                      //     child: Image.asset(
-                                      //         "assets/images/Frame 415.png"),
-                                      //   ),
-                                      //   color: Colors.grey,
-                                      //   onPressed: () {
-                                      //     // Handle delete action
-                                      //   },
-                                      // ),
-                                    );
-
-                                    // return SizedBox();
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                          Row(
-                                                  children: [
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              child: SizedBox(
-                                height: 45,
-                                width: MediaQuery.of(context).size.width,
-                                child: ElevatedButton(
-                                 // iconAlignment: IconAlignment.start,
-                                  onPressed: () {
-                                    showDeleteDialog(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    backgroundColor: Colors.white, // Background color
-                                    shadowColor: Colors.transparent,
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(color: Colors.red),
-                                      borderRadius: BorderRadius.circular(
-                                          30), // Rounded corners
                                     ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                      AppLocalizations.of(context)
-                                      .translate(widget.isEdit == false?'delete':'cancel'),
-                                        style: TextStyle(
-                                            color: Colors.black45, fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              child: SizedBox(
-                                height: 45,
-                                width: MediaQuery.of(context).size.width,
-                                child: ElevatedButton(
-                                 // iconAlignment: IconAlignment.start,
-                                  onPressed: () {
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
-                                          (route) => false,
-                                    );
-                                    // Handle button press
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Colors.white, // Background color
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          30), // Rounded corners
-                                    ),
-                                  ),
-                                  child:  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
                                         AppLocalizations.of(context)
-                                            .translate(widget.isEdit == false?'finish':"submit"), // Right side text
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 16),
-                                      ),
-                                    ],
+                                        .translate(widget.isEdit == false?'delete':'cancel'),
+                                          style: TextStyle(
+                                              color: Colors.black45, fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                                                  ],
-                                                ),
-                      SizedBox(height: 16,)
-                    ],
-                  ),
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 4),
+                                child: SizedBox(
+                                  height: 45,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ElevatedButton(
+                                   // iconAlignment: IconAlignment.start,
+                                    onPressed: () {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
+                                            (route) => false,
+                                      );
+                                      // Handle button press
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Colors.white, // Background color
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            30), // Rounded corners
+                                      ),
+                                    ),
+                                    child:  Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)
+                                              .translate(widget.isEdit == false?'finish':"submit"), // Right side text
+                                          style: TextStyle(
+                                              color: Colors.black, fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                                                    ],
+                                                  ),
+                        SizedBox(height: 16,)
+                      ],
+                    ),
+            ),
           ),
         ),
       ),

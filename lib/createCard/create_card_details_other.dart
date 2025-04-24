@@ -82,6 +82,7 @@ class _CreateCardScreenDetailsOtherState
                   MaterialPageRoute(
                       builder: (builder) => CreateCardFinalPreview(
                         cardId: widget.cardId.toString() ?? "",
+                        isEdit: true,
                       )));
             }
             setState(() {});},),
@@ -506,6 +507,7 @@ class _CreateCardScreenDetailsOtherState
             MaterialPageRoute(
                 builder: (builder) => CreateCardFinalPreview(
                       cardId: widget.cardId.toString() ?? "",
+                  isEdit: true,
                     )), (route) => false,);
       } else {
          Utility.hideLoader(context);
