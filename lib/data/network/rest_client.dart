@@ -440,7 +440,7 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiUpdateNotes(@Path("url") url,
       @Header(authorization) token,@Path("id") id,@Body() body,);
 
-  @POST("{url}support/query")
+  @POST("{url}support-query")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiSupport(@Path("url") url,

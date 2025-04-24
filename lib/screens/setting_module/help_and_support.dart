@@ -225,9 +225,11 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
   apiHelpAndSupport() {
     String title = _titleController.text.trim();
     String description = _descriptionController.text.trim();
+
+
     Map<String, dynamic> data = {
-      "title": title,
-      "description": description,
+      "subject": title,
+      "message": description,
     };
     settingCubit?.apiSupport(data);
   }
