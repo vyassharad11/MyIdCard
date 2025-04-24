@@ -1071,7 +1071,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                     builder: (context) =>
                                                        Container(
                                                          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))),
-                                                         constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200,minHeight: 70),
+                                                         constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200,minHeight: 100),
+                                                         padding: EdgeInsets.only(bottom: 12),
                                                          child: ListView.separated(
                                                            shrinkWrap: true,
                                                            physics: const NeverScrollableScrollPhysics(),
@@ -1124,6 +1125,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                                  contactDetailsDatum!
                                                                      .cardDocuments![index].document
                                                                      .toString(),
+                                                                 overflow: TextOverflow.ellipsis,
                                                                ),
                                                                // trailing: IconButton(
                                                                //   icon: Padding(
