@@ -2307,7 +2307,7 @@ class _RestClient implements RestClient {
     )
         .compose(
           _dio.options,
-          '${url}support/query',
+          '${url}support-query',
           queryParameters: queryParameters,
           data: _data,
         )
