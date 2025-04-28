@@ -398,7 +398,9 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                               SizedBox(width: 8,),
                               InkWell(
                                 onTap: (){
-                                  showMenu(context: context, items: [
+                                  showMenu(
+                                    position: RelativeRect.fromLTRB(300, 370, 0, 50),
+                                    context: context, items: [
                                     PopupMenuItem(child: Text("Show a popup indicating: “Put your Instagram name indicated by what comes after the @ value on your account."),)
                                   ],);
                                 },
@@ -450,7 +452,9 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                               SizedBox(width: 8,),
                               InkWell(
                                 onTap: (){
-                                  showMenu(context: context, items: [
+                                  showMenu(context: context,
+                                    position: RelativeRect.fromLTRB(300, 433, 0, 50),
+                                    items: [
                                     PopupMenuItem(child: Text("Show a popup indicating: “Put your Twitter name indicated by what comes after the @ value on your account."),)
                                   ],);
                                 },
