@@ -272,7 +272,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                   child: TextField(
                                     controller: linkedin,
                                     decoration: InputDecoration(
-                                      hintText: 'Linkedin',
+                                      hintText: 'Linkedin Id',
                                       suffixIcon: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 12.0, bottom: 12, left: 20),
@@ -322,7 +322,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                   child: TextField(
                                     controller: facebook,
                                     decoration: InputDecoration(
-                                      hintText: 'Facebook',
+                                      hintText: 'Facebook Id',
                                       suffixIcon: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 12.0, bottom: 12, left: 20),
@@ -401,7 +401,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                   showMenu(
                                     position: RelativeRect.fromLTRB(300, 370, 0, 50),
                                     context: context, items: [
-                                    PopupMenuItem(child: Text("Show a popup indicating: “Put your Instagram name indicated by what comes after the @ value on your account."),)
+                                    PopupMenuItem(child: Text("Put your Instagram name indicated by what comes after the @ value on your account."),)
                                   ],);
                                 },
                                 child: Icon(
@@ -455,7 +455,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                                   showMenu(context: context,
                                     position: RelativeRect.fromLTRB(300, 433, 0, 50),
                                     items: [
-                                    PopupMenuItem(child: Text("Show a popup indicating: “Put your Twitter name indicated by what comes after the @ value on your account."),)
+                                    PopupMenuItem(child: Text("Put your Twitter name indicated by what comes after the @ value on your account."),)
                                   ],);
                                 },
                                 child: Icon(

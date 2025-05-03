@@ -159,19 +159,13 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                 ),
                               ),
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 200,
-                                  child: Text(
-                                    getCardModel?.cardName.toString() ?? "",
-                                    style: const TextStyle(
-                                        fontSize: 24, fontWeight: FontWeight.w600,color: Colors.white),
-                                  ),
+                                Text(
+                                  getCardModel?.cardName.toString() ?? "",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 24, fontWeight: FontWeight.w600,color: Colors.white),
                                 ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
+
                             if(widget.isEdit == false)    GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -183,7 +177,11 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                                     isEdit: true,
                                                   )));
                                     },
-                                    child: const Icon(Icons.edit_outlined,color: Colors.white,)),
+                                    child: Container(height: 44,
+                                    width: 44,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(44)),
+                                    child: const Icon(Icons.edit_outlined,color: Colors.black,size: 20,))),
                                 if(widget.isEdit == true)  InkWell(
                                   onTap: (){
                                     Navigator.pushAndRemoveUntil(
@@ -199,14 +197,9 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                     child: Image.asset("assets/images/check_circle.png"),
                                   ),
                                 )
-                              ],
-                            ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Card(
                           shape: RoundedRectangleBorder(
                             borderRadius:
@@ -265,14 +258,14 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 12.0, left: 12),
+                                            top: 18.0, left: 0),
                                         child: ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
                                               Radius.circular(50)),
                                           child: CachedNetworkImage(
-                                            height: 75,
-                                            width: 75,
+                                            height: 92,
+                                            width: 92,
                                             fit: BoxFit.fitWidth,
                                             imageUrl:
                                             "${Network.imgUrl}${getCardModel!.cardImage}",
@@ -290,7 +283,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                                 (context, url, error) =>
                                                 Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 80,
+                                                  height: 90,
                                                   fit: BoxFit.fill,
                                                   width: double.infinity,
                                                 ),
@@ -337,26 +330,6 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                               FontWeight.w500,
                                               color: Colors.black),
                                         ),
-                                        Text(
-                                          getCardModel
-                                              ?.jobTitle ??
-                                              "",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight:
-                                              FontWeight.normal,
-                                              color: Colors.black45),
-                                        ),
-                                        Text(
-                                          getCardModel
-                                              ?.companyName ??
-                                              "",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight:
-                                              FontWeight.normal,
-                                              color: Colors.black45),
-                                        ),
                                       ],
                                     ),
                                     ClipRRect(
@@ -399,7 +372,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 6,
                         ),
                         Card(
                           elevation: 0,
@@ -416,7 +389,6 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                   getCardModel?.companyName ?? "",
                                   style: const TextStyle(fontSize: 16),
                                 ),
-                                const Divider(thickness: 1),
                                 Text(
                                   getCardModel?.companyTypeId == "1"
                                       ? "IT"
@@ -426,7 +398,6 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                     color: Colors.grey,
                                   ),
                                 ),
-                                const Divider(thickness: 1),
                                 Text(
                                   getCardModel?.jobTitle ?? "",
                                   style: const TextStyle(fontSize: 16),
@@ -474,7 +445,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         if (getCardModel != null &&
                             getCardModel!.cardSocials != null)
@@ -491,21 +462,6 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                     Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 14.0, vertical: 8),
-                                      child: Text(
-                                          AppLocalizations.of(context)
-                                              .translate('socialMedia'),
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
                                     ListView.separated(
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
@@ -570,7 +526,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                             ),
                           ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         if (getCardModel != null &&
                             getCardModel!.cardDocuments != null && getCardModel!.cardDocuments!.isNotEmpty)
@@ -586,21 +542,6 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 14.0, vertical: 8),
-                                    child: Text(
-                                        AppLocalizations.of(context)
-                                            .translate('yourupload'),
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
                                   ListView.separated(
                                     shrinkWrap: true,
                                     physics: const NeverScrollableScrollPhysics(),
@@ -615,6 +556,15 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                     padding: EdgeInsets.zero,
                                     itemCount: getCardModel!.cardDocuments!.length,
                                     itemBuilder: (context, index) {
+                                    var  s = getCardModel!.cardDocuments![index].document.toString();
+                                    String result = "";
+                                    List<String> parts = s.split('/');
+                                    if (parts.length > 2) {
+                                       result = parts.sublist(2).join('/');
+                                      print(result); // Output: item/12345
+                                    } else {
+                                      print('Not enough "/" characters in the string.');
+                                    }
                                       print(
                                           "image-----${getCardModel!.cardDocuments![index].document.toString()}");
                                       print(
@@ -654,9 +604,8 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                               )),
                                         ),
                                         title: Text(
-                                          getCardModel!
-                                              .cardDocuments![index].document
-                                              .toString(),
+
+                                            result
                                         ),
                                         // trailing: IconButton(
                                         //   icon: Padding(
@@ -679,7 +628,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                             ),
                           ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                             Row(
                                                     children: [
