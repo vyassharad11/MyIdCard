@@ -453,8 +453,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       const BorderRadius.all(
                                                           Radius.circular(50)),
                                                   child: CachedNetworkImage(
-                                                    height: 55,
-                                                    width: 55,
+                                                    height: 80,
+                                                    width: 80,
                                                     fit: BoxFit.fitWidth,
                                                     imageUrl:
                                                         "${Network.imgUrl}${cardList!.data![index].cardImage}",
@@ -568,6 +568,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               Text(
+                                                cardList!.data![index]
+                                                    .companyName ??
+                                                    "",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                    FontWeight.normal,
+                                                    color: Colors.black45),
+                                              ),
+                                              Text(
+                                                cardList!.data![index].companyTypeId == "1"
+                                                    ? "IT"
+                                                    : "Finance",
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              Text(
                                                 cardList!.data![index].jobTitle
                                                     .toString(),
                                                 style: GoogleFonts.poppins(
@@ -585,8 +604,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Radius.circular(
                                                     75)),
                                             child: CachedNetworkImage(
-                                              height: 52,
-                                              width: 52,
+                                              height: 60,
+                                              width: 60,
                                               fit: BoxFit.fitWidth,
                                               imageUrl:
                                               "${Network.imgUrl}${cardList!.data![index].companyLogo ?? ""}",

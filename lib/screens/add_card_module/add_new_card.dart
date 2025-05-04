@@ -316,6 +316,25 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               ),
                                             ),
                                             Text(
+                                              cardList!.data![index]
+                                                  .companyName ??
+                                                  "",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight:
+                                                  FontWeight.normal,
+                                                  color: Colors.black45),
+                                            ),
+                                            Text(
+                                              cardList!.data![index].companyTypeId == "1"
+                                                  ? "IT"
+                                                  : "Finance",
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Text(
                                               cardList!.data![index].jobTitle
                                                   .toString(),
                                               style: GoogleFonts.poppins(
@@ -333,8 +352,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               Radius.circular(
                                                   75)),
                                           child: CachedNetworkImage(
-                                            height: 52,
-                                            width: 52,
+                                            height: 60,
+                                            width: 60,
                                             fit: BoxFit.fitWidth,
                                             imageUrl:
                                             "${Network.imgUrl}${cardList!.data![index].companyLogo ?? ""}",

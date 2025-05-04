@@ -234,8 +234,8 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                       const BorderRadius.all(
                                           Radius.circular(50)),
                                       child: CachedNetworkImage(
-                                        height: 98,
-                                        width: 98,
+                                        height: 80,
+                                        width: 80,
                                         fit: BoxFit.fitWidth,
                                         imageUrl:
                                         "${Network.imgUrl}${getCardModel!.cardImage}",
@@ -306,10 +306,10 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                   borderRadius:
                                   const BorderRadius.all(
                                       Radius.circular(
-                                          75)),
+                                          80)),
                                   child: CachedNetworkImage(
-                                    height: 75,
-                                    width: 75,
+                                    height: 80,
+                                    width: 80,
                                     fit: BoxFit.fitWidth,
                                     imageUrl:
                                     "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
@@ -342,7 +342,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Card(
                       elevation: 0,
@@ -407,7 +407,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     // Spacer(),
                   ],
