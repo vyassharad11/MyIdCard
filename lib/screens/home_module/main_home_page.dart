@@ -603,9 +603,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const BorderRadius.all(
                                                 Radius.circular(
                                                     75)),
-                                            child: CachedNetworkImage(
-                                              height: 60,
-                                              width: 60,
+                                            child: cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty? CachedNetworkImage(
+                                              height: 75,
+                                              width: 75,
                                               fit: BoxFit.fitWidth,
                                               imageUrl:
                                               "${Network.imgUrl}${cardList!.data![index].companyLogo ?? ""}",
@@ -625,8 +625,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     height: 100,
                                                     fit: BoxFit.fill,
                                                     width:100,
-                                                  ),
+                                                  )): Image.asset(
+                                              "assets/logo/Central icon.png",
+                                              height: 100,
+                                              fit: BoxFit.fill,
+                                              width:100,
                                             ),
+
                                           ),
                                         ],
                                       ),
