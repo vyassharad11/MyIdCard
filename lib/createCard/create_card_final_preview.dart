@@ -260,7 +260,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 18.0, left: 8),
+                                            top: 12.0, left: 8),
                                         child: ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
