@@ -352,8 +352,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               Radius.circular(
                                                   75)),
                                           child: CachedNetworkImage(
-                                            height: 60,
-                                            width: 60,
+                                            height: 75,
+                                            width: 75,
                                             fit: BoxFit.fitWidth,
                                             imageUrl:
                                             "${Network.imgUrl}${cardList!.data![index].companyLogo ?? ""}",
