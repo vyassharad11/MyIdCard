@@ -553,8 +553,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         height: 17,
                                       ),
                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
@@ -583,8 +585,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Radius.circular(
                                                     75)),
                                             child: CachedNetworkImage(
-                                              height: 75,
-                                              width: 75,
+                                              height: 52,
+                                              width: 52,
                                               fit: BoxFit.fitWidth,
                                               imageUrl:
                                               "${Network.imgUrl}${cardList!.data![index].companyLogo ?? ""}",
@@ -601,7 +603,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   url, error) =>
                                                   Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 80,
+                                                    height: 52,
                                                     fit: BoxFit.fill,
                                                     width: double.infinity,
                                                   ),
