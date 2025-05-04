@@ -188,7 +188,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 12.0, left: 8),
-                                        child: ClipRRect(
+                                        child: cardList!.data![index].cardImage != null && cardList!.data![index].cardImage.toString().isNotEmpty? ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
                                               Radius.circular(50)),
@@ -217,6 +217,11 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                   width: 100,
                                                 ),
                                           ),
+                                        ): Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 100,
+                                          fit: BoxFit.fill,
+                                          width: 100,
                                         ),
                                       ),
                                       IconButton(
@@ -346,7 +351,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                             ),
                                           ],
                                         ),
-                                        ClipRRect(
+                                        cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty?ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
                                               Radius.circular(
@@ -375,6 +380,11 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                   width: 90,
                                                 ),
                                           ),
+                                        ): Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 100,
+                                          fit: BoxFit.fill,
+                                          width: 100,
                                         ),
                                       ],
                                     ),
