@@ -187,14 +187,14 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 12.0, left: 12),
+                                            top: 12.0, left: 8),
                                         child: ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
                                               Radius.circular(50)),
                                           child: CachedNetworkImage(
-                                            height: 55,
-                                            width: 55,
+                                            height: 80,
+                                            width: 80,
                                             fit: BoxFit.fitWidth,
                                             imageUrl:
                                             "${Network.imgUrl}${cardList!.data![index].cardImage}",
@@ -212,9 +212,9 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                 (context, url, error) =>
                                                 Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 80,
+                                                  height: 100,
                                                   fit: BoxFit.fill,
-                                                  width: double.infinity,
+                                                  width: 100,
                                                 ),
                                           ),
                                         ),
@@ -267,11 +267,11 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                         child: ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
-                                              Radius.circular(50)),
+                                              Radius.circular(75)),
                                           child: Image.asset(
                                             "assets/logo/Central icon.png",
-                                            height: 55,
-                                            width: 55,
+                                            height: 75,
+                                            width: 75,
                                             fit: BoxFit.fitWidth,
                                           ),
                                         ),
@@ -370,9 +370,9 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                 url, error) =>
                                                 Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 52,
+                                                  height: 90,
                                                   fit: BoxFit.fill,
-                                                  width: double.infinity,
+                                                  width: 90,
                                                 ),
                                           ),
                                         ),
