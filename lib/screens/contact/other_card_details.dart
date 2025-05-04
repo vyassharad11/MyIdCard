@@ -257,7 +257,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 12.0, left: 8),
+                                    top: 12.0, left: 8,bottom: 4),
                                 child: ClipRRect(
                                   borderRadius:
                                   const BorderRadius.all(
