@@ -543,6 +543,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                 ),
                                               ),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (builder) =>
+                                                            CreateCardFinalPreview(
+                                                              cardId: cardList!
+                                                                  .data![index].id
+                                                                  .toString(),
+                                                            ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.info_rounded,
+                                                    color: Colors.white,
+                                                    size: 20,
+                                                  )),
                                             ],
                                           ),
                                         ],
