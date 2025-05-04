@@ -232,7 +232,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                     child: ClipRRect(
                                       borderRadius:
                                       const BorderRadius.all(
-                                          Radius.circular(50)),
+                                          Radius.circular(80)),
                                       child: CachedNetworkImage(
                                         height: 80,
                                         width: 80,
@@ -253,9 +253,9 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                             (context, url, error) =>
                                             Image.asset(
                                               "assets/logo/Central icon.png",
-                                              height: 98,
+                                              height: 100,
                                               fit: BoxFit.fill,
-                                              width: double.infinity,
+                                              width: 100,
                                             ),
                                       ),
                                     ),
@@ -326,9 +326,9 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                         url, error) =>
                                         Image.asset(
                                           "assets/logo/Central icon.png",
-                                          height: 80,
+                                          height: 90,
                                           fit: BoxFit.fill,
-                                          width: double.infinity,
+                                          width: 90,
                                         ),
                                   ),
                                 ),

@@ -285,9 +285,9 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                                 (context, url, error) =>
                                                 Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 75,
+                                                  height: 100,
                                                   fit: BoxFit.fill,
-                                                  width: double.infinity,
+                                                  width: 100,
                                                 ),
                                           ),
                                         ),
@@ -358,9 +358,9 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                             url, error) =>
                                             Image.asset(
                                               "assets/logo/Central icon.png",
-                                              height: 80,
+                                              height: 90,
                                               fit: BoxFit.fill,
-                                              width: double.infinity,
+                                              width: 90,
                                             ),
                                       ),
                                     ),
