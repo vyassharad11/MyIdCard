@@ -272,11 +272,11 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                         child: ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
-                                              Radius.circular(75)),
+                                              Radius.circular(100)),
                                           child: Image.asset(
                                             "assets/logo/Central icon.png",
-                                            height: 75,
-                                            width: 75,
+                                            height: 100,
+                                            width: 100,
                                             fit: BoxFit.fitWidth,
                                           ),
                                         ),

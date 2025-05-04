@@ -537,8 +537,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           Radius.circular(50)),
                                                   child: Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 55,
-                                                    width: 55,
+                                                    height: 100,
+                                                    width: 100,
                                                     fit: BoxFit.fitWidth,
                                                   ),
                                                 ),
