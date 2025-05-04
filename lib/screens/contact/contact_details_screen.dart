@@ -786,10 +786,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                                               borderRadius:
                                               const BorderRadius.all(
                                                   Radius.circular(
-                                                      60)),
+                                                      75)),
                                               child: CachedNetworkImage(
-                                                height: 60,
-                                                width: 60,
+                                                height: 75,
+                                                width: 75,
                                                 fit: BoxFit.fitWidth,
                                                 imageUrl:
                                                 "${Network.imgUrl}${contactDetailsDatum?.companyLogo ?? ""}",
