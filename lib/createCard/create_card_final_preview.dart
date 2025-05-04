@@ -260,14 +260,14 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 18.0, left: 8,bottom: 8),
+                                            top: 18.0, left: 8,bottom: 12),
                                         child: ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
                                               Radius.circular(50)),
                                           child: CachedNetworkImage(
-                                            height: 92,
-                                            width: 92,
+                                            height: 86,
+                                            width: 86,
                                             fit: BoxFit.fitWidth,
                                             imageUrl:
                                             "${Network.imgUrl}${getCardModel!.cardImage}",
@@ -285,7 +285,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                                 (context, url, error) =>
                                                 Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 90,
+                                                  height: 85,
                                                   fit: BoxFit.fill,
                                                   width: double.infinity,
                                                 ),
