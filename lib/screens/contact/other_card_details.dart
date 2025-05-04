@@ -733,53 +733,72 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                   "image-----${getCardModel!.cardDocuments![index].document.toString()}");
                               print(
                                   "image-----${getCardModel!.cardDocuments![index].cardId.toString()}");
-                              return ListTile(
-                                leading: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          30), // Rounded corners for image
-                                      child: SizedBox(
-                                        height: 40,
-                                        child: CachedNetworkImage(
+                              return InkWell(
+                                onTap: (){
+                                  if(
+                                  getCardModel!.cardDocuments![index].document.toString().contains("png") ||
+                                      getCardModel!.cardDocuments![index].document.toString().contains("jpg") ||
+                                      getCardModel!.cardDocuments![index].document.toString().contains("jpeg")
+                                  ) {
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          DocumentPreview(
+                                            imageUrl: getCardModel!
+                                                .cardDocuments![index]
+                                                .document ?? "",),));
+                                    // Handle delete action
+                                  }else{
+                                    launch(getCardModel!.cardDocuments![index].document ?? "");
+                                  }
+                                },
+                                child: ListTile(
+                                  leading: SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            30), // Rounded corners for image
+                                        child: SizedBox(
                                           height: 40,
-                                          fit: BoxFit.fitWidth,
-                                          imageUrl:
-                                          "${Network.imgUrl}${getCardModel!.cardDocuments![index].document.toString()}",
-                                          progressIndicatorBuilder:
-                                              (context, url,
-                                              downloadProgress) =>
-                                              Center(
-                                                child:
-                                                CircularProgressIndicator(
-                                                    value: downloadProgress
-                                                        .progress),
-                                              ),
-                                          errorWidget:
-                                              (context, url, error) =>
-                                              Image.asset(
-                                                "assets/images/Frame 508.png",
-                                                height: 40,
-                                                fit: BoxFit.fill,
-                                                width: double.infinity,
-                                              ),
-                                        ),
-                                      )),
+                                          child: CachedNetworkImage(
+                                            height: 40,
+                                            fit: BoxFit.fitWidth,
+                                            imageUrl:
+                                            "${Network.imgUrl}${getCardModel!.cardDocuments![index].document.toString()}",
+                                            progressIndicatorBuilder:
+                                                (context, url,
+                                                downloadProgress) =>
+                                                Center(
+                                                  child:
+                                                  CircularProgressIndicator(
+                                                      value: downloadProgress
+                                                          .progress),
+                                                ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                Image.asset(
+                                                  "assets/images/Frame 508.png",
+                                                  height: 40,
+                                                  fit: BoxFit.fill,
+                                                  width: double.infinity,
+                                                ),
+                                          ),
+                                        )),
+                                  ),
+                                  title: Text(
+                                      result),
+                                  // trailing: IconButton(
+                                  //   icon: Padding(
+                                  //     padding: const EdgeInsets.all(4),
+                                  //     child: Image.asset(
+                                  //         "assets/images/Frame 415.png"),
+                                  //   ),
+                                  //   color: Colors.grey,
+                                  //   onPressed: () {
+                                  //     // Handle delete action
+                                  //   },
+                                  // ),
                                 ),
-                                title: Text(
-                                    result),
-                                // trailing: IconButton(
-                                //   icon: Padding(
-                                //     padding: const EdgeInsets.all(4),
-                                //     child: Image.asset(
-                                //         "assets/images/Frame 415.png"),
-                                //   ),
-                                //   color: Colors.grey,
-                                //   onPressed: () {
-                                //     // Handle delete action
-                                //   },
-                                // ),
                               );
 
                               // return SizedBox();
