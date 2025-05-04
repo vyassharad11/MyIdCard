@@ -228,14 +228,14 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 12.0, left: 12),
+                                        top: 12.0, left: 4),
                                     child: ClipRRect(
                                       borderRadius:
                                       const BorderRadius.all(
                                           Radius.circular(50)),
                                       child: CachedNetworkImage(
-                                        height: 92,
-                                        width: 92,
+                                        height: 98,
+                                        width: 98,
                                         fit: BoxFit.fitWidth,
                                         imageUrl:
                                         "${Network.imgUrl}${getCardModel!.cardImage}",
@@ -253,7 +253,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                             (context, url, error) =>
                                             Image.asset(
                                               "assets/logo/Central icon.png",
-                                              height: 92,
+                                              height: 98,
                                               fit: BoxFit.fill,
                                               width: double.infinity,
                                             ),
