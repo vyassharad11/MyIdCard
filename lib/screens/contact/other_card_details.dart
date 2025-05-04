@@ -23,6 +23,7 @@ import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../add_card_module/share_card_bottom_sheet.dart';
 import '../home_module/main_home_page.dart';
+import 'document_preivew.dart';
 
 
 
@@ -150,17 +151,11 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 200,
-                      child: Text(
-                        getCardModel?.cardName.toString() ?? "",
-                        style: const TextStyle(
-                          color: Colors.white,
-                            fontSize: 24, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 12,
+                    Text(
+                      getCardModel?.cardName.toString() ?? "",
+                      style: const TextStyle(
+                        color: Colors.white,
+                          fontSize: 24, fontWeight: FontWeight.w600),
                     ),
                     InkWell(
                       onTap: (){
@@ -202,7 +197,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                   ],
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Card(
                   shape: RoundedRectangleBorder(
@@ -262,14 +257,14 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 12.0, left: 12),
+                                    top: 12.0, left: 8),
                                 child: ClipRRect(
                                   borderRadius:
                                   const BorderRadius.all(
                                       Radius.circular(50)),
                                   child: CachedNetworkImage(
-                                    height: 75,
-                                    width: 75,
+                                    height: 83,
+                                    width: 83,
                                     fit: BoxFit.fitWidth,
                                     imageUrl:
                                     "${Network.imgUrl}${getCardModel!.cardImage}",
@@ -334,26 +329,6 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                       FontWeight.w500,
                                       color: Colors.black),
                                 ),
-                                Text(
-                                  getCardModel
-                                      ?.jobTitle ??
-                                      "",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight:
-                                      FontWeight.normal,
-                                      color: Colors.black45),
-                                ),
-                                Text(
-                                  getCardModel
-                                      ?.companyName ??
-                                      "",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight:
-                                      FontWeight.normal,
-                                      color: Colors.black45),
-                                ),
                               ],
                             ),
                             ClipRRect(
@@ -396,7 +371,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 6,
                 ),
                   Card(
                     elevation: 0,
@@ -411,6 +386,41 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              getCardModel
+                                  ?.jobTitle ??
+                                  "",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight:
+                                  FontWeight.normal,
+                                  color: Colors.black45),
+                            ),
+                            Text(
+                              getCardModel?.companyTypeId == "1"
+                                  ? "IT"
+                                  : "Finance",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              getCardModel
+                                  ?.companyName ??
+                                  "",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight:
+                                  FontWeight.normal,
+                                  color: Colors.black45),
+                            ),
+                            Container(
+                              height: 1,
+                              color: ColoursUtils.background,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -602,7 +612,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                     ),
                   ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                                  Card(
                     elevation: 0,
@@ -680,7 +690,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                     ),
                   ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 if (getCardModel != null &&
                     getCardModel!.cardDocuments != null && getCardModel!.cardDocuments!.isNotEmpty)

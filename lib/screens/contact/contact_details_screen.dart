@@ -28,6 +28,7 @@ import '../meetings/create_edit_meeting.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
 import 'add_tag_in_contact_bottom_sheet.dart';
+import 'document_preivew.dart';
 import 'other_card_details.dart';
 
 class ContactDetails extends StatefulWidget {
@@ -1087,57 +1088,77 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                            padding: EdgeInsets.zero,
                                                            itemCount: contactDetailsDatum!.cardDocuments!.length,
                                                            itemBuilder: (context, index) {
-                                                             return ListTile(
-                                                               leading: SizedBox(
-                                                                 width: 40,
-                                                                 height: 40,
-                                                                 child: ClipRRect(
-                                                                     borderRadius: BorderRadius.circular(
-                                                                         30), // Rounded corners for image
-                                                                     child: SizedBox(
-                                                                       height: 40,
-                                                                       child: CachedNetworkImage(
+                                                             return InkWell(
+                                                               onTap: (){
+                                                                 Navigator.pop(context);
+                                                                 if(
+                                                                 contactDetailsDatum!.cardDocuments![index].document.toString().contains("png") ||
+                                                                     contactDetailsDatum!.cardDocuments![index].document.toString().contains("jpg") ||
+                                                                     contactDetailsDatum!.cardDocuments![index].document.toString().contains("jpeg")
+                                                                 ) {
+                                                                   Navigator.push(context, MaterialPageRoute(
+                                                                     builder: (context) =>
+                                                                         DocumentPreview(
+                                                                           imageUrl: contactDetailsDatum!
+                                                                               .cardDocuments![index]
+                                                                               .document ?? "",),));
+                                                                   // Handle delete action
+                                                                 }else{
+                                                                   launch(contactDetailsDatum!.cardDocuments![index].document ?? "");
+                                                                 }
+                                                               },
+                                                               child: ListTile(
+                                                                 leading: SizedBox(
+                                                                   width: 40,
+                                                                   height: 40,
+                                                                   child: ClipRRect(
+                                                                       borderRadius: BorderRadius.circular(
+                                                                           30), // Rounded corners for image
+                                                                       child: SizedBox(
                                                                          height: 40,
-                                                                         fit: BoxFit.fitWidth,
-                                                                         imageUrl:
-                                                                         "${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document.toString()}",
-                                                                         progressIndicatorBuilder:
-                                                                             (context, url,
-                                                                             downloadProgress) =>
-                                                                             Center(
-                                                                               child:
-                                                                               CircularProgressIndicator(
-                                                                                   value: downloadProgress
-                                                                                       .progress),
-                                                                             ),
-                                                                         errorWidget:
-                                                                             (context, url, error) =>
-                                                                             Image.asset(
-                                                                               "assets/images/Frame 508.png",
-                                                                               height: 40,
-                                                                               fit: BoxFit.fill,
-                                                                               width: double.infinity,
-                                                                             ),
-                                                                       ),
-                                                                     )),
+                                                                         child: CachedNetworkImage(
+                                                                           height: 40,
+                                                                           fit: BoxFit.fitWidth,
+                                                                           imageUrl:
+                                                                           "${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document.toString()}",
+                                                                           progressIndicatorBuilder:
+                                                                               (context, url,
+                                                                               downloadProgress) =>
+                                                                               Center(
+                                                                                 child:
+                                                                                 CircularProgressIndicator(
+                                                                                     value: downloadProgress
+                                                                                         .progress),
+                                                                               ),
+                                                                           errorWidget:
+                                                                               (context, url, error) =>
+                                                                               Image.asset(
+                                                                                 "assets/images/Frame 508.png",
+                                                                                 height: 40,
+                                                                                 fit: BoxFit.fill,
+                                                                                 width: double.infinity,
+                                                                               ),
+                                                                         ),
+                                                                       )),
+                                                                 ),
+                                                                 title: Text(
+                                                                   contactDetailsDatum!
+                                                                       .cardDocuments![index].document
+                                                                       .toString(),
+                                                                   overflow: TextOverflow.ellipsis,
+                                                                 ),
+                                                                 // trailing: IconButton(
+                                                                 //   icon: Padding(
+                                                                 //     padding: const EdgeInsets.all(4),
+                                                                 //     child: Image.asset(
+                                                                 //         "assets/images/Frame 415.png"),
+                                                                 //   ),
+                                                                 //   color: Colors.grey,
+                                                                 //   onPressed: () {
+                                                                 //     // Handle delete action
+                                                                 //   },
+                                                                 // ),
                                                                ),
-                                                               title: Text(
-                                                                 contactDetailsDatum!
-                                                                     .cardDocuments![index].document
-                                                                     .toString(),
-                                                                 overflow: TextOverflow.ellipsis,
-                                                               ),
-                                                               // trailing: IconButton(
-                                                               //   icon: Padding(
-                                                               //     padding: const EdgeInsets.all(4),
-                                                               //     child: Image.asset(
-                                                               //         "assets/images/Frame 415.png"),
-                                                               //   ),
-                                                               //   color: Colors.grey,
-                                                               //   onPressed: () {
-                                                               //     // Handle delete action
-                                                               //   },
-                                                               // ),
                                                              );
 
                                                              // return SizedBox();
