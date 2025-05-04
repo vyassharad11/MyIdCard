@@ -598,12 +598,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ],
                                           ),
-                                          ClipRRect(
+                                  cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty?ClipRRect(
                                             borderRadius:
                                             const BorderRadius.all(
                                                 Radius.circular(
                                                     75)),
-                                            child: cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty? CachedNetworkImage(
+                                            child: CachedNetworkImage(
                                               height: 75,
                                               width: 75,
                                               fit: BoxFit.fitWidth,
@@ -625,14 +625,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     height: 100,
                                                     fit: BoxFit.fill,
                                                     width:100,
-                                                  )): Image.asset(
+                                                  ))): Image.asset(
                                               "assets/logo/Central icon.png",
                                               height: 100,
                                               fit: BoxFit.fill,
                                               width:100,
                                             ),
-
-                                          ),
                                         ],
                                       ),
                                       Container(
