@@ -300,26 +300,6 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                           FontWeight.w500,
                                           color: Colors.black),
                                     ),
-                                    Text(
-                                      getCardModel
-                                          ?.jobTitle ??
-                                          "",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight:
-                                          FontWeight.normal,
-                                          color: Colors.black45),
-                                    ),
-                                    Text(
-                                      getCardModel
-                                          ?.companyName ??
-                                          "",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight:
-                                          FontWeight.normal,
-                                          color: Colors.black45),
-                                    ),
                                   ],
                                 ),
                                 ClipRRect(
@@ -379,7 +359,6 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                               getCardModel?.companyName ?? "",
                               style: const TextStyle(fontSize: 16),
                             ),
-                            const Divider(thickness: 1),
                             Text(
                               getCardModel?.companyTypeId == "1"
                                   ? "IT"
@@ -389,7 +368,6 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                 color: Colors.grey,
                               ),
                             ),
-                            const Divider(thickness: 1),
                             Text(
                               getCardModel?.jobTitle ?? "",
                               style: const TextStyle(fontSize: 16),

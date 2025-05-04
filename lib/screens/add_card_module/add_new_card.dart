@@ -300,24 +300,62 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     const SizedBox(
                                       height: 17,
                                     ),
-                                    Text(
-                                      "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                    ),
-                                    Text(
-                                      cardList!.data![index].jobTitle
-                                          .toString(),
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                            color: Colors.black45),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                            Text(
+                                              cardList!.data![index].jobTitle
+                                                  .toString(),
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.black45),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        ClipRRect(
+                                          borderRadius:
+                                          const BorderRadius.all(
+                                              Radius.circular(
+                                                  75)),
+                                          child: CachedNetworkImage(
+                                            height: 75,
+                                            width: 75,
+                                            fit: BoxFit.fitWidth,
+                                            imageUrl:
+                                            "${Network.imgUrl}${cardList!.data![index].companyLogo ?? ""}",
+                                            progressIndicatorBuilder:
+                                                (context, url,
+                                                downloadProgress) =>
+                                                Center(
+                                                  child: CircularProgressIndicator(
+                                                      value:
+                                                      downloadProgress
+                                                          .progress),
+                                                ),
+                                            errorWidget: (context,
+                                                url, error) =>
+                                                Image.asset(
+                                                  "assets/logo/Central icon.png",
+                                                  height: 80,
+                                                  fit: BoxFit.fill,
+                                                  width: double.infinity,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
                                       height: 1,

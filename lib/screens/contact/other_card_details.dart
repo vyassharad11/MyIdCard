@@ -209,7 +209,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                     ),
                   ),
                   elevation: 0,
-                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 3),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -388,7 +388,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                           children: [
                             Text(
                               getCardModel
-                                  ?.jobTitle ??
+                                  ?.companyName ??
                                   "",
                               style: TextStyle(
                                   fontSize: 14,
@@ -407,7 +407,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                             ),
                             Text(
                               getCardModel
-                                  ?.companyName ??
+                                  ?.jobTitle ??
                                   "",
                               style: TextStyle(
                                   fontSize: 14,
@@ -720,6 +720,15 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                             padding: EdgeInsets.zero,
                             itemCount: getCardModel!.cardDocuments!.length,
                             itemBuilder: (context, index) {
+                              var  s = getCardModel!.cardDocuments![index].document.toString();
+                              String result = "";
+                              List<String> parts = s.split('/');
+                              if (parts.length > 2) {
+                                result = parts.sublist(2).join('/');
+                                print(result); // Output: item/12345
+                              } else {
+                                print('Not enough "/" characters in the string.');
+                              }
                               print(
                                   "image-----${getCardModel!.cardDocuments![index].document.toString()}");
                               print(
@@ -759,10 +768,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                       )),
                                 ),
                                 title: Text(
-                                  getCardModel!
-                                      .cardDocuments![index].document
-                                      .toString(),
-                                ),
+                                    result),
                                 // trailing: IconButton(
                                 //   icon: Padding(
                                 //     padding: const EdgeInsets.all(4),

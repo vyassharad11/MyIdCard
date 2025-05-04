@@ -210,7 +210,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                             ),
                           ),
                           elevation: 0,
-                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 3),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,7 +258,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 18.0, left: 0),
+                                            top: 18.0, left: 8,bottom: 8),
                                         child: ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
