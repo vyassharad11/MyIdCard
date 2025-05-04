@@ -257,14 +257,14 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 12.0, left: 8,bottom: 4),
+                                    top: 12.0, left: 8),
                                 child: ClipRRect(
                                   borderRadius:
                                   const BorderRadius.all(
                                       Radius.circular(50)),
                                   child: CachedNetworkImage(
-                                    height: 83,
-                                    width: 83,
+                                    height: 80,
+                                    width: 80,
                                     fit: BoxFit.fitWidth,
                                     imageUrl:
                                     "${Network.imgUrl}${getCardModel!.cardImage}",
