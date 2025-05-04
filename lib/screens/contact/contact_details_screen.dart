@@ -603,7 +603,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                   padding:
                                                       const EdgeInsets.only(
                                                           top: 12.0, left: 12),
-                                                  child: ClipRRect(
+                                                  child: contactDetailsDatum != null &&  contactDetailsDatum!.cardImage != null &&  contactDetailsDatum!.cardImage.toString().isNotEmpty?  ClipRRect(
                                                     borderRadius:
                                                         const BorderRadius.all(
                                                             Radius.circular(
@@ -632,6 +632,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                         width: 100,
                                                       ),
                                                     ),
+                                                  ): Image.asset(
+                                                    "assets/logo/Central icon.png",
+                                                    height: 100,
+                                                    fit: BoxFit.fill,
+                                                    width: 100,
                                                   ),
                                                 ),
                                                 Column(
@@ -782,7 +787,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 ),
                                               ],
                                             ),
-                                            ClipRRect(
+                                            contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?       ClipRRect(
                                               borderRadius:
                                               const BorderRadius.all(
                                                   Radius.circular(
@@ -811,6 +816,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                       width: double.infinity,
                                                     ),
                                               ),
+                                            ): Image.asset(
+                                              "assets/logo/Central icon.png",
+                                              height: 100,
+                                              fit: BoxFit.fill,
+                                              width: 100,
                                             ),
                                           ],
                                         ),

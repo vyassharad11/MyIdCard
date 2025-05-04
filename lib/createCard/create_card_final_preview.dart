@@ -261,7 +261,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 12.0, left: 8),
-                                        child: ClipRRect(
+                                        child:getCardModel != null &&  getCardModel!.cardImage != null &&  getCardModel!.cardImage!.toString().isNotEmpty? ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
                                               Radius.circular(50)),
@@ -290,6 +290,11 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                                   width: 100,
                                                 ),
                                           ),
+                                        ): Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 100,
+                                          fit: BoxFit.fill,
+                                          width: 100,
                                         ),
                                       ),
                                     ],
@@ -334,7 +339,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                         ),
                                       ],
                                     ),
-                                    ClipRRect(
+                                    getCardModel != null &&  getCardModel!.company_logo != null &&  getCardModel!.company_logo.toString().isNotEmpty?   ClipRRect(
                                       borderRadius:
                                       const BorderRadius.all(
                                           Radius.circular(
@@ -363,6 +368,11 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                               width: 90,
                                             ),
                                       ),
+                                    ): Image.asset(
+                                      "assets/logo/Central icon.png",
+                                      height: 100,
+                                      fit: BoxFit.fill,
+                                      width: 100,
                                     ),
                                   ],
                                 ),

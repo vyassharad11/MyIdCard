@@ -370,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
               isLoad == true ? _getShimmerView():
               cardList != null && cardList!.data!.isNotEmpty?
                 SizedBox(
-                  height: 310,
+                  height: 318,
                   child: Swiper(
                     itemCount: cardList!.data!.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -448,7 +448,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                     top: 12.0, left: 12),
-                                                child: ClipRRect(
+                                                child:  cardList!.data![index].cardImage != null && cardList!.data![index].cardImage.toString().isNotEmpty?ClipRRect(
                                                   borderRadius:
                                                       const BorderRadius.all(
                                                           Radius.circular(50)),
@@ -476,6 +476,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       width: 100,
                                                     ),
                                                   ),
+                                                ): Image.asset(
+                                                  "assets/logo/Central icon.png",
+                                                  height: 100,
+                                                  fit: BoxFit.fill,
+                                                  width: 100,
                                                 ),
                                               ),
                                               IconButton(
