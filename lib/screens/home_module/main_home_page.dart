@@ -370,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
               isLoad == true ? _getShimmerView():
               cardList != null && cardList!.data!.isNotEmpty?
                 SizedBox(
-                  height: 280,
+                  height: 310,
                   child: Swiper(
                     itemCount: cardList!.data!.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -471,9 +471,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         (context, url, error) =>
                                                             Image.asset(
                                                       "assets/logo/Central icon.png",
-                                                      height: 80,
+                                                      height: 100,
                                                       fit: BoxFit.fill,
-                                                      width: double.infinity,
+                                                      width: 100,
                                                     ),
                                                   ),
                                                 ),
@@ -622,9 +622,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   url, error) =>
                                                   Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 52,
+                                                    height: 100,
                                                     fit: BoxFit.fill,
-                                                    width: double.infinity,
+                                                    width:100,
                                                   ),
                                             ),
                                           ),

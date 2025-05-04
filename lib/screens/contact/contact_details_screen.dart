@@ -609,8 +609,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                             Radius.circular(
                                                                 60)),
                                                     child: CachedNetworkImage(
-                                                      height: 60,
-                                                      width: 60,
+                                                      height: 80,
+                                                      width: 80,
                                                       fit: BoxFit.fitWidth,
                                                       imageUrl:
                                                           "${Network.imgUrl}${contactDetailsDatum?.cardImage}",
@@ -627,9 +627,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                               url, error) =>
                                                           Image.asset(
                                                         "assets/logo/Central icon.png",
-                                                        height: 80,
+                                                        height: 100,
                                                         fit: BoxFit.fill,
-                                                        width: double.infinity,
+                                                        width: 100,
                                                       ),
                                                     ),
                                                   ),
