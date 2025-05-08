@@ -370,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
               isLoad == true ? _getShimmerView():
               cardList != null && cardList!.data!.isNotEmpty?
                 SizedBox(
-                  height: 318,
+                  height: 329,
                   child: Swiper(
                     itemCount: cardList!.data!.length,
                     itemBuilder: (BuildContext context, int index) {

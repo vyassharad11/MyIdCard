@@ -402,7 +402,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                   style: const TextStyle(fontSize: 16),
                                 ),
                                 Text(
-                                  getCardModel?.companyTypeId == "1"
+                                  getCardModel?.companyTypeId.toString() == "1"
                                       ? "IT"
                                       : "Finance",
                                   style: const TextStyle(
@@ -638,7 +638,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                                           .document ?? "",),));
                                               // Handle delete action
                                             }else{
-                                              launch(getCardModel!.cardDocuments![index].document ?? "");
+                                              launch("${Network.imgUrl}${getCardModel!.cardDocuments![index].document ?? ""}");
                                             }
                                             // Handle delete action
                                           },

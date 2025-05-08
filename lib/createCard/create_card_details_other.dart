@@ -4,19 +4,23 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/models/card_get_model.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../bloc/api_resp_state.dart';
 import '../bloc/cubit/card_cubit.dart';
 import '../language/app_localizations.dart';
 import '../localStorage/storage.dart';
 import '../models/utility_dto.dart';
+import '../screens/contact/document_preivew.dart';
 import '../utils/utility.dart';
 import '../utils/widgets/network.dart';
 import 'package:path/path.dart' as path;
@@ -317,60 +321,77 @@ class _CreateCardScreenDetailsOtherState
                                 padding: EdgeInsets.zero,
                                 itemCount: _selectedImage.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    contentPadding:
-                                        EdgeInsets.only(left: 12, right: 6),
-                                    leading: _selectedImage[index]
-                                                .path
-                                                .contains(".pdf") ||
-                                            _selectedImage[index]
-                                                .path
-                                                .contains(".docx")
-                                        ? Icon(
-                                            Icons.picture_as_pdf,
-                                            size: 24,
-                                            color: Colors.black,
-                                          )
-                                        : ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                                15), // Rounded corners for image
-                                            child: _selectedImage[index]
-                                                    .path
-                                                    .contains("storage")
-                                                ? Image.network(
-                                                    "${Network.imgUrl}${_selectedImage[index].path}",
-                                                    fit: BoxFit.cover,
-                                                    width: 40,
-                                                    height: 40,
-                                                  )
-                                                : Image.file(
-                                                    _selectedImage[index],
-                                                    fit: BoxFit.cover,
-                                                    width: 40,
-                                                    height: 40,
-                                                  ),
-                                          ),
-                                    title: _selectedImage[index].path.isNotEmpty
-                                        ? Text(
-                                            _selectedImage[index].path.toString(),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          )
-                                        : Text("-"),
-                                    trailing: IconButton(
-                                      icon: Padding(
-                                        padding: const EdgeInsets.all(4),
-                                        child: Image.asset(
-                                            "assets/images/Frame 415.png"),
+                                  return InkWell(
+                                    onTap: () async {
+                                      if(
+                                      _selectedImage[index].path.contains("png") ||
+                                          _selectedImage[index].path.contains("jpg") ||
+                                          _selectedImage[index].path.contains("jpeg")
+                                      ) {
+                                      Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) =>
+                                      DocumentPreview(
+                                      imageUrl: _selectedImage[index].path ?? "",),));
+                                      // Handle delete action
+                                      }else {
+                                        await OpenFilex.open(_selectedImage[index].path ?? "");
+                                      }
+                                    },
+                                    child: ListTile(
+                                      contentPadding:
+                                          EdgeInsets.only(left: 12, right: 6),
+                                      leading: _selectedImage[index]
+                                                  .path
+                                                  .contains(".pdf") ||
+                                              _selectedImage[index]
+                                                  .path
+                                                  .contains(".docx")
+                                          ? Icon(
+                                              Icons.picture_as_pdf,
+                                              size: 24,
+                                              color: Colors.black,
+                                            )
+                                          : ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                  15), // Rounded corners for image
+                                              child: _selectedImage[index]
+                                                      .path
+                                                      .contains("storage")
+                                                  ? Image.network(
+                                                      "${Network.imgUrl}${_selectedImage[index].path}",
+                                                      fit: BoxFit.cover,
+                                                      width: 40,
+                                                      height: 40,
+                                                    )
+                                                  : Image.file(
+                                                      _selectedImage[index],
+                                                      fit: BoxFit.cover,
+                                                      width: 40,
+                                                      height: 40,
+                                                    ),
+                                            ),
+                                      title: _selectedImage[index].path.isNotEmpty
+                                          ? Text(
+                                              _selectedImage[index].path.toString(),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                          : Text("-"),
+                                      trailing: IconButton(
+                                        icon: Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: Image.asset(
+                                              "assets/images/Frame 415.png"),
+                                        ),
+                                        color: Colors.grey,
+                                        onPressed: () {
+                                          setState(() {
+                                            _selectedDElecImage
+                                                .add(_selectedImage[index]);
+                                            _selectedImage.removeAt(index);
+                                          });
+                                        },
                                       ),
-                                      color: Colors.grey,
-                                      onPressed: () {
-                                        setState(() {
-                                          _selectedDElecImage
-                                              .add(_selectedImage[index]);
-                                          _selectedImage.removeAt(index);
-                                        });
-                                      },
                                     ),
                                   );
                                 },

@@ -319,12 +319,12 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                                 width: MediaQuery.of(context).size.width,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(
-                                      50), // Adjust the radius as needed
+                                      8), // Adjust the radius as needed
                                   child: Image.file(
                                     _selectedImage!,
                                     fit: BoxFit.cover,
-                                    width: 80,
-                                    height: 150,
+                                    width: double.infinity,
+                                    height: 180,
                                   ),
                                 ),
                               )
@@ -333,12 +333,12 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                                     _selectedImage!.path.contains("storage")
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(
-                                        50), // Adjust the radius as needed
+                                        8), // Adjust the radius as needed
                                     child: Image.network(
                                       "${Network.imgUrl}${_selectedImage!.path}",
                                       fit: BoxFit.cover,
-                                      width: 80,
-                                      height: 80,
+                                      width: double.infinity,
+                                      height: 180,
                                     ),
                                   )
                                 : Column(

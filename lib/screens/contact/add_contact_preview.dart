@@ -228,8 +228,8 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 12.0, left: 4),
-                                    child: ClipRRect(
+                                        top: 8.0, left: 2),
+                                    child:getCardModel!.cardImage != null && getCardModel!.cardImage.toString().isNotEmpty ?ClipRRect(
                                       borderRadius:
                                       const BorderRadius.all(
                                           Radius.circular(80)),
@@ -258,6 +258,11 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                               width: 100,
                                             ),
                                       ),
+                                    ):Image.asset(
+                                      "assets/logo/Central icon.png",
+                                      height: 105,
+                                      fit: BoxFit.fill,
+                                      width: 105,
                                     ),
                                   ),
                                 ],

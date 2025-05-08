@@ -331,7 +331,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as GetCardModel;
-              if (dto.data?.companyTypeId == "1") {
+              if (dto.data?.companyTypeId.toString() == "1") {
                 selectedTitle = "IT";
                 selectedId = "1";
               } else {

@@ -788,7 +788,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                                   .document ?? "",),));
                                       // Handle delete action
                                     }else{
-                                      launch(getCardModel!.cardDocuments![index].document ?? "");
+                                      launch("${Network.imgUrl}${getCardModel!.cardDocuments![index].document ?? ""}");
                                     }
                                     // Handle delete action
                                   },

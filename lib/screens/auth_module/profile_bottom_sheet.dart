@@ -16,6 +16,7 @@ import 'package:my_di_card/models/user_data_model.dart';
 import 'package:my_di_card/screens/auth_module/welcome_screen.dart';
 import 'package:my_di_card/utils/common_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/auth_cubit.dart';
@@ -23,6 +24,7 @@ import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/login_dto.dart';
 import '../../models/signup_dto.dart';
+import '../../models/utility_dto.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/image_cropo.dart';
 import '../../utils/url_lancher.dart';
@@ -51,6 +53,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
   TextEditingController teamCode = TextEditingController();
   TextEditingController firstname = TextEditingController();
   TextEditingController lastName = TextEditingController();
+  AuthCubit? _termsPolicyCubit;
 
 
   Future<void> submitData({  String? teamCode,
@@ -85,7 +88,13 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
     _completeProfileCubit?.completeProfileApiNew(data,);
   }
 
-
+  apiGetTermsAndPolicy(title) {
+    if (title == "Privacy Policy") {
+      _termsPolicyCubit?.apiGetPrivacy();
+    } else {
+      _termsPolicyCubit?.apiGetTerms();
+    }
+  }
 
   @override
   void dispose() {
@@ -107,6 +116,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
 
   @override
   void initState() {
+    _termsPolicyCubit = AuthCubit(AuthRepository());
     Storage().setIsIndivisual(false);
     _completeProfileCubit = AuthCubit(AuthRepository());
     FocusManager.instance.primaryFocus?.unfocus();
@@ -115,347 +125,394 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, ResponseState>(
-      bloc: _completeProfileCubit,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
-          Utility.hideLoader(context);
-          Utility().showFlushBar(context: context, message: state.message,isError: true);
-        } else if (state is ResponseStateNoInternet) {
-           Utility.hideLoader(context);
-           Utility().showFlushBar(context: context, message: state.message,isError: true);
-        } else if (state is ResponseStateError) {
-           Utility.hideLoader(context);
-           Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
-        } else if (state is ResponseStateSuccess) {
-           Utility.hideLoader(context);
-          var dto = state.data as SignupDto;
-           if(dto.data != null) {
-            Storage().saveUserToPreferences(dto.data as User);
-          }
-          if(teamCode.text.isNotEmpty) {
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (builder) =>
-                    FirstCardScreen()));
-          }else{
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (builder) =>
-                    SubscriptionScreen(isFromCreateProfile: true,)));
-          }
-           Utility().showFlushBar(context: context, message: "Profile Complete Successfully");
-        }
+    return MultiBlocListener(
+      listeners: [
+      BlocListener<AuthCubit, ResponseState>(
+    bloc: _termsPolicyCubit,
+    listener: (context, state) {
+      if (state is ResponseStateLoading) {
+      } else if (state is ResponseStateEmpty) {
+        Utility.hideLoader(context);
+      } else if (state is ResponseStateNoInternet) {
+        Utility.hideLoader(context);
+      } else if (state is ResponseStateError) {
+        Utility.hideLoader(context);
+      } else if (state is ResponseStateSuccess) {
+        Utility.hideLoader(context);
+        var dto = state.data as UtilityDto;
+        launch(dto.url ?? "");
         setState(() {});
-      },
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 16,
-            right: 16,
-          ),
-          child: GestureDetector(
-            onTap: CommonUtils.closeKeyBoard,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 16),
-                Center(
-                  child: Container(
-                    width: 60,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(10),
+      }
+      setState(() {});
+    },
+    ),
+       BlocListener<AuthCubit, ResponseState>(
+        bloc: _completeProfileCubit,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+            Utility().showFlushBar(context: context, message: state.message,isError: true);
+          } else if (state is ResponseStateNoInternet) {
+             Utility.hideLoader(context);
+             Utility().showFlushBar(context: context, message: state.message,isError: true);
+          } else if (state is ResponseStateError) {
+             Utility.hideLoader(context);
+             Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+          } else if (state is ResponseStateSuccess) {
+             Utility.hideLoader(context);
+            var dto = state.data as SignupDto;
+             if(dto.data != null) {
+              Storage().saveUserToPreferences(dto.data as User);
+            }
+            if(teamCode.text.isNotEmpty) {
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (builder) =>
+                      FirstCardScreen()));
+            }else{
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (builder) =>
+                      SubscriptionScreen(isFromCreateProfile: true,)));
+            }
+             Utility().showFlushBar(context: context, message: "Profile Complete Successfully");
+          }
+          setState(() {});
+        },),],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              left: 16,
+              right: 16,
+            ),
+            child: GestureDetector(
+              onTap: CommonUtils.closeKeyBoard,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Container(
+                      width: 60,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  AppLocalizations.of(context).translate('complteProfile'),
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                Form(
-                  key: _formKey,
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () => _showBottomSheet(context),
-                        child: Center(
-                          child: _selectedImage != null &&
-                                  _selectedImage!.path.isNotEmpty
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      50), // Adjust the radius as needed
-                                  child: Image.file(
-                                    _selectedImage!,
-                                    fit: BoxFit.cover,
-                                    width: 65,
-                                    height: 65,
+                  const SizedBox(height: 16),
+                  Text(
+                    AppLocalizations.of(context).translate('complteProfile'),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () => _showBottomSheet(context),
+                          child: Center(
+                            child: _selectedImage != null &&
+                                    _selectedImage!.path.isNotEmpty
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        50), // Adjust the radius as needed
+                                    child: Image.file(
+                                      _selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: 65,
+                                      height: 65,
+                                    ),
+                                  )
+                                : Stack(
+                                  children: [
+                                    CircleAvatar(
+                                        radius: 65,
+                                        backgroundColor: ColoursUtils.background,
+                                        child: Image.asset(
+                                          "assets/images/Icon.png",
+                                          width: 30,
+                                          height: 30,
+                                        )),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors
+                                      .blue, // Background color of the plus icon
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // White border around the plus icon
+                                    width: 3,
                                   ),
-                                )
-                              : CircleAvatar(
-                                  radius: 65,
-                                  backgroundColor: ColoursUtils.background,
-                                  child: Image.asset(
-                                    "assets/images/Icon.png",
-                                    width: 30,
-                                    height: 30,
-                                  )),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(AppLocalizations.of(context).translate('firstName')),
-                      const SizedBox(height: 4),
-                      TextFormField(
-                        controller: firstname,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)
-                              .translate('EnterfirstName'),
-                          filled: true,
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(14)),
-                            borderSide: BorderSide(color: Colors.white, width: 0),
-                          ),
-                          border: const OutlineInputBorder(
-                              borderSide: BorderSide(width: 0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(14))),
-                          alignLabelWithHint: true,
-                          fillColor: ColoursUtils.background,
-                          hintStyle: TextStyle(
-                              color: ColoursUtils.greyColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal),
-                        ),
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter first name';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      Text(AppLocalizations.of(context).translate('lastName')),
-                      const SizedBox(height: 4),
-                      TextFormField(
-                        controller: lastName,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)
-                              .translate('EnterlastName'),
-                          filled: true,
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(14)),
-                            borderSide: BorderSide(color: Colors.white, width: 0),
-                          ),
-                          border: const OutlineInputBorder(
-                              borderSide: BorderSide(width: 0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(14))),
-                          alignLabelWithHint: true,
-                          fillColor: ColoursUtils.background,
-                          hintStyle: TextStyle(
-                              color: ColoursUtils.greyColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal),
-                        ),
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter last name';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      Text(AppLocalizations.of(context).translate('teamCode')),
-                      const SizedBox(height: 4),
-                      TextField(
-                        controller: teamCode,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)
-                              .translate('EnterteamCode'),
-                          filled: true,
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(14)),
-                            borderSide: BorderSide(color: Colors.white, width: 0),
-                          ),
-                          border: const OutlineInputBorder(
-                              borderSide: BorderSide(width: 0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(14))),
-                          alignLabelWithHint: true,
-                          fillColor: ColoursUtils.background,
-                          hintStyle: TextStyle(
-                              color: ColoursUtils.greyColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 6,
-                          ),
-                          SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor: Colors.white,
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(
+                                      4.0), // Padding around the plus icon
+                                  child: Icon(
+                                    Icons.add, // Plus icon
+                                    size: 30, // Size of the plus icon
+                                    color: Colors.white, // Color of the plus icon
                                   ),
-                                  child: Checkbox(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4)),
-                                      side: const BorderSide(
-                                          color: Colors.grey,
-                                          style: BorderStyle.solid,
-                                          width: 1),
-                                      value: agreeToTerms,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          agreeToTerms = value!;
-                                        });
-                                      }))),
-                          const SizedBox(
-                            width: 12,
+                                ),
+                              ),)
+                                  ],
+                                ),
                           ),
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text:   AppLocalizations.of(context)
-                                      .translate('iAgreeTo'),
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                                TextSpan(
-                                  text:   AppLocalizations.of(context)
-                                      .translate('termsAndCondition'),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      launchUrlGet(
-                                        "${Network.baseUrlLaunch}terms-conditions",
-                                      );
-                                    },
-                                ),
-                              ],
+                        ),
+                        const SizedBox(height: 20),
+                        Text(AppLocalizations.of(context).translate('firstName')),
+                        const SizedBox(height: 4),
+                        TextFormField(
+                          controller: firstname,
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)
+                                .translate('EnterfirstName'),
+                            filled: true,
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(14)),
+                              borderSide: BorderSide(color: Colors.white, width: 0),
                             ),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(width: 0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(14))),
+                            alignLabelWithHint: true,
+                            fillColor: ColoursUtils.background,
+                            hintStyle: TextStyle(
+                                color: ColoursUtils.greyColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          const SizedBox(width: 6),
-                          SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor: Colors.white,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter first name';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 15),
+                        Text(AppLocalizations.of(context).translate('lastName')),
+                        const SizedBox(height: 4),
+                        TextFormField(
+                          controller: lastName,
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)
+                                .translate('EnterlastName'),
+                            filled: true,
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(14)),
+                              borderSide: BorderSide(color: Colors.white, width: 0),
+                            ),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(width: 0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(14))),
+                            alignLabelWithHint: true,
+                            fillColor: ColoursUtils.background,
+                            hintStyle: TextStyle(
+                                color: ColoursUtils.greyColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter last name';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        Text(AppLocalizations.of(context).translate('teamCode')),
+                        const SizedBox(height: 4),
+                        TextField(
+                          controller: teamCode,
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)
+                                .translate('EnterteamCode'),
+                            filled: true,
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(14)),
+                              borderSide: BorderSide(color: Colors.white, width: 0),
+                            ),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(width: 0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(14))),
+                            alignLabelWithHint: true,
+                            fillColor: ColoursUtils.background,
+                            hintStyle: TextStyle(
+                                color: ColoursUtils.greyColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      unselectedWidgetColor: Colors.white,
+                                    ),
+                                    child: Checkbox(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(4)),
+                                        side: const BorderSide(
+                                            color: Colors.grey,
+                                            style: BorderStyle.solid,
+                                            width: 1),
+                                        value: agreeToTerms,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            agreeToTerms = value!;
+                                          });
+                                        }))),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text:   AppLocalizations.of(context)
+                                        .translate('iAgreeTo'),
+                                    style: Theme.of(context).textTheme.bodySmall,
                                   ),
-                                  child: Checkbox(
-                                      shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                side: const BorderSide(
-                                  color: Colors.grey,
-                                          style: BorderStyle.solid,
-                                  width: 1,
-                                ),
-                                value: agreeToPrivacy,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          agreeToPrivacy = value!;
-                                        });
-                                },
+                                  TextSpan(
+                                    text:   AppLocalizations.of(context)
+                                        .translate('termsAndCondition'),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                      Utility.showLoader(context);
+                                        apiGetTermsAndPolicy("");
+                                      },
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text:   AppLocalizations.of(context)
-                                .translate('iAgreeTo'),
-                                  style: Theme.of(context).textTheme.bodySmall,
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            const SizedBox(width: 6),
+                            SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      unselectedWidgetColor: Colors.white,
+                                    ),
+                                    child: Checkbox(
+                                        shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  side: const BorderSide(
+                                    color: Colors.grey,
+                                            style: BorderStyle.solid,
+                                    width: 1,
+                                  ),
+                                  value: agreeToPrivacy,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            agreeToPrivacy = value!;
+                                          });
+                                  },
                                 ),
-                                TextSpan(
-                                  text:   AppLocalizations.of(context)
-                                      .translate('privacyPolicy'),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      launchUrlGet(
-                                        "${Network.baseUrlLaunch}privacy-policy",
-                                      );
-                                    },
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 40),
-                      Utils().primaryButton(
-                          onClick: () {
-                            if (_formKey.currentState!.validate()) {
-                              if (agreeToTerms && agreeToPrivacy) {
-                                submitData(
-                                    cardImage:
-                                        _selectedImage ?? File("invalidpath"),
-                                    firstName: firstname.text,
-                                    lastName: lastName.text,
-                                    teamCode: teamCode.text);
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "Please accept privacy and conditions",
-                                    backgroundColor: Colors.grey,
-                                    textColor: Colors.white,
-                                    gravity: ToastGravity.BOTTOM,
-                                    toastLength: Toast.LENGTH_LONG);
-                              }
+                            const SizedBox(width: 12),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text:   AppLocalizations.of(context)
+                                  .translate('iAgreeTo'),
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  TextSpan(
+                                    text:   AppLocalizations.of(context)
+                                        .translate('privacyPolicy'),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                      Utility.showLoader(context);
+                                        apiGetTermsAndPolicy("Privacy Policy");
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+                        Utils().primaryButton(
+                            onClick: () {
+                              if (_formKey.currentState!.validate()) {
+                                if (agreeToTerms && agreeToPrivacy) {
+                                  submitData(
+                                      cardImage:
+                                          _selectedImage ?? File("invalidpath"),
+                                      firstName: firstname.text,
+                                      lastName: lastName.text,
+                                      teamCode: teamCode.text);
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Please accept privacy and conditions",
+                                      backgroundColor: Colors.grey,
+                                      textColor: Colors.white,
+                                      gravity: ToastGravity.BOTTOM,
+                                      toastLength: Toast.LENGTH_LONG);
+                                }
 
-                              // Perform the submission logic here
-                            } else {
-                              // Show a message to the user
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                 SnackBar(
-                                    content: Text(
-                                        AppLocalizations.of(context)
-                                            .translate('fillALL'))),
-                              );
-                            }
-                          },
-                          text:   AppLocalizations.of(context)
-                              .translate('next')),
-                      const SizedBox(height: 20),
-                    ],
+                                // Perform the submission logic here
+                              } else {
+                                // Show a message to the user
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                   SnackBar(
+                                      content: Text(
+                                          AppLocalizations.of(context)
+                                              .translate('fillALL'))),
+                                );
+                              }
+                            },
+                            text:   AppLocalizations.of(context)
+                                .translate('next')),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
     );
   }
 

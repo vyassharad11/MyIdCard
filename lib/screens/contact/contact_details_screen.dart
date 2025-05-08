@@ -567,7 +567,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                       topRight:
                                                           Radius.circular(18)),
                                               child: CachedNetworkImage(
-                                                height: 80,
+                                                height: 102,
                                                 width: double.infinity,
                                                 fit: BoxFit.fitWidth,
                                                 imageUrl:
@@ -602,7 +602,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 12.0, left: 12),
+                                                          top: 16.0, left: 12),
                                                   child: contactDetailsDatum != null &&  contactDetailsDatum!.cardImage != null &&  contactDetailsDatum!.cardImage.toString().isNotEmpty?  ClipRRect(
                                                     borderRadius:
                                                         const BorderRadius.all(
@@ -1114,7 +1114,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                                                .document ?? "",),));
                                                                    // Handle delete action
                                                                  }else{
-                                                                   launch(contactDetailsDatum!.cardDocuments![index].document ?? "");
+                                                                   launch("${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document ?? ""}");
                                                                  }
                                                                },
                                                                child: ListTile(
