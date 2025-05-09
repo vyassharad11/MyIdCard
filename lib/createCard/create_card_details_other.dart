@@ -684,6 +684,7 @@ class _CreateCardScreenDetailsOtherState
               _selectedImage.add(File(pickedFile.path));
               fileName.add(path.basename(pickedFile.path));
             });
+            // _showBottomSheet(context);
             debugPrint("Image Path: ${pickedFile.path}");
           }
         } catch (e) {
@@ -727,4 +728,68 @@ class _CreateCardScreenDetailsOtherState
       ),
     );
   }
+
+  TextEditingController fileNameController = TextEditingController();
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (BuildContext context) {
+    return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+        SizedBox(
+        height: 45,
+        child: TextField(
+          controller: fileNameController,
+          decoration: InputDecoration(
+            fillColor: Colors.grey.shade200,
+            filled: true,
+            labelText: AppLocalizations.of(context)
+                .translate('enterFileName'),
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),),
+      SizedBox(height: 12,),
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 2),
+        child: SizedBox(
+          height: 45,
+          width: MediaQuery.of(context).size.width,
+          child: ElevatedButton(
+            // iconAlignment: IconAlignment.start,
+            onPressed: () {
+Navigator.pop(context);              // Handle button press
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue, // Background color
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(30), // Rounded corners
+              ),
+            ),
+            child:  Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  AppLocalizations.of(context)
+                      .translate('submit'),// Right side text
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      SizedBox(height: 20,),
+    ]));});}
 }

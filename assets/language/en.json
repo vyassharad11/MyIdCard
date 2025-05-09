@@ -183,6 +183,7 @@
   "hintTageName": "Enter new tag name",
   "helpAndSupport": "Help And Support",
   "enterTitle": "Enter Title",
-  "enterDescription": "Enter Description"
+  "enterDescription": "Enter Description",
+  "enterFileName": "Enter File Name"
 
 }
