@@ -60,6 +60,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
+              Navigator.pop(context);
               Utility().showFlushBar(context: context, message: "Your message sent successfully!");
             }
           },
@@ -78,9 +79,26 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
       child: Column(
         children: [
           Row(children: [
-            IconButton(onPressed: () {
-              Navigator.pop(context);
-            }, icon: Icon(Icons.arrow_back,size: 24),),
+            Container(
+              child: GestureDetector(
+                onTap: () =>
+                    Navigator.pop(context), // Default action: Go back
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  elevation: 2,
+                  child: const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Icon(
+                      Icons.arrow_back,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Text( AppLocalizations.of(context).translate('helpAndSupport'),),
           ],),
           Divider(height: 1,),
@@ -206,7 +224,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                                 children: [
                                   Text(
                                     AppLocalizations.of(context)
-                                        .translate('continue'),
+                                        .translate('submit'),
                                     style: TextStyle(color: Colors.white, fontSize: 16),
                                   ),
                                 ],

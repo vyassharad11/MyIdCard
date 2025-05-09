@@ -79,6 +79,17 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
       }
     });
   }
+  Color getTextColorFromHex(String hexColor) {
+    // Remove # if it exists and ensure it's 6 or 8 digits long
+    hexColor = hexColor.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor"; // Add full opacity
+    }
+
+    final color = Color(int.parse("0x$hexColor"));
+
+    return color == Colors.white ? Colors.black : Colors.white;
+  }
 
 
   @override
@@ -109,8 +120,8 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
         backgroundColor:  getCardModel
             ?.cardStyle !=
             null
-            ? Color(int.parse(
-            '0xFF${getCardModel!.cardStyle!}'))
+            ?  getTextColorFromHex(
+            '0xFF${getCardModel!.cardStyle!}')
             : ColoursUtils.whiteLightColor.withOpacity(1.0),
         body: SingleChildScrollView(
           child: Padding(
@@ -397,7 +408,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                   color: Colors.black45),
                             ),
                             Text(
-                              getCardModel?.companyTypeId == "1"
+                              getCardModel?.companyTypeId.toString() == "1"
                                   ? "IT"
                                   : "Finance",
                               style: const TextStyle(

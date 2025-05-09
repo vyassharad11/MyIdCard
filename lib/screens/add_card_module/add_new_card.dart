@@ -350,7 +350,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                   color: Colors.black45),
                                             ),
                                             Text(
-                                              cardList!.data![index].companyTypeId == "1"
+                                              cardList!.data![index].companyTypeId.toString() == "1"
                                                   ? "IT"
                                                   : "Finance",
                                               style: const TextStyle(

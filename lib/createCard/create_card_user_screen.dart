@@ -269,6 +269,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
                     controller: firstname,
+                    maxLength: 15,
                     decoration: const InputDecoration(
                       hintText: 'First Name *',
                       border: InputBorder.none,
@@ -288,6 +289,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
+                    maxLength: 15,
                     controller: lastName,
                     decoration: const InputDecoration(
                       hintText: 'Last Name *',

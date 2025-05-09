@@ -233,6 +233,7 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
                       controller: cardName,
+                      maxLength: 22,
                       decoration: InputDecoration(
                         hintText:
                             AppLocalizations.of(context).translate('CardName'),
@@ -380,8 +381,12 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                       child: ElevatedButton(
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
-                          Utility.showLoader(context);
-                          submitData(_selectedImage ?? File(""));
+                          if(cardName.text.isNotEmpty) {
+                            Utility.showLoader(context);
+                            submitData(_selectedImage ?? File(""));
+                          }else{
+                            Utility().showFlushBar(context: context, message: "Please enter card name",isError: true);
+                          }
 
                           // Handle button press
                         },

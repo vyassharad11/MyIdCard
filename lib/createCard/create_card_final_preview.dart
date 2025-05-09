@@ -47,7 +47,17 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
   String token = "";
   String input = "";
   Color? extractedColor = Colors.blue;
+  Color getTextColorFromHex(String hexColor) {
+    // Remove # if it exists and ensure it's 6 or 8 digits long
+    hexColor = hexColor.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor"; // Add full opacity
+    }
 
+    final color = Color(int.parse("0x$hexColor"));
+
+    return color == Colors.white ? Colors.black : Colors.white;
+  }
   // Define a RegExp pattern to extract `Color(0xff2196f3)`
 
   dataModel.Data? getCardModel;
@@ -116,8 +126,8 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
           backgroundColor:  getCardModel
               ?.cardStyle !=
               null
-              ? Color(int.parse(
-              '0xFF${getCardModel!.cardStyle!}'))
+              ? getTextColorFromHex(
+              '0xFF${getCardModel!.cardStyle!}')
               : ColoursUtils.whiteLightColor.withOpacity(1.0),
           body: SingleChildScrollView(
             child: Padding(

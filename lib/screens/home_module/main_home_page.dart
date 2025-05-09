@@ -602,7 +602,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     color: Colors.black45),
                                               ),
                                               Text(
-                                                cardList!.data![index].companyTypeId == "1"
+                                                cardList!.data![index].companyTypeId.toString() == "1"
                                                     ? "IT"
                                                     : "Finance",
                                                 style: const TextStyle(
@@ -874,7 +874,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 20), // Space between icon and text
                               // Text below the icon
                               Text(
-                                AppLocalizations.of(context).translate('emailAddress'),
+                                AppLocalizations.of(context).translate('newContact'),
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 18,

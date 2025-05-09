@@ -149,10 +149,14 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                             child:Image.asset("assets/images/close.png")
                           ),
                         ),
-                    Text(
-                      getCardModel?.cardName ?? "",
-                      style: TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 120,
+                      child: Text(
+                        getCardModel?.cardName ?? "",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
                     ),
                     InkWell(
                       onTap: (){
@@ -365,7 +369,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                               style: const TextStyle(fontSize: 16),
                             ),
                             Text(
-                              getCardModel?.companyTypeId == "1"
+                              getCardModel?.companyTypeId.toString() == "1"
                                   ? "IT"
                                   : "Finance",
                               style: const TextStyle(

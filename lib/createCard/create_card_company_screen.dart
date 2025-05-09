@@ -568,6 +568,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextField(
                         controller: companyName,
+                        maxLength: 28,
                         decoration: InputDecoration(
                           hintText:
                               AppLocalizations.of(context).translate('companyname'),
@@ -600,6 +601,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextField(
                         controller: jobTitle,
+                        maxLength: 28,
                         decoration: InputDecoration(
                           hintText:
                               AppLocalizations.of(context).translate('jobtitle'),
