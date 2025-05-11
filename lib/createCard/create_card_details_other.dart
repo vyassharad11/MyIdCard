@@ -104,6 +104,7 @@ class _CreateCardScreenDetailsOtherState
               Utility.hideLoader(context);
               var dto = state.data as GetCardModel;
               dto.data?.cardDocuments?.forEach((action) {
+                _selectedDElecImage.add(action.id.toString());
                 _selectedImage.add(File(action.document.toString()));});
             }
             setState(() {});},),],
@@ -370,13 +371,11 @@ class _CreateCardScreenDetailsOtherState
                                                       height: 40,
                                                     ),
                                             ),
-                                      title: _selectedImage[index].path.isNotEmpty
-                                          ? Text(
-                                              _selectedImage[index].path.toString(),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            )
-                                          : Text("-"),
+                                      // title:  Text(
+                                      //   _selectedImageFileName[index].toString(),
+                                      //         maxLines: 1,
+                                      //         overflow: TextOverflow.ellipsis,
+                                      //       ),
                                       trailing: IconButton(
                                         icon: Padding(
                                           padding: const EdgeInsets.all(4),
@@ -386,9 +385,10 @@ class _CreateCardScreenDetailsOtherState
                                         color: Colors.grey,
                                         onPressed: () {
                                           setState(() {
-                                            _selectedDElecImage
-                                                .add(_selectedImage[index]);
+                                            _selectedDElecImageId
+                                                .add(_selectedDElecImage[index]);
                                             _selectedImage.removeAt(index);
+                                            // _selectedImageFileName.removeAt(index);
                                           });
                                         },
                                       ),
@@ -490,6 +490,8 @@ class _CreateCardScreenDetailsOtherState
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
 
       request.fields['step_no'] = "5";
+      // request.fields['documentsName'] = _selectedImageFileName;
+      if(_selectedImage != null && _selectedImage.isNotEmpty){
       for (int i = 0; i < _selectedImage.length; i++) {
         if (!_selectedImage[i].path.contains("storage")) {
           var file = await http.MultipartFile.fromPath(
@@ -498,16 +500,17 @@ class _CreateCardScreenDetailsOtherState
           );
           request.files.add(file);
         }
-
+        request.fields['documentsName[$i]'] = _selectedImageFileName[i];
         // Add the file to the request
-      }
+      }}
 
-      for (int i = 0; i < _selectedDElecImage.length; i++) {
-        var file = await http.MultipartFile.fromPath(
-          'delete_document_id[$i]',
-          _selectedDElecImage[i].path,
-        );
-        request.files.add(file);
+      for (int i = 0; i < _selectedDElecImageId.length; i++) {
+        // var file = await http.MultipartFile.fromPath(
+        //   'delete_document_id[$i]',
+        //   _selectedDElecImage[i].path,
+        // );
+        print("_selectedDElecImageId>>${_selectedDElecImageId[i]}");
+        request.fields['delete_document_id'] = _selectedDElecImageId[i];
       }
 
       // Add headers, including Authorization token
@@ -523,13 +526,13 @@ class _CreateCardScreenDetailsOtherState
 
         debugPrint("Data submitted successfully: ");
 
-        Navigator.pushAndRemoveUntil(
+        Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (builder) => CreateCardFinalPreview(
                       cardId: widget.cardId.toString() ?? "",
                   isEdit: true,
-                    )), (route) => false,);
+                    )),);
       } else {
          Utility.hideLoader(context);
         print(
@@ -547,8 +550,11 @@ class _CreateCardScreenDetailsOtherState
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-      setState(() {
-        _selectedImage.add(File(result.files.single.path!));
+      _showBottomSheet(context,(value){
+        setState(() {
+          _selectedImage.add(File(result.files.single.path!));
+          _selectedImageFileName.add(value);
+        });
       });
     }
   }
@@ -659,7 +665,9 @@ class _CreateCardScreenDetailsOtherState
 
 
   final List<File> _selectedImage = [];
-  final List<File> _selectedDElecImage = [];
+  final List<String> _selectedImageFileName = [];
+  final List<String> _selectedDElecImage = [];
+  final List<String> _selectedDElecImageId = [];
   List<String> fileName = [];
   final ImagePicker _picker = ImagePicker();
 
@@ -680,11 +688,14 @@ class _CreateCardScreenDetailsOtherState
         try {
           final XFile? pickedFile = await _picker.pickImage(source: source);
           if (pickedFile != null) {
-            setState(() {
-              _selectedImage.add(File(pickedFile.path));
-              fileName.add(path.basename(pickedFile.path));
+            _showBottomSheet(context,(value){
+              setState(() {
+                print("value>>>>>>>>>>>>>>>>>>>>>>$value");
+                _selectedImage.add(File(pickedFile.path));
+                _selectedImageFileName.add(value);
+                fileName.add(path.basename(pickedFile.path));
+              });
             });
-            // _showBottomSheet(context);
             debugPrint("Image Path: ${pickedFile.path}");
           }
         } catch (e) {
@@ -703,9 +714,12 @@ class _CreateCardScreenDetailsOtherState
         try {
           final XFile? pickedFile = await _picker.pickImage(source: source);
           if (pickedFile != null) {
-            setState(() {
-              _selectedImage.add(File(pickedFile.path));
-              fileName.add(path.basename(pickedFile.path.toString()));
+            _showBottomSheet(context,(value){
+              setState(() {
+                _selectedImage.add(File(pickedFile.path));
+                _selectedImageFileName.add(value);
+                fileName.add(path.basename(pickedFile.path));
+              });
             });
             debugPrint("Image Path: ${pickedFile.path}");
           }
@@ -731,7 +745,7 @@ class _CreateCardScreenDetailsOtherState
 
   TextEditingController fileNameController = TextEditingController();
 
-  void _showBottomSheet(BuildContext context) {
+  void _showBottomSheet(BuildContext context,Function callBack) {
     showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -739,7 +753,7 @@ class _CreateCardScreenDetailsOtherState
     ),
     builder: (BuildContext context) {
     return Padding(
-    padding: const EdgeInsets.all(20.0),
+    padding:  EdgeInsets.only(top: 20.0,left: 20,right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
     child: Column(
     mainAxisSize: MainAxisSize.min,
     children: [
@@ -767,7 +781,9 @@ class _CreateCardScreenDetailsOtherState
           child: ElevatedButton(
             // iconAlignment: IconAlignment.start,
             onPressed: () {
-Navigator.pop(context);              // Handle button press
+               Navigator.pop(context);
+               callBack.call(fileNameController.text);// Handle button press
+               fileNameController.clear();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue, // Background color
@@ -791,5 +807,9 @@ Navigator.pop(context);              // Handle button press
         ),
       ),
       SizedBox(height: 20,),
-    ]));});}
+    ]));}).whenComplete(() {
+      fileNameController.clear();setState(() {
+
+      });
+    },);}
 }

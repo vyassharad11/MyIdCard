@@ -146,12 +146,14 @@ class CardDocuments {
   int? id;
   dynamic cardId;
   dynamic document;
+  dynamic documentsName;
 
-  CardDocuments({this.id, this.cardId, this.document});
+  CardDocuments({this.id, this.cardId, this.document,this.documentsName});
 
   CardDocuments.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     cardId = json['card_id'];
+    documentsName = json['documentsName'];
     document = json['document'];
   }
 
@@ -160,6 +162,7 @@ class CardDocuments {
     data['id'] = id;
     data['card_id'] = cardId;
     data['document'] = document;
+    data['documentsName'] = documentsName;
     return data;
   }
 }
@@ -171,6 +174,7 @@ class CardSocials {
   dynamic socialLink;
   dynamic socialName;
   dynamic socialLogo;
+  dynamic socialUrl;
 
   CardSocials(
       {this.id,
@@ -178,6 +182,7 @@ class CardSocials {
       this.socialId,
       this.socialLink,
       this.socialName,
+      this.socialUrl,
       this.socialLogo});
 
   CardSocials.fromJson(Map<String, dynamic> json) {
@@ -185,6 +190,7 @@ class CardSocials {
     cardId = json['card_id'];
     socialId = json['social_id'];
     socialLink = json['social_link'];
+    socialUrl = json['social_url'];
     socialName = json['social_name'];
     socialLogo = json['social_logo'];
   }
@@ -194,6 +200,7 @@ class CardSocials {
     data['id'] = id;
     data['card_id'] = cardId;
     data['social_id'] = socialId;
+    data['social_url'] = socialUrl;
     data['social_link'] = socialLink;
     data['social_name'] = socialName;
     data['social_logo'] = socialLogo;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/constant.dart';
+
 class UserProfileScreen extends StatefulWidget {
   final bool ishOmeScreen;
   const UserProfileScreen({super.key, this.ishOmeScreen = true});
@@ -75,6 +77,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
+                            fontFamily: Constants.fontFamily,
                             fontWeight: FontWeight.bold),
                       ),
                     ),

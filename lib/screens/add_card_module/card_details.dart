@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
+import '../../utils/constant.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/widgets/network.dart';
 import '../meetings/metting_details.dart';
@@ -39,7 +40,7 @@ class _CardDetailsState extends State<CardDetails> {
         title: Text(
           AppLocalizations.of(context).translate('CardName'),
           style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily, color: Colors.black),
         ),
         actions: [
           IconButton(

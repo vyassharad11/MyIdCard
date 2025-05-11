@@ -20,6 +20,7 @@ import '../../models/my_contact_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../models/tag_model.dart';
 import '../../utils/colors/colors.dart';
+import '../../utils/constant.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -487,7 +488,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           title: Text(
             "${contactDetailsDatum?.cardName ?? ""}",
             style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily, color: Colors.black),
           ),
           actions: [
             if (contactDetailsDatum != null)
@@ -683,10 +684,18 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                               ),
                                                         );
                                                       },
-                                                      child: Image.asset(
-                                                        "assets/images/send-01.png",
-                                                        height: 16,
-                                                        width: 16,
+                                                      child: Container(
+                                                        width: 17,
+                                                        height: 17,
+                                                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
+                                                        child: Center(
+                                                          child: Image.asset(
+                                                            "assets/images/send-01.png",
+                                                            height: 10,
+                                                            width: 10,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -750,42 +759,50 @@ class _ContactDetailsState extends State<ContactDetails> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  height: 17,
-                                                ),
-                                                Text(
-                                                  "${contactDetailsDatum?.firstName ?? ""} ${contactDetailsDatum?.lastName ?? ""}",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black),
-                                                ),
-                                                Text(
-                                                  contactDetailsDatum
-                                                          ?.jobTitle ??
-                                                      "",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.black45),
-                                                ),
-                                                Text(
-                                                  contactDetailsDatum
-                                                          ?.companyName ??
-                                                      "",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.black45),
-                                                ),
-                                              ],
+                                            SizedBox(
+                                              width:MediaQuery.of(context).size.width - 150,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 17,
+                                                  ),
+                                                  Text(
+                                                    "${contactDetailsDatum?.firstName ?? ""} ${contactDetailsDatum?.lastName ?? ""}",
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black),
+                                                  ),
+                                                  Text(
+                                                    contactDetailsDatum
+                                                            ?.jobTitle ??
+                                                        "",
+                                                    overflow: TextOverflow.ellipsis,
+
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black45),
+                                                  ),
+                                                  Text(
+                                                    contactDetailsDatum
+                                                            ?.companyName ??
+                                                        "",
+                                                    overflow: TextOverflow.ellipsis,
+
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black45),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?       ClipRRect(
                                               borderRadius:
@@ -1153,7 +1170,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                                  ),
                                                                  title: Text(
                                                                    contactDetailsDatum!
-                                                                       .cardDocuments![index].document
+                                                                       .cardDocuments![index].documentsName
                                                                        .toString(),
                                                                    overflow: TextOverflow.ellipsis,
                                                                  ),

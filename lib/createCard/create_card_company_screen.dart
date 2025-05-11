@@ -774,7 +774,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         try {
           final XFile? pickedFile = await _picker.pickImage(source: source);
           if (pickedFile != null) {
-            final value = await imageCropperFunc(pickedFile.path);
+            final value = await imageCropperFunc(pickedFile.path,isCompanyLogo: true);
             setState(() {
               _selectedImage = File(value.path);
             });
@@ -796,7 +796,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         try {
           final XFile? pickedFile = await _picker.pickImage(source: source);
           if (pickedFile != null) {
-            final value = await imageCropperFunc(pickedFile.path);
+            final value = await imageCropperFunc(pickedFile.path,isCompanyLogo: true);
             setState(() {
               _selectedImage = File(value.path);
             });

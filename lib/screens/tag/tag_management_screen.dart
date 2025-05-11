@@ -14,6 +14,7 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
 import '../../language/app_localizations.dart';
 import '../../models/tag_model.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 
 class TagManagementScreen extends StatefulWidget {
@@ -346,7 +347,7 @@ Future<void> apiGetCardTag(keyword) async {
           title: Text(
               AppLocalizations.of(context).translate('tagsManagement'),
             style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black, fontFamily: Constants.fontFamily),
           ),
           actions: [
             Container(

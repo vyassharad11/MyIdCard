@@ -14,6 +14,7 @@ import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/registration_otp_model.dart';
 import '../../models/utility_dto.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/button_primary.dart';
 import '../../utils/widgets/network.dart';
@@ -164,7 +165,7 @@ class _EmailVerificationBottomSheetState
                               .translate('EmailVerification'),
                           textAlign: TextAlign.center,
                           style:
-                              TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                              TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily),
                         ),
                       ),
                       const SizedBox(height: 8),

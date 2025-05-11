@@ -7,6 +7,7 @@ import '../../bloc/cubit/card_cubit.dart';
 import '../../data/repository/card_repository.dart';
 import '../../data/repository/card_repository.dart';
 import '../../models/company_type_model.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 import '../meetings/metting_details.dart';
 import '../meetings/metting_list.dart';
@@ -132,7 +133,7 @@ class _AddContactNotesState extends State<AddContactNotes> {
                             child: Text(
                               'Mettings',
                               style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold),
+                                  fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily),
                             ),
                           ),
                           Container(

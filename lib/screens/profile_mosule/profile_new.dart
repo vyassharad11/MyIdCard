@@ -373,29 +373,43 @@ class _AccountPageState extends State<AccountPage> {
                         },
                         child:
                     user != null && user!.avatar != null
-                      ? ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        10000.0),
-                    child: CachedNetworkImage(
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.fitWidth,
-                      imageUrl: "${Network.imgUrl}${user!.avatar}",
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                          Center(
-                            child: CircularProgressIndicator(
-                                value: downloadProgress.progress),
+                      ? Stack(
+                        children: [
+                          ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                            10000.0),
+                                              child: CachedNetworkImage(
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.fitWidth,
+                          imageUrl: "${Network.imgUrl}${user!.avatar}",
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) =>
+                              Center(
+                                child: CircularProgressIndicator(
+                                    value: downloadProgress.progress),
+                              ),
+                          errorWidget: (context, url, error) =>
+                              Image.asset(
+                                "assets/images/user_dummy.png",
+                                height: 80,
+                                fit: BoxFit.fill,
+                                width: double.infinity,
+                              ),
+                                              ),
+                                            ),
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.blue,
+                              child: Icon(Icons.edit_outlined,
+                                  size: 15, color: Colors.white),
+                            ),
                           ),
-                      errorWidget: (context, url, error) =>
-                          Image.asset(
-                            "assets/images/user_dummy.png",
-                            height: 80,
-                            fit: BoxFit.fill,
-                            width: double.infinity,
-                          ),
-                    ),
-                  )
+                        ],
+                      )
                       : const CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage(

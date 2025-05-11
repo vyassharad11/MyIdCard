@@ -20,6 +20,7 @@ import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/recent_contact_mode.dart';
 import '../../models/tag_model.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 import '../home_module/add_new_contact.dart';
 import '../tag/tag_management_screen.dart';
@@ -256,7 +257,7 @@ bool isInTeam = false;
           title:  Text(
             AppLocalizations.of(context).translate('contacts'),
             style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black, fontFamily: Constants.fontFamily),
           ),
           actions: [
             Container(

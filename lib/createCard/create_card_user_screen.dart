@@ -58,8 +58,8 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
                   children: [
                     GestureDetector(
                       onTap: () =>
-              Navigator.of(context).pop(),
-                          // showDeleteDialog(context), // Default action: Go back
+              // Navigator.of(context).pop(),
+                          showDeleteDialog(context), // Default action: Go back
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
@@ -570,15 +570,16 @@ String cardImageF = "";
               onPressed: () {
                 // Perform delete action here
                 // Navigator.of(context).pop();
-                Navigator.pop(context);
+                // Navigator.pop(context);
 
-                // deleteCardApiCalling();
+                deleteCardApiCalling();
                 // Close the dialog
               },
               child: Text('Delete'),
             ),
             TextButton(
               onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: Text('Cancel'),

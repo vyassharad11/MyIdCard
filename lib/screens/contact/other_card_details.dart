@@ -64,18 +64,18 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
     getCardModel?.cardSocials?.forEach((action) {
       if (action.socialName == "Twitter") {
         twitterLink =
-            action.socialLink.toString() + action.socialLink.toString();
+            action.socialUrl.toString() + action.socialLink.toString();
       }
       if (action.socialName == "Instagram") {
-        instaLink = action.socialLink.toString() + action.socialLink.toString();
+        instaLink = action.socialUrl.toString() + action.socialLink.toString();
       }
       if (action.socialName == "Facebook") {
         faceBookLink =
-            action.socialLink.toString() + action.socialLink.toString();
+            action.socialUrl.toString() + action.socialLink.toString();
       }
       if (action.socialName == "LinkedIn") {
         linkdinLink =
-            action.socialLink.toString() + action.socialLink.toString();
+            action.socialUrl.toString() + action.socialLink.toString();
       }
     });
   }
@@ -86,7 +86,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
       hexColor = "FF$hexColor"; // Add full opacity
     }
 
-    final color = Color(int.parse("0x$hexColor"));
+    final color = Color(int.parse("$hexColor"));
 
     return color == Colors.white ? Colors.black : Colors.white;
   }
@@ -120,8 +120,8 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
         backgroundColor:  getCardModel
             ?.cardStyle !=
             null
-            ?  getTextColorFromHex(
-            '0xFF${getCardModel!.cardStyle!}')
+            ? Color(int.parse(
+            '0xFF${getCardModel!.cardStyle!}'))
             : ColoursUtils.whiteLightColor.withOpacity(1.0),
         body: SingleChildScrollView(
           child: Padding(
@@ -162,11 +162,18 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                         ),
                       ),
                     ),
-                    Text(
-                      getCardModel?.cardName.toString() ?? "",
-                      style: const TextStyle(
-                        color: Colors.white,
-                          fontSize: 24, fontWeight: FontWeight.w600),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 120,
+                      child: Center(
+                        child: Text(
+                          getCardModel?.cardName.toString() ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          style:  TextStyle(
+                            color: getTextColorFromHex(
+                                '0xFF${getCardModel!.cardStyle!}'),
+                              fontSize: 24, fontWeight: FontWeight.w600),
+                        ),
+                      ),
                     ),
                     InkWell(
                       onTap: (){
@@ -731,19 +738,6 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                             padding: EdgeInsets.zero,
                             itemCount: getCardModel!.cardDocuments!.length,
                             itemBuilder: (context, index) {
-                              var  s = getCardModel!.cardDocuments![index].document.toString();
-                              String result = "";
-                              List<String> parts = s.split('/');
-                              if (parts.length > 2) {
-                                result = parts.sublist(2).join('/');
-                                print(result); // Output: item/12345
-                              } else {
-                                print('Not enough "/" characters in the string.');
-                              }
-                              print(
-                                  "image-----${getCardModel!.cardDocuments![index].document.toString()}");
-                              print(
-                                  "image-----${getCardModel!.cardDocuments![index].cardId.toString()}");
                               return ListTile(
                                 leading: SizedBox(
                                   width: 40,
@@ -779,7 +773,9 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                       )),
                                 ),
                                 title: Text(
-                                    result),
+                                  getCardModel!
+                                      .cardDocuments![index]
+                                      .documentsName ?? "",),
                                 trailing: IconButton(
                                   icon: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 4,),
