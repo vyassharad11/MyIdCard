@@ -494,7 +494,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                 AppLocalizations.of(context)
                                     .translate('add'),
                                 style: TextStyle(
-                                    color: Colors.black45, fontSize: 16),
+                                    color: Colors.black, fontSize: 16),
                               ),
                             ],
                           ),
