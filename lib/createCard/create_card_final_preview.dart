@@ -123,7 +123,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
         ),
       ],
       child: WillPopScope(
-        onWillPop: () async {
+        onWillPop: () async {widget.isEdit == true?Navigator.pop(context):
           Navigator.pushAndRemoveUntil(
             context,
             CupertinoPageRoute(builder: (builder) => BottomNavBarExample()),
@@ -157,13 +157,13 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                           children: [
                             Container(
                               child: GestureDetector(
-                                onTap: () => Navigator.pushAndRemoveUntil(
+                                onTap: () {widget.isEdit == true?Navigator.pop(context): Navigator.pushAndRemoveUntil(
                                   context,
                                   CupertinoPageRoute(
                                       builder: (builder) =>
                                           BottomNavBarExample()),
                                   (route) => false,
-                                ), // Default action: Go back
+                                );}, // Default action: Go back
                                 child: Card(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),

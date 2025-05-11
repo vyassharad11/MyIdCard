@@ -105,6 +105,7 @@ class _CreateCardScreenDetailsOtherState
               var dto = state.data as GetCardModel;
               dto.data?.cardDocuments?.forEach((action) {
                 _selectedDElecImage.add(action.id.toString());
+                _selectedImageFileName.add(action.documentsName.toString());
                 _selectedImage.add(File(action.document.toString()));});
             }
             setState(() {});},),],
@@ -371,11 +372,11 @@ class _CreateCardScreenDetailsOtherState
                                                       height: 40,
                                                     ),
                                             ),
-                                      // title:  Text(
-                                      //   _selectedImageFileName[index].toString(),
-                                      //         maxLines: 1,
-                                      //         overflow: TextOverflow.ellipsis,
-                                      //       ),
+                                      title:  Text(_selectedImageFileName != null && _selectedImageFileName.isNotEmpty?
+                                        _selectedImageFileName[index].toString():"",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                       trailing: IconButton(
                                         icon: Padding(
                                           padding: const EdgeInsets.all(4),
@@ -388,7 +389,7 @@ class _CreateCardScreenDetailsOtherState
                                             _selectedDElecImageId
                                                 .add(_selectedDElecImage[index]);
                                             _selectedImage.removeAt(index);
-                                            // _selectedImageFileName.removeAt(index);
+                                            _selectedImageFileName.removeAt(index);
                                           });
                                         },
                                       ),
@@ -490,7 +491,13 @@ class _CreateCardScreenDetailsOtherState
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
 
       request.fields['step_no'] = "5";
+      // Map<String, dynamic> data = {
+      //
+      // };
       // request.fields['documentsName'] = _selectedImageFileName;
+       String jsonArray = _selectedImageFileName.join(',');
+       print("jsonArray$jsonArray");
+      request.fields['documentsName'] = jsonArray.toString();
       if(_selectedImage != null && _selectedImage.isNotEmpty){
       for (int i = 0; i < _selectedImage.length; i++) {
         if (!_selectedImage[i].path.contains("storage")) {
@@ -500,17 +507,22 @@ class _CreateCardScreenDetailsOtherState
           );
           request.files.add(file);
         }
-        request.fields['documentsName[$i]'] = _selectedImageFileName[i];
         // Add the file to the request
       }}
 
-      for (int i = 0; i < _selectedDElecImageId.length; i++) {
-        // var file = await http.MultipartFile.fromPath(
-        //   'delete_document_id[$i]',
-        //   _selectedDElecImage[i].path,
-        // );
-        print("_selectedDElecImageId>>${_selectedDElecImageId[i]}");
-        request.fields['delete_document_id'] = _selectedDElecImageId[i];
+      // for (int i = 0; i < _selectedDElecImageId.length; i++) {
+      //   // var file = await http.MultipartFile.fromPath(
+      //   //   'delete_document_id[$i]',
+      //   //   _selectedDElecImage[i].path,
+      //   // );
+      //   print("_selectedDElecImageId>>${_selectedDElecImageId[i]}");
+      //   request.fields['delete_document_id'] = _selectedDElecImageId[i];
+      // }
+
+
+      if(_selectedDElecImageId.isNotEmpty){
+        String deleteString = _selectedDElecImageId.join(',');
+        request.fields['delete_document_id'] = deleteString;
       }
 
       // Add headers, including Authorization token
