@@ -789,18 +789,18 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                             FontWeight.normal,
                                                         color: Colors.black45),
                                                   ),
-                                                  Text(
-                                                    contactDetailsDatum
-                                                            ?.companyName ??
-                                                        "",
-                                                    overflow: TextOverflow.ellipsis,
-
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        color: Colors.black45),
-                                                  ),
+                                                  // Text(
+                                                  //   contactDetailsDatum
+                                                  //           ?.companyName ??
+                                                  //       "",
+                                                  //   overflow: TextOverflow.ellipsis,
+                                                  //
+                                                  //   style: TextStyle(
+                                                  //       fontSize: 14,
+                                                  //       fontWeight:
+                                                  //           FontWeight.normal,
+                                                  //       color: Colors.black45),
+                                                  // ),
                                                 ],
                                               ),
                                             ),

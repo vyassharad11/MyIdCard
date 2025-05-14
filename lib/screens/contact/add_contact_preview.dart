@@ -309,6 +309,10 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                           FontWeight.w500,
                                           color: Colors.black),
                                     ),
+                                    Text(
+                                      getCardModel?.jobTitle ?? "",
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
                                   ],
                                 ),
                                 ClipRRect(

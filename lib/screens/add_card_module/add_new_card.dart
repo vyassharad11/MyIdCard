@@ -340,25 +340,25 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                     color: Colors.black),
                                               ),
                                             ),
-                                            Text(
-                                              cardList!.data![index]
-                                                  .companyName ??
-                                                  "",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight:
-                                                  FontWeight.normal,
-                                                  color: Colors.black45),
-                                            ),
-                                            Text(
-                                              cardList!.data![index].companyTypeId.toString() == "1"
-                                                  ? "IT"
-                                                  : "Finance",
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
+                                            // Text(
+                                            //   cardList!.data![index]
+                                            //       .companyName ??
+                                            //       "",
+                                            //   style: TextStyle(
+                                            //       fontSize: 14,
+                                            //       fontWeight:
+                                            //       FontWeight.normal,
+                                            //       color: Colors.black45),
+                                            // ),
+                                            // Text(
+                                            //   cardList!.data![index].companyTypeId.toString() == "1"
+                                            //       ? "IT"
+                                            //       : "Finance",
+                                            //   style: const TextStyle(
+                                            //     fontSize: 16,
+                                            //     color: Colors.grey,
+                                            //   ),
+                                            // ),
                                             Text(
                                               cardList!.data![index].jobTitle
                                                   .toString(),

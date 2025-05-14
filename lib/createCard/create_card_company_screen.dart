@@ -568,7 +568,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextField(
                         controller: companyName,
-                        maxLength: 28,
+                        // maxLength: 28,
                         decoration: InputDecoration(
                           hintText:
                               AppLocalizations.of(context).translate('companyname'),
@@ -601,7 +601,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextField(
                         controller: jobTitle,
-                        maxLength: 28,
+                        // maxLength: 28,
                         decoration: InputDecoration(
                           hintText:
                               AppLocalizations.of(context).translate('jobtitle'),
@@ -774,7 +774,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         try {
           final XFile? pickedFile = await _picker.pickImage(source: source);
           if (pickedFile != null) {
-            final value = await imageCropperFunc(pickedFile.path,isCompanyLogo: true);
+            final value = await imageCropperFuncForLogo(pickedFile.path,);
             setState(() {
               _selectedImage = File(value.path);
             });

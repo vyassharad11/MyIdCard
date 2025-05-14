@@ -36,3 +36,23 @@ Future<CroppedFile>  imageCropperFunc(filePath,{bool? isCompanyLogo = false,bool
   );
   return imageCropper ?? CroppedFile("$filePath");
 }
+Future<CroppedFile>  imageCropperFuncForLogo(filePath,{bool? isCompanyLogo = false,}) async {
+  CroppedFile? imageCropper = await ImageCropper().cropImage(
+    sourcePath: filePath,
+    uiSettings: [
+      AndroidUiSettings(
+        toolbarTitle: 'MyDiCard Cropper',
+        toolbarColor: Colors.blueGrey,
+        toolbarWidgetColor: Colors.white,
+        showCropGrid: true,
+        initAspectRatio: CropAspectRatioPreset.ratio3x2, // Use custom ratio
+        lockAspectRatio: false,
+      ),
+      IOSUiSettings(
+        title: 'MyDiCard Cropper',
+        aspectRatioLockEnabled: false,
+      ),
+    ],
+  );
+  return imageCropper ?? CroppedFile("$filePath");
+}

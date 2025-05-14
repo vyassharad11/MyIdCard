@@ -40,327 +40,333 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: CommonUtils.closeKeyBoard,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () =>
-              // Navigator.of(context).pop(),
-                          showDeleteDialog(context), // Default action: Go back
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        elevation: 2,
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Icon(
-                            Icons.arrow_back,
-                            size: 20,
-                            color: Colors.black,
+    return WillPopScope(
+      onWillPop: () async{
+        showDeleteDialog(context);
+      return false;
+      },
+      child: GestureDetector(
+        onTap: CommonUtils.closeKeyBoard,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () =>
+                // Navigator.of(context).pop(),
+                            showDeleteDialog(context), // Default action: Go back
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          elevation: 2,
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 20,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .translate('createCardOn'),
-                        style: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w600),
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .translate('createCardOn'),
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 30,
-                      height: 3,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                    Container(
-                      width: 10,
-                      height: 3,
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                    Container(
-                      width: 10,
-                      height: 3,
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                    Container(
-                      width: 10,
-                      height: 3,
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                    Container(
-                      width: 10,
-                      height: 3,
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Text(
-                    AppLocalizations.of(context)
-                        .translate('personal'),
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 30,
+                        height: 3,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text(
+                      AppLocalizations.of(context)
+                          .translate('personal'),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      final isShowRemovePhoto = _selectedImage != null &&
-                          _selectedImage!.path.isNotEmpty &&
-                          (!_selectedImage!.path.contains("storage") ||
-                              _selectedImage!.path.contains("storage"));
-                      _showBottomSheet(context, isShowRemovePhoto);
-                    },
-                    child: Stack(
-                      children: [
-                        // Rounded user icon with grey background
-                        _selectedImage != null &&
-                                _selectedImage!.path.isNotEmpty &&
-                                !_selectedImage!.path.contains("storage")
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    50), // Adjust the radius as needed
-                                child: Image.file(
-                                  _selectedImage!,
-                                  fit: BoxFit.cover,
-                                  width: 80,
-                                  height: 80,
-                                ),
-                              )
-                            : _selectedImage != null &&
-                                    _selectedImage!.path.isNotEmpty &&
-                                    _selectedImage!.path.contains("storage")
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        50), // Adjust the radius as needed
-                                    child: Image.network(
-                                      "${Network.imgUrl}${_selectedImage!.path}",
-                                      fit: BoxFit.cover,
-                                      width: 80,
-                                      height: 80,
-                                    ),
-                                  )
-                                : Container(
-                                    width: 80, // Adjust the size as needed
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        final isShowRemovePhoto = _selectedImage != null &&
+                            _selectedImage!.path.isNotEmpty &&
+                            (!_selectedImage!.path.contains("storage") ||
+                                _selectedImage!.path.contains("storage"));
+                        _showBottomSheet(context, isShowRemovePhoto);
+                      },
+                      child: Stack(
+                        children: [
+                          // Rounded user icon with grey background
+                          _selectedImage != null &&
+                                  _selectedImage!.path.isNotEmpty &&
+                                  !_selectedImage!.path.contains("storage")
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      50), // Adjust the radius as needed
+                                  child: Image.file(
+                                    _selectedImage!,
+                                    fit: BoxFit.cover,
+                                    width: 80,
                                     height: 80,
-                                    decoration: BoxDecoration(
-                                      color: ColoursUtils
-                                          .background, // Grey background color
-                                      shape: BoxShape.circle, // Circular shape
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(22.0),
-                                      child: Image.asset(
-                                        "assets/images/user.png",
-                                        fit: BoxFit.contain,
+                                  ),
+                                )
+                              : _selectedImage != null &&
+                                      _selectedImage!.path.isNotEmpty &&
+                                      _selectedImage!.path.contains("storage")
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          50), // Adjust the radius as needed
+                                      child: Image.network(
+                                        "${Network.imgUrl}${_selectedImage!.path}",
+                                        fit: BoxFit.cover,
+                                        width: 80,
+                                        height: 80,
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 80, // Adjust the size as needed
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        color: ColoursUtils
+                                            .background, // Grey background color
+                                        shape: BoxShape.circle, // Circular shape
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(22.0),
+                                        child: Image.asset(
+                                          "assets/images/user.png",
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                        // Positioned plus icon at the bottom right corner
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors
-                                  .blue, // Background color of the plus icon
-                              shape: BoxShape.circle,
-                              border: Border.all(
+                          // Positioned plus icon at the bottom right corner
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
                                 color: Colors
-                                    .white, // White border around the plus icon
-                                width: 3,
+                                    .blue, // Background color of the plus icon
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors
+                                      .white, // White border around the plus icon
+                                  width: 3,
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(
+                                    4.0), // Padding around the plus icon
+                                child: Icon(
+                                  Icons.add, // Plus icon
+                                  size: 12, // Size of the plus icon
+                                  color: Colors.white, // Color of the plus icon
+                                ),
                               ),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(
-                                  4.0), // Padding around the plus icon
-                              child: Icon(
-                                Icons.add, // Plus icon
-                                size: 12, // Size of the plus icon
-                                color: Colors.white, // Color of the plus icon
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Text(
-                    AppLocalizations.of(context)
-                        .translate('profilePicture'),
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                bottomSheetDropdown(context),
-                const SizedBox(height: 20),
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: ColoursUtils.background, // Light white color
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    controller: firstname,
-                    maxLength: 15,
-                    decoration: const InputDecoration(
-                      hintText: 'First Name *',
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: ColoursUtils.background, // Light white color
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    maxLength: 15,
-                    controller: lastName,
-                    decoration: const InputDecoration(
-                      hintText: 'Last Name *',
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Container(
-                  // margin: const EdgeInsets.symmetric(horizontal: 0),
-                  child: SizedBox(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                     // iconAlignment: IconAlignment.start,
-                      onPressed: () {
-                        if (firstname.text.isNotEmpty) {
-                          if (lastName.text.isNotEmpty) {
-                            if (widget.isEdit) {
-                              Utility.showLoader(context);
-
-                              submitData(
-                                cardId: widget.cardId.toString(),
-                                cardImage: _selectedImage ?? File(""),
-                                firstName: firstname.text.trim(),
-                                lastName: lastName.text.trim(),
-                                languageId: _selectedLanguageId.toString(),
-                              );
-                            } else {
-                              Utility.showLoader(context);
-
-                              getUserId(
-                                  languageId: _selectedLanguageId.toString(),
-                                  firstName: firstname.text.trim(),
-                                  lastName: lastName.text.trim(),
-                                  cardImage: _selectedImage ?? File(""));
-                            }
-                          } else {
-                            Fluttertoast.showToast(msg: "Please Enter Last Name");
-                          }
-                        } else {
-                          Fluttertoast.showToast(msg: "Please Enter First Name");
-                        }
-                        // Handle button press
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue, // Background color
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(30), // Rounded corners
-                        ),
-                      ),
-                      child:  Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)
-                                .translate('continue'), // Right side text
-                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text(
+                      AppLocalizations.of(context)
+                          .translate('profilePicture'),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  bottomSheetDropdown(context),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      controller: firstname,
+                      // maxLength: 15,
+                      decoration: const InputDecoration(
+                        hintText: 'First Name *',
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      // maxLength: 15,
+                      controller: lastName,
+                      decoration: const InputDecoration(
+                        hintText: 'Last Name *',
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Container(
+                    // margin: const EdgeInsets.symmetric(horizontal: 0),
+                    child: SizedBox(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                       // iconAlignment: IconAlignment.start,
+                        onPressed: () {
+                          if (firstname.text.isNotEmpty) {
+                            if (lastName.text.isNotEmpty) {
+                              if (widget.isEdit) {
+                                Utility.showLoader(context);
+
+                                submitData(
+                                  cardId: widget.cardId.toString(),
+                                  cardImage: _selectedImage ?? File(""),
+                                  firstName: firstname.text.trim(),
+                                  lastName: lastName.text.trim(),
+                                  languageId: _selectedLanguageId.toString(),
+                                );
+                              } else {
+                                Utility.showLoader(context);
+
+                                getUserId(
+                                    languageId: _selectedLanguageId.toString(),
+                                    firstName: firstname.text.trim(),
+                                    lastName: lastName.text.trim(),
+                                    cardImage: _selectedImage ?? File(""));
+                              }
+                            } else {
+                              Fluttertoast.showToast(msg: "Please Enter Last Name");
+                            }
+                          } else {
+                            Fluttertoast.showToast(msg: "Please Enter First Name");
+                          }
+                          // Handle button press
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue, // Background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(30), // Rounded corners
+                          ),
+                        ),
+                        child:  Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)
+                                  .translate('continue'), // Right side text
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

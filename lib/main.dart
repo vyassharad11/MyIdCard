@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
   void setLocale(Locale locale) {
     setState(() {
       _locale = locale;
+      print("locale>>>>>>>>>>>>>$_locale");
     });
   }
 
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print('Rebuilding MaterialApp with locale: $_locale');
     return GlobalLoaderOverlay(
       duration: Durations.medium4,
       reverseDuration: Durations.medium4,

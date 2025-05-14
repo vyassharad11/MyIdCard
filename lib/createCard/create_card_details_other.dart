@@ -562,13 +562,19 @@ class _CreateCardScreenDetailsOtherState
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
+      File file = File(result!.files.single.path ?? "");
+      int sizeInBytes = await file.length();
+      double sizeInMB = sizeInBytes / (1024 * 1024);
+      if(sizeInMB <= 10) {
       _showBottomSheet(context,(value){
         setState(() {
           _selectedImage.add(File(result.files.single.path!));
           _selectedImageFileName.add(value);
         });
       });
-    }
+    }else{
+        Utility().showFlushBar(context: context, message: "File is too large. Max allowed size is 10MB.",isError: true);
+      }}
   }
 
   Widget _buildBottomSheetContent() {
@@ -699,16 +705,23 @@ class _CreateCardScreenDetailsOtherState
       if (permissionStatus.isGranted) {
         try {
           final XFile? pickedFile = await _picker.pickImage(source: source);
-          if (pickedFile != null) {
-            _showBottomSheet(context,(value){
-              setState(() {
-                print("value>>>>>>>>>>>>>>>>>>>>>>$value");
-                _selectedImage.add(File(pickedFile.path));
-                _selectedImageFileName.add(value);
-                fileName.add(path.basename(pickedFile.path));
+          File file = File(pickedFile!.path);
+          int sizeInBytes = await file.length();
+          double sizeInMB = sizeInBytes / (1024 * 1024);
+          if(sizeInMB <= 10) {
+            if (pickedFile != null) {
+              _showBottomSheet(context, (value) {
+                setState(() {
+                  print("value>>>>>>>>>>>>>>>>>>>>>>$value");
+                  _selectedImage.add(File(pickedFile.path));
+                  _selectedImageFileName.add(value);
+                  fileName.add(path.basename(pickedFile.path));
+                });
               });
-            });
-            debugPrint("Image Path: ${pickedFile.path}");
+              debugPrint("Image Path: ${pickedFile.path}");
+            }
+          }else{
+            Utility().showFlushBar(context: context, message: "File is too large. Max allowed size is 10MB.",isError: true);
           }
         } catch (e) {
           debugPrint("Error picking image: $e");
@@ -725,15 +738,22 @@ class _CreateCardScreenDetailsOtherState
       if (permissionStatus.isGranted) {
         try {
           final XFile? pickedFile = await _picker.pickImage(source: source);
-          if (pickedFile != null) {
-            _showBottomSheet(context,(value){
-              setState(() {
-                _selectedImage.add(File(pickedFile.path));
-                _selectedImageFileName.add(value);
-                fileName.add(path.basename(pickedFile.path));
+          File file = File(pickedFile!.path);
+          int sizeInBytes = await file.length();
+          double sizeInMB = sizeInBytes / (1024 * 1024);
+          if(sizeInMB <= 10) {
+            if (pickedFile != null) {
+              _showBottomSheet(context, (value) {
+                setState(() {
+                  _selectedImage.add(File(pickedFile.path));
+                  _selectedImageFileName.add(value);
+                  fileName.add(path.basename(pickedFile.path));
+                });
               });
-            });
-            debugPrint("Image Path: ${pickedFile.path}");
+              debugPrint("Image Path: ${pickedFile.path}");
+            }
+          }else{
+            Utility().showFlushBar(context: context, message: "File is too large. Max allowed size is 10MB.",isError: true);
           }
         } catch (e) {
           debugPrint("Error picking image: $e");

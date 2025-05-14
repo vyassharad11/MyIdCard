@@ -264,6 +264,22 @@ class _HomeScreenState extends State<HomeScreen> {
     _getMyContact?.apiGetMyContact(data);
   }
 
+  Color getTextColorFromHex(String hexColor) {
+    // Remove # if it exists and ensure it's 6 or 8 characters
+    hexColor = hexColor.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor"; // Add full opacity if not present
+    }
+
+    final color = Color(int.parse("$hexColor"));
+
+    // Compute luminance: returns a value between 0 (black) and 1 (white)
+    final luminance = color.computeLuminance();
+
+    // Return black text for light backgrounds, white text for dark backgrounds
+    return luminance > 0.5 ? Colors.black : Colors.white;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -591,25 +607,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       color: Colors.black),
                                                 ),
                                               ),
-                                              Text(
-                                                cardList!.data![index]
-                                                    .companyName ??
-                                                    "",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                    FontWeight.normal,
-                                                    color: Colors.black45),
-                                              ),
-                                              Text(
-                                                cardList!.data![index].companyTypeId.toString() == "1"
-                                                    ? "IT"
-                                                    : "Finance",
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
+                                              // Text(
+                                              //   cardList!.data![index]
+                                              //       .companyName ??
+                                              //       "",
+                                              //   style: TextStyle(
+                                              //       fontSize: 14,
+                                              //       fontWeight:
+                                              //       FontWeight.normal,
+                                              //       color: Colors.black45),
+                                              // ),
+                                              // Text(
+                                              //   cardList!.data![index].companyTypeId.toString() == "1"
+                                              //       ? "IT"
+                                              //       : "Finance",
+                                              //   style: const TextStyle(
+                                              //     fontSize: 16,
+                                              //     color: Colors.grey,
+                                              //   ),
+                                              // ),
                                               Text(
                                                 cardList!.data![index].jobTitle
                                                     .toString(),
@@ -733,6 +749,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     "assets/images/send-01.png",
                                                     height: 16,
                                                     width: 16,
+                                                    color: getTextColorFromHex(
+                                                  '0xFF${cardList!.data![index].cardStyle ?? ""}'),
                                                   ),
                                                   const SizedBox(
                                                     width: 6,
@@ -741,7 +759,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                    Text(
                                                     AppLocalizations.of(context).translate('Send'), // Right side text
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color: getTextColorFromHex(
+                                                            '0xFF${cardList!.data![index].cardStyle ?? ""}'),
                                                         fontSize: 13),
                                                   ),
                                                 ],

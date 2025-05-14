@@ -50,15 +50,19 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
   Color? extractedColor = Colors.blue;
 
   Color getTextColorFromHex(String hexColor) {
-    // Remove # if it exists and ensure it's 6 or 8 digits long
+    // Remove # if it exists and ensure it's 6 or 8 characters
     hexColor = hexColor.replaceAll("#", "");
     if (hexColor.length == 6) {
-      hexColor = "FF$hexColor"; // Add full opacity
+      hexColor = "FF$hexColor"; // Add full opacity if not present
     }
 
     final color = Color(int.parse("$hexColor"));
 
-    return color == Colors.white ? Colors.black : Colors.white;
+    // Compute luminance: returns a value between 0 (black) and 1 (white)
+    final luminance = color.computeLuminance();
+
+    // Return black text for light backgrounds, white text for dark backgrounds
+    return luminance > 0.5 ? Colors.black : Colors.white;
   }
 
   // Define a RegExp pattern to extract `Color(0xff2196f3)`
@@ -399,6 +403,10 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                               fontSize: 18,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black),
+                                        ),
+                                        Text(
+                                          getCardModel?.jobTitle ?? "",
+                                          style: const TextStyle(fontSize: 16),
                                         ),
                                       ],
                                     ),

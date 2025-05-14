@@ -233,7 +233,7 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
                       controller: cardName,
-                      maxLength: 22,
+                      // maxLength: 22,
                       decoration: InputDecoration(
                         hintText:
                             AppLocalizations.of(context).translate('CardName'),

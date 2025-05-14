@@ -80,15 +80,19 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
     });
   }
   Color getTextColorFromHex(String hexColor) {
-    // Remove # if it exists and ensure it's 6 or 8 digits long
+    // Remove # if it exists and ensure it's 6 or 8 characters
     hexColor = hexColor.replaceAll("#", "");
     if (hexColor.length == 6) {
-      hexColor = "FF$hexColor"; // Add full opacity
+      hexColor = "FF$hexColor"; // Add full opacity if not present
     }
 
     final color = Color(int.parse("$hexColor"));
 
-    return color == Colors.white ? Colors.black : Colors.white;
+    // Compute luminance: returns a value between 0 (black) and 1 (white)
+    final luminance = color.computeLuminance();
+
+    // Return black text for light backgrounds, white text for dark backgrounds
+    return luminance > 0.5 ? Colors.black : Colors.white;
   }
 
 
@@ -346,6 +350,16 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                       fontWeight:
                                       FontWeight.w500,
                                       color: Colors.black),
+                                ),
+                                Text(
+                                  getCardModel
+                                      ?.jobTitle ??
+                                      "",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight:
+                                      FontWeight.normal,
+                                      color: Colors.black45),
                                 ),
                               ],
                             ),

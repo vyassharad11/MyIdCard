@@ -387,8 +387,8 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text:   AppLocalizations.of(context)
-                                        .translate('iAgreeTo'),
+                                    text:
+                                    AppLocalizations.of(context).translate('iAgreeTo'),
                                     style: Theme.of(context).textTheme.bodySmall,
                                   ),
                                   TextSpan(
