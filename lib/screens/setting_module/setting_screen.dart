@@ -14,6 +14,7 @@ import '../../bloc/cubit/auth_cubit.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../main.dart';
+import '../../notifire_class.dart';
 import '../../utils/utility.dart';
 import '../auth_module/welcome_screen.dart';
 import '../subscription_module/subscription_screen.dart';
@@ -399,7 +400,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   // _selectedValue = 'English';
                   // _selectedLanguageId = '1';
                   selectedLanguage = 'English';
-                  MyApp.setLocale(context, Locale('en'));
+                  context.read<LocaleProvider>().setLocale(Locale('en'));
+                  // MyApp.setLocale(context, Locale('en'));
                 });
                 Navigator.pop(context);
               },
@@ -414,7 +416,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   // _selectedValue = 'French';
                   // _selectedLanguageId = '2';
                   selectedLanguage = 'French';
-                  MyApp.setLocale(context, Locale('fr'));
+                  context.read<LocaleProvider>().setLocale(Locale('fr'));
+                  // MyApp.setLocale(context, Locale('fr'));
                 });
                 Navigator.pop(context);
               },

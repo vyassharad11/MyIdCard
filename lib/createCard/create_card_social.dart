@@ -95,7 +95,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                 if (action.socialName == "LinkedIn") {
                   linkedin.text = action.socialLink.toString();
                 }
-                if (action.socialId > 4) {
+                if (action.socialUrl != null && action.socialId! > 4) {
                   TextEditingController textEditingController =
                   TextEditingController();
                   textEditingController.text = action.socialLink.toString();

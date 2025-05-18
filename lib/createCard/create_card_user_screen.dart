@@ -20,6 +20,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../language/app_localizations.dart';
 import '../models/ard_id.dart';
 import '../models/card_get_model.dart';
+import '../screens/home_module/main_home_page.dart';
 import '../utils/utility.dart';
 import 'create_card_company_screen.dart';
 
@@ -414,7 +415,7 @@ String cardImageF = "";
           _selectedLanguageId = getCardModel.data?.languageId?.toString() ?? "";
           if (getCardModel.data?.cardImage != null) {
             debugPrint("${getCardModel.data?.cardImage}");
-            _selectedImage = File(getCardModel.data?.cardImage);
+            _selectedImage = File(getCardModel.data?.cardImage ?? "");
           }
         });
 
@@ -577,8 +578,12 @@ String cardImageF = "";
                 // Perform delete action here
                 // Navigator.of(context).pop();
                 // Navigator.pop(context);
-
-                deleteCardApiCalling();
+                if(widget.isEdit == true) {
+                  deleteCardApiCalling();
+                }else{
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); //
+                }
                 // Close the dialog
               },
               child: Text('Delete'),
@@ -622,7 +627,13 @@ String cardImageF = "";
               toastLength: Toast.LENGTH_LONG,
               textColor: Colors.white,
               backgroundColor: Colors.green);
-          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(
+            context,
+            CupertinoPageRoute(
+                builder: (builder) =>
+                    BottomNavBarExample()),
+                (route) => false,
+          );
         } else {
            Utility.hideLoader(context);
           Fluttertoast.showToast(

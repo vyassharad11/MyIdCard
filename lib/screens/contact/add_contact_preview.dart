@@ -325,7 +325,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                     width: 80,
                                     fit: BoxFit.fitWidth,
                                     imageUrl:
-                                    "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
+                                    "${Network.imgUrl}${getCardModel?.companyLogo ?? ""}",
                                     progressIndicatorBuilder:
                                         (context, url,
                                         downloadProgress) =>
@@ -373,9 +373,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                               style: const TextStyle(fontSize: 16),
                             ),
                             Text(
-                              getCardModel?.companyTypeId.toString() == "1"
-                                  ? "IT"
-                                  : "Finance",
+                              getCardModel?.companyType?.companyType ?? "",
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,

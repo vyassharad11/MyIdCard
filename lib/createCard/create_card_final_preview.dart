@@ -406,14 +406,14 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                         ),
                                         Text(
                                           getCardModel?.jobTitle ?? "",
-                                          style: const TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 16,color: Colors.grey),
                                         ),
                                       ],
                                     ),
                                     getCardModel != null &&
-                                            getCardModel!.company_logo !=
+                                            getCardModel!.companyLogo !=
                                                 null &&
-                                            getCardModel!.company_logo
+                                            getCardModel!.companyLogo
                                                 .toString()
                                                 .isNotEmpty
                                         ? ClipRRect(
@@ -425,7 +425,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                               width: 75,
                                               fit: BoxFit.fitWidth,
                                               imageUrl:
-                                                  "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
+                                                  "${Network.imgUrl}${getCardModel?.companyLogo ?? ""}",
                                               progressIndicatorBuilder:
                                                   (context, url,
                                                           downloadProgress) =>
@@ -479,9 +479,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                                   style: const TextStyle(fontSize: 16),
                                 ),
                                 Text(
-                                  getCardModel?.companyTypeId.toString() == "1"
-                                      ? "IT"
-                                      : "Finance",
+                                  getCardModel?.companyType?.companyType ?? "",
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey,

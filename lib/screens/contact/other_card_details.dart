@@ -373,7 +373,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                 width: 75,
                                 fit: BoxFit.fitWidth,
                                 imageUrl:
-                                "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
+                                "${Network.imgUrl}${getCardModel?.companyLogo ?? ""}",
                                 progressIndicatorBuilder:
                                     (context, url,
                                     downloadProgress) =>
@@ -429,9 +429,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                   color: Colors.black45),
                             ),
                             Text(
-                              getCardModel?.companyTypeId.toString() == "1"
-                                  ? "IT"
-                                  : "Finance",
+                              getCardModel?.companyType?.companyType ?? "",
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,

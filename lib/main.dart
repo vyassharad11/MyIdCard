@@ -4,16 +4,22 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/utils/utility.dart';
+import 'package:provider/provider.dart';
 
 import 'language/app_localizations.dart';
 import 'language/locale_constant.dart';
+import 'notifire_class.dart';
 import 'screens/auth_module/welcome_screen.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppLinks().getLatestLink();
-  runApp(const MyApp());
-}
+  runApp(  ChangeNotifierProvider(
+    create: (_) => LocaleProvider(),
+    child: const MyApp(),
+  ));
+  }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -50,7 +56,8 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('Rebuilding MaterialApp with locale: $_locale');
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    print('Rebuilding MaterialApp with locale: ${localeProvider.locale}');
     return GlobalLoaderOverlay(
       duration: Durations.medium4,
       reverseDuration: Durations.medium4,
@@ -76,7 +83,7 @@ class _MyAppState extends State<MyApp> {
           Locale('en', ''), // English
           Locale('fr', ''), // French
         ],
-        locale: _locale, // Default to English
+        locale: localeProvider.locale, // Default to English
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

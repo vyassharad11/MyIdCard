@@ -68,7 +68,7 @@ class _CreateCardScreenDetailsOtherState
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-      BlocListener<CardCubit, ResponseState>(
+        BlocListener<CardCubit, ResponseState>(
           bloc: _updateCubit,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
@@ -87,10 +87,19 @@ class _CreateCardScreenDetailsOtherState
                       builder: (builder) => CreateCardFinalPreview(
                         cardId: widget.cardId.toString() ?? "",
                         isEdit: true,
-                      )));
+                      ))).then((value) {
+                selectedImage = [];
+                selectedImageFileName = [];
+                selectedDElecImage = [];
+                selectedDElecImageId = [];
+                fileName = [];setState(() {
+
+                });
+                fetchEditData();
+              },);
             }
             setState(() {});},),
-      BlocListener<CardCubit, ResponseState>(
+        BlocListener<CardCubit, ResponseState>(
           bloc: _getCardCubit,
           listener: (context, state) {
             if (state is ResponseStateLoading) {
@@ -104,344 +113,344 @@ class _CreateCardScreenDetailsOtherState
               Utility.hideLoader(context);
               var dto = state.data as GetCardModel;
               dto.data?.cardDocuments?.forEach((action) {
-                _selectedDElecImage.add(action.id.toString());
-                _selectedImageFileName.add(action.documentsName.toString());
-                _selectedImage.add(File(action.document.toString()));});
+                selectedDElecImage.add(action.id.toString());
+                selectedImageFileName.add(action.documentsName.toString());
+                selectedImage.add(File(action.document.toString()));});
             }
             setState(() {});},),],
-        child: Scaffold(
-          backgroundColor: ColoursUtils.whiteLightColor.withOpacity(1.0),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: GestureDetector(
-                          onTap: () =>
-                              Navigator.pop(context), // Default action: Go back
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            elevation: 0,
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Icon(
-                                Icons.arrow_back,
-                                size: 20,
-                                color: Colors.black,
-                              ),
+      child: Scaffold(
+        backgroundColor: ColoursUtils.whiteLightColor.withOpacity(1.0),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: GestureDetector(
+                        onTap: () =>
+                            Navigator.pop(context), // Default action: Go back
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          elevation: 0,
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 20,
+                              color: Colors.black,
                             ),
                           ),
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          AppLocalizations.of(context).translate('createCardOn'),
-                          style:
-                              TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                        ),
+                    ),
+                    Center(
+                      child: Text(
+                        AppLocalizations.of(context).translate('createCardOn'),
+                        style:
+                        TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                    ],
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 10,
+                      height: 3,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Container(
+                      width: 10,
+                      height: 3,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Container(
+                      width: 10,
+                      height: 3,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Container(
+                      width: 10,
+                      height: 3,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Container(
+                      width: 30,
+                      height: 3,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: Text(
+                    AppLocalizations.of(context).translate('otherinfo'),
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(25)),
                       ),
-                      const SizedBox(
-                        width: 6,
+                      builder: (context) {
+                        return _buildBottomSheetContent();
+                      },
+                    );
+                  },
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20), // Rounded corners
+                    ),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40.0, vertical: 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Top + Icon
+                          CircleAvatar(
+                            radius: 18,
+                            child: Image.asset("assets/images/add button.png"),
+                          ),
+                          const SizedBox(
+                              height: 20), // Space between icon and text
+                          // Text below the icon
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate('upload'),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          const SizedBox(
+                              height: 4), // Space between icon and text
+                          // Text below the icon
+                          Text(
+                            AppLocalizations.of(context).translate('addfile'),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          // const SizedBox(height: 10),
+                        ],
                       ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 30,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context).translate('otherinfo'),
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(25)),
-                        ),
-                        builder: (context) {
-                          return _buildBottomSheetContent();
-                        },
-                      );
-                    },
-                    child: Card(
-                      margin: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20), // Rounded corners
-                      ),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40.0, vertical: 20),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // Top + Icon
-                            CircleAvatar(
-                              radius: 18,
-                              child: Image.asset("assets/images/add button.png"),
-                            ),
-                            const SizedBox(
-                                height: 20), // Space between icon and text
-                            // Text below the icon
-                             Text(
+                ),
+                const SizedBox(
+                  height: 14,
+                ),
+                if (selectedImage.isNotEmpty)
+                  Card(
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20), // Rounded corners
+                    ),
+                    child: Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 14.0, vertical: 8),
+                            child: Text(
                               AppLocalizations.of(context)
-                                  .translate('upload'),
+                                  .translate('yourupload'),
                               style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                              ),
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(
-                                height: 4), // Space between icon and text
-                            // Text below the icon
-                            Text(
-                              AppLocalizations.of(context).translate('addfile'),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            // const SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  if (_selectedImage.isNotEmpty)
-                    Card(
-                      elevation: 0,
-                      margin: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20), // Rounded corners
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 14.0, vertical: 8),
-                              child: Text(
-                                AppLocalizations.of(context)
-                                    .translate('yourupload'),
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Container(
-                              height: 1,
-                              color: ColoursUtils.background,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
-                            ),
-                            if (_selectedImage.isNotEmpty)
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                separatorBuilder: (crtx, index) {
-                                  return Container(
-                                    height: 1,
-                                    color: ColoursUtils.background,
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
-                                  );
-                                },
-                                padding: EdgeInsets.zero,
-                                itemCount: _selectedImage.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () async {
-                                      if(
-                                      _selectedImage[index].path.contains("png") ||
-                                          _selectedImage[index].path.contains("jpg") ||
-                                          _selectedImage[index].path.contains("jpeg")
-                                      ) {
+                          ),
+                          Container(
+                            height: 1,
+                            color: ColoursUtils.background,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                          ),
+                          if (selectedImage.isNotEmpty)
+                            ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              separatorBuilder: (crtx, index) {
+                                return Container(
+                                  height: 1,
+                                  color: ColoursUtils.background,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                );
+                              },
+                              padding: EdgeInsets.zero,
+                              itemCount: selectedImage.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () async {
+                                    if(
+                                    selectedImage[index].path.contains("png") ||
+                                        selectedImage[index].path.contains("jpg") ||
+                                        selectedImage[index].path.contains("jpeg")
+                                    ) {
                                       Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) =>
-                                      DocumentPreview(
-                                      imageUrl: _selectedImage[index].path ?? "",),));
+                                        builder: (context) =>
+                                            DocumentPreview(
+                                              imageUrl: selectedImage[index].path ?? "",),));
                                       // Handle delete action
-                                      }else {
-                                        await OpenFilex.open(_selectedImage[index].path ?? "");
-                                      }
-                                    },
-                                    child: ListTile(
-                                      contentPadding:
-                                          EdgeInsets.only(left: 12, right: 6),
-                                      leading: _selectedImage[index]
-                                                  .path
-                                                  .contains(".pdf") ||
-                                              _selectedImage[index]
-                                                  .path
-                                                  .contains(".docx")
-                                          ? Icon(
-                                              Icons.picture_as_pdf,
-                                              size: 24,
-                                              color: Colors.black,
-                                            )
-                                          : ClipRRect(
-                                              borderRadius: BorderRadius.circular(
-                                                  15), // Rounded corners for image
-                                              child: _selectedImage[index]
-                                                      .path
-                                                      .contains("storage")
-                                                  ? Image.network(
-                                                      "${Network.imgUrl}${_selectedImage[index].path}",
-                                                      fit: BoxFit.cover,
-                                                      width: 40,
-                                                      height: 40,
-                                                    )
-                                                  : Image.file(
-                                                      _selectedImage[index],
-                                                      fit: BoxFit.cover,
-                                                      width: 40,
-                                                      height: 40,
-                                                    ),
-                                            ),
-                                      title:  Text(_selectedImageFileName != null && _selectedImageFileName.isNotEmpty?
-                                        _selectedImageFileName[index].toString():"",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                      trailing: IconButton(
-                                        icon: Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: Image.asset(
-                                              "assets/images/Frame 415.png"),
-                                        ),
-                                        color: Colors.grey,
-                                        onPressed: () {
-                                          setState(() {
-                                            _selectedDElecImageId
-                                                .add(_selectedDElecImage[index]);
-                                            _selectedImage.removeAt(index);
-                                            _selectedImageFileName.removeAt(index);
-                                          });
-                                        },
+                                    }else {
+                                      await OpenFilex.open(selectedImage[index].path ?? "");
+                                    }
+                                  },
+                                  child: ListTile(
+                                    contentPadding:
+                                    EdgeInsets.only(left: 12, right: 6),
+                                    leading: selectedImage[index]
+                                        .path
+                                        .contains(".pdf") ||
+                                        selectedImage[index]
+                                            .path
+                                            .contains(".docx")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      size: 24,
+                                      color: Colors.black,
+                                    )
+                                        : ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          15), // Rounded corners for image
+                                      child: selectedImage[index]
+                                          .path
+                                          .contains("storage")
+                                          ? Image.network(
+                                        "${Network.imgUrl}${selectedImage[index].path}",
+                                        fit: BoxFit.cover,
+                                        width: 40,
+                                        height: 40,
+                                      )
+                                          : Image.file(
+                                        selectedImage[index],
+                                        fit: BoxFit.cover,
+                                        width: 40,
+                                        height: 40,
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                          ],
-                        ),
+                                    title:  Text(selectedImageFileName != null && selectedImageFileName.isNotEmpty?
+                                    selectedImageFileName[index].toString():"",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    trailing: IconButton(
+                                      icon: Padding(
+                                        padding: const EdgeInsets.all(4),
+                                        child: Image.asset(
+                                            "assets/images/Frame 415.png"),
+                                      ),
+                                      color: Colors.grey,
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedDElecImageId
+                                              .add(selectedDElecImage[index]);
+                                          selectedImage.removeAt(index);
+                                          selectedImageFileName.removeAt(index);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                        ],
                       ),
                     ),
-                  const SizedBox(
-                    height: 30,
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 2),
-                    child: SizedBox(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                       // iconAlignment: IconAlignment.start,
-                        onPressed: () {
-                          Utility.showLoader(context);
-                          submitData();
-                          // Handle button press
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue, // Background color
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // Rounded corners
-                          ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  child: SizedBox(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      // iconAlignment: IconAlignment.start,
+                      onPressed: () {
+                        Utility.showLoader(context);
+                        submitData();
+                        // Handle button press
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue, // Background color
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(30), // Rounded corners
                         ),
-                        child:  Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
+                      ),
+                      child:  Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
                             AppLocalizations.of(context)
                                 .translate('submit'),// Right side text
-                              style: TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          ],
-                        ),
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 
@@ -495,20 +504,20 @@ class _CreateCardScreenDetailsOtherState
       //
       // };
       // request.fields['documentsName'] = _selectedImageFileName;
-       String jsonArray = _selectedImageFileName.join(',');
-       print("jsonArray$jsonArray");
+      String jsonArray = selectedImageFileName.join(',');
+      print("jsonArray$jsonArray");
       request.fields['documentsName'] = jsonArray.toString();
-      if(_selectedImage != null && _selectedImage.isNotEmpty){
-      for (int i = 0; i < _selectedImage.length; i++) {
-        if (!_selectedImage[i].path.contains("storage")) {
-          var file = await http.MultipartFile.fromPath(
-            'documents[$i]',
-            _selectedImage[i].path,
-          );
-          request.files.add(file);
-        }
-        // Add the file to the request
-      }}
+      if(selectedImage != null && selectedImage.isNotEmpty){
+        for (int i = 0; i < selectedImage.length; i++) {
+          if (!selectedImage[i].path.contains("storage")) {
+            var file = await http.MultipartFile.fromPath(
+              'documents[$i]',
+              selectedImage[i].path,
+            );
+            request.files.add(file);
+          }
+          // Add the file to the request
+        }}
 
       // for (int i = 0; i < _selectedDElecImageId.length; i++) {
       //   // var file = await http.MultipartFile.fromPath(
@@ -520,8 +529,8 @@ class _CreateCardScreenDetailsOtherState
       // }
 
 
-      if(_selectedDElecImageId.isNotEmpty){
-        String deleteString = _selectedDElecImageId.join(',');
+      if(selectedDElecImageId.isNotEmpty){
+        String deleteString = selectedDElecImageId.join(',');
         request.fields['delete_document_id'] = deleteString;
       }
 
@@ -530,28 +539,39 @@ class _CreateCardScreenDetailsOtherState
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
       });
+      print("request?>>>>>>>>>>>>> ${request.fields}");
       var response = await request.send();
 
       // Handle the response
       if (response.statusCode == 200) {
-         Utility.hideLoader(context);
+        Utility.hideLoader(context);
 
         debugPrint("Data submitted successfully: ");
 
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (builder) => CreateCardFinalPreview(
-                      cardId: widget.cardId.toString() ?? "",
-                  isEdit: true,
-                    )),);
+          context,
+          MaterialPageRoute(
+              builder: (builder) => CreateCardFinalPreview(
+                cardId: widget.cardId.toString() ?? "",
+                isEdit: true,
+              )),).then((value) {
+          selectedImage = [];
+          selectedImageFileName = [];
+          selectedDElecImage = [];
+          selectedDElecImageId = [];
+          fileName = [];setState(() {
+
+          });
+          fetchEditData();
+
+        },);
       } else {
-         Utility.hideLoader(context);
+        Utility.hideLoader(context);
         print(
             "Failed to submit data. Status Code: ${response.statusCode} \n $response");
       }
     } catch (error) {
-       Utility.hideLoader(context);
+      Utility.hideLoader(context);
 
       debugPrint("An error occurred: $error");
     }
@@ -566,13 +586,13 @@ class _CreateCardScreenDetailsOtherState
       int sizeInBytes = await file.length();
       double sizeInMB = sizeInBytes / (1024 * 1024);
       if(sizeInMB <= 10) {
-      _showBottomSheet(context,(value){
-        setState(() {
-          _selectedImage.add(File(result.files.single.path!));
-          _selectedImageFileName.add(value);
+        _showBottomSheet(context,(value){
+          setState(() {
+            selectedImage.add(File(result.files.single.path!));
+            selectedImageFileName.add(value);
+          });
         });
-      });
-    }else{
+      }else{
         Utility().showFlushBar(context: context, message: "File is too large. Max allowed size is 10MB.",isError: true);
       }}
   }
@@ -682,10 +702,10 @@ class _CreateCardScreenDetailsOtherState
 
 
 
-  final List<File> _selectedImage = [];
-  final List<String> _selectedImageFileName = [];
-  final List<String> _selectedDElecImage = [];
-  final List<String> _selectedDElecImageId = [];
+  List<File> selectedImage = [];
+  List<String> selectedImageFileName = [];
+  List<String> selectedDElecImage = [];
+  List<String> selectedDElecImageId = [];
   List<String> fileName = [];
   final ImagePicker _picker = ImagePicker();
 
@@ -699,8 +719,8 @@ class _CreateCardScreenDetailsOtherState
       final permissionStatus = source == ImageSource.camera
           ? await Permission.camera.request()
           : androidInfo.version.sdkInt <= 32
-              ? await Permission.storage.request()
-              : await Permission.photos.request();
+          ? await Permission.storage.request()
+          : await Permission.photos.request();
 
       if (permissionStatus.isGranted) {
         try {
@@ -713,8 +733,8 @@ class _CreateCardScreenDetailsOtherState
               _showBottomSheet(context, (value) {
                 setState(() {
                   print("value>>>>>>>>>>>>>>>>>>>>>>$value");
-                  _selectedImage.add(File(pickedFile.path));
-                  _selectedImageFileName.add(value);
+                  selectedImage.add(File(pickedFile.path));
+                  selectedImageFileName.add(value);
                   fileName.add(path.basename(pickedFile.path));
                 });
               });
@@ -745,8 +765,8 @@ class _CreateCardScreenDetailsOtherState
             if (pickedFile != null) {
               _showBottomSheet(context, (value) {
                 setState(() {
-                  _selectedImage.add(File(pickedFile.path));
-                  _selectedImageFileName.add(value);
+                  selectedImage.add(File(pickedFile.path));
+                  selectedImageFileName.add(value);
                   fileName.add(path.basename(pickedFile.path));
                 });
               });
@@ -768,7 +788,7 @@ class _CreateCardScreenDetailsOtherState
   // Function to show permission denied message
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(
+      SnackBar(
         content: Text(AppLocalizations.of(context)
             .translate('permissionText'),),
       ),
@@ -781,65 +801,65 @@ class _CreateCardScreenDetailsOtherState
     showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (BuildContext context) {
-    return Padding(
-    padding:  EdgeInsets.only(top: 20.0,left: 20,right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
-    child: Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-        SizedBox(
-        height: 45,
-        child: TextField(
-          controller: fileNameController,
-          decoration: InputDecoration(
-            fillColor: Colors.grey.shade200,
-            filled: true,
-            labelText: AppLocalizations.of(context)
-                .translate('enterFileName'),
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),),
-      SizedBox(height: 12,),
-      Container(
-        margin: const EdgeInsets.symmetric(horizontal: 2),
-        child: SizedBox(
-          height: 45,
-          width: MediaQuery.of(context).size.width,
-          child: ElevatedButton(
-            // iconAlignment: IconAlignment.start,
-            onPressed: () {
-               Navigator.pop(context);
-               callBack.call(fileNameController.text);// Handle button press
-               fileNameController.clear();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue, // Background color
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(30), // Rounded corners
-              ),
-            ),
-            child:  Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(context)
-                      .translate('submit'),// Right side text
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ],
-            ),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-      ),
-      SizedBox(height: 20,),
-    ]));}).whenComplete(() {
+        builder: (BuildContext context) {
+          return Padding(
+              padding:  EdgeInsets.only(top: 20.0,left: 20,right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 45,
+                      child: TextField(
+                        controller: fileNameController,
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey.shade200,
+                          filled: true,
+                          labelText: AppLocalizations.of(context)
+                              .translate('enterFileName'),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),),
+                    SizedBox(height: 12,),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
+                      child: SizedBox(
+                        height: 45,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          // iconAlignment: IconAlignment.start,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            callBack.call(fileNameController.text);// Handle button press
+                            fileNameController.clear();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue, // Background color
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(30), // Rounded corners
+                            ),
+                          ),
+                          child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('submit'),// Right side text
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                  ]));}).whenComplete(() {
       fileNameController.clear();setState(() {
 
       });
