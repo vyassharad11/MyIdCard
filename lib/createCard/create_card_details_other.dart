@@ -92,6 +92,8 @@ class _CreateCardScreenDetailsOtherState
                 selectedImageFileName = [];
                 selectedDElecImage = [];
                 selectedDElecImageId = [];
+                selectedImageFileNameUpload = [];
+                selectedImageUpload =[];
                 fileName = [];setState(() {
 
                 });
@@ -395,8 +397,19 @@ class _CreateCardScreenDetailsOtherState
                                       color: Colors.grey,
                                       onPressed: () {
                                         setState(() {
+                                          if(selectedDElecImage[index].isEmpty){
+                                            selectedDElecImage.removeAt(index);
+                                            selectedImageUpload.removeWhere((element)=>
+                                              element.path == selectedImage[index].path,);
+                                            selectedImageFileNameUpload.removeWhere((element)=>
+                                              element == selectedImageFileName[index],);
+                                            setState(() {
+
+                                            });
+                                          }else{
                                           selectedDElecImageId
-                                              .add(selectedDElecImage[index]);
+                                              .add(selectedDElecImage[index] ?? "");
+                                          }
                                           selectedImage.removeAt(index);
                                           selectedImageFileName.removeAt(index);
                                         });
@@ -504,15 +517,15 @@ class _CreateCardScreenDetailsOtherState
       //
       // };
       // request.fields['documentsName'] = _selectedImageFileName;
-      String jsonArray = selectedImageFileName.join(',');
+      String jsonArray = selectedImageFileNameUpload.join(',');
       print("jsonArray$jsonArray");
       request.fields['documentsName'] = jsonArray.toString();
-      if(selectedImage != null && selectedImage.isNotEmpty){
-        for (int i = 0; i < selectedImage.length; i++) {
-          if (!selectedImage[i].path.contains("storage")) {
+      if(selectedImageUpload != null && selectedImageUpload.isNotEmpty){
+        for (int i = 0; i < selectedImageUpload.length; i++) {
+          if (!selectedImageUpload[i].path.contains("storage")) {
             var file = await http.MultipartFile.fromPath(
               'documents[$i]',
-              selectedImage[i].path,
+              selectedImageUpload[i].path,
             );
             request.files.add(file);
           }
@@ -559,6 +572,8 @@ class _CreateCardScreenDetailsOtherState
           selectedImageFileName = [];
           selectedDElecImage = [];
           selectedDElecImageId = [];
+          selectedImageFileNameUpload = [];
+          selectedImageUpload =[];
           fileName = [];setState(() {
 
           });
@@ -589,7 +604,10 @@ class _CreateCardScreenDetailsOtherState
         _showBottomSheet(context,(value){
           setState(() {
             selectedImage.add(File(result.files.single.path!));
+            selectedImageUpload.add(File(result.files.single.path!));
             selectedImageFileName.add(value);
+            selectedDElecImage.add("");
+            selectedImageFileNameUpload.add(value);
           });
         });
       }else{
@@ -703,7 +721,9 @@ class _CreateCardScreenDetailsOtherState
 
 
   List<File> selectedImage = [];
+  List<File> selectedImageUpload = [];
   List<String> selectedImageFileName = [];
+  List<String> selectedImageFileNameUpload = [];
   List<String> selectedDElecImage = [];
   List<String> selectedDElecImageId = [];
   List<String> fileName = [];
@@ -734,7 +754,10 @@ class _CreateCardScreenDetailsOtherState
                 setState(() {
                   print("value>>>>>>>>>>>>>>>>>>>>>>$value");
                   selectedImage.add(File(pickedFile.path));
+                  selectedImageUpload.add(File(pickedFile.path));
                   selectedImageFileName.add(value);
+                  selectedDElecImage.add("");
+                  selectedImageFileNameUpload.add(value);
                   fileName.add(path.basename(pickedFile.path));
                 });
               });
@@ -766,7 +789,10 @@ class _CreateCardScreenDetailsOtherState
               _showBottomSheet(context, (value) {
                 setState(() {
                   selectedImage.add(File(pickedFile.path));
+                  selectedImageUpload.add(File(pickedFile.path));
                   selectedImageFileName.add(value);
+                  selectedDElecImage.add("");
+                  selectedImageFileNameUpload.add(value);
                   fileName.add(path.basename(pickedFile.path));
                 });
               });
