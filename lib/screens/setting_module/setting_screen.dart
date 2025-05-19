@@ -6,6 +6,7 @@ import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/setting_module/help_and_support.dart';
 import 'package:my_di_card/screens/setting_module/terms_policy_page.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -400,7 +401,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   // _selectedValue = 'English';
                   // _selectedLanguageId = '1';
                   selectedLanguage = 'English';
-                  context.read<LocaleProvider>().setLocale(Locale('en'));
+                  final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
+                  langNotifier.setAppLocal(Locale("en"));
                   // MyApp.setLocale(context, Locale('en'));
                 });
                 Navigator.pop(context);
@@ -416,7 +418,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   // _selectedValue = 'French';
                   // _selectedLanguageId = '2';
                   selectedLanguage = 'French';
-                  context.read<LocaleProvider>().setLocale(Locale('fr'));
+                  final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
+                  langNotifier.setAppLocal(Locale("fr"));
                   // MyApp.setLocale(context, Locale('fr'));
                 });
                 Navigator.pop(context);
