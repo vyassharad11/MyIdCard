@@ -219,8 +219,9 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  bottomSheetDropdown(context),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
+                  // bottomSheetDropdown(context),
+                  // const SizedBox(height: 20),
                   Container(
                     height: 50,
                     decoration: BoxDecoration(
@@ -383,7 +384,7 @@ class _EditProfileState extends State<EditProfile> {
         'first_name': firstName.toString().trim(),
         'last_name': lastName.toString(),
         'team_code': teamCode.toString(),
-        'language_id': selectedLanguage == 'French'?"2":"1"
+        // 'language_id': selectedLanguage == 'French'?"2":"1"
       });
     }
 

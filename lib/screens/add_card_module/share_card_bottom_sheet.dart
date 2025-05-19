@@ -7,6 +7,7 @@ import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
 import '../../models/contact_details_dto.dart';
 import '../../models/my_contact_model.dart';
+import '../../utils/constant.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -43,7 +44,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Share your new ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.black),),
+              Text("Share your new ",style: TextStyle( fontFamily: Constants.fontFamily,fontWeight: FontWeight.w600,fontSize: 22,color: Colors.black),),
               InkWell(
                 onTap: (){
                   Navigator.pop(context);
@@ -62,8 +63,8 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
               ),
             ],
           ),
-          Text("Digital Business Card ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),),
-          Text("with people ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),),
+          Text("Digital Business Card ",style: TextStyle(fontWeight: FontWeight.w600, fontFamily: Constants.fontFamily,fontSize: 22,color: Colors.blue),),
+          Text("with people ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily,),),
             SizedBox(height: 24,),
             Center(
               child: CachedNetworkImage(
@@ -208,7 +209,7 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Share your new ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.black),),
+              Flexible(child: Text("Share the card of your contact",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily),overflow: TextOverflow.fade,)),
               InkWell(
                 onTap: (){
                   Navigator.pop(context);
@@ -227,8 +228,8 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
               ),
             ],
           ),
-          Text("Digital Business Card ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),),
-          Text("with people ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),),
+          // Text("contact ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.black,fontFamily: Constants.fontFamily),),
+          // Text("with people ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily),),
             SizedBox(height: 24,),
             Center(
               child: CachedNetworkImage(
@@ -372,7 +373,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(child: Text("Share the card of your contact",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue),overflow: TextOverflow.fade,)),
+                Flexible(child: Text("Share the card of your contact",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily),overflow: TextOverflow.fade,)),
                 InkWell(
                   onTap: (){
                     Navigator.pop(context);

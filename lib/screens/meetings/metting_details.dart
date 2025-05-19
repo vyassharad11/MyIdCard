@@ -9,6 +9,7 @@ import '../../bloc/cubit/contact_cubit.dart';
 import '../../language/app_localizations.dart';
 import '../../models/meeting_details_model.dart';
 import '../../models/my_meetings_model.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 import 'create_edit_meeting.dart'; // To open the meeting link
 
@@ -91,6 +92,7 @@ class _MeetingDetailsScreenState extends State<MeetingDetailsScreen> {
           title:  Text(
             "${meetingDetailsModel?.data?.firstName ?? ""} ${AppLocalizations.of(context).translate('meeting')}",
             style: TextStyle(
+                fontFamily: Constants.fontFamily,
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),

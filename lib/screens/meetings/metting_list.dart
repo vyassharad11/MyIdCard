@@ -9,6 +9,7 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/card_cubit.dart';
 import '../../language/app_localizations.dart';
 import '../../models/my_meetings_model.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 
 class MeetingsScreen extends StatefulWidget {
@@ -84,6 +85,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
           title:  Text(
             AppLocalizations.of(context).translate('meeting'),
             style: TextStyle(
+                fontFamily: Constants.fontFamily,
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),

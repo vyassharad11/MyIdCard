@@ -154,23 +154,27 @@ class CardDocument {
   int? id;
   int? contactId;
   String? document;
+  String? documentsName;
 
   CardDocument({
     this.id,
     this.contactId,
     this.document,
+    this.documentsName,
   });
 
   factory CardDocument.fromJson(Map<String, dynamic> json) => CardDocument(
     id: json["id"],
     contactId: json["contact_id"],
     document: json["document"],
+    documentsName: json["documentsName"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "contact_id": contactId,
     "document": document,
+    "documentsName": documentsName,
   };
 }
 

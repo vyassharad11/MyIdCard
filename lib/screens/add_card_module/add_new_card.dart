@@ -18,6 +18,7 @@ import '../../data/repository/card_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/card_list.dart';
+import '../../utils/constant.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -81,7 +82,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
           title: Text(
             AppLocalizations.of(context).translate('addNewCard'),
             style: const TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily, color: Colors.black),
           ),
           actions: [
             Container(
@@ -123,7 +124,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
             width: MediaQuery.of(context).size.width,child:_getShimmerView()):
               cardList != null && cardList!.data!.isNotEmpty?
               SizedBox(
-                height: MediaQuery.of(context).size.height / 1.3,
+                height: MediaQuery.of(context).size.height / 1.25,
                 width: MediaQuery.of(context).size.width,
                 child: Swiper(
                   itemCount: cardList!.data!.length,
@@ -316,13 +317,13 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                               //   ),
                               // ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0, horizontal: 20),
+                                padding: const EdgeInsets.only(
+                                    bottom: 12.0, left: 20,right: 20),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(
-                                      height: 17,
+                                      height: 0,
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -339,25 +340,25 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                     color: Colors.black),
                                               ),
                                             ),
-                                            Text(
-                                              cardList!.data![index]
-                                                  .companyName ??
-                                                  "",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight:
-                                                  FontWeight.normal,
-                                                  color: Colors.black45),
-                                            ),
-                                            Text(
-                                              cardList!.data![index].companyTypeId == "1"
-                                                  ? "IT"
-                                                  : "Finance",
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
+                                            // Text(
+                                            //   cardList!.data![index]
+                                            //       .companyName ??
+                                            //       "",
+                                            //   style: TextStyle(
+                                            //       fontSize: 14,
+                                            //       fontWeight:
+                                            //       FontWeight.normal,
+                                            //       color: Colors.black45),
+                                            // ),
+                                            // Text(
+                                            //   cardList!.data![index].companyTypeId.toString() == "1"
+                                            //       ? "IT"
+                                            //       : "Finance",
+                                            //   style: const TextStyle(
+                                            //     fontSize: 16,
+                                            //     color: Colors.grey,
+                                            //   ),
+                                            // ),
                                             Text(
                                               cardList!.data![index].jobTitle
                                                   .toString(),

@@ -9,6 +9,7 @@ import '../../bloc/cubit/contact_cubit.dart';
 import '../../models/meeting_details_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../utils/colors/colors.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 
 class CreateEditMeeting extends StatefulWidget {
@@ -145,6 +146,7 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
             title: Text(
               "${widget.isEdit == true ? "Edit":"Create"} Meeting",
               style: TextStyle(
+                  fontFamily: Constants.fontFamily,
                   fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),

@@ -23,6 +23,7 @@ import '../../bloc/api_resp_state.dart';
 import '../../language/app_localizations.dart';
 import '../../models/group_member_model.dart';
 import '../../models/my_group_list_model.dart';
+import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 import '../contact/contact_home.dart';
 
@@ -217,6 +218,7 @@ int selectedIndex = 0;
                             AppLocalizations.of(context).translate('gROUPANDMEMBERSMANAGEMENT'),
                             style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
+                                  fontFamily: Constants.fontFamily,
                                   fontSize: 22, fontWeight: FontWeight.w600),
                             ),
                           ),

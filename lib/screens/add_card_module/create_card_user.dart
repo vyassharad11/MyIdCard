@@ -5,6 +5,7 @@ import 'package:my_di_card/localStorage/storage.dart';
 import '../../createCard/create_card_user_screen.dart';
 import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
+import '../../utils/constant.dart';
 import '../../utils/widgets/network.dart';
 
 class CreateCardScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
         title: Text(
           AppLocalizations.of(context).translate('createCardOn'),
           style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily, color: Colors.black),
         ),
       ),
       body: SingleChildScrollView(

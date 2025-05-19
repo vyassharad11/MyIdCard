@@ -149,10 +149,14 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                             child:Image.asset("assets/images/close.png")
                           ),
                         ),
-                    Text(
-                      getCardModel?.cardName ?? "",
-                      style: TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 120,
+                      child: Text(
+                        getCardModel?.cardName ?? "",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
                     ),
                     InkWell(
                       onTap: (){
@@ -228,8 +232,8 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 12.0, left: 4),
-                                    child: ClipRRect(
+                                        top: 8.0, left: 2),
+                                    child:getCardModel!.cardImage != null && getCardModel!.cardImage.toString().isNotEmpty ?ClipRRect(
                                       borderRadius:
                                       const BorderRadius.all(
                                           Radius.circular(80)),
@@ -258,6 +262,11 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                               width: 100,
                                             ),
                                       ),
+                                    ):Image.asset(
+                                      "assets/logo/Central icon.png",
+                                      height: 105,
+                                      fit: BoxFit.fill,
+                                      width: 105,
                                     ),
                                   ),
                                 ],
@@ -300,6 +309,10 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                           FontWeight.w500,
                                           color: Colors.black),
                                     ),
+                                    Text(
+                                      getCardModel?.jobTitle ?? "",
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
                                   ],
                                 ),
                                 ClipRRect(
@@ -312,7 +325,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                     width: 80,
                                     fit: BoxFit.fitWidth,
                                     imageUrl:
-                                    "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
+                                    "${Network.imgUrl}${getCardModel?.companyLogo ?? ""}",
                                     progressIndicatorBuilder:
                                         (context, url,
                                         downloadProgress) =>
@@ -360,9 +373,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                               style: const TextStyle(fontSize: 16),
                             ),
                             Text(
-                              getCardModel?.companyTypeId == "1"
-                                  ? "IT"
-                                  : "Finance",
+                              getCardModel?.companyType?.companyType ?? "",
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -485,7 +496,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                 AppLocalizations.of(context)
                                     .translate('add'),
                                 style: TextStyle(
-                                    color: Colors.black45, fontSize: 16),
+                                    color: Colors.black, fontSize: 16),
                               ),
                             ],
                           ),

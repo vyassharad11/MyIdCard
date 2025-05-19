@@ -95,7 +95,7 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                 if (action.socialName == "LinkedIn") {
                   linkedin.text = action.socialLink.toString();
                 }
-                if (action.socialId > 4) {
+                if (action.socialUrl != null && action.socialId! > 4) {
                   TextEditingController textEditingController =
                   TextEditingController();
                   textEditingController.text = action.socialLink.toString();
@@ -564,12 +564,12 @@ class _CreateCardScreenSocialState extends State<CreateCardScreenSocial> {
                       child: ElevatedButton(
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
-                          if(linkedin.text.isNotEmpty || twitter.text.isNotEmpty || facebook.text.isNotEmpty || instagram.text.isNotEmpty) {
+                          // if(linkedin.text.isNotEmpty || twitter.text.isNotEmpty || facebook.text.isNotEmpty || instagram.text.isNotEmpty) {
                             Utility.showLoader(context);
                             submitSocialLinks();
-                          }else{
-                            Utility().showFlushBar(context: context, message: "Please enter atleast one social link",isError: true);
-                          }
+                          // }else{
+                          //   Utility().showFlushBar(context: context, message: "Please enter atleast one social link",isError: true);
+                          // }
                           },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue, // Background color

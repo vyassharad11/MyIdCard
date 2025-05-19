@@ -64,20 +64,35 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
     getCardModel?.cardSocials?.forEach((action) {
       if (action.socialName == "Twitter") {
         twitterLink =
-            action.socialLink.toString() + action.socialLink.toString();
+            action.socialUrl.toString() + action.socialLink.toString();
       }
       if (action.socialName == "Instagram") {
-        instaLink = action.socialLink.toString() + action.socialLink.toString();
+        instaLink = action.socialUrl.toString() + action.socialLink.toString();
       }
       if (action.socialName == "Facebook") {
         faceBookLink =
-            action.socialLink.toString() + action.socialLink.toString();
+            action.socialUrl.toString() + action.socialLink.toString();
       }
       if (action.socialName == "LinkedIn") {
         linkdinLink =
-            action.socialLink.toString() + action.socialLink.toString();
+            action.socialUrl.toString() + action.socialLink.toString();
       }
     });
+  }
+  Color getTextColorFromHex(String hexColor) {
+    // Remove # if it exists and ensure it's 6 or 8 characters
+    hexColor = hexColor.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor"; // Add full opacity if not present
+    }
+
+    final color = Color(int.parse("$hexColor"));
+
+    // Compute luminance: returns a value between 0 (black) and 1 (white)
+    final luminance = color.computeLuminance();
+
+    // Return black text for light backgrounds, white text for dark backgrounds
+    return luminance > 0.5 ? Colors.black : Colors.white;
   }
 
 
@@ -151,11 +166,18 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                         ),
                       ),
                     ),
-                    Text(
-                      getCardModel?.cardName.toString() ?? "",
-                      style: const TextStyle(
-                        color: Colors.white,
-                          fontSize: 24, fontWeight: FontWeight.w600),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 120,
+                      child: Center(
+                        child: Text(
+                          getCardModel?.cardName.toString() ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          style:  TextStyle(
+                            color: getTextColorFromHex(
+                                '0xFF${getCardModel!.cardStyle!}'),
+                              fontSize: 24, fontWeight: FontWeight.w600),
+                        ),
+                      ),
                     ),
                     InkWell(
                       onTap: (){
@@ -329,6 +351,16 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                       FontWeight.w500,
                                       color: Colors.black),
                                 ),
+                                Text(
+                                  getCardModel
+                                      ?.jobTitle ??
+                                      "",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight:
+                                      FontWeight.normal,
+                                      color: Colors.black45),
+                                ),
                               ],
                             ),
                             ClipRRect(
@@ -341,7 +373,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                 width: 75,
                                 fit: BoxFit.fitWidth,
                                 imageUrl:
-                                "${Network.imgUrl}${getCardModel?.company_logo ?? ""}",
+                                "${Network.imgUrl}${getCardModel?.companyLogo ?? ""}",
                                 progressIndicatorBuilder:
                                     (context, url,
                                     downloadProgress) =>
@@ -397,9 +429,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                   color: Colors.black45),
                             ),
                             Text(
-                              getCardModel?.companyTypeId == "1"
-                                  ? "IT"
-                                  : "Finance",
+                              getCardModel?.companyType?.companyType ?? "",
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -720,19 +750,6 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                             padding: EdgeInsets.zero,
                             itemCount: getCardModel!.cardDocuments!.length,
                             itemBuilder: (context, index) {
-                              var  s = getCardModel!.cardDocuments![index].document.toString();
-                              String result = "";
-                              List<String> parts = s.split('/');
-                              if (parts.length > 2) {
-                                result = parts.sublist(2).join('/');
-                                print(result); // Output: item/12345
-                              } else {
-                                print('Not enough "/" characters in the string.');
-                              }
-                              print(
-                                  "image-----${getCardModel!.cardDocuments![index].document.toString()}");
-                              print(
-                                  "image-----${getCardModel!.cardDocuments![index].cardId.toString()}");
                               return ListTile(
                                 leading: SizedBox(
                                   width: 40,
@@ -768,7 +785,9 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                       )),
                                 ),
                                 title: Text(
-                                    result),
+                                  getCardModel!
+                                      .cardDocuments![index]
+                                      .documentsName ?? "",),
                                 trailing: IconButton(
                                   icon: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 4,),
@@ -788,7 +807,7 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                                                   .document ?? "",),));
                                       // Handle delete action
                                     }else{
-                                      launch(getCardModel!.cardDocuments![index].document ?? "");
+                                      launch("${Network.imgUrl}${getCardModel!.cardDocuments![index].document ?? ""}");
                                     }
                                     // Handle delete action
                                   },

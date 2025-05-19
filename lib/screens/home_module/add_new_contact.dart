@@ -17,6 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../language/app_localizations.dart';
 import '../../models/utility_dto.dart';
+import '../../utils/constant.dart';
 import '../../utils/image_cropo.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -87,11 +88,12 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                            Text(
                             softWrap: true,
                             AppLocalizations.of(context)
-                                .translate('scan'),
+                                .translate('scanA'),
                             textDirection: TextDirection.ltr,
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
+                              fontFamily: Constants.fontFamily
                             ),
                             textAlign: TextAlign.start,
                           ),
@@ -104,6 +106,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                               fontSize: 22,
                               color: ColoursUtils.primaryColor,
                               fontWeight: FontWeight.bold,
+                                fontFamily: Constants.fontFamily
                             ),
                             textAlign: TextAlign.start,
                           ),
@@ -114,6 +117,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                             textDirection: TextDirection.ltr,
                             style: TextStyle(
                               fontSize: 22,
+                              fontFamily: Constants.fontFamily,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.start,

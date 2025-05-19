@@ -233,6 +233,7 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
                       controller: cardName,
+                      // maxLength: 22,
                       decoration: InputDecoration(
                         hintText:
                             AppLocalizations.of(context).translate('CardName'),
@@ -319,12 +320,12 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                                 width: MediaQuery.of(context).size.width,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(
-                                      50), // Adjust the radius as needed
+                                      8), // Adjust the radius as needed
                                   child: Image.file(
                                     _selectedImage!,
                                     fit: BoxFit.cover,
-                                    width: 80,
-                                    height: 150,
+                                    width: double.infinity,
+                                    height: 180,
                                   ),
                                 ),
                               )
@@ -333,12 +334,12 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                                     _selectedImage!.path.contains("storage")
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(
-                                        50), // Adjust the radius as needed
+                                        8), // Adjust the radius as needed
                                     child: Image.network(
                                       "${Network.imgUrl}${_selectedImage!.path}",
                                       fit: BoxFit.cover,
-                                      width: 80,
-                                      height: 80,
+                                      width: double.infinity,
+                                      height: 180,
                                     ),
                                   )
                                 : Column(
@@ -380,8 +381,12 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                       child: ElevatedButton(
                        // iconAlignment: IconAlignment.start,
                         onPressed: () {
-                          Utility.showLoader(context);
-                          submitData(_selectedImage ?? File(""));
+                          if(cardName.text.isNotEmpty) {
+                            Utility.showLoader(context);
+                            submitData(_selectedImage ?? File(""));
+                          }else{
+                            Utility().showFlushBar(context: context, message: "Please enter card name",isError: true);
+                          }
 
                           // Handle button press
                         },
