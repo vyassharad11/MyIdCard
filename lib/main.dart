@@ -15,8 +15,12 @@ import 'screens/auth_module/welcome_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppLinks().getLatestLink();
-  runApp(  ChangeNotifierProvider(
-    create: (_) => LocaleProvider(),
+  runApp( MultiProvider(
+    providers: [
+      ChangeNotifierProvider<LocalizationNotifier>(
+        create: (_) => LocalizationNotifier(Locale('en')),
+      ),
+    ],
     child: const MyApp(),
   ));
   }
@@ -56,8 +60,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final localeProvider = Provider.of<LocaleProvider>(context);
-    print('Rebuilding MaterialApp with locale: ${localeProvider.locale}');
+    var langNotifier = Provider.of<LocalizationNotifier>(context);
     return GlobalLoaderOverlay(
       duration: Durations.medium4,
       reverseDuration: Durations.medium4,
@@ -83,7 +86,7 @@ class _MyAppState extends State<MyApp> {
           Locale('en', ''), // English
           Locale('fr', ''), // French
         ],
-        locale: localeProvider.locale, // Default to English
+        locale: langNotifier.appLocal, // Default to English
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -91,10 +94,10 @@ class _MyAppState extends State<MyApp> {
           GlobalCupertinoLocalizations.delegate, // For Cupertino widgets
         ],
         localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale?.languageCode &&
-                supportedLocale.countryCode == locale?.countryCode) {
-              return supportedLocale;
+          for (var supportedLocaleLanguage in supportedLocales) {
+            if (supportedLocaleLanguage.languageCode ==
+                locale?.languageCode /*&& supportedLocaleLanguage.countryCode == locale?.countryCode*/) {
+              return supportedLocaleLanguage;
             }
           }
           return supportedLocales.first;
