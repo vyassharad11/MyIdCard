@@ -14,6 +14,7 @@ import 'package:my_di_card/bloc/cubit/card_cubit.dart';
 import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
@@ -24,6 +25,7 @@ import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/utility_dto.dart';
+import '../../notifire_class.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../add_card_module/share_card_bottom_sheet.dart';
@@ -714,7 +716,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           SizedBox(
                                             height: 35,
-                                            width: 90,
+                                            width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?90:118,
                                             child: ElevatedButton(
                                               // iconAlignment: IconAlignment.start,
                                               onPressed: () {

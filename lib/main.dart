@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/utility.dart';
 import 'package:provider/provider.dart';
 
@@ -60,6 +61,10 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Storage().getLanguage().then((value) {
+      final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
+      langNotifier.setAppLocal(Locale(value.isNotEmpty ? value : "en"));
+    },);
     var langNotifier = Provider.of<LocalizationNotifier>(context);
     return GlobalLoaderOverlay(
       duration: Durations.medium4,

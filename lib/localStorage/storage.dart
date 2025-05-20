@@ -52,6 +52,17 @@ class Storage {
     await prefs.setString('token', token);
   }
 
+  Future<void> setLanguage(String language) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('language', language);
+  }
+
+  Future<String> getLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? language = prefs.getString('language');
+    return language ?? "";
+  }
+
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');

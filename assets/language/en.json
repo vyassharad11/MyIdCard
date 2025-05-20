@@ -19,6 +19,7 @@
   "lastName": "Last Name *",
   "complteProfile": "Complete your Profile",
   "createCardOn": "Card Editor",
+  "createCardOn": "Card Editor",
   "createCard": "Create and share digital cards!",
   "next": "Next",
   "personal": "Personal Details",
@@ -184,6 +185,7 @@
   "helpAndSupport": "Help And Support",
   "enterTitle": "Enter Title",
   "enterDescription": "Enter Description",
-  "enterFileName": "Enter File Name"
+  "enterFileName": "Enter File Name",
+  "editProfile": "Edit Profile"
 
 }

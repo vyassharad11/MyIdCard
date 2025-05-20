@@ -223,9 +223,11 @@ class _WelcomePageState extends State<WelcomePage> {
                       if (index == 0) {
                         final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                         langNotifier.setAppLocal(Locale("en"));
+                        Storage().setLanguage("en");
                       } else {
                         final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                         langNotifier.setAppLocal(Locale("fr"));
+                        Storage().setLanguage("fr");
                      }
                     });
                   },
