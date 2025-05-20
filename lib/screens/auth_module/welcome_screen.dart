@@ -6,9 +6,11 @@ import 'package:my_di_card/screens/auth_module/profile_bottom_sheet.dart';
 import 'package:my_di_card/screens/auth_module/signup_bottom_sheet.dart';
 import 'package:my_di_card/screens/home_module/first_card.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+import 'package:provider/provider.dart';
 
 import '../../language/app_localizations.dart';
 import '../../language/locale_constant.dart';
+import '../../notifire_class.dart';
 import '../../utils/widgets/button_primary.dart';
 import '../home_module/main_home_page.dart';
 import 'login_bottom_sheet.dart';
@@ -219,10 +221,12 @@ class _WelcomePageState extends State<WelcomePage> {
                       borderColor = Colors.blue;
                       selectedIndex = index;
                       if (index == 0) {
-                        changeLanguage(context, 'en');
+                        final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
+                        langNotifier.setAppLocal(Locale("en"));
                       } else {
-                        changeLanguage(context, 'fr');
-                      }
+                        final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
+                        langNotifier.setAppLocal(Locale("fr"));
+                     }
                     });
                   },
                   child: Card(

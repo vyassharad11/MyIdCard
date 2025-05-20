@@ -1,14 +1,15 @@
-// locale_provider.dart
+
 import 'package:flutter/material.dart';
 
-class LocaleProvider extends ChangeNotifier {
-  Locale _locale = const Locale('en');
+class LocalizationNotifier extends ChangeNotifier{
+  LocalizationNotifier(this._appLocale);
+  Locale _appLocale = const Locale('en');
 
-  Locale get locale => _locale;
+  Locale get appLocal => _appLocale;
 
-  void setLocale(Locale locale) {
-    if (_locale == locale) return;
-    _locale = locale;
-    notifyListeners(); // Notifies listeners to rebuild MaterialApp
+  setAppLocal (Locale language ) async {
+    _appLocale = language;
+    notifyListeners();
   }
+
 }
