@@ -537,7 +537,7 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
                           height: 10,
                         ),
                         if (getCardModel != null &&
-                            getCardModel!.cardSocials != null)
+                            getCardModel!.cardSocials != null && getCardModel!.cardSocials!.isNotEmpty)
                           Card(
                             elevation: 0,
                             shape: RoundedRectangleBorder(

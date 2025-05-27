@@ -433,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     topRight:
                                                         Radius.circular(18)),
                                             child: CachedNetworkImage(
-                                              height: 100,
+                                              height: 110,
                                               width: double.infinity,
                                               fit: BoxFit.fitWidth,
                                               imageUrl:
