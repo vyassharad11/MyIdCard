@@ -114,7 +114,7 @@
   "enterNotes": "Enter notes",
   "update": "Update",
   "meetings": "Meetings",
-  "meeting": "Meetings",
+  "meeting": "Meeting",
   "viewAllMeetings": "View All",
   "contacts": "Contacts",
   "recent": "Recent",
@@ -186,6 +186,9 @@
   "enterTitle": "Enter Title",
   "enterDescription": "Enter Description",
   "enterFileName": "Enter File Name",
-  "editProfile": "Edit Profile"
+  "editProfile": "Edit Profile",
+  "Share your new": "Share your new",
+  "shareTheCardContact": "Share the card of your contact",
+  "create": "Create"
 
 }

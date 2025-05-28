@@ -79,21 +79,29 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
       }
     });
   }
-  Color getTextColorFromHex(String hexColor) {
-    // Remove # if it exists and ensure it's 6 or 8 characters
-    hexColor = hexColor.replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF$hexColor"; // Add full opacity if not present
-    }
 
-    final color = Color(int.parse("$hexColor"));
-
-    // Compute luminance: returns a value between 0 (black) and 1 (white)
-    final luminance = color.computeLuminance();
-
-    // Return black text for light backgrounds, white text for dark backgrounds
-    return luminance > 0.5 ? Colors.black : Colors.white;
+Color getTextColorFromHex(String hexColor) {
+  // Remove # if it exists and ensure it's 6 or 8 characters
+  hexColor = hexColor.replaceAll("#", "");
+  if (hexColor.length == 6) {
+    hexColor = "FF$hexColor"; // Add full opacity if not present
   }
+
+  final color = Color(int.parse("$hexColor"));
+
+  // Convert to HSL to better identify colors like purple
+  final hslColor = HSLColor.fromColor(color);
+  final luminance = color.computeLuminance();
+
+  // If color is in the purple hue range (e.g. 260°–290°), return white
+  if (hslColor.hue >= 260 && hslColor.hue <= 290) {
+    return Colors.white;
+  }
+
+  // Otherwise, use luminance to decide text color
+  return luminance > 0.5 ? Colors.black : Colors.white;
+}
+
 
 
   @override
@@ -336,32 +344,35 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                           crossAxisAlignment:
                           CrossAxisAlignment.center,
                           children: [
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 17,
-                                ),
-                                Text(
-                                  "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight:
-                                      FontWeight.w500,
-                                      color: Colors.black),
-                                ),
-                                Text(
-                                  getCardModel
-                                      ?.jobTitle ??
-                                      "",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight:
-                                      FontWeight.normal,
-                                      color: Colors.black45),
-                                ),
-                              ],
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 140,
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 17,
+                                  ),
+                                  Text(
+                                    "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    getCardModel
+                                        ?.jobTitle ??
+                                        "",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight:
+                                        FontWeight.normal,
+                                        color: Colors.black45),
+                                  ),
+                                ],
+                              ),
                             ),
                             ClipRRect(
                               borderRadius:
@@ -454,12 +465,15 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  getCardModel!
-                                      .companyAddress
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width - 100,
+                                  child: Text(
+                                    getCardModel!
+                                        .companyAddress
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.grey),
+                                  ),
                                 ),
                                 InkWell(
                                   onTap: (){
@@ -492,12 +506,15 @@ class _OtherCardDetailsState extends State<OtherCardDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  getCardModel!
-                                      .companyWebsite
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width - 100,
+                                  child: Text(
+                                    getCardModel!
+                                        .companyWebsite
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.grey),
+                                  ),
                                 ),
                                 InkWell(
                                   onTap: (){

@@ -49,21 +49,29 @@ class _CreateCardFinalPreviewState extends State<CreateCardFinalPreview> {
   String input = "";
   Color? extractedColor = Colors.blue;
 
-  Color getTextColorFromHex(String hexColor) {
-    // Remove # if it exists and ensure it's 6 or 8 characters
-    hexColor = hexColor.replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF$hexColor"; // Add full opacity if not present
-    }
 
-    final color = Color(int.parse("$hexColor"));
-
-    // Compute luminance: returns a value between 0 (black) and 1 (white)
-    final luminance = color.computeLuminance();
-
-    // Return black text for light backgrounds, white text for dark backgrounds
-    return luminance > 0.5 ? Colors.black : Colors.white;
+Color getTextColorFromHex(String hexColor) {
+  // Remove # if it exists and ensure it's 6 or 8 characters
+  hexColor = hexColor.replaceAll("#", "");
+  if (hexColor.length == 6) {
+    hexColor = "FF$hexColor"; // Add full opacity if not present
   }
+
+  final color = Color(int.parse("$hexColor"));
+
+  // Convert to HSL to better identify colors like purple
+  final hslColor = HSLColor.fromColor(color);
+  final luminance = color.computeLuminance();
+
+  // If color is in the purple hue range (e.g. 260°–290°), return white
+  if (hslColor.hue >= 260 && hslColor.hue <= 290) {
+    return Colors.white;
+  }
+
+  // Otherwise, use luminance to decide text color
+  return luminance > 0.5 ? Colors.black : Colors.white;
+}
+
 
   // Define a RegExp pattern to extract `Color(0xff2196f3)`
 

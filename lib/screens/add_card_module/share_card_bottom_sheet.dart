@@ -209,7 +209,7 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(child: Text("Share the card of your contact",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily),overflow: TextOverflow.fade,)),
+              Flexible(child: Text( AppLocalizations.of(context).translate('shareTheCardContact') ,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily),overflow: TextOverflow.fade,)),
               InkWell(
                 onTap: (){
                   Navigator.pop(context);
@@ -373,7 +373,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(child: Text("Share the card of your contact",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily),overflow: TextOverflow.fade,)),
+                Flexible(child: Text(AppLocalizations.of(context).translate('shareTheCardContact'),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily),overflow: TextOverflow.fade,)),
                 InkWell(
                   onTap: (){
                     Navigator.pop(context);

@@ -17,6 +17,7 @@ import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/group_module/edit_group.dart';
 import 'package:my_di_card/screens/setting_module/setting_screen.dart';
 import 'package:my_di_card/screens/team/team_member.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../bloc/api_resp_state.dart';
@@ -27,6 +28,7 @@ import '../../models/group_response.dart';
 import '../../models/login_dto.dart';
 import '../../models/team_member.dart';
 import '../../models/team_response.dart';
+import '../../notifire_class.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../auth_module/welcome_screen.dart';
@@ -474,25 +476,28 @@ class _AccountPageState extends State<AccountPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      user?.planName ?? "",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width - 196,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        user?.planName ?? "ddd",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
 
-                                    Text(
-                                      AppLocalizations.of(context).translate(
-                                          'manage'),
-                                      style: const TextStyle(
-                                          color: Colors.grey),
-                                    ),
-                                  ],
+                                      Text(
+                                        AppLocalizations.of(context).translate(
+                                            'manage'),
+                                        style: const TextStyle(
+                                            color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(
-                                  height: 25,
+                                  height: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?25:40,
                                   width: 94,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
