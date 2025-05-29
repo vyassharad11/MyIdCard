@@ -22,6 +22,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/auth_cubit.dart';
 import '../../data/repository/auth_repository.dart';
+import '../../language/app_localizations.dart';
 import '../../models/signup_dto.dart';
 import '../../models/user_data_model.dart';
 import '../../utils/utility.dart';
@@ -103,7 +104,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       Center(
                         child: Text(
-                          "Edit Profile",
+                          AppLocalizations.of(context).translate('editProfile'),
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600),
@@ -294,12 +295,12 @@ class _EditProfileState extends State<EditProfile> {
                             BorderRadius.circular(30), // Rounded corners
                           ),
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Continue", // Right side text
+                              AppLocalizations.of(context).translate('continue'),
                               style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],

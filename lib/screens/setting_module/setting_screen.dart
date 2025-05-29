@@ -14,6 +14,7 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/auth_cubit.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../language/app_localizations.dart';
+import '../../localStorage/storage.dart';
 import '../../main.dart';
 import '../../notifire_class.dart';
 import '../../utils/utility.dart';
@@ -403,6 +404,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   selectedLanguage = 'English';
                   final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                   langNotifier.setAppLocal(Locale("en"));
+                  Storage().setLanguage("en");
                   // MyApp.setLocale(context, Locale('en'));
                 });
                 Navigator.pop(context);
@@ -420,6 +422,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   selectedLanguage = 'French';
                   final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                   langNotifier.setAppLocal(Locale("fr"));
+                  Storage().setLanguage("fr");
                   // MyApp.setLocale(context, Locale('fr'));
                 });
                 Navigator.pop(context);

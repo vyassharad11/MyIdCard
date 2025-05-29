@@ -118,7 +118,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
       ],
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16,vertical: 30),
-        constraints: BoxConstraints(minHeight: 70,maxHeight: MediaQuery.of(context).size.height-100),
+        constraints: BoxConstraints(minHeight: 70,maxHeight: MediaQuery.of(context).size.height-130),
         decoration: BoxDecoration(
             color:  getCardModel
             ?.cardStyle !=
@@ -135,6 +135,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         InkWell(
                           onTap: (){
@@ -151,11 +152,13 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                         ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 120,
-                      child: Text(
-                        getCardModel?.cardName ?? "",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                      child: Center(
+                        child: Text(
+                          getCardModel?.cardName ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
                       ),
                     ),
                     InkWell(
@@ -301,17 +304,25 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                     SizedBox(
                                       height: 17,
                                     ),
-                                    Text(
-                                      "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight:
-                                          FontWeight.w500,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      getCardModel?.jobTitle ?? "",
-                                      style: const TextStyle(fontSize: 16),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width - 150,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight:
+                                                FontWeight.w500,
+                                                color: Colors.black),
+                                          ),
+                                          Text(
+                                            getCardModel?.jobTitle ?? "",
+                                            style: const TextStyle(fontSize: 16),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -412,6 +423,13 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                 fontSize: 16,
                                 color: Colors.grey,
                               ),
+                            ),const Divider(thickness: 1), // Horizontal line
+                            Text(
+                              getCardModel?.companyWebsite ?? "",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
@@ -507,7 +525,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                 ],
               ),
             ),
-            SizedBox(height: 20,)
+            SizedBox(height: 0,)
           ],
         ),
       ),

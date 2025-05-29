@@ -281,23 +281,26 @@ class _EmailVerificationBottomSheetState
                             fontWeight: FontWeight.w500,
                             color: Colors.grey[800]),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // Logic to resend OTP
-                          if (widget.email.isNotEmpty) {
-                            otpResendApi();
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Email id not valid",
-                                toastLength: Toast.LENGTH_LONG);
-                          }
-                        },
-                        child: Text(
-                          AppLocalizations.of(context).translate('resend'),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w500,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            // Logic to resend OTP
+                            if (widget.email.isNotEmpty) {
+                              otpResendApi();
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Email id not valid",
+                                  toastLength: Toast.LENGTH_LONG);
+                            }
+                          },
+                          child: Text(
+                            AppLocalizations.of(context).translate('resend'),
+                            overflow: TextOverflow.fade,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),

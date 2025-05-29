@@ -113,7 +113,7 @@
   "enterNotes": "Entrez des notes",
   "update": "Mettre à jour",
   "meetings": "Réunions",
-  "meeting": "Réunions",
+  "meeting": "Réunion",
   "viewAllMeetings": "Voir la liste complète",
   "contacts": "Contacts",
   "recent": "Récent",
@@ -180,5 +180,7 @@
   "addTag1": "Ajouter un tag",
   "save": "Sauvegarder",
   "editTag1": "Modifer un tag",
-  "hintTageName": "Entrez le nouveau nom de tag"
+  "hintTageName": "Entrez le nouveau nom de tag",
+  "shareTheCardContact": "Partagez la carte de votre contact",
+  "create": "créer"
 }

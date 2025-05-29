@@ -14,6 +14,7 @@ import 'package:my_di_card/bloc/cubit/card_cubit.dart';
 import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
@@ -24,6 +25,7 @@ import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/utility_dto.dart';
+import '../../notifire_class.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import '../add_card_module/share_card_bottom_sheet.dart';
@@ -264,21 +266,29 @@ class _HomeScreenState extends State<HomeScreen> {
     _getMyContact?.apiGetMyContact(data);
   }
 
-  Color getTextColorFromHex(String hexColor) {
-    // Remove # if it exists and ensure it's 6 or 8 characters
-    hexColor = hexColor.replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF$hexColor"; // Add full opacity if not present
-    }
 
-    final color = Color(int.parse("$hexColor"));
-
-    // Compute luminance: returns a value between 0 (black) and 1 (white)
-    final luminance = color.computeLuminance();
-
-    // Return black text for light backgrounds, white text for dark backgrounds
-    return luminance > 0.5 ? Colors.black : Colors.white;
+Color getTextColorFromHex(String hexColor) {
+  // Remove # if it exists and ensure it's 6 or 8 characters
+  hexColor = hexColor.replaceAll("#", "");
+  if (hexColor.length == 6) {
+    hexColor = "FF$hexColor"; // Add full opacity if not present
   }
+
+  final color = Color(int.parse("$hexColor"));
+
+  // Convert to HSL to better identify colors like purple
+  final hslColor = HSLColor.fromColor(color);
+  final luminance = color.computeLuminance();
+
+  // If color is in the purple hue range (e.g. 260°–290°), return white
+  if (hslColor.hue >= 260 && hslColor.hue <= 290) {
+    return Colors.white;
+  }
+
+  // Otherwise, use luminance to decide text color
+  return luminance > 0.5 ? Colors.black : Colors.white;
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -431,7 +441,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     topRight:
                                                         Radius.circular(18)),
                                             child: CachedNetworkImage(
-                                              height: 100,
+                                              height: 110,
                                               width: double.infinity,
                                               fit: BoxFit.fitWidth,
                                               imageUrl:
@@ -714,7 +724,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           SizedBox(
                                             height: 35,
-                                            width: 90,
+                                            width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?90:118,
                                             child: ElevatedButton(
                                               // iconAlignment: IconAlignment.start,
                                               onPressed: () {

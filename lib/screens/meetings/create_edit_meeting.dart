@@ -6,6 +6,7 @@ import 'package:my_di_card/data/repository/contact_repository.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/contact_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../models/meeting_details_model.dart';
 import '../../models/my_meetings_model.dart';
 import '../../utils/colors/colors.dart';
@@ -144,7 +145,7 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
             centerTitle: true,
             iconTheme: const IconThemeData(color: Colors.black),
             title: Text(
-              "${widget.isEdit == true ? "Edit":"Create"} Meeting",
+              "${widget.isEdit == true ? AppLocalizations.of(context).translate('edit'):AppLocalizations.of(context).translate('create')} ${AppLocalizations.of(context).translate('meeting')}",
               style: TextStyle(
                   fontFamily: Constants.fontFamily,
                   fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
@@ -304,7 +305,7 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          widget.isEdit == false ?"Create":"Update", // Right side text
+                          widget.isEdit == false ?AppLocalizations.of(context).translate('create'):AppLocalizations.of(context).translate('update'), // Right side text
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],

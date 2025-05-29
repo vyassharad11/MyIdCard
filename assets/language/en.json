@@ -19,6 +19,7 @@
   "lastName": "Last Name *",
   "complteProfile": "Complete your Profile",
   "createCardOn": "Card Editor",
+  "createCardOn": "Card Editor",
   "createCard": "Create and share digital cards!",
   "next": "Next",
   "personal": "Personal Details",
@@ -113,7 +114,7 @@
   "enterNotes": "Enter notes",
   "update": "Update",
   "meetings": "Meetings",
-  "meeting": "Meetings",
+  "meeting": "Meeting",
   "viewAllMeetings": "View All",
   "contacts": "Contacts",
   "recent": "Recent",
@@ -184,6 +185,10 @@
   "helpAndSupport": "Help And Support",
   "enterTitle": "Enter Title",
   "enterDescription": "Enter Description",
-  "enterFileName": "Enter File Name"
+  "enterFileName": "Enter File Name",
+  "editProfile": "Edit Profile",
+  "Share your new": "Share your new",
+  "shareTheCardContact": "Share the card of your contact",
+  "create": "Create"
 
 }

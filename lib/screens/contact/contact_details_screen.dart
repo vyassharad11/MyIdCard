@@ -661,7 +661,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                         icon: Icon(
                                                           Icons.info_rounded,
                                                           color: Colors.white,
-                                                          size: 20,
+                                                          size: 24,
                                                         )),
                                                     InkWell(
                                                       onTap: (){
@@ -685,14 +685,14 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                         );
                                                       },
                                                       child: Container(
-                                                        width: 17,
-                                                        height: 17,
+                                                        width: 20,
+                                                        height: 20,
                                                         decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
                                                         child: Center(
                                                           child: Image.asset(
                                                             "assets/images/send-01.png",
-                                                            height: 10,
-                                                            width: 10,
+                                                            height: 12,
+                                                            width: 12,
                                                             color: Colors.grey,
                                                           ),
                                                         ),

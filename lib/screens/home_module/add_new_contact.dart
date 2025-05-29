@@ -87,8 +87,8 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                         children: [
                            Text(
                             softWrap: true,
-                            AppLocalizations.of(context)
-                                .translate('scanA'),
+                           "${ AppLocalizations.of(context)
+                               .translate('scan')} ",
                             textDirection: TextDirection.ltr,
                             style: TextStyle(
                               fontSize: 22,
