@@ -77,7 +77,10 @@ class _SettingScreenState extends State<SettingScreen> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
-              launch(dto.url ?? "");
+              if(Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")){
+              launch(dto.url ?? "");}else{
+                launch(dto.url ?? "");
+              }
               setState(() {});
             }
             setState(() {});

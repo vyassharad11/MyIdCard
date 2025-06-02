@@ -291,7 +291,7 @@ Color getTextColorFromHex(String hexColor) {
                                       topLeft: Radius.circular(18),
                                       topRight: Radius.circular(18)),
                                   child: getCardModel != null &&
-                                          getCardModel!.backgroungImage != null
+                                      (getCardModel!.backgroungImage != null  || getCardModel!.cardImage != null)
                                       ? Stack(
                                           children: [
                                             ClipRRect(
@@ -398,25 +398,30 @@ Color getTextColorFromHex(String hexColor) {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: 17,
-                                        ),
-                                        Text(
-                                          "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                        Text(
-                                          getCardModel?.jobTitle ?? "",
-                                          style: const TextStyle(fontSize: 16,color: Colors.grey),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width - 178,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 17,
+                                          ),
+                                          Text(
+                                            "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black),
+                                          ),
+                                          Text(
+                                            maxLines: 2,
+                                            getCardModel?.jobTitle ?? "",
+                                            style: const TextStyle(fontSize: 16,color: Colors.grey),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     getCardModel != null &&
                                             getCardModel!.companyLogo !=

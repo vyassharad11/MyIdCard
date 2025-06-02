@@ -150,7 +150,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              cardList!.data![index].backgroungImage != null
+                              cardList!.data![index].backgroungImage != null ||  cardList!.data![index].cardImage != null
                                   ? Stack(
                                 children: [
                                   ClipRRect(
@@ -196,7 +196,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                           child: CachedNetworkImage(
                                             height: 80,
                                             width: 80,
-                                            fit: BoxFit.fitWidth,
+                                            fit: BoxFit.cover,
                                             imageUrl:
                                             "${Network.imgUrl}${cardList!.data![index].cardImage}",
                                             progressIndicatorBuilder:
@@ -328,48 +328,53 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
-                                              style: GoogleFonts.poppins(
-                                                textStyle: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black),
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width - 175,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
+                                                maxLines: 2,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.black),
+                                                ),
                                               ),
-                                            ),
-                                            // Text(
-                                            //   cardList!.data![index]
-                                            //       .companyName ??
-                                            //       "",
-                                            //   style: TextStyle(
-                                            //       fontSize: 14,
-                                            //       fontWeight:
-                                            //       FontWeight.normal,
-                                            //       color: Colors.black45),
-                                            // ),
-                                            // Text(
-                                            //   cardList!.data![index].companyTypeId.toString() == "1"
-                                            //       ? "IT"
-                                            //       : "Finance",
-                                            //   style: const TextStyle(
-                                            //     fontSize: 16,
-                                            //     color: Colors.grey,
-                                            //   ),
-                                            // ),
-                                            Text(
-                                              cardList!.data![index].jobTitle
-                                                  .toString(),
-                                              style: GoogleFonts.poppins(
-                                                textStyle: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.normal,
-                                                    color: Colors.black45),
+                                              // Text(
+                                              //   cardList!.data![index]
+                                              //       .companyName ??
+                                              //       "",
+                                              //   style: TextStyle(
+                                              //       fontSize: 14,
+                                              //       fontWeight:
+                                              //       FontWeight.normal,
+                                              //       color: Colors.black45),
+                                              // ),
+                                              // Text(
+                                              //   cardList!.data![index].companyTypeId.toString() == "1"
+                                              //       ? "IT"
+                                              //       : "Finance",
+                                              //   style: const TextStyle(
+                                              //     fontSize: 16,
+                                              //     color: Colors.grey,
+                                              //   ),
+                                              // ),
+                                              Text(
+                                                cardList!.data![index].jobTitle
+                                                    .toString(),
+                                                maxLines: 2,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.black45),
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                         cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty?ClipRRect(
                                           borderRadius:
@@ -411,7 +416,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                     Container(
                                       height: 1,
                                       margin:
-                                      const EdgeInsets.symmetric(vertical: 18),
+                                      const EdgeInsets.only(bottom: 10,top: 5),
                                       color: Colors.black12,
                                     ),
                                   ],
