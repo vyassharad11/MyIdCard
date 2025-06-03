@@ -16,6 +16,7 @@ import 'package:my_di_card/models/user_data_model.dart';
 import 'package:my_di_card/screens/auth_module/welcome_screen.dart';
 import 'package:my_di_card/utils/common_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../bloc/api_resp_state.dart';
@@ -25,6 +26,7 @@ import '../../localStorage/storage.dart';
 import '../../models/login_dto.dart';
 import '../../models/signup_dto.dart';
 import '../../models/utility_dto.dart';
+import '../../notifire_class.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/image_cropo.dart';
 import '../../utils/url_lancher.dart';
@@ -140,7 +142,10 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
       } else if (state is ResponseStateSuccess) {
         Utility.hideLoader(context);
         var dto = state.data as UtilityDto;
-        launch(dto.url ?? "");
+        if(Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")){
+          launch(dto.url ?? "");}else{
+          launch(dto.url ?? "");
+        }
         setState(() {});
       }
       setState(() {});

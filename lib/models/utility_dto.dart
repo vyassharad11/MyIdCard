@@ -11,12 +11,14 @@ class UtilityDto {
     this.message,
     this.token,
     this.url,
+    this.urlFr,
   });
 
   Result? result;
   String? message;
   String? token;
   String? url;
+  String? urlFr;
 
   factory UtilityDto.fromJson(Map<String, dynamic> json) => UtilityDto(
     result:
@@ -24,12 +26,14 @@ class UtilityDto {
     message: json["message"],
     url: json["url"],
     token: json["token"],
+    urlFr: json["url_fr"],
   );
 
   Map<String, dynamic> toJson() => {
     "result": result != null ? result?.toJson() : null,
     "message": message,
     "url": url,
+    "url_fr": urlFr,
     "token": token,
   };
 }

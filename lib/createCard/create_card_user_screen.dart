@@ -38,6 +38,8 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
   String _selectedValue = "English";
   String title = "English";
   String _selectedLanguageId = "1";
+  bool isCardCreate = false;
+  String cardId = "";
 
   @override
   Widget build(BuildContext context) {
@@ -508,7 +510,13 @@ String cardImageF = "";
               isEdit: widget.isEdit,
             ),
           ),
-        );
+        ).then((value) {
+          isCardCreate = true;
+          print("isCardCreate>>>>>>>>>>>>>>>${isCardCreate}");
+          setState(() {
+
+          });
+        },);
       } else {
          Utility.hideLoader(context);
 
@@ -549,6 +557,8 @@ String cardImageF = "";
         final responseData = await response.stream.bytesToString();
         final data = jsonDecode(responseData);
         GetCardId getCardId = GetCardId.fromJson(data);
+        print("cardId<<<<<<<<<<<<<<<<<<${getCardId.data?.id}");
+        cardId = getCardId.data?.id.toString() ?? "" ;
 
         submitData(
             cardId: getCardId.data!.id.toString(),
@@ -570,8 +580,8 @@ String cardImageF = "";
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Card'),
-          content: Text('Are you sure you want to delete this card?'),
+          title: Text('Cancel the action'),
+          content: Text(widget.isEdit == true? "Are you sure you want to cancel the action?":'Are you sure you want to delete this card?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -579,14 +589,17 @@ String cardImageF = "";
                 // Navigator.of(context).pop();
                 // Navigator.pop(context);
                 if(widget.isEdit == true) {
-                  deleteCardApiCalling();
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
+                }else if(isCardCreate == true){
+                deleteCardApiCalling();
                 }else{
                   Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).pop(); //
+                  Navigator.of(context).pop();
                 }
                 // Close the dialog
               },
-              child: Text('Delete'),
+              child: Text(widget.isEdit == true? "Confirm":'Delete'),
             ),
             TextButton(
               onPressed: () {
@@ -602,10 +615,10 @@ String cardImageF = "";
   }
 
   Future<void> deleteCardApiCalling() async {
-    if (widget.cardId.isNotEmpty) {
+    if (cardId.isNotEmpty) {
       Utility.showLoader(context);
       var url =
-          "${Network.baseUrl}card/destroy/${widget.cardId.toString()}"; // Replace with your API endpoint
+          "${Network.baseUrl}card/destroy/${cardId.toString()}"; // Replace with your API endpoint
 
       var token = await Storage().getToken();
 

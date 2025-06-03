@@ -430,8 +430,8 @@ Color getTextColorFromHex(String hexColor) {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                cardList!.data![index].backgroungImage != null
-                                    ? Stack(
+                                cardList!.data![index].backgroungImage != null ||  cardList!.data![index].cardImage != null
+                            ? Stack(
                                         children: [
                                           ClipRRect(
                                             borderRadius:
@@ -477,11 +477,11 @@ Color getTextColorFromHex(String hexColor) {
                                                 child:  cardList!.data![index].cardImage != null && cardList!.data![index].cardImage.toString().isNotEmpty?ClipRRect(
                                                   borderRadius:
                                                       const BorderRadius.all(
-                                                          Radius.circular(50)),
+                                                          Radius.circular(80)),
                                                   child: CachedNetworkImage(
                                                     height: 80,
                                                     width: 80,
-                                                    fit: BoxFit.fitWidth,
+                                                    fit: BoxFit.cover,
                                                     imageUrl:
                                                         "${Network.imgUrl}${cardList!.data![index].cardImage}",
                                                     progressIndicatorBuilder:
@@ -593,8 +593,8 @@ Color getTextColorFromHex(String hexColor) {
                                         ],
                                       ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 2.0, horizontal: 20),
+                                  padding: const EdgeInsets.only(
+                                      top: 2.0,bottom: 2,left: 20,right: 5),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -605,48 +605,54 @@ Color getTextColorFromHex(String hexColor) {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: Colors.black),
+                                          SizedBox(
+                                            width: MediaQuery.of(context).size.width - 173,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.fade,
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: Colors.black),
+                                                  ),
                                                 ),
-                                              ),
-                                              // Text(
-                                              //   cardList!.data![index]
-                                              //       .companyName ??
-                                              //       "",
-                                              //   style: TextStyle(
-                                              //       fontSize: 14,
-                                              //       fontWeight:
-                                              //       FontWeight.normal,
-                                              //       color: Colors.black45),
-                                              // ),
-                                              // Text(
-                                              //   cardList!.data![index].companyTypeId.toString() == "1"
-                                              //       ? "IT"
-                                              //       : "Finance",
-                                              //   style: const TextStyle(
-                                              //     fontSize: 16,
-                                              //     color: Colors.grey,
-                                              //   ),
-                                              // ),
-                                              Text(
-                                                cardList!.data![index].jobTitle
-                                                    .toString(),
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.normal,
-                                                      color: Colors.black45),
+                                                // Text(
+                                                //   cardList!.data![index]
+                                                //       .companyName ??
+                                                //       "",
+                                                //   style: TextStyle(
+                                                //       fontSize: 14,
+                                                //       fontWeight:
+                                                //       FontWeight.normal,
+                                                //       color: Colors.black45),
+                                                // ),
+                                                // Text(
+                                                //   cardList!.data![index].companyTypeId.toString() == "1"
+                                                //       ? "IT"
+                                                //       : "Finance",
+                                                //   style: const TextStyle(
+                                                //     fontSize: 16,
+                                                //     color: Colors.grey,
+                                                //   ),
+                                                // ),
+                                                Text(
+                                                  cardList!.data![index].jobTitle
+                                                      .toString(),
+                                                  maxLines: 2,
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.normal,
+                                                        color: Colors.black45),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                   cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty?ClipRRect(
                                             borderRadius:
@@ -685,8 +691,8 @@ Color getTextColorFromHex(String hexColor) {
                                       ),
                                       Container(
                                         height: 1,
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 18),
+                                        margin: const EdgeInsets.only(
+                                            top: 12,bottom: 18),
                                         color: Colors.black12,
                                       ),
                                       Row(
