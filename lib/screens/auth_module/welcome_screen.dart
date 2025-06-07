@@ -66,7 +66,7 @@ class _WelcomePageState extends State<WelcomePage> {
           isDismissible: false,
           builder: (context) => ProfileBottomSheet(),
         );
-      }else if (!isFirstCardSkip) {
+      }else if (isFirstCardSkip) {
         Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute(builder: (builder) => FirstCardScreen()),

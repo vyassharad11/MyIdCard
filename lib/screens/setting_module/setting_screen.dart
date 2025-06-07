@@ -513,6 +513,7 @@ class _SettingScreenState extends State<SettingScreen> {
     Utility.showLoader(context);
 
     bool success = await prefs.clear(); // Clears all key-value pairs
+    await Storage().setFirstCardSkip(true);
     if (success) {
       Future.delayed(
         const Duration(seconds: 2),

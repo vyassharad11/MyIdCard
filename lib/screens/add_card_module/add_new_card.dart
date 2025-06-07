@@ -329,7 +329,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
-                                          width: MediaQuery.of(context).size.width - 175,
+                                          width: MediaQuery.of(context).size.width - 178,
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
@@ -364,6 +364,18 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               // ),
                                               Text(
                                                 cardList!.data![index].jobTitle
+                                                    .toString(),
+                                                maxLines: 2,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.black45),
+                                                ),
+                                              ),
+                                              SizedBox(height: 3,),
+                                              Text(
+                                                cardList!.data![index].companyName
                                                     .toString(),
                                                 maxLines: 2,
                                                 style: GoogleFonts.poppins(

@@ -371,6 +371,17 @@ Color getTextColorFromHex(String hexColor) {
                                         FontWeight.normal,
                                         color: Colors.black45),
                                   ),
+                                  SizedBox(height: 3,),
+                                  Text(
+                                    getCardModel
+                                        ?.companyName ??
+                                        "",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight:
+                                        FontWeight.normal,
+                                        color: Colors.black45),
+                                  ),
                                 ],
                               ),
                             ),
@@ -446,16 +457,16 @@ Color getTextColorFromHex(String hexColor) {
                                 color: Colors.grey,
                               ),
                             ),
-                            Text(
-                              getCardModel
-                                  ?.jobTitle ??
-                                  "",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight:
-                                  FontWeight.normal,
-                                  color: Colors.black45),
-                            ),
+                            // Text(
+                            //   getCardModel
+                            //       ?.jobTitle ??
+                            //       "",
+                            //   style: TextStyle(
+                            //       fontSize: 14,
+                            //       fontWeight:
+                            //       FontWeight.normal,
+                            //       color: Colors.black45),
+                            // ),
                             Container(
                               height: 1,
                               color: ColoursUtils.background,

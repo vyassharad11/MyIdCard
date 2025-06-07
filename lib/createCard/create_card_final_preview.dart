@@ -291,7 +291,7 @@ Color getTextColorFromHex(String hexColor) {
                                       topLeft: Radius.circular(18),
                                       topRight: Radius.circular(18)),
                                   child: getCardModel != null &&
-                                      (getCardModel!.backgroungImage != null  || getCardModel!.cardImage != null)
+                                      (getCardModel!.backgroungImage != null  || getCardModel!.cardImage != null || getCardModel!.companyLogo != null)
                                       ? Stack(
                                           children: [
                                             ClipRRect(
@@ -318,13 +318,12 @@ Color getTextColorFromHex(String hexColor) {
                                                                   .progress),
                                                 ),
                                                 errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(
-                                                  "assets/logo/Top with a picture.png",
-                                                  height: 80,
-                                                  fit: BoxFit.fill,
-                                                  width: double.infinity,
-                                                ),
+                                                    (context, url, error) => Image.asset(
+                                                      "assets/logo/Top with a picture.png",
+                                                      height: 80,
+                                                      fit: BoxFit.fill,
+                                                      width: double.infinity,
+                                                    ),
                                               ),
                                             ),
                                             Padding(
@@ -420,6 +419,12 @@ Color getTextColorFromHex(String hexColor) {
                                             getCardModel?.jobTitle ?? "",
                                             style: const TextStyle(fontSize: 16,color: Colors.grey),
                                           ),
+                                          SizedBox(height: 3,),
+                                          Text(
+                                            maxLines: 2,
+                                            getCardModel?.companyName ?? "",
+                                            style: const TextStyle(fontSize: 16,color: Colors.grey),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -497,10 +502,6 @@ Color getTextColorFromHex(String hexColor) {
                                     fontSize: 16,
                                     color: Colors.grey,
                                   ),
-                                ),
-                                Text(
-                                  getCardModel?.jobTitle ?? "",
-                                  style: const TextStyle(fontSize: 16),
                                 ),
                                 // Divider(thickness: 1), // Horizontal line
                                 // Text(

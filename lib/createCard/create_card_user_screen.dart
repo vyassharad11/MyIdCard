@@ -500,7 +500,7 @@ String cardImageF = "";
         // final responseData = await response.stream.bytesToString();
         // final data = jsonDecode(responseData);
          Utility.hideLoader(context);
-        await Storage().setFirstCardSkip(true);
+        await Storage().setFirstCardSkip(false);
         debugPrint("Data submitted successfully:");
         Navigator.push(
           context,
@@ -567,6 +567,7 @@ String cardImageF = "";
             lastName: lastName,
             languageId: languageId.toString());
         debugPrint("Data submitted successfully: $data");
+        Storage().setFirstCardSkip(false);
       } else {
         debugPrint("Failed to submit data. Status Code: ${response.statusCode}");
       }
@@ -581,7 +582,7 @@ String cardImageF = "";
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Cancel the action'),
-          content: Text(widget.isEdit == true? "Are you sure you want to cancel the action?":'Are you sure you want to delete this card?'),
+          content: Text("Are you sure you want to cancel the action?"),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -594,17 +595,16 @@ String cardImageF = "";
                 }else if(isCardCreate == true){
                 deleteCardApiCalling();
                 }else{
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 }
                 // Close the dialog
               },
-              child: Text(widget.isEdit == true? "Confirm":'Delete'),
+              child: Text("Confirm"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),

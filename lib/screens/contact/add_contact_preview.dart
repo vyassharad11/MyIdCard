@@ -311,6 +311,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                         children: [
                                           Text(
                                             "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                            maxLines: 2,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight:
@@ -319,6 +320,13 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                           ),
                                           Text(
                                             getCardModel?.jobTitle ?? "",
+                                            maxLines: 2,
+                                            style: const TextStyle(fontSize: 16),
+                                          ),
+                                          SizedBox(height: 3,),
+                                          Text(
+                                            getCardModel?.companyName ?? "",
+                                            maxLines: 2,
                                             style: const TextStyle(fontSize: 16),
                                           ),
                                         ],
@@ -390,10 +398,10 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                 color: Colors.grey,
                               ),
                             ),
-                            Text(
-                              getCardModel?.jobTitle ?? "",
-                              style: const TextStyle(fontSize: 16),
-                            ),
+                            // Text(
+                            //   getCardModel?.jobTitle ?? "",
+                            //   style: const TextStyle(fontSize: 16),
+                            // ),
                             // Divider(thickness: 1), // Horizontal line
                             // Text(
                             //   'CEO',

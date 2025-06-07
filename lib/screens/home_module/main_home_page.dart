@@ -396,7 +396,7 @@ Color getTextColorFromHex(String hexColor) {
               isLoad == true ? _getShimmerView():
               cardList != null && cardList!.data!.isNotEmpty?
                 SizedBox(
-                  height: 329,
+                  height: 330,
                   child: Swiper(
                     itemCount: cardList!.data!.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -642,6 +642,18 @@ Color getTextColorFromHex(String hexColor) {
                                                 // ),
                                                 Text(
                                                   cardList!.data![index].jobTitle
+                                                      .toString(),
+                                                  maxLines: 2,
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.normal,
+                                                        color: Colors.black45),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 3,),
+                                                Text(
+                                                  cardList!.data![index].companyName
                                                       .toString(),
                                                   maxLines: 2,
                                                   style: GoogleFonts.poppins(
