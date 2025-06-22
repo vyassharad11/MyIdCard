@@ -187,8 +187,11 @@
   "enterDescription": "Enter Description",
   "enterFileName": "Enter File Name",
   "editProfile": "Edit Profile",
-  "Share your new": "Share your new",
+  "shareYourNew": "Share your new",
   "shareTheCardContact": "Share the card of your contact",
-  "create": "Create"
+  "create": "Create",
+  "shareYourCard": "Share your card",
+  "digitalBusinessCard": "Digital Business Card",
+  "withPeople": "with people"
 
 }

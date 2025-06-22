@@ -182,5 +182,10 @@
   "editTag1": "Modifer un tag",
   "hintTageName": "Entrez le nouveau nom de tag",
   "shareTheCardContact": "Partagez la carte de votre contact",
-  "create": "créer"
+  "create": "créer",
+  "shareYourCard":"Partagez votre carte",
+  "shareYourNew":"Partagez votre nouveau",
+  "digitalBusinessCard":"Carte de visite numérique",
+  "withPeople":"navec des gens",
+  "helpAndSupport": "Aide et support"
 }

@@ -44,7 +44,8 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Share your new ",style: TextStyle( fontFamily: Constants.fontFamily,fontWeight: FontWeight.w600,fontSize: 22,color: Colors.black),),
+              Text("${AppLocalizations.of(context).translate(
+            'shareYourNew')} ",style: TextStyle( fontFamily: Constants.fontFamily,fontWeight: FontWeight.w600,fontSize: 22,color: Colors.black),),
               InkWell(
                 onTap: (){
                   Navigator.pop(context);
@@ -63,8 +64,10 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
               ),
             ],
           ),
-          Text("Digital Business Card ",style: TextStyle(fontWeight: FontWeight.w600, fontFamily: Constants.fontFamily,fontSize: 22,color: Colors.blue),),
-          Text("with people ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily,),),
+          Text("${ AppLocalizations.of(context).translate(
+              'digitalBusinessCard')} ",style: TextStyle(fontWeight: FontWeight.w600, fontFamily: Constants.fontFamily,fontSize: 22,color: Colors.blue),),
+          Text("${ AppLocalizations.of(context).translate(
+              'withPeople')} ",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: Colors.blue, fontFamily: Constants.fontFamily,),),
             SizedBox(height: 24,),
             Center(
               child: CachedNetworkImage(
@@ -126,7 +129,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                       ), // Space between icon and text
                       Text(
                         AppLocalizations.of(context).translate(
-                            'copyQrCode'), // Right side text
+                            'CopyQrCode'), // Right side text
                         style: const TextStyle(
                             color: Colors.white, fontSize: 14),
                       ),
@@ -152,7 +155,8 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
 
                     await Share.share(
                       "${Network.shareUrl}${widget.cardData?.id.toString()}",
-                      subject: "Share your card",
+                      subject:  AppLocalizations.of(context).translate(
+                      'shareYourCard'),
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );                  },
                   style: ElevatedButton.styleFrom(
@@ -162,12 +166,13 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
                       BorderRadius.circular(30), // Rounded corners
                     ),
                   ),
-                  child: const Row(
+                  child:  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Share", // Right side text
+                      AppLocalizations.of(context).translate(
+                      'share'), // Right side text
                         style: TextStyle(
                             color: Colors.white, fontSize: 16),
                       ),
@@ -291,7 +296,7 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
                       ), // Space between icon and text
                       Text(
                         AppLocalizations.of(context).translate(
-                            'copyQrCode'), // Right side text
+                            'CopyQrCode'), // Right side text
                         style: const TextStyle(
                             color: Colors.white, fontSize: 14),
                       ),
@@ -317,7 +322,8 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
 
                     await Share.share(
                       "${Network.shareUrl}${widget.cardData?.id.toString()}",
-                      subject: "Share your card",
+                      subject:  AppLocalizations.of(context).translate(
+                          'shareYourCard'),
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );                  },
                   style: ElevatedButton.styleFrom(
@@ -327,12 +333,13 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
                       BorderRadius.circular(30), // Rounded corners
                     ),
                   ),
-                  child: const Row(
+                  child:  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Share", // Right side text
+                      AppLocalizations.of(context).translate(
+                      'share'), // Right side text
                         style: TextStyle(
                             color: Colors.white, fontSize: 16),
                       ),
@@ -453,7 +460,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                       ), // Space between icon and text
                       Text(
                         AppLocalizations.of(context).translate(
-                            'copyQrCode'), // Right side text
+                            'CopyQrCode'), // Right side text
                         style: const TextStyle(
                             color: Colors.white, fontSize: 14),
                       ),
@@ -479,7 +486,8 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
 
                     await Share.share(
                       "${Network.shareUrl}${widget.cardData?.cardId.toString()}",
-                      subject: "Share your card",
+                      subject:  AppLocalizations.of(context).translate(
+                          'shareYourCard'),
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );                  },
                   style: ElevatedButton.styleFrom(
@@ -489,12 +497,13 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
                       BorderRadius.circular(30), // Rounded corners
                     ),
                   ),
-                  child: const Row(
+                  child:  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Share", // Right side text
+                        AppLocalizations.of(context).translate(
+                            'share'), // Right side text
                         style: TextStyle(
                             color: Colors.white, fontSize: 16),
                       ),

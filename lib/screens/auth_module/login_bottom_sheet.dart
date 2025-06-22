@@ -100,9 +100,10 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
     Utility.showLoader(context);
     final GoogleSignIn googleSignIn = Platform.isAndroid
         ? GoogleSignIn(
-            clientId: Network.googleKeyAndroid,
-          )
+      clientId: Network.googleKeyAndroid,
+    )
         : GoogleSignIn(clientId: Network.googleKeyIOS);
+
     try {
       // Step 1: Trigger the Google Authentication flow
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
@@ -116,7 +117,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
 
       // Step 2: Obtain Google authentication details
       final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
       // Extract the ID token
       final String? idToken = googleAuth.idToken;
@@ -128,17 +129,17 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
 
       debugPrint("idToken$idToken");
       // Step 3: Send the token to your backend
-
       Map<String, dynamic> data = {
         'idToken': idToken,
         "email": googleUser.email.toString(),
         "social_id": googleUser.id
       };
       _googleLoginCubit?.apiSignupGoogle(data);
-
     } catch (e) {
-      Utility.hideLoader(context);
       debugPrint("Google Login Error: $e");
+    } finally {
+      // ✅ Always hide loader, even on cancel or error
+      Utility.hideLoader(context);
     }
   }
 
@@ -808,28 +809,19 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(
-            msg: "A mail was sent to you to update your password.",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.green,
-            textColor: Colors.white);
+        Utility().showFlushBar(context: context, message: "A mail was sent to you to update your password.");
         _emailController.clear();
         Navigator.pop(context);
       } else {
         final responseData = ErrorModel.fromJson(
           json.decode(response.toString()),
         );
-        Fluttertoast.showToast(
-            msg: "Response: ${responseData.message}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white);
+        Utility().showFlushBar(context: context, message: "${responseData.message}");
         debugPrint('Failed to register: ${response.statusCode}');
         debugPrint('Response: ${response.body}');
       }
     } catch (e) {
+      Utility().showFlushBar(context: context, message: "This email is not exists");
       debugPrint('Error: $e');
     }
   }

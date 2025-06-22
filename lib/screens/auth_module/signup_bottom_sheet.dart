@@ -184,6 +184,9 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
     } catch (e) {
       Utility.hideLoader(context);
       debugPrint("Google Login Error: $e");
+    } finally {
+      // ✅ Always hide loader, even on cancel or error
+      Utility.hideLoader(context);
     }
   }
 

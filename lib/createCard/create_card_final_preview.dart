@@ -192,14 +192,19 @@ Color getTextColorFromHex(String hexColor) {
                                 ),
                               ),
                             ),
-                            Text(
-                              getCardModel?.cardName.toString() ?? "",
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                  color: getTextColorFromHex(
-                                      '0xFF${getCardModel!.cardStyle ?? ""}')),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 120,
+                              child: Center(
+                                child: Text(
+                                  getCardModel?.cardName.toString() ?? "",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                      color: getTextColorFromHex(
+                                          '0xFF${getCardModel!.cardStyle ?? ""}')),
+                                ),
+                              ),
                             ),
                             if (widget.isEdit == false)
                               Row(

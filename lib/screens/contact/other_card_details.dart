@@ -553,12 +553,15 @@ Color getTextColorFromHex(String hexColor) {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  getCardModel!
-                                      .workEmail
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width - 110,
+                                  child: Text(
+                                    getCardModel!
+                                        .workEmail
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.grey),
+                                  ),
                                 ),
                                 InkWell(
                                     onTap: (){
