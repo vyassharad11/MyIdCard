@@ -192,6 +192,17 @@
   "create": "Create",
   "shareYourCard": "Share your card",
   "digitalBusinessCard": "Digital Business Card",
-  "withPeople": "with people"
+  "withPeople": "with people",
+  "sendLocation": "Send Location",
+  "sendEmail": "Send Email",
+  "phone": "Phone",
+  "sendMessage": "Send Message",
+  "enterPurpose": "Enter purpose",
+  "enterAddress": "Enter address",
+  "enterMeetingLink": "Enter meeting link",
+  "selectedDateAndTime" : "Selected date and time",
+  "pleaseEnterTitle" : "Please enter title",
+  "pleaseEnterPurpose": "Please enter purpose",
+  "pleaseSelectDate": "Please select date"
 
 }

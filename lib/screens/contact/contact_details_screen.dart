@@ -861,7 +861,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                           .toString() ??
                                                       "");
                                                 },
-                                                    "Phone",
+                                                    AppLocalizations.of(context).translate('phone'),
                                                     contactDetailsDatum?.phoneNo
                                                             .toString() ??
                                                         "",
@@ -901,7 +901,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                   //         "",
                                                   //     subject: "");
                                                 },
-                                                    "Send Email",
+                                                    AppLocalizations.of(context).translate('sendEmail'),
                                                     contactDetailsDatum
                                                             ?.workEmail
                                                             .toString() ??
@@ -937,7 +937,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                   await launch(
                                                       "sms:${contactDetailsDatum?.phoneNo.toString() ?? ""}?body=");
                                                 },
-                                                    "Send Message",
+                                                    AppLocalizations.of(context).translate('sendMessage'),
                                                     contactDetailsDatum?.phoneNo
                                                             .toString() ??
                                                         "",
@@ -972,7 +972,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                           ?.companyAddress ??
                                                       "");
                                                 },
-                                                    "Send Location",
+                                                    AppLocalizations.of(context).translate('sendLocation'),
                                                     contactDetailsDatum
                                                             ?.companyAddress
                                                             .toString() ??

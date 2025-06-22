@@ -187,5 +187,17 @@
   "shareYourNew":"Partagez votre nouveau",
   "digitalBusinessCard":"Carte de visite numérique",
   "withPeople":"navec des gens",
-  "helpAndSupport": "Aide et support"
+  "helpAndSupport": "Aide et support",
+  "sendLocation":"Envoyer, l'emplacement",
+  "sendEmail":"Envoyer un e-mail",
+  "phone": "Téléphone",
+   "sendMessage":"Envoyer un message",
+  "enterTitle":"Entrez le titre",
+  "enterPurpose":"Entrez le but",
+  "enterAddress":"Entrez l'adresse",
+  "enterMeetingLink" : "Entrez le lien de la réunion",
+  "selectedDateAndTime": "Date et heure sélectionnées",
+  "pleaseEnterTitle" : "Veuillez entrer le titre",
+  "pleaseEnterPurpose": "Veuillez entrer le but",
+  "pleaseSelectDate" : "Veuillez sélectionner une date"
 }

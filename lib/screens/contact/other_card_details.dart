@@ -493,7 +493,7 @@ Color getTextColorFromHex(String hexColor) {
                                           ?.companyAddress ??
                                           "");
                                     },
-                                        "Send Location",
+                                        "${AppLocalizations.of(context).translate('sendLocation')}",
                                         getCardModel
                                             ?.companyAddress
                                             .toString() ??
@@ -579,7 +579,7 @@ Color getTextColorFromHex(String hexColor) {
                                             //         "",
                                             //     subject: "");
                                           },
-                                          "Send Email",
+                                          AppLocalizations.of(context).translate('sendEmail'),
                                           getCardModel
                                               ?.workEmail
                                               .toString() ??
@@ -620,7 +620,7 @@ Color getTextColorFromHex(String hexColor) {
                                                 .toString() ??
                                                 "");
                                           },
-                                              "Phone",
+                                              AppLocalizations.of(context).translate('phone'),
                                               getCardModel?.phoneNo
                                                   .toString() ??
                                                   "",
@@ -644,7 +644,7 @@ Color getTextColorFromHex(String hexColor) {
                                                 await launch(
                                                     "sms:${getCardModel?.phoneNo.toString() ?? ""}?body=");
                                               },
-                                              "Send Message",
+                                              AppLocalizations.of(context).translate('sendMessage'),
                                               getCardModel?.phoneNo
                                                   .toString() ??
                                                   "",

@@ -305,7 +305,7 @@ class _CardDetailsState extends State<CardDetails> {
 
                                     await Share.share(
                                       "${Network.shareUrl}${widget.cardData?.id.toString()}",
-                                      subject: "Share your card",
+                                      subject:  AppLocalizations.of(context).translate('shareYourCard'),
                                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                     );                  },
                                   style: ElevatedButton.styleFrom(

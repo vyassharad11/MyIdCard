@@ -470,7 +470,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                                     !_selectedImage!.path.contains("storage")
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(
-                                        50), // Adjust the radius as needed
+                                        4), // Adjust the radius as needed
                                     child: Image.file(
                                       _selectedImage!,
                                       fit: BoxFit.cover,
@@ -483,7 +483,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                                         _selectedImage!.path.contains("storage")
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(
-                                            50), // Adjust the radius as needed
+                                            4), // Adjust the radius as needed
                                         child: Image.network(
                                           "${Network.imgUrl}${_selectedImage!.path}",
                                           fit: BoxFit.cover,
@@ -497,7 +497,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                                         decoration: BoxDecoration(
                                           color: ColoursUtils
                                               .background, // Grey background color
-                                          shape: BoxShape.circle, // Circular shape
+                                          shape: BoxShape.rectangle, // Circular shape
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(22.0),
@@ -516,7 +516,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                                 decoration: BoxDecoration(
                                   color: Colors
                                       .blue, // Background color of the plus icon
-                                  shape: BoxShape.circle,
+                                  shape: BoxShape.rectangle,
                                   border: Border.all(
                                     color: Colors
                                         .white, // White border around the plus icon

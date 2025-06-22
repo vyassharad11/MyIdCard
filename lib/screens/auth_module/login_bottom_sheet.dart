@@ -811,7 +811,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
       if (response.statusCode == 200) {
         _emailController.clear();
         Navigator.pop(context);
-        Utility().showFlushBar(context: context, message: "A mail was sent to you to update your password.");
+        Utility().showFlushBar(context: context, message: "A mail was sent to you to update your password.",isError: true);
       } else {
         final responseData = ErrorModel.fromJson(
           json.decode(response.toString()),

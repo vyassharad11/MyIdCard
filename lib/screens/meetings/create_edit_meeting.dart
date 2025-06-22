@@ -162,8 +162,8 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: titleController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter title',
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).translate('enterTitle'),
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.normal),
@@ -182,8 +182,8 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: purposeController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter purpose',
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).translate('enterPurpose'),
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.normal),
@@ -203,8 +203,8 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
               child: TextField(
                 maxLines: 4,
                 controller: notesController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter notes',
+                decoration: InputDecoration(
+                  hintText:AppLocalizations.of(context).translate('enterNotes'),
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.normal),
@@ -223,8 +223,8 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: addController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter address',
+                decoration:  InputDecoration(
+                  hintText: AppLocalizations.of(context).translate('enterAddress'),
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.normal),
@@ -243,8 +243,8 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: linkController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter meeting link',
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).translate('enterMeetingLink'),
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.normal),
@@ -266,7 +266,7 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
                     ),
                 child: Center(
                   child: Text( selectedDateTime == null
-                      ? 'Selected date and time'
+                      ? AppLocalizations.of(context).translate('selectedDateAndTime')
                       : DateFormat('yyyy-MM-dd HH:mm').format(selectedDateTime!),
                     style: const TextStyle(fontSize: 18),),
                 ),
@@ -285,10 +285,10 @@ class _CreateEditMeetingState extends State<CreateEditMeeting> {
                         } else {
                           Fluttertoast.showToast(msg:
                           titleController.text.isEmpty?
-                          "Please enter title":
+                          AppLocalizations.of(context).translate('pleaseEnterTitle'):
                           purposeController.text.isEmpty?
-                          "Please enter purpose":
-                          "Please select date"
+                          AppLocalizations.of(context).translate('pleaseEnterPurpose'):
+                          AppLocalizations.of(context).translate('pleaseSelectDate')
                           );
                         }
                       // Handle button press

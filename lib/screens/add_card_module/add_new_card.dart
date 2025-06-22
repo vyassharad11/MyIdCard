@@ -535,7 +535,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
 
                                       await Share.share(
                                         "${Network.shareUrl}${cardList?.data?[index].id.toString()}",
-                                        subject: "Share your card",
+                                        subject:  AppLocalizations.of(context).translate('shareYourCard'),
                                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                       );                  },
                                     style: ElevatedButton.styleFrom(
@@ -545,12 +545,12 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                         BorderRadius.circular(30), // Rounded corners
                                       ),
                                     ),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Share", // Right side text
+                                          AppLocalizations.of(context).translate('share'),
                                           style: TextStyle(
                                               color: Colors.white, fontSize: 16),
                                         ),
