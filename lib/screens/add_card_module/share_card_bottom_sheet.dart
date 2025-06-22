@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
 import '../../models/contact_details_dto.dart';
 import '../../models/my_contact_model.dart';
+import '../../notifire_class.dart';
 import '../../utils/constant.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
@@ -97,7 +99,7 @@ class _ShareCardBottomSheetState extends State<ShareCardBottomSheet> {
             Center(
               child: SizedBox(
                 height: 35,
-                width: 160,
+                width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:170,
                 child: ElevatedButton(
                   // iconAlignment: IconAlignment.start,
                   onPressed: () {
@@ -264,7 +266,7 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
             Center(
               child: SizedBox(
                 height: 35,
-                width: 160,
+                width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:170,
                 child: ElevatedButton(
                   // iconAlignment: IconAlignment.start,
                   onPressed: () {

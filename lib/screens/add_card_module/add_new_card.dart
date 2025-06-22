@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_di_card/screens/add_card_module/card_details.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -18,6 +19,7 @@ import '../../data/repository/card_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/card_list.dart';
+import '../../notifire_class.dart';
 import '../../utils/constant.dart';
 import '../../utils/url_lancher.dart';
 import '../../utils/utility.dart';
@@ -475,7 +477,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                               Center(
                                 child: SizedBox(
                                   height: 35,
-                                  width: 160,
+                                  width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:170,
                                   child: ElevatedButton(
                                    // iconAlignment: IconAlignment.start,
                                     onPressed: () {

@@ -809,9 +809,9 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
       );
 
       if (response.statusCode == 200) {
-        Utility().showFlushBar(context: context, message: "A mail was sent to you to update your password.");
         _emailController.clear();
         Navigator.pop(context);
+        Utility().showFlushBar(context: context, message: "A mail was sent to you to update your password.");
       } else {
         final responseData = ErrorModel.fromJson(
           json.decode(response.toString()),
@@ -821,7 +821,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
         debugPrint('Response: ${response.body}');
       }
     } catch (e) {
-      Utility().showFlushBar(context: context, message: "This email is not exists");
+      Utility().showFlushBar(context: context, message: "This email is not exists",isError: true);
       debugPrint('Error: $e');
     }
   }
