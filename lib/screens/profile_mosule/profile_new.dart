@@ -531,7 +531,7 @@ class _AccountPageState extends State<AccountPage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "(${ user?.role == Role.tadmin.name ?  AppLocalizations.of(context).translate('teamAdmin') :
-                        user?.role == Role.towner.name ?  AppLocalizations.of(context).translate('teamOwner') : user?.role.toString()})",
+                        user?.role == Role.towner.name ?  AppLocalizations.of(context).translate('teamOwner') :user?.role == Role.member.name ?  AppLocalizations.of(context).translate('member'):user?.role == Role.individual.name?  AppLocalizations.of(context).translate('individual'): user?.role.toString()})",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),

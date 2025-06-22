@@ -199,5 +199,10 @@
   "selectedDateAndTime": "Date et heure sélectionnées",
   "pleaseEnterTitle" : "Veuillez entrer le titre",
   "pleaseEnterPurpose": "Veuillez entrer le but",
-  "pleaseSelectDate" : "Veuillez sélectionner une date"
+  "pleaseSelectDate" : "Veuillez sélectionner une date",
+  "cancelTheAction" : "Annuler l'action",
+  "areYouSureTxt": "Êtes-vous sûr de vouloir annuler l'action ?",
+  "confirm": "Confirmer",
+  "member": "membre",
+  "individual": "individuelle"
 }

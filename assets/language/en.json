@@ -203,6 +203,11 @@
   "selectedDateAndTime" : "Selected date and time",
   "pleaseEnterTitle" : "Please enter title",
   "pleaseEnterPurpose": "Please enter purpose",
-  "pleaseSelectDate": "Please select date"
+  "pleaseSelectDate": "Please select date",
+  "cancelTheAction": "Cancel the action",
+  "areYouSureTxt": "Are you sure you want to cancel the action?",
+  "confirm" : "Confirm",
+  "member": "member",
+  "individual": "individual"
 
 }

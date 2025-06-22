@@ -581,8 +581,8 @@ String cardImageF = "";
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Cancel the action'),
-          content: Text("Are you sure you want to cancel the action?"),
+          title: Text( AppLocalizations.of(context).translate('cancelTheAction')),
+          content: Text( AppLocalizations.of(context).translate('areYouSureTxt')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -600,13 +600,13 @@ String cardImageF = "";
                 }
                 // Close the dialog
               },
-              child: Text("Confirm"),
+              child: Text( AppLocalizations.of(context).translate('confirm')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text( AppLocalizations.of(context).translate('cancel')),
             ),
           ],
         );
