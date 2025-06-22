@@ -193,7 +193,7 @@ Color getTextColorFromHex(String hexColor) {
                               ),
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width - 150,
+                              width: MediaQuery.of(context).size.width - 160,
                               child: Center(
                                 child: Text(
                                   getCardModel?.cardName.toString() ?? "",
