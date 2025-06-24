@@ -329,7 +329,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                       keyboardType: TextInputType.emailAddress,
                     ),
                   ),
-                const SizedBox(width: 16),
+                const SizedBox(height: 16),
                  SizedBox(
                     height: 45,
                     child: TextField(
