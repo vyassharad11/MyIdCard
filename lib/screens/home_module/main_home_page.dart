@@ -985,7 +985,7 @@ Color getTextColorFromHex(String hexColor) {
                                     builder: (builder) =>
                                     ContactDetails(contactId: myContactList[index]
                                         .id ?? 0,
-                                      isPhysicalContact:myContactList[index].phoneNo == null ||  myContactList[index].phoneNo!.isEmpty,
+                                      isPhysicalContact:myContactList[index].companyTypeId ==2,
                                       contactIdForMeeting: myContactList[index].id,
                                       tags: [],),
                                 ));
@@ -998,10 +998,10 @@ Color getTextColorFromHex(String hexColor) {
                                 ClipRRect(
                                   borderRadius:
                                   const BorderRadius.all(
-                                      Radius.circular(25)),
+                                      Radius.circular(50)),
                                   child: CachedNetworkImage(
-                                    height: 25,
-                                    width: 25,
+                                    height: 50,
+                                    width: 50,
                                     fit: BoxFit.cover,
                                     imageUrl:
                                     "${Network.imgUrl}${myContactList[index].cardImage ?? ""}",
@@ -1018,9 +1018,9 @@ Color getTextColorFromHex(String hexColor) {
                                         (context, url, error) =>
                                         Image.asset(
                                           "assets/logo/Central icon.png",
-                                          height: 25,
+                                          height: 50,
                                           fit: BoxFit.fill,
-                                          width: 25,
+                                          width: 50,
                                         ),
                                   ),
                                 ),

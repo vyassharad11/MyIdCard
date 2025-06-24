@@ -308,6 +308,14 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                       ),
                     ),
                     const SizedBox(width: 16),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                     Expanded(
                       child: SizedBox(
                         height: 45,
@@ -348,7 +356,6 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 16),
                 Card(
                   margin: EdgeInsets.zero,
@@ -445,7 +452,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                                && emailController.text.isNotEmpty && phoneController.text.isNotEmpty
                                && _selectedImage != null){
                              if(!emailRegex.hasMatch(emailController.text)){
-                               Utility().showFlushBar(context: context, message:"Enter a valid email address.");
+                               Utility().showFlushBar(context: context, message:"Enter a valid email address.",isError: true);
                              }else{
                            Utility.showLoader(context);
                            submitData(

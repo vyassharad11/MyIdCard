@@ -522,7 +522,7 @@ bool isInTeam = false;
                     builder: (builder) =>
                         ContactDetails(contactId: recentContactList[index]
                             .id ?? 0,
-                          isPhysicalContact: recentContactList[index].phoneNo == null ||  recentContactList[index].phoneNo!.isEmpty,
+                          isPhysicalContact: recentContactList[index].companyTypeId == 2,
                           contactIdForMeeting: recentContactList[index].id,
                           tags: tags,),
                   ),
@@ -607,10 +607,10 @@ bool isInTeam = false;
                 leading: ClipRRect(
                   borderRadius:
                   const BorderRadius.all(
-                      Radius.circular(25)),
+                      Radius.circular(50)),
                   child: CachedNetworkImage(
-                    height: 25,
-                    width: 25,
+                    height: 50,
+                    width: 50,
                     fit: BoxFit.cover,
                     imageUrl:
                     "${Network.imgUrl}${myContactList[index].cardImage ?? ""}",
@@ -627,9 +627,9 @@ bool isInTeam = false;
                         (context, url, error) =>
                         Image.asset(
                           "assets/logo/Central icon.png",
-                          height: 25,
+                          height: 50,
                           fit: BoxFit.fill,
-                          width: 25,
+                          width: 50,
                         ),
                   ),
                 ),
@@ -671,7 +671,7 @@ bool isInTeam = false;
                           ContactDetails(contactId: myContactList[index]
                               .id ?? 0,
                             isPhysicalContact:
-                            myContactList[index].phoneNo == null ||  myContactList[index].phoneNo!.isEmpty,
+                            myContactList[index].companyTypeId == 2,
                             contactIdForMeeting: myContactList[index].id,
                             tags: tags,),
                     ),

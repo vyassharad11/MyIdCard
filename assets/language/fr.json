@@ -204,5 +204,9 @@
   "areYouSureTxt": "Êtes-vous sûr de vouloir annuler l'action ?",
   "confirm": "Confirmer",
   "member": "membre",
-  "individual": "individuelle"
+  "individual": "individuelle",
+  "changePassword": "Changer le mot de passe",
+  "currentPassword": "Mot de passe actuel",
+  "newPassword": "Nouveau mot de passe",
+  "confirmPassword": "Confirmez le mot de passe"
 }

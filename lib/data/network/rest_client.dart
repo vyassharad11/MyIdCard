@@ -446,6 +446,12 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiSupport(@Path("url") url,
       @Header(authorization) token,@Body() body,);
 
+  @POST("{url}auth/change-password")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiChangePassword(@Path("url") url,
+      @Header(authorization) token,@Body() body,);
+
 
   @GET("{url}policies/terms")
   @Header(headerValue)

@@ -11,8 +11,6 @@ import '../../utils/utility.dart';
 
 
 class HelpAndSupport extends StatefulWidget {
-  int? isStudent;
-
   HelpAndSupport({Key? key}) : super(key: key);
 
   @override

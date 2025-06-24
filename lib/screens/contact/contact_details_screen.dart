@@ -744,6 +744,66 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                     ),
                                                   ),
                                                 ),
+                                                Column(
+                                                  children: [
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (builder) =>
+                                                                  OtherCardDetails(
+                                                                    cardId: contactDetailsDatum
+                                                                        ?.cardId
+                                                                        .toString() ??
+                                                                        "",
+                                                                    isOtherCard: true,
+                                                                  ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.info_rounded,
+                                                          color: Colors.white,
+                                                          size: 32,
+                                                        )),
+                                                    InkWell(
+                                                      onTap: (){
+                                                        showModalBottomSheet(
+                                                          context: context,
+                                                          useSafeArea: true,
+                                                          isScrollControlled: true,
+                                                          shape:
+                                                          const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                    20)),
+                                                          ),
+                                                          builder: (context) =>
+                                                              ShareOtherCardBottomSheet(
+                                                                cardData:
+                                                                contactDetailsDatum,
+                                                              ),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        width: 28,
+                                                        height: 28,
+                                                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
+                                                        child: Center(
+                                                          child: Image.asset(
+                                                            "assets/images/send-01.png",
+                                                            height: 16,
+                                                            width: 16,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
                                               ],
                                             ),
                                           ],

@@ -152,7 +152,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                           ),
                         ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 110,
+                      width: MediaQuery.of(context).size.width - 115,
                       child: Center(
                         child: Text(
                           getCardModel?.cardName ?? "",
@@ -170,7 +170,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                       child: Container(
                           height: 44,
                           width: 44,
-                          margin: EdgeInsets.only(left: 5),
+                          margin: EdgeInsets.only(left: 5,right: 5),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
                               color: Colors.white),
                           child:Icon(Icons.add)

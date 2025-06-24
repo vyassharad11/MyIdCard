@@ -208,6 +208,10 @@
   "areYouSureTxt": "Are you sure you want to cancel the action?",
   "confirm" : "Confirm",
   "member": "member",
-  "individual": "individual"
+  "individual": "individual",
+  "changePassword" : "Change Password",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm Password"
 
 }
