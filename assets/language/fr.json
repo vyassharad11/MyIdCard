@@ -208,5 +208,6 @@
   "changePassword": "Changer le mot de passe",
   "currentPassword": "Mot de passe actuel",
   "newPassword": "Nouveau mot de passe",
-  "confirmPassword": "Confirmez le mot de passe"
+  "confirmPassword": "Confirmez le mot de passe",
+  "email": "E-mail"
 }

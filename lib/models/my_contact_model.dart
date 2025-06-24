@@ -110,6 +110,7 @@ class ContactDatum {
   String? qrCode;
   dynamic companyLogo;
   int? companyTypeId;
+  int? contactTypeId;
   String? jobTitle;
   String? companyAddress;
   String? companyWebsite;
@@ -138,6 +139,7 @@ class ContactDatum {
     this.companyName,
     this.companyLogo,
     this.companyTypeId,
+    this.contactTypeId,
     this.jobTitle,
     this.companyAddress,
     this.companyWebsite,
@@ -167,6 +169,7 @@ class ContactDatum {
     companyName: json["company_name"],
     companyLogo: json["company_logo"],
     companyTypeId: json["company_type_id"],
+    contactTypeId: json["contactTypeId"],
     jobTitle: json["job_title"],
     companyAddress: json["company_address"],
     companyWebsite: json["company_website"],
@@ -196,6 +199,7 @@ class ContactDatum {
     "company_name": companyName,
     "company_logo": companyLogo,
     "company_type_id": companyTypeId,
+    "contact_type_id": contactTypeId,
     "job_title": jobTitle,
     "company_address": companyAddress,
     "company_website": companyWebsite,

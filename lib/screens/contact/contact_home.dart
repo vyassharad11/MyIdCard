@@ -522,7 +522,7 @@ bool isInTeam = false;
                     builder: (builder) =>
                         ContactDetails(contactId: recentContactList[index]
                             .id ?? 0,
-                          isPhysicalContact: recentContactList[index].companyTypeId == 2,
+                          isPhysicalContact: recentContactList[index].contactTypeId == 2,
                           contactIdForMeeting: recentContactList[index].id,
                           tags: tags,),
                   ),
@@ -671,7 +671,7 @@ bool isInTeam = false;
                           ContactDetails(contactId: myContactList[index]
                               .id ?? 0,
                             isPhysicalContact:
-                            myContactList[index].companyTypeId == 2,
+                            myContactList[index].contactTypeId == 2,
                             contactIdForMeeting: myContactList[index].id,
                             tags: tags,),
                     ),
