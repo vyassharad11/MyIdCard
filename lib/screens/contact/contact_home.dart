@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -541,11 +542,34 @@ bool isInTeam = false;
                     SizedBox(
                       height: 50,
                       width: 50,
-                      child: CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                            "${Network.imgUrl}${recentContactList[index].cardImage ??
-                                ""}"),
+                      child:  ClipRRect(
+                        borderRadius:
+                        const BorderRadius.all(
+                            Radius.circular(25)),
+                        child: CachedNetworkImage(
+                          height: 25,
+                          width: 25,
+                          fit: BoxFit.cover,
+                          imageUrl:
+                          "${Network.imgUrl}${recentContactList[index].cardImage ?? ""}",
+                          progressIndicatorBuilder:
+                              (context, url,
+                              downloadProgress) =>
+                              Center(
+                                child: CircularProgressIndicator(
+                                    value:
+                                    downloadProgress
+                                        .progress),
+                              ),
+                          errorWidget:
+                              (context, url, error) =>
+                              Image.asset(
+                                "assets/logo/Central icon.png",
+                                height: 25,
+                                fit: BoxFit.fill,
+                                width: 25,
+                              ),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -580,13 +604,34 @@ bool isInTeam = false;
             itemBuilder: (context, index) {
               return ListTile(
                 contentPadding: const EdgeInsets.all(10),
-                leading: CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage(
-                      "${Network.imgUrl}${myContactList[index].cardImage ??
-                          ""}"),
-                  backgroundColor: Colors.grey.shade200,
-
+                leading: ClipRRect(
+                  borderRadius:
+                  const BorderRadius.all(
+                      Radius.circular(25)),
+                  child: CachedNetworkImage(
+                    height: 25,
+                    width: 25,
+                    fit: BoxFit.cover,
+                    imageUrl:
+                    "${Network.imgUrl}${myContactList[index].cardImage ?? ""}",
+                    progressIndicatorBuilder:
+                        (context, url,
+                        downloadProgress) =>
+                        Center(
+                          child: CircularProgressIndicator(
+                              value:
+                              downloadProgress
+                                  .progress),
+                        ),
+                    errorWidget:
+                        (context, url, error) =>
+                        Image.asset(
+                          "assets/logo/Central icon.png",
+                          height: 25,
+                          fit: BoxFit.fill,
+                          width: 25,
+                        ),
+                  ),
                 ),
                 title: Text(
                   "${myContactList[index].firstName} ${myContactList[index].lastName}",

@@ -385,7 +385,7 @@ Color getTextColorFromHex(String hexColor) {
                                               topLeft: Radius.circular(18),
                                               topRight: Radius.circular(18)),
                                           child: Image.asset(
-                                            "assets/logo/Central icon.png",
+                                            "assets/logo/Top with a picture.png",
                                             height: 80,
                                             fit: BoxFit.fitWidth,
                                             width: double.infinity,

@@ -355,6 +355,7 @@ Color getTextColorFromHex(String hexColor) {
                                   ),
                                   Text(
                                     "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight:
@@ -365,6 +366,7 @@ Color getTextColorFromHex(String hexColor) {
                                     getCardModel
                                         ?.jobTitle ??
                                         "",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight:
@@ -376,6 +378,7 @@ Color getTextColorFromHex(String hexColor) {
                                     getCardModel
                                         ?.companyName ??
                                         "",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight:
@@ -806,12 +809,13 @@ Color getTextColorFromHex(String hexColor) {
                                               ),
                                           errorWidget:
                                               (context, url, error) =>
-                                              Image.asset(
-                                                "assets/images/Frame 508.png",
-                                                height: 40,
-                                                fit: BoxFit.fill,
-                                                width: double.infinity,
-                                              ),
+                                             Icon(Icons.picture_as_pdf)
+                                              // Image.asset(
+                                              //   "assets/images/Frame 508.png",
+                                              //   height: 40,
+                                              //   fit: BoxFit.fill,
+                                              //   width: double.infinity,
+                                              // ),
                                         ),
                                       )),
                                 ),

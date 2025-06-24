@@ -993,11 +993,36 @@ Color getTextColorFromHex(String hexColor) {
                               child: ListTile(
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 2),
-                                leading: CircleAvatar(
-                                  radius: 25,
-                                  backgroundImage: NetworkImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
-                                  backgroundColor: Colors.grey.shade200,
+                                leading:
 
+                                ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(25)),
+                                  child: CachedNetworkImage(
+                                    height: 25,
+                                    width: 25,
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                    "${Network.imgUrl}${myContactList[index].cardImage ?? ""}",
+                                    progressIndicatorBuilder:
+                                        (context, url,
+                                        downloadProgress) =>
+                                        Center(
+                                          child: CircularProgressIndicator(
+                                              value:
+                                              downloadProgress
+                                                  .progress),
+                                        ),
+                                    errorWidget:
+                                        (context, url, error) =>
+                                        Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 25,
+                                          fit: BoxFit.fill,
+                                          width: 25,
+                                        ),
+                                  ),
                                 ),
                                 title: Text(
                                   "${myContactList[index].firstName} ${myContactList[index].lastName}",
