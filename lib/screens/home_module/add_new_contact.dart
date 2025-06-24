@@ -312,50 +312,41 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                 ),
 
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: 45,
-                        child: TextField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)
-                                .translate('email'),
-                            fillColor: Colors.grey.shade200,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          keyboardType: TextInputType.emailAddress,
+                SizedBox(
+                    height: 45,
+                    child: TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)
+                            .translate('email'),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                    ),const SizedBox(width: 16),
-                    Expanded(
-                      child: SizedBox(
-                        height: 45,
-                        child: TextField(
-                          controller: phoneController,
-                          decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)
-                                .translate('phoneumber'),
-                            fillColor: Colors.grey.shade200,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
-                  ],
-                ),
+                  ),
+                const SizedBox(width: 16),
+                 SizedBox(
+                    height: 45,
+                    child: TextField(
+                      controller: phoneController,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)
+                            .translate('phoneumber'),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
                 const SizedBox(height: 16),
                 Card(
                   margin: EdgeInsets.zero,

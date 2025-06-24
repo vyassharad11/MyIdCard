@@ -550,12 +550,12 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   onTap: () {
                                     _showBottomSheet(context, () {
                                       dialNumber(contactDetailsDatum
-                                          ?.phoneNo
+                                          ?.phone
                                           .toString() ??
                                           "");
                                     },
                                         AppLocalizations.of(context).translate('phone'),
-                                        contactDetailsDatum?.phoneNo
+                                        contactDetailsDatum?.phone
                                             .toString() ??
                                             "",
                                         false);
@@ -587,7 +587,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                           //     ?.workEmail ??
                                           //     ""}?subject=&body=");
                                           await launch(
-                                              "mailto:${contactDetailsDatum?.workEmail ?? ""}?subject=&body=");
+                                              "mailto:${contactDetailsDatum?.email ?? ""}?subject=&body=");
                                           // openGmail(
                                           //     body: "",
                                           //     email: contactDetailsDatum
@@ -597,7 +597,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         },
                                         AppLocalizations.of(context).translate('sendEmail'),
                                         contactDetailsDatum
-                                            ?.workEmail
+                                            ?.email
                                             .toString() ??
                                             "",
                                         false);

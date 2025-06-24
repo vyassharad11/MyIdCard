@@ -50,6 +50,8 @@ class DataContact {
   String? companyWebsite;
   String? workEmail;
   String? phoneNo;
+  String? email;
+  String? phone;
   String? cardStyle;
   String? backgroungImage;
   String? cardName;
@@ -79,6 +81,8 @@ class DataContact {
     this.companyWebsite,
     this.workEmail,
     this.phoneNo,
+    this.email,
+    this.phone,
     this.cardStyle,
     this.backgroungImage,
     this.cardName,
@@ -108,6 +112,8 @@ class DataContact {
     companyWebsite: json["company_website"],
     workEmail: json["work_email"],
     phoneNo: json["phone_no"],
+    email: json["email"],
+    phone: json["phone"],
     cardStyle: json["card_style"],
     backgroungImage: json["backgroung_image"],
     cardName: json["card_name"],
@@ -136,6 +142,7 @@ class DataContact {
     "company_address": companyAddress,
     "company_website": companyWebsite,
     "work_email": workEmail,
+    "email": email,
     "phone_no": phoneNo,
     "card_style": cardStyle,
     "backgroung_image": backgroungImage,
