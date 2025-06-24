@@ -144,6 +144,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                           child: Container(
                             height: 44,
                             width: 44,
+                            margin: EdgeInsets.only(right: 5),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
                             color: Colors.white),
                             padding: EdgeInsets.all(8),
@@ -151,7 +152,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                           ),
                         ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 120,
+                      width: MediaQuery.of(context).size.width - 110,
                       child: Center(
                         child: Text(
                           getCardModel?.cardName ?? "",
@@ -169,6 +170,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                       child: Container(
                           height: 44,
                           width: 44,
+                          margin: EdgeInsets.only(left: 5),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
                               color: Colors.white),
                           child:Icon(Icons.add)
@@ -311,7 +313,8 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                         children: [
                                           Text(
                                             "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight:
@@ -320,13 +323,15 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                           ),
                                           Text(
                                             getCardModel?.jobTitle ?? "",
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(fontSize: 16),
                                           ),
                                           SizedBox(height: 3,),
                                           Text(
                                             getCardModel?.companyName ?? "",
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(fontSize: 16),
                                           ),
                                         ],

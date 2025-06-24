@@ -535,7 +535,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 ),
                                 errorWidget: (context, url, error) =>
                                     Image.asset(
-                                  "assets/logo/Central icon.png",
+                                  "assets/logo/Top with a picture.png",
                                   height: 80,
                                   fit: BoxFit.fill,
                                   width: double.infinity,
@@ -557,7 +557,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  contactDetailsDatum?.backgroungImage != null
+                                  contactDetailsDatum?.backgroungImage != null && contactDetailsDatum?.cardImage != null
                                       ? Stack(
                                           children: [
                                             ClipRRect(

@@ -337,7 +337,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                             children: [
                                               Text(
                                                 "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
-                                                maxLines: 2,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 18,
@@ -367,7 +368,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               Text(
                                                 cardList!.data![index].jobTitle
                                                     .toString(),
-                                                maxLines: 2,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 14,
@@ -379,7 +381,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               Text(
                                                 cardList!.data![index].companyName
                                                     .toString(),
-                                                maxLines: 2,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 14,

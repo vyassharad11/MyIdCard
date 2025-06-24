@@ -612,8 +612,8 @@ Color getTextColorFromHex(String hexColor) {
                                               children: [
                                                 Text(
                                                   "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
-                                                  maxLines: 2,
-                                                  overflow: TextOverflow.fade,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
                                                     textStyle: const TextStyle(
                                                         fontSize: 18,
@@ -643,7 +643,8 @@ Color getTextColorFromHex(String hexColor) {
                                                 Text(
                                                   cardList!.data![index].jobTitle
                                                       .toString(),
-                                                  maxLines: 2,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
                                                     textStyle: const TextStyle(
                                                         fontSize: 14,
@@ -655,7 +656,8 @@ Color getTextColorFromHex(String hexColor) {
                                                 Text(
                                                   cardList!.data![index].companyName
                                                       .toString(),
-                                                  maxLines: 2,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
                                                     textStyle: const TextStyle(
                                                         fontSize: 14,

@@ -393,7 +393,7 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                           errorWidget: (context, url, error) =>
                               Image.asset(
-                                "assets/images/user_dummy.png",
+                                "assets/logo/Central icon.png",
                                 height: 80,
                                 fit: BoxFit.fill,
                                 width: double.infinity,
