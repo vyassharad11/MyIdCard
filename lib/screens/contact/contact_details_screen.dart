@@ -519,29 +519,110 @@ class _ContactDetailsState extends State<ContactDetails> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 12),
                       child: widget.isPhysicalContact
-                          ? ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                              child: CachedNetworkImage(
-                                height: 170,
-                                width: double.infinity,
-                                fit: BoxFit.fitWidth,
-                                imageUrl:
-                                    "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) => Center(
-                                  child: CircularProgressIndicator(
-                                      value: downloadProgress.progress),
+                          ? Column(
+                            children: [
+                              ClipRRect(
+                                  borderRadius:
+                                      const BorderRadius.all(Radius.circular(8)),
+                                  child: CachedNetworkImage(
+                                    height: 170,
+                                    width: double.infinity,
+                                    fit: BoxFit.fitWidth,
+                                    imageUrl:
+                                        "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
+                                    progressIndicatorBuilder:
+                                        (context, url, downloadProgress) => Center(
+                                      child: CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset(
+                                      "assets/logo/Top with a picture.png",
+                                      height: 80,
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                    ),
+                                  ),
                                 ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  "assets/logo/Top with a picture.png",
-                                  height: 80,
-                                  fit: BoxFit.fill,
-                                  width: double.infinity,
+                              Padding(padding: EdgeInsets.all(16),
+                              child: Row(children: [
+                                InkWell(
+                                  onTap: () {
+                                    _showBottomSheet(context, () {
+                                      dialNumber(contactDetailsDatum
+                                          ?.phoneNo
+                                          .toString() ??
+                                          "");
+                                    },
+                                        AppLocalizations.of(context).translate('phone'),
+                                        contactDetailsDatum?.phoneNo
+                                            .toString() ??
+                                            "",
+                                        false);
+                                  },
+                                  child: Container(
+                                      height: 45,
+                                      width: 45,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              45),
+                                          color: contactDetailsDatum
+                                              ?.cardStyle !=
+                                              null
+                                              ? Color(int.parse(
+                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                              : Colors.blue),
+                                      child: Icon(
+                                        Icons.call,
+                                        color: Colors.white,
+                                      )),
                                 ),
-                              ),
-                            )
+                                SizedBox(width: 10,),
+                                InkWell(
+                                  onTap: () {
+                                    _showBottomSheet(context,
+                                            () async {
+                                          // await launch("${contactDetailsDatum
+                                          //     ?.workEmail ??
+                                          //     ""}?subject=&body=");
+                                          await launch(
+                                              "mailto:${contactDetailsDatum?.workEmail ?? ""}?subject=&body=");
+                                          // openGmail(
+                                          //     body: "",
+                                          //     email: contactDetailsDatum
+                                          //             ?.workEmail ??
+                                          //         "",
+                                          //     subject: "");
+                                        },
+                                        AppLocalizations.of(context).translate('sendEmail'),
+                                        contactDetailsDatum
+                                            ?.workEmail
+                                            .toString() ??
+                                            "",
+                                        false);
+                                  },
+                                  child: Container(
+                                      height: 45,
+                                      width: 45,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              45),
+                                          color: contactDetailsDatum
+                                              ?.cardStyle !=
+                                              null
+                                              ? Color(int.parse(
+                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                              : Colors.blue),
+                                      child: Icon(
+                                        Icons.mail_outline_outlined,
+                                        color: Colors.white,
+                                      )),
+                                ),
+                              ],),)
+                            ],
+                          )
                           : Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(

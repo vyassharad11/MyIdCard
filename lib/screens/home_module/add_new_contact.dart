@@ -513,7 +513,9 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
         ,
         'first_name': firstName,
-        'last_name': lastName
+        'last_name': lastName,
+        'email': email,
+        'phone':phone
       });
     }else{
       data = FormData.fromMap({
