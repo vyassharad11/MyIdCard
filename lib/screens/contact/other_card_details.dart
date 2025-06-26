@@ -346,7 +346,7 @@ Color getTextColorFromHex(String hexColor) {
                           CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width - 140,
+                              width:getCardModel != null && getCardModel?.companyLogo != null && getCardModel!.companyLogo.toString().isNotEmpty? MediaQuery.of(context).size.width - 140: MediaQuery.of(context).size.width-60,
                               child: Column(
                                 crossAxisAlignment:
                                 CrossAxisAlignment.start,
@@ -357,6 +357,7 @@ Color getTextColorFromHex(String hexColor) {
                                   Text(
                                     "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
                                     overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight:
@@ -367,6 +368,7 @@ Color getTextColorFromHex(String hexColor) {
                                     getCardModel
                                         ?.jobTitle ??
                                         "",
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -376,6 +378,7 @@ Color getTextColorFromHex(String hexColor) {
                                   ),
                                   SizedBox(height: 3,),
                                   Text(
+                                    maxLines: 1,
                                     getCardModel
                                         ?.companyName ??
                                         "",
@@ -389,7 +392,7 @@ Color getTextColorFromHex(String hexColor) {
                                 ],
                               ),
                             ),
-                            ClipRRect(
+                        if(getCardModel != null && getCardModel?.companyLogo != null && getCardModel!.companyLogo.toString().isNotEmpty)    ClipRRect(
                               borderRadius:
                               const BorderRadius.all(
                                   Radius.circular(

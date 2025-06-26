@@ -84,7 +84,12 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
                 borderRadius:
                 BorderRadius.vertical(top: Radius.circular(20)),
               ),
-              builder: (context) => AddContactPreview(contactId: numberString.toString(),callBack: (){},));
+              builder: (context) => AddContactPreview(contactId: numberString.toString(),callBack: (){},)).whenComplete(() {
+                isApiStart = false;
+                setState(() {
+
+                });
+              },);
         }
       }
     }, onError: (err) {
@@ -504,9 +509,9 @@ Color getTextColorFromHex(String hexColor) {
                                                   ),
                                                 ): Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 80,
+                                                  height: 90,
                                                   fit: BoxFit.fill,
-                                                  width: 80,
+                                                  width: 90,
                                                 ),
                                               ),
                                               IconButton(
@@ -563,8 +568,8 @@ Color getTextColorFromHex(String hexColor) {
                                                           Radius.circular(50)),
                                                   child: Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 100,
-                                                    width: 100,
+                                                    height: 80,
+                                                    width: 80,
                                                     fit: BoxFit.fitWidth,
                                                   ),
                                                 ),
@@ -606,7 +611,7 @@ Color getTextColorFromHex(String hexColor) {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           SizedBox(
-                                            width: MediaQuery.of(context).size.width - 173,
+                                            width:cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty? MediaQuery.of(context).size.width - 173:MediaQuery.of(context).size.width -60,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
@@ -668,7 +673,7 @@ Color getTextColorFromHex(String hexColor) {
                                               ],
                                             ),
                                           ),
-                                  cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty?ClipRRect(
+                                  if(cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty)ClipRRect(
                                             borderRadius:
                                             const BorderRadius.all(
                                                 Radius.circular(
@@ -695,12 +700,7 @@ Color getTextColorFromHex(String hexColor) {
                                                     height: 100,
                                                     fit: BoxFit.fill,
                                                     width:100,
-                                                  ))): Image.asset(
-                                              "assets/logo/Central icon.png",
-                                              height: 100,
-                                              fit: BoxFit.fill,
-                                              width:100,
-                                            ),
+                                                  )))
                                         ],
                                       ),
                                       Container(

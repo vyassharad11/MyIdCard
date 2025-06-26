@@ -901,7 +901,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
-                                              width:MediaQuery.of(context).size.width - 150,
+                                              width: contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?MediaQuery.of(context).size.width - 150:MediaQuery.of(context).size.width-60,
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -945,7 +945,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 ],
                                               ),
                                             ),
-                                            contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?       ClipRRect(
+                                           if( contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty)       ClipRRect(
                                               borderRadius:
                                               const BorderRadius.all(
                                                   Radius.circular(
@@ -974,12 +974,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                       width: double.infinity,
                                                     ),
                                               ),
-                                            ): Image.asset(
-                                              "assets/logo/Central icon.png",
-                                              height: 100,
-                                              fit: BoxFit.fill,
-                                              width: 100,
-                                            ),
+                                            )
                                           ],
                                         ),
                                         Container(

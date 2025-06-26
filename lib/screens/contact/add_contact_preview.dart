@@ -307,7 +307,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                       height: 17,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width - 150,
+                                      width:getCardModel != null && getCardModel?.companyLogo!= null && getCardModel!.companyLogo.toString().isNotEmpty? MediaQuery.of(context).size.width - 150: MediaQuery.of(context).size.width - 60,
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -339,7 +339,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                     ),
                                   ],
                                 ),
-                                ClipRRect(
+                            if(getCardModel != null && getCardModel?.companyLogo!= null && getCardModel!.companyLogo.toString().isNotEmpty)    ClipRRect(
                                   borderRadius:
                                   const BorderRadius.all(
                                       Radius.circular(

@@ -114,7 +114,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   _getBody() {
     return Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top +20,right: 16,left: 16,bottom: 20),
+      padding: EdgeInsets.only(top:20,right: 16,left: 16,bottom: 20),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
