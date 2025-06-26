@@ -35,13 +35,11 @@ import 'other_card_details.dart';
 class ContactDetails extends StatefulWidget {
   final int contactId;
   final int? contactIdForMeeting;
-  final bool isPhysicalContact;
   final List<TagDatum> tags;
 
   const ContactDetails(
       {super.key,
       required this.contactId,
-      required this.isPhysicalContact,
       this.contactIdForMeeting,
       required this.tags});
 
@@ -60,6 +58,8 @@ class _ContactDetailsState extends State<ContactDetails> {
   TextEditingController notesController = TextEditingController();
   bool isEdit = false;
   bool isLoad = true;
+   bool isPhysicalContact = false;
+
 
   @override
   initState() {
@@ -258,7 +258,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           const Divider(
             color: Colors.grey,
           ),
-          if (widget.isPhysicalContact == false)
+          if (isPhysicalContact == false)
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 12),
               title:  Text(
@@ -429,6 +429,10 @@ class _ContactDetailsState extends State<ContactDetails> {
               var dto = state.data as ContactDetailsDto;
               contactDetailsDatum = dto.data;
               notesController.text = contactDetailsDatum?.notes ?? "";
+              if(contactDetailsDatum?.contactTypeId ==2){
+              isPhysicalContact =true; }else{
+                isPhysicalContact = false;
+              }
               setLink();
             }
             setState(() {});
@@ -486,7 +490,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           automaticallyImplyLeading: true,
           backgroundColor: Colors.white,
           title: Text(
-            "${contactDetailsDatum?.cardName ?? ""}",
+            isPhysicalContact == false?"${contactDetailsDatum?.cardName ?? ""}":"${contactDetailsDatum?.firstName} ${contactDetailsDatum?.lastName}",
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily, color: Colors.black),
           ),
@@ -518,30 +522,111 @@ class _ContactDetailsState extends State<ContactDetails> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 12),
-                      child: widget.isPhysicalContact
-                          ? ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
-                              child: CachedNetworkImage(
-                                height: 170,
-                                width: double.infinity,
-                                fit: BoxFit.fitWidth,
-                                imageUrl:
-                                    "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) => Center(
-                                  child: CircularProgressIndicator(
-                                      value: downloadProgress.progress),
+                      child: isPhysicalContact
+                          ? Column(
+                            children: [
+                              ClipRRect(
+                                  borderRadius:
+                                      const BorderRadius.all(Radius.circular(8)),
+                                  child: CachedNetworkImage(
+                                    height: 170,
+                                    width: double.infinity,
+                                    fit: BoxFit.fitWidth,
+                                    imageUrl:
+                                        "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
+                                    progressIndicatorBuilder:
+                                        (context, url, downloadProgress) => Center(
+                                      child: CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset(
+                                      "assets/logo/Top with a picture.png",
+                                      height: 80,
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                    ),
+                                  ),
                                 ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  "assets/logo/Central icon.png",
-                                  height: 80,
-                                  fit: BoxFit.fill,
-                                  width: double.infinity,
+                              Padding(padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Row(children: [
+                                InkWell(
+                                  onTap: () {
+                                    _showBottomSheet(context, () {
+                                      dialNumber(contactDetailsDatum
+                                          ?.phone
+                                          .toString() ??
+                                          "");
+                                    },
+                                        AppLocalizations.of(context).translate('phone'),
+                                        contactDetailsDatum?.phone
+                                            .toString() ??
+                                            "",
+                                        false);
+                                  },
+                                  child: Container(
+                                      height: 45,
+                                      width: 45,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              45),
+                                          color: contactDetailsDatum
+                                              ?.cardStyle !=
+                                              null
+                                              ? Color(int.parse(
+                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                              : Colors.blue),
+                                      child: Icon(
+                                        Icons.call,
+                                        color: Colors.white,
+                                      )),
                                 ),
-                              ),
-                            )
+                                SizedBox(width: 10,),
+                                InkWell(
+                                  onTap: () {
+                                    _showBottomSheet(context,
+                                            () async {
+                                          // await launch("${contactDetailsDatum
+                                          //     ?.workEmail ??
+                                          //     ""}?subject=&body=");
+                                          await launch(
+                                              "mailto:${contactDetailsDatum?.email ?? ""}?subject=&body=");
+                                          // openGmail(
+                                          //     body: "",
+                                          //     email: contactDetailsDatum
+                                          //             ?.workEmail ??
+                                          //         "",
+                                          //     subject: "");
+                                        },
+                                        AppLocalizations.of(context).translate('sendEmail'),
+                                        contactDetailsDatum
+                                            ?.email
+                                            .toString() ??
+                                            "",
+                                        false);
+                                  },
+                                  child: Container(
+                                      height: 45,
+                                      width: 45,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              45),
+                                          color: contactDetailsDatum
+                                              ?.cardStyle !=
+                                              null
+                                              ? Color(int.parse(
+                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                              : Colors.blue),
+                                      child: Icon(
+                                        Icons.mail_outline_outlined,
+                                        color: Colors.white,
+                                      )),
+                                ),
+                              ],),)
+                            ],
+                          )
                           : Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
@@ -557,7 +642,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  contactDetailsDatum?.backgroungImage != null
+                                  contactDetailsDatum?.backgroungImage != null && contactDetailsDatum?.cardImage != null
                                       ? Stack(
                                           children: [
                                             ClipRRect(
@@ -628,16 +713,16 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                               url, error) =>
                                                           Image.asset(
                                                         "assets/logo/Central icon.png",
-                                                        height: 100,
+                                                        height: 80,
                                                         fit: BoxFit.fill,
-                                                        width: 100,
+                                                        width: 80,
                                                       ),
                                                     ),
                                                   ): Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 100,
+                                                    height: 80,
                                                     fit: BoxFit.fill,
-                                                    width: 100,
+                                                    width: 80,
                                                   ),
                                                 ),
                                                 Column(
@@ -738,12 +823,72 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                                 50)),
                                                     child: Image.asset(
                                                       "assets/logo/Central icon.png",
-                                                      height: 55,
-                                                      width: 55,
+                                                      height: 65,
+                                                      width: 65,
                                                       fit: BoxFit.fitWidth,
                                                     ),
                                                   ),
                                                 ),
+                                                Column(
+                                                  children: [
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (builder) =>
+                                                                  OtherCardDetails(
+                                                                    cardId: contactDetailsDatum
+                                                                        ?.cardId
+                                                                        .toString() ??
+                                                                        "",
+                                                                    isOtherCard: true,
+                                                                  ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.info_rounded,
+                                                          color: Colors.white,
+                                                          size: 32,
+                                                        )),
+                                                    InkWell(
+                                                      onTap: (){
+                                                        showModalBottomSheet(
+                                                          context: context,
+                                                          useSafeArea: true,
+                                                          isScrollControlled: true,
+                                                          shape:
+                                                          const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                    20)),
+                                                          ),
+                                                          builder: (context) =>
+                                                              ShareOtherCardBottomSheet(
+                                                                cardData:
+                                                                contactDetailsDatum,
+                                                              ),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        width: 28,
+                                                        height: 28,
+                                                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
+                                                        child: Center(
+                                                          child: Image.asset(
+                                                            "assets/images/send-01.png",
+                                                            height: 16,
+                                                            width: 16,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
                                               ],
                                             ),
                                           ],
@@ -760,7 +905,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
-                                              width:MediaQuery.of(context).size.width - 150,
+                                              width: contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?MediaQuery.of(context).size.width - 150:MediaQuery.of(context).size.width-60,
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -804,7 +949,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 ],
                                               ),
                                             ),
-                                            contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?       ClipRRect(
+                                           if( contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty)       ClipRRect(
                                               borderRadius:
                                               const BorderRadius.all(
                                                   Radius.circular(
@@ -833,12 +978,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                       width: double.infinity,
                                                     ),
                                               ),
-                                            ): Image.asset(
-                                              "assets/logo/Central icon.png",
-                                              height: 100,
-                                              fit: BoxFit.fill,
-                                              width: 100,
-                                            ),
+                                            )
                                           ],
                                         ),
                                         Container(
@@ -1527,13 +1667,13 @@ class _ContactDetailsState extends State<ContactDetails> {
       child: Column(
         children: [
           Container(
-            height: widget.isPhysicalContact ? 170 : 310,
+            height: isPhysicalContact ? 170 : 310,
             margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
             width: double.infinity,
             decoration: BoxDecoration(
                 color: Color(0x72231532),
                 borderRadius: BorderRadius.circular(8)),
-            child: widget.isPhysicalContact?SizedBox():
+            child: isPhysicalContact?SizedBox():
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

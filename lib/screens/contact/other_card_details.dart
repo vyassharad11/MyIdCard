@@ -249,7 +249,8 @@ Color getTextColorFromHex(String hexColor) {
                               topLeft: Radius.circular(18),
                               topRight: Radius.circular(18)),
                           child: getCardModel != null &&
-                              getCardModel!.backgroungImage != null
+                              getCardModel!.backgroungImage != null &&
+                              getCardModel!.cardImage != null
                               ? Stack(
                             children: [
                               ClipRRect(
@@ -326,7 +327,7 @@ Color getTextColorFromHex(String hexColor) {
                                 topLeft: Radius.circular(18),
                                 topRight: Radius.circular(18)),
                             child: Image.asset(
-                              "assets/logo/Central icon.png",
+                              "assets/logo/Top with a picture.png",
                               height: 80,
                               fit: BoxFit.fitWidth,
                               width: double.infinity,
@@ -345,7 +346,7 @@ Color getTextColorFromHex(String hexColor) {
                           CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width - 140,
+                              width:getCardModel != null && getCardModel?.companyLogo != null && getCardModel!.companyLogo.toString().isNotEmpty? MediaQuery.of(context).size.width - 140: MediaQuery.of(context).size.width-60,
                               child: Column(
                                 crossAxisAlignment:
                                 CrossAxisAlignment.start,
@@ -355,6 +356,8 @@ Color getTextColorFromHex(String hexColor) {
                                   ),
                                   Text(
                                     "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight:
@@ -365,6 +368,8 @@ Color getTextColorFromHex(String hexColor) {
                                     getCardModel
                                         ?.jobTitle ??
                                         "",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight:
@@ -373,9 +378,11 @@ Color getTextColorFromHex(String hexColor) {
                                   ),
                                   SizedBox(height: 3,),
                                   Text(
+                                    maxLines: 1,
                                     getCardModel
                                         ?.companyName ??
                                         "",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight:
@@ -385,7 +392,7 @@ Color getTextColorFromHex(String hexColor) {
                                 ],
                               ),
                             ),
-                            ClipRRect(
+                        if(getCardModel != null && getCardModel?.companyLogo != null && getCardModel!.companyLogo.toString().isNotEmpty)    ClipRRect(
                               borderRadius:
                               const BorderRadius.all(
                                   Radius.circular(
@@ -672,10 +679,12 @@ Color getTextColorFromHex(String hexColor) {
                       ),
                     ),
                   ),
-                const SizedBox(
+                if (getCardModel != null &&
+                    getCardModel!.cardSocials != null && getCardModel!.cardSocials!.isNotEmpty)   const SizedBox(
                   height: 10,
                 ),
-                                 Card(
+                if (getCardModel != null &&
+                    getCardModel!.cardSocials != null && getCardModel!.cardSocials!.isNotEmpty)             Card(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius:
@@ -806,12 +815,13 @@ Color getTextColorFromHex(String hexColor) {
                                               ),
                                           errorWidget:
                                               (context, url, error) =>
-                                              Image.asset(
-                                                "assets/images/Frame 508.png",
-                                                height: 40,
-                                                fit: BoxFit.fill,
-                                                width: double.infinity,
-                                              ),
+                                             Icon(Icons.picture_as_pdf)
+                                              // Image.asset(
+                                              //   "assets/images/Frame 508.png",
+                                              //   height: 40,
+                                              //   fit: BoxFit.fill,
+                                              //   width: double.infinity,
+                                              // ),
                                         ),
                                       )),
                                 ),

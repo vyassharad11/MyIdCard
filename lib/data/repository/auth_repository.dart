@@ -133,6 +133,12 @@ class AuthRepository {
     var dto = await Network.baseUrl;
     return _apiClient.apiSupport(dto,token2,body,);
   }
+  Future<HttpResponse<UtilityDto>> apiChangePassword(body,) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiChangePassword(dto,token2,body,);
+  }
 
   Future<HttpResponse<UtilityDto>> apiGetTerms() async {
     token = await Storage().getToken() ?? "";

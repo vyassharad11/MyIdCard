@@ -215,16 +215,16 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                 (context, url, error) =>
                                                 Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 100,
+                                                  height: 80,
                                                   fit: BoxFit.fill,
-                                                  width: 100,
+                                                  width: 80,
                                                 ),
                                           ),
                                         ): Image.asset(
                                           "assets/logo/Central icon.png",
-                                          height: 100,
+                                          height: 80,
                                           fit: BoxFit.fill,
-                                          width: 100,
+                                          width: 80,
                                         ),
                                       ),
                                       IconButton(
@@ -278,8 +278,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               Radius.circular(100)),
                                           child: Image.asset(
                                             "assets/logo/Central icon.png",
-                                            height: 100,
-                                            width: 100,
+                                            height: 80,
+                                            width: 80,
                                             fit: BoxFit.fitWidth,
                                           ),
                                         ),
@@ -331,13 +331,14 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
-                                          width: MediaQuery.of(context).size.width - 178,
+                                          width:cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty? MediaQuery.of(context).size.width - 178: MediaQuery.of(context).size.width-60,
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
-                                                maxLines: 2,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 18,
@@ -367,7 +368,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               Text(
                                                 cardList!.data![index].jobTitle
                                                     .toString(),
-                                                maxLines: 2,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 14,
@@ -379,7 +381,8 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                               Text(
                                                 cardList!.data![index].companyName
                                                     .toString(),
-                                                maxLines: 2,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 14,
@@ -390,7 +393,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                             ],
                                           ),
                                         ),
-                                        cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty?ClipRRect(
+                                        if(cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty)ClipRRect(
                                           borderRadius:
                                           const BorderRadius.all(
                                               Radius.circular(
@@ -419,12 +422,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                   width: 90,
                                                 ),
                                           ),
-                                        ): Image.asset(
-                                          "assets/logo/Central icon.png",
-                                          height: 100,
-                                          fit: BoxFit.fill,
-                                          width: 100,
-                                        ),
+                                        )
                                       ],
                                     ),
                                     Container(

@@ -39,6 +39,7 @@ class DataContact {
   int? userId;
   int? cardId;
   int? languageId;
+  int? contactTypeId;
   String? cardImage;
   String? firstName;
   String? lastName;
@@ -50,6 +51,8 @@ class DataContact {
   String? companyWebsite;
   String? workEmail;
   String? phoneNo;
+  String? email;
+  String? phone;
   String? cardStyle;
   String? backgroungImage;
   String? cardName;
@@ -67,6 +70,7 @@ class DataContact {
     this.userId,
     this.cardId,
     this.languageId,
+    this.contactTypeId,
     this.cardImage,
     this.firstName,
     this.lastName,
@@ -79,6 +83,8 @@ class DataContact {
     this.companyWebsite,
     this.workEmail,
     this.phoneNo,
+    this.email,
+    this.phone,
     this.cardStyle,
     this.backgroungImage,
     this.cardName,
@@ -96,6 +102,7 @@ class DataContact {
     userId: json["user_id"],
     cardId: json["card_id"],
     languageId: json["language_id"],
+    contactTypeId: json["contact_type_id"],
     cardImage: json["card_image"],
     firstName: json["first_name"],
     lastName: json["last_name"],
@@ -108,6 +115,8 @@ class DataContact {
     companyWebsite: json["company_website"],
     workEmail: json["work_email"],
     phoneNo: json["phone_no"],
+    email: json["email"],
+    phone: json["phone"],
     cardStyle: json["card_style"],
     backgroungImage: json["backgroung_image"],
     cardName: json["card_name"],
@@ -125,6 +134,7 @@ class DataContact {
     "user_id": userId,
     "card_id": cardId,
     "language_id": languageId,
+    "contact_type_id": contactTypeId,
     "card_image": cardImage,
     "first_name": firstName,
     "qr_code": qrCode,
@@ -136,6 +146,7 @@ class DataContact {
     "company_address": companyAddress,
     "company_website": companyWebsite,
     "work_email": workEmail,
+    "email": email,
     "phone_no": phoneNo,
     "card_style": cardStyle,
     "backgroung_image": backgroungImage,

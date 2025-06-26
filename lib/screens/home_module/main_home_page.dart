@@ -84,7 +84,12 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
                 borderRadius:
                 BorderRadius.vertical(top: Radius.circular(20)),
               ),
-              builder: (context) => AddContactPreview(contactId: numberString.toString(),callBack: (){},));
+              builder: (context) => AddContactPreview(contactId: numberString.toString(),callBack: (){},)).whenComplete(() {
+                isApiStart = false;
+                setState(() {
+
+                });
+              },);
         }
       }
     }, onError: (err) {
@@ -497,16 +502,16 @@ Color getTextColorFromHex(String hexColor) {
                                                         (context, url, error) =>
                                                             Image.asset(
                                                       "assets/logo/Central icon.png",
-                                                      height: 100,
+                                                      height: 80,
                                                       fit: BoxFit.fill,
-                                                      width: 100,
+                                                      width: 80,
                                                     ),
                                                   ),
                                                 ): Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 100,
+                                                  height: 90,
                                                   fit: BoxFit.fill,
-                                                  width: 100,
+                                                  width: 90,
                                                 ),
                                               ),
                                               IconButton(
@@ -563,8 +568,8 @@ Color getTextColorFromHex(String hexColor) {
                                                           Radius.circular(50)),
                                                   child: Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 100,
-                                                    width: 100,
+                                                    height: 80,
+                                                    width: 80,
                                                     fit: BoxFit.fitWidth,
                                                   ),
                                                 ),
@@ -606,14 +611,14 @@ Color getTextColorFromHex(String hexColor) {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           SizedBox(
-                                            width: MediaQuery.of(context).size.width - 173,
+                                            width:cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty? MediaQuery.of(context).size.width - 173:MediaQuery.of(context).size.width -60,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "${cardList!.data![index].firstName} ${cardList!.data![index].lastName}",
-                                                  maxLines: 2,
-                                                  overflow: TextOverflow.fade,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
                                                     textStyle: const TextStyle(
                                                         fontSize: 18,
@@ -643,7 +648,8 @@ Color getTextColorFromHex(String hexColor) {
                                                 Text(
                                                   cardList!.data![index].jobTitle
                                                       .toString(),
-                                                  maxLines: 2,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
                                                     textStyle: const TextStyle(
                                                         fontSize: 14,
@@ -655,7 +661,8 @@ Color getTextColorFromHex(String hexColor) {
                                                 Text(
                                                   cardList!.data![index].companyName
                                                       .toString(),
-                                                  maxLines: 2,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
                                                     textStyle: const TextStyle(
                                                         fontSize: 14,
@@ -666,7 +673,7 @@ Color getTextColorFromHex(String hexColor) {
                                               ],
                                             ),
                                           ),
-                                  cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty?ClipRRect(
+                                  if(cardList!.data![index].companyLogo != null && cardList!.data![index].companyLogo.toString().isNotEmpty)ClipRRect(
                                             borderRadius:
                                             const BorderRadius.all(
                                                 Radius.circular(
@@ -693,12 +700,7 @@ Color getTextColorFromHex(String hexColor) {
                                                     height: 100,
                                                     fit: BoxFit.fill,
                                                     width:100,
-                                                  ))): Image.asset(
-                                              "assets/logo/Central icon.png",
-                                              height: 100,
-                                              fit: BoxFit.fill,
-                                              width:100,
-                                            ),
+                                                  )))
                                         ],
                                       ),
                                       Container(
@@ -983,19 +985,43 @@ Color getTextColorFromHex(String hexColor) {
                                     builder: (builder) =>
                                     ContactDetails(contactId: myContactList[index]
                                         .id ?? 0,
-                                      isPhysicalContact:myContactList[index].phoneNo == null ||  myContactList[index].phoneNo!.isEmpty,
-                                      contactIdForMeeting: myContactList[index].id,
+                                     contactIdForMeeting: myContactList[index].id,
                                       tags: [],),
                                 ));
                               },
                               child: ListTile(
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 2),
-                                leading: CircleAvatar(
-                                  radius: 25,
-                                  backgroundImage: NetworkImage("${Network.imgUrl}${myContactList[index].cardImage ?? ""}"),
-                                  backgroundColor: Colors.grey.shade200,
+                                leading:
 
+                                ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(50)),
+                                  child: CachedNetworkImage(
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                    "${Network.imgUrl}${myContactList[index].cardImage ?? ""}",
+                                    progressIndicatorBuilder:
+                                        (context, url,
+                                        downloadProgress) =>
+                                        Center(
+                                          child: CircularProgressIndicator(
+                                              value:
+                                              downloadProgress
+                                                  .progress),
+                                        ),
+                                    errorWidget:
+                                        (context, url, error) =>
+                                        Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 50,
+                                          fit: BoxFit.fill,
+                                          width: 50,
+                                        ),
+                                  ),
                                 ),
                                 title: Text(
                                   "${myContactList[index].firstName} ${myContactList[index].lastName}",

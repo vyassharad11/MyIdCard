@@ -35,6 +35,8 @@ class ScanQrCodeBottomSheet extends StatefulWidget {
 class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
   ContactCubit?_contactCubit;
   TextEditingController firstNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
 
 @override
@@ -305,9 +307,46 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                         ),
                       ),
                     ),
+                    const SizedBox(width: 16),
                   ],
                 ),
 
+                const SizedBox(height: 16),
+                SizedBox(
+                    height: 45,
+                    child: TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)
+                            .translate('email'),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ),
+                const SizedBox(height: 16),
+                 SizedBox(
+                    height: 45,
+                    child: TextField(
+                      controller: phoneController,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)
+                            .translate('phoneumber'),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
                 const SizedBox(height: 16),
                 Card(
                   margin: EdgeInsets.zero,
@@ -400,9 +439,16 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
                        child: ElevatedButton(
                          // iconAlignment: IconAlignment.start,
                          onPressed: () {
-                           if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty && _selectedImage != null){
+                           if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty
+                               && emailController.text.isNotEmpty && phoneController.text.isNotEmpty
+                               && _selectedImage != null){
+                             if(!emailRegex.hasMatch(emailController.text)){
+                               Utility().showFlushBar(context: context, message:"Enter a valid email address.",isError: true);
+                             }else{
                            Utility.showLoader(context);
-                           submitData(firstName: firstNameController.text,context: context,lastName: lastNameController.text,cardImage: _selectedImage ?? File(""));}
+                           submitData(
+                               email: emailController.text,phone: phoneController.text,
+                               firstName: firstNameController.text,context: context,lastName: lastNameController.text,cardImage: _selectedImage ?? File(""));}}
                            else{
                              Utility().showFlushBar(context: context, message: "please fill all field",isError: true);
                            }
@@ -441,9 +487,13 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
     );
   }
 
+  final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+
   Future<void> submitData({
     required String firstName,
     required String lastName,
+    required String email,
+    required String phone,
     required BuildContext context,
     required File cardImage, // Card image file
   }) async {
@@ -454,12 +504,16 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
         ,
         'first_name': firstName,
-        'last_name': lastName
+        'last_name': lastName,
+        'email': email,
+        'phone':phone
       });
     }else{
       data = FormData.fromMap({
         'first_name': firstName,
-        'last_name': lastName
+        'last_name': lastName,
+        'email': email,
+        'phone':phone
       });
     }
     _contactCubit?.apiAddPhysicalCard(data);

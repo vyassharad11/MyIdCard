@@ -144,6 +144,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                           child: Container(
                             height: 44,
                             width: 44,
+                            margin: EdgeInsets.only(right: 5),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
                             color: Colors.white),
                             padding: EdgeInsets.all(8),
@@ -151,7 +152,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                           ),
                         ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 120,
+                      width: MediaQuery.of(context).size.width - 115,
                       child: Center(
                         child: Text(
                           getCardModel?.cardName ?? "",
@@ -169,6 +170,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                       child: Container(
                           height: 44,
                           width: 44,
+                          margin: EdgeInsets.only(left: 5,right: 5),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(44),
                               color: Colors.white),
                           child:Icon(Icons.add)
@@ -197,7 +199,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                   topLeft: Radius.circular(18),
                                   topRight: Radius.circular(18)),
                               child: getCardModel != null &&
-                                  getCardModel!.backgroungImage != null
+                                  getCardModel!.backgroungImage != null && getCardModel?.cardImage != null
                                   ? Stack(
                                 children: [
                                   ClipRRect(
@@ -279,7 +281,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                     topLeft: Radius.circular(18),
                                     topRight: Radius.circular(18)),
                                 child: Image.asset(
-                                  "assets/logo/Central icon.png",
+                                  "assets/logo/Top with a picture.png",
                                   height: 80,
                                   fit: BoxFit.fitWidth,
                                   width: double.infinity,
@@ -305,13 +307,14 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                       height: 17,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width - 150,
+                                      width:getCardModel != null && getCardModel?.companyLogo!= null && getCardModel!.companyLogo.toString().isNotEmpty? MediaQuery.of(context).size.width - 150: MediaQuery.of(context).size.width - 60,
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight:
@@ -320,13 +323,15 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                           ),
                                           Text(
                                             getCardModel?.jobTitle ?? "",
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(fontSize: 16),
                                           ),
                                           SizedBox(height: 3,),
                                           Text(
                                             getCardModel?.companyName ?? "",
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(fontSize: 16),
                                           ),
                                         ],
@@ -334,7 +339,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                                     ),
                                   ],
                                 ),
-                                ClipRRect(
+                            if(getCardModel != null && getCardModel?.companyLogo!= null && getCardModel!.companyLogo.toString().isNotEmpty)    ClipRRect(
                                   borderRadius:
                                   const BorderRadius.all(
                                       Radius.circular(

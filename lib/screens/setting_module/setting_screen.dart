@@ -20,6 +20,7 @@ import '../../notifire_class.dart';
 import '../../utils/utility.dart';
 import '../auth_module/welcome_screen.dart';
 import '../subscription_module/subscription_screen.dart';
+import 'change_password.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -281,6 +282,36 @@ class _SettingScreenState extends State<SettingScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => HelpAndSupport(),
+                          ));
+                      // Handle delete account action
+                    },
+                  ),
+                ), const SizedBox(height: 14),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.lock_open,
+                      color: Colors.blue.shade300,
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate('changePassword'),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangePassword(),
                           ));
                       // Handle delete account action
                     },

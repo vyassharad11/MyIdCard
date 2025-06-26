@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_di_card/bloc/cubit/auth_cubit.dart';
 import 'package:my_di_card/data/repository/auth_repository.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../language/app_localizations.dart';
 import '../../models/utility_dto.dart';
+import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
 
 
 class HelpAndSupport extends StatefulWidget {
-  int? isStudent;
-
   HelpAndSupport({Key? key}) : super(key: key);
 
   @override
@@ -68,6 +68,20 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
       ],
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0,
+          automaticallyImplyLeading: true,
+          iconTheme: IconThemeData(color: Colors.black),
+          foregroundColor: Colors.white,
+          backgroundColor: ColoursUtils.background,
+          title: Text(
+            AppLocalizations.of(context).translate('helpAndSupport'),
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
         body: _getBody(),
       ),
     );
@@ -75,47 +89,57 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
 
   _getBody() {
     return Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top +20,right: 16,left: 16,bottom: 20),
-      child: Column(
-        children: [
-          Row(children: [
-            Container(
-              child: GestureDetector(
-                onTap: () =>
-                    Navigator.pop(context), // Default action: Go back
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+      padding: EdgeInsets.only(top:20,right: 16,left: 16,bottom: 20),
+      child: 
+          SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 40,
                   ),
-                  elevation: 2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.arrow_back,
-                      size: 20,
-                      color: Colors.black,
-                    ),
+                  Container(
+                    height: 52,
+                    decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(52),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: const Offset(0, 2.0),
+                      ),
+                    ],
+                    border:Border.all( width: 0.5),),
+                    padding: const EdgeInsets.only(
+                        left: 15,
+                        right:10,
+                        top: 5,
+                        bottom: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 1),
+                    child: TextField(
+                      controller: _titleController,
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.words,
+                      textAlignVertical: TextAlignVertical.center,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(50),
+                      ],
+                      decoration: InputDecoration(
+                        hintText:
+                        AppLocalizations.of(context).translate('enterTitle'),
+                        border: InputBorder.none,
+                      ),
+                    )
                   ),
-                ),
-              ),
-            ),
-            Text( AppLocalizations.of(context).translate('helpAndSupport'),),
-          ],),
-          Divider(height: 1,),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Container(
-                      height: 52,
-                      decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(52),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 75,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.2),
@@ -125,117 +149,78 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                         ),
                       ],
                       border:Border.all( width: 0.5),),
-                      padding: const EdgeInsets.only(
-                          left: 15,
-                          right:10,
-                          top: 5,
-                          bottom: 5),
-                      margin: const EdgeInsets.symmetric(horizontal: 1),
-                      child: TextField(
-                        controller: _titleController,
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.words,
-                        textAlignVertical: TextAlignVertical.center,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(50),
-                        ],
-                        decoration: InputDecoration(
-                          hintText:
-                          AppLocalizations.of(context).translate('enterTitle'),
-                          border: InputBorder.none,
-                        ),
-                      )
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      height: 75,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 2,
-                            offset: const Offset(0, 2.0),
-                          ),
-                        ],
-                        border:Border.all( width: 0.5),),
-                      padding: const EdgeInsets.only(
-                          left: 15,
-                          right:10,
-                          top: 5,
-                          bottom: 5),
-                      margin: const EdgeInsets.symmetric(horizontal: 1),
-                      child: TextField(
-                        textInputAction: TextInputAction.newline,
-                        // keyboardType: TextInputType.text,
-                        textCapitalization:
-                        TextCapitalization.sentences,
-                        expands: true,
-                        maxLines: null,
-                        minLines: null,
-                        controller: _descriptionController,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(250),
-                        ],
-                        decoration: InputDecoration(
-                          contentPadding:
-                          const EdgeInsets.only(top: 10),
-                          hintText:
-                          AppLocalizations.of(context).translate('enterDescription'),
-                          border: InputBorder.none,
-                        ),
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
+                    padding: const EdgeInsets.only(
+                        left: 15,
+                        right:10,
+                        top: 5,
+                        bottom: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 1),
+                    child: TextField(
+                      textInputAction: TextInputAction.newline,
+                      // keyboardType: TextInputType.text,
+                      textCapitalization:
+                      TextCapitalization.sentences,
+                      expands: true,
+                      maxLines: null,
+                      minLines: null,
+                      controller: _descriptionController,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(250),
+                      ],
+                      decoration: InputDecoration(
+                        contentPadding:
+                        const EdgeInsets.only(top: 10),
+                        hintText:
+                        AppLocalizations.of(context).translate('enterDescription'),
+                        border: InputBorder.none,
                       ),
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 2),
-                          child: SizedBox(
-                            height: 45,
-                            width: MediaQuery.of(context).size.width,
-                            child: ElevatedButton(
-                              // iconAlignment: IconAlignment.start,
-                              onPressed: () {
-                                if (validate()) {
-                                  Utility.hideKeyboard(context);
-                                  Utility.showLoader(context);
-                                  apiHelpAndSupport();
-                                }
-                                // Handle button press
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue, // Background color
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(30), // Rounded corners
-                                ),
-                              ),
-                              child:  Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)
-                                        .translate('submit'),
-                                    style: TextStyle(color: Colors.white, fontSize: 16),
-                                  ),
-                                ],
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                        child: SizedBox(
+                          height: 45,
+                          width: MediaQuery.of(context).size.width,
+                          child: ElevatedButton(
+                            // iconAlignment: IconAlignment.start,
+                            onPressed: () {
+                              if (validate()) {
+                                Utility.hideKeyboard(context);
+                                Utility.showLoader(context);
+                                apiHelpAndSupport();
+                              }
+                              // Handle button press
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue, // Background color
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(30), // Rounded corners
                               ),
                             ),
-                          ),),
-                  ]),
-            ),
+                            child:  Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .translate('submit'),
+                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),),
+                ]),
           ),
-              ],
-            ),
+             
 
         );
   }

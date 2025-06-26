@@ -168,6 +168,7 @@ Color getTextColorFromHex(String hexColor) {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
+                              margin: EdgeInsets.only(right: 5),
                               child: GestureDetector(
                                 onTap: () {widget.isEdit == true?Navigator.pop(context): Navigator.pushAndRemoveUntil(
                                   context,
@@ -193,7 +194,7 @@ Color getTextColorFromHex(String hexColor) {
                               ),
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width - 160,
+                              width: MediaQuery.of(context).size.width - 175,
                               child: Center(
                                 child: Text(
                                   getCardModel?.cardName.toString() ?? "",
@@ -223,6 +224,7 @@ Color getTextColorFromHex(String hexColor) {
                                       child: Container(
                                           height: 44,
                                           width: 44,
+                                          margin: EdgeInsets.only(left: 6),
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                               color: Colors.white,
@@ -365,17 +367,17 @@ Color getTextColorFromHex(String hexColor) {
                                                                 url, error) =>
                                                             Image.asset(
                                                           "assets/logo/Central icon.png",
-                                                          height: 100,
+                                                          height: 80,
                                                           fit: BoxFit.fill,
-                                                          width: 100,
+                                                          width: 80,
                                                         ),
                                                       ),
                                                     )
                                                   : Image.asset(
                                                       "assets/logo/Central icon.png",
-                                                      height: 100,
+                                                      height: 80,
                                                       fit: BoxFit.fill,
-                                                      width: 100,
+                                                      width: 80,
                                                     ),
                                             ),
                                           ],
@@ -385,7 +387,7 @@ Color getTextColorFromHex(String hexColor) {
                                               topLeft: Radius.circular(18),
                                               topRight: Radius.circular(18)),
                                           child: Image.asset(
-                                            "assets/logo/Central icon.png",
+                                            "assets/logo/Top with a picture.png",
                                             height: 80,
                                             fit: BoxFit.fitWidth,
                                             width: double.infinity,
@@ -403,7 +405,12 @@ Color getTextColorFromHex(String hexColor) {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width - 178,
+                                      width:getCardModel != null &&
+                                getCardModel!.companyLogo !=
+                                null &&
+                                getCardModel!.companyLogo
+                                    .toString()
+                                    .isNotEmpty? MediaQuery.of(context).size.width -178:MediaQuery.of(context).size.width - 60,
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -413,33 +420,35 @@ Color getTextColorFromHex(String hexColor) {
                                           ),
                                           Text(
                                             "${getCardModel?.firstName ?? ""} ${getCardModel?.lastName ?? ""}",
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w500,
                                                 color: Colors.black),
                                           ),
                                           Text(
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             getCardModel?.jobTitle ?? "",
                                             style: const TextStyle(fontSize: 16,color: Colors.grey),
                                           ),
                                           SizedBox(height: 3,),
                                           Text(
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             getCardModel?.companyName ?? "",
                                             style: const TextStyle(fontSize: 16,color: Colors.grey),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    getCardModel != null &&
+                                  if(  getCardModel != null &&
                                             getCardModel!.companyLogo !=
                                                 null &&
                                             getCardModel!.companyLogo
                                                 .toString()
-                                                .isNotEmpty
-                                        ? ClipRRect(
+                                                .isNotEmpty)ClipRRect(
                                             borderRadius:
                                                 const BorderRadius.all(
                                                     Radius.circular(75)),
@@ -468,12 +477,6 @@ Color getTextColorFromHex(String hexColor) {
                                               ),
                                             ),
                                           )
-                                        : Image.asset(
-                                            "assets/logo/Central icon.png",
-                                            height: 100,
-                                            fit: BoxFit.fill,
-                                            width: 100,
-                                          ),
                                   ],
                                 ),
                               ),
@@ -704,12 +707,7 @@ Color getTextColorFromHex(String hexColor) {
                                                   ),
                                                   errorWidget:
                                                       (context, url, error) =>
-                                                          Image.asset(
-                                                    "assets/images/Frame 508.png",
-                                                    height: 40,
-                                                    fit: BoxFit.fill,
-                                                    width: double.infinity,
-                                                  ),
+                                                         Icon(Icons.picture_as_pdf_outlined)
                                                 ),
                                               )),
                                         ),
