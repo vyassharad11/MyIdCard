@@ -985,8 +985,7 @@ Color getTextColorFromHex(String hexColor) {
                                     builder: (builder) =>
                                     ContactDetails(contactId: myContactList[index]
                                         .id ?? 0,
-                                      isPhysicalContact:myContactList[index].contactTypeId ==2,
-                                      contactIdForMeeting: myContactList[index].id,
+                                     contactIdForMeeting: myContactList[index].id,
                                       tags: [],),
                                 ));
                               },

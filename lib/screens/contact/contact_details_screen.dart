@@ -35,13 +35,11 @@ import 'other_card_details.dart';
 class ContactDetails extends StatefulWidget {
   final int contactId;
   final int? contactIdForMeeting;
-  final bool isPhysicalContact;
   final List<TagDatum> tags;
 
   const ContactDetails(
       {super.key,
       required this.contactId,
-      required this.isPhysicalContact,
       this.contactIdForMeeting,
       required this.tags});
 
@@ -60,6 +58,8 @@ class _ContactDetailsState extends State<ContactDetails> {
   TextEditingController notesController = TextEditingController();
   bool isEdit = false;
   bool isLoad = true;
+   bool isPhysicalContact = false;
+
 
   @override
   initState() {
@@ -258,7 +258,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           const Divider(
             color: Colors.grey,
           ),
-          if (widget.isPhysicalContact == false)
+          if (isPhysicalContact == false)
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 12),
               title:  Text(
@@ -429,6 +429,10 @@ class _ContactDetailsState extends State<ContactDetails> {
               var dto = state.data as ContactDetailsDto;
               contactDetailsDatum = dto.data;
               notesController.text = contactDetailsDatum?.notes ?? "";
+              if(contactDetailsDatum?.contactTypeId ==2){
+              isPhysicalContact =true; }else{
+                isPhysicalContact = false;
+              }
               setLink();
             }
             setState(() {});
@@ -486,7 +490,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           automaticallyImplyLeading: true,
           backgroundColor: Colors.white,
           title: Text(
-            "${contactDetailsDatum?.cardName ?? ""}",
+            isPhysicalContact == false?"${contactDetailsDatum?.cardName ?? ""}":"${contactDetailsDatum?.firstName} ${contactDetailsDatum?.lastName}",
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, fontFamily: Constants.fontFamily, color: Colors.black),
           ),
@@ -518,7 +522,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 12),
-                      child: widget.isPhysicalContact
+                      child: isPhysicalContact
                           ? Column(
                             children: [
                               ClipRRect(
@@ -544,7 +548,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                     ),
                                   ),
                                 ),
-                              Padding(padding: EdgeInsets.all(16),
+                              Padding(padding: EdgeInsets.symmetric(vertical: 16),
                               child: Row(children: [
                                 InkWell(
                                   onTap: () {
@@ -819,8 +823,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                                 50)),
                                                     child: Image.asset(
                                                       "assets/logo/Central icon.png",
-                                                      height: 55,
-                                                      width: 55,
+                                                      height: 80,
+                                                      width: 80,
                                                       fit: BoxFit.fitWidth,
                                                     ),
                                                   ),
@@ -1663,13 +1667,13 @@ class _ContactDetailsState extends State<ContactDetails> {
       child: Column(
         children: [
           Container(
-            height: widget.isPhysicalContact ? 170 : 310,
+            height: isPhysicalContact ? 170 : 310,
             margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
             width: double.infinity,
             decoration: BoxDecoration(
                 color: Color(0x72231532),
                 borderRadius: BorderRadius.circular(8)),
-            child: widget.isPhysicalContact?SizedBox():
+            child: isPhysicalContact?SizedBox():
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
