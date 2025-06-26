@@ -713,16 +713,16 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                               url, error) =>
                                                           Image.asset(
                                                         "assets/logo/Central icon.png",
-                                                        height: 100,
+                                                        height: 80,
                                                         fit: BoxFit.fill,
-                                                        width: 100,
+                                                        width: 80,
                                                       ),
                                                     ),
                                                   ): Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 100,
+                                                    height: 80,
                                                     fit: BoxFit.fill,
-                                                    width: 100,
+                                                    width: 80,
                                                   ),
                                                 ),
                                                 Column(
@@ -823,8 +823,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                                 50)),
                                                     child: Image.asset(
                                                       "assets/logo/Central icon.png",
-                                                      height: 80,
-                                                      width: 80,
+                                                      height: 65,
+                                                      width: 65,
                                                       fit: BoxFit.fitWidth,
                                                     ),
                                                   ),
