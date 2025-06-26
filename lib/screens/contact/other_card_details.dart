@@ -249,7 +249,8 @@ Color getTextColorFromHex(String hexColor) {
                               topLeft: Radius.circular(18),
                               topRight: Radius.circular(18)),
                           child: getCardModel != null &&
-                              getCardModel!.backgroungImage != null
+                              getCardModel!.backgroungImage != null &&
+                              getCardModel!.cardImage != null
                               ? Stack(
                             children: [
                               ClipRRect(
@@ -326,7 +327,7 @@ Color getTextColorFromHex(String hexColor) {
                                 topLeft: Radius.circular(18),
                                 topRight: Radius.circular(18)),
                             child: Image.asset(
-                              "assets/logo/Central icon.png",
+                              "assets/logo/Top with a picture.png",
                               height: 80,
                               fit: BoxFit.fitWidth,
                               width: double.infinity,
@@ -675,10 +676,12 @@ Color getTextColorFromHex(String hexColor) {
                       ),
                     ),
                   ),
-                const SizedBox(
+                if (getCardModel != null &&
+                    getCardModel!.cardSocials != null && getCardModel!.cardSocials!.isNotEmpty)   const SizedBox(
                   height: 10,
                 ),
-                                 Card(
+                if (getCardModel != null &&
+                    getCardModel!.cardSocials != null && getCardModel!.cardSocials!.isNotEmpty)             Card(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius:

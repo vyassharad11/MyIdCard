@@ -215,16 +215,16 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                                                 (context, url, error) =>
                                                 Image.asset(
                                                   "assets/logo/Central icon.png",
-                                                  height: 100,
+                                                  height: 80,
                                                   fit: BoxFit.fill,
-                                                  width: 100,
+                                                  width: 80,
                                                 ),
                                           ),
                                         ): Image.asset(
                                           "assets/logo/Central icon.png",
-                                          height: 100,
+                                          height: 80,
                                           fit: BoxFit.fill,
-                                          width: 100,
+                                          width: 80,
                                         ),
                                       ),
                                       IconButton(
