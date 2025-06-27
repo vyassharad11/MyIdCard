@@ -415,16 +415,36 @@ Future<void> apiGetBackgroundImage() async {
                         child:
                         _selectedImagePath != null &&
                             _selectedImagePath!.isNotEmpty
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        8), // Adjust the radius as needed
-                                    child: Image.network(
-                                      "${Network.imgUrl}$_selectedImagePath",
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 180,
-                                    ),
-                                  )
+                                ?
+                        ClipRRect(
+                          borderRadius:
+                          const BorderRadius.all(
+                              Radius.circular(8)),
+                          child: CachedNetworkImage(
+                            height:180,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            imageUrl:
+                            "${Network.imgUrl}${_selectedImagePath}",
+                            progressIndicatorBuilder:
+                                (context, url,
+                                downloadProgress) =>
+                                Center(
+                                  child: CircularProgressIndicator(
+                                      value:
+                                      downloadProgress
+                                          .progress),
+                                ),
+                            errorWidget:
+                                (context, url, error) =>
+                                Image.asset(
+                                  "assets/logo/Central icon.png",
+                                  height: 180,
+                                  width: double.infinity,
+                                  fit: BoxFit.fill,
+                                ),
+                          ),
+                        )
                                 : Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
