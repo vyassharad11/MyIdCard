@@ -4,6 +4,7 @@ import 'package:my_di_card/data/repository/card_repository.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../data/network/server_error.dart';
 import '../../data/repository/auth_repository.dart';
+import '../../models/background_image_model.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
@@ -109,6 +110,19 @@ class CardCubit extends Cubit<ResponseState> {
     try {
       httpResponse = await authRepository.apiDeleteCard(id);
       dto = httpResponse.data as UtilityDto;
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+Future<void> apiGetBackgroundImage() async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    BackgroundImageModel dto;
+    try {
+      httpResponse = await authRepository.apiGetBackgroundImage();
+      dto = httpResponse.data as BackgroundImageModel;
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {
       emit(ServerError.mapDioErrorToState(error));

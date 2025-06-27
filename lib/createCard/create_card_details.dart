@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/models/background_image_model.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/common_utils.dart';
@@ -39,12 +42,16 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
   TextEditingController cardName = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
-  CardCubit? _getCardCubit,_updateCardCubit;
+  String? _selectedImagePath;
+  CardCubit? _getCardCubit,_updateCardCubit,_getBackgroundImageCubit;
+  List<BgDatum>? backgroundImageList;
 
   @override
   void initState() {
     _getCardCubit = CardCubit(CardRepository());
+    _getBackgroundImageCubit = CardCubit(CardRepository());
     _updateCardCubit = CardCubit(CardRepository());
+    apiGetBackgroundImage();
     if (widget.isEdit) {
       fetchEditData();
     }
@@ -53,6 +60,9 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
 
   Future<void> fetchEditData() async {
     _getCardCubit?.apiGetCard(widget.cardId);
+  }
+Future<void> apiGetBackgroundImage() async {
+    _getBackgroundImageCubit?.apiGetBackgroundImage();
   }
 
 
@@ -76,9 +86,29 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
           cardName.text = dto.data?.cardName.toString() ?? "";
           if (dto.data?.backgroungImage != null) {
             _selectedImage = File(dto.data?.backgroungImage);
+            _selectedImagePath = dto.data?.backgroungImage;
           }
           if (dto.data?.cardStyle != null) {
             _currentColor = Color(int.parse('0xFF${dto.data!.cardStyle!}'));
+          }
+        }
+        setState(() {});
+      },),
+      BlocListener<CardCubit, ResponseState>(
+      bloc: _getBackgroundImageCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+          var dto = state.data as BackgroundImageModel;
+          if(dto != null && dto.data != null){
+            backgroundImageList = dto.data;
           }
         }
         setState(() {});
@@ -301,8 +331,77 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                   const SizedBox(
                     height: 20,
                   ),
+                  // GestureDetector(
+                  //   onTap: () => _showBottomSheet(context),
+                  //   child: Card(
+                  //     margin: EdgeInsets.zero,
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius:
+                  //           BorderRadius.circular(20), // Rounded corners
+                  //     ),
+                  //     elevation: 0,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.symmetric(
+                  //           horizontal: 12.0, vertical: 12),
+                  //       child: _selectedImage != null &&
+                  //               _selectedImage!.path.isNotEmpty &&
+                  //               !_selectedImage!.path.contains("storage")
+                  //           ? SizedBox(
+                  //               width: MediaQuery.of(context).size.width,
+                  //               child: ClipRRect(
+                  //                 borderRadius: BorderRadius.circular(
+                  //                     8), // Adjust the radius as needed
+                  //                 child: Image.file(
+                  //                   _selectedImage!,
+                  //                   fit: BoxFit.cover,
+                  //                   width: double.infinity,
+                  //                   height: 180,
+                  //                 ),
+                  //               ),
+                  //             )
+                  //           : _selectedImage != null &&
+                  //                   _selectedImage!.path.isNotEmpty &&
+                  //                   _selectedImage!.path.contains("storage")
+                  //               ? ClipRRect(
+                  //                   borderRadius: BorderRadius.circular(
+                  //                       8), // Adjust the radius as needed
+                  //                   child: Image.network(
+                  //                     "${Network.imgUrl}${_selectedImage!.path}",
+                  //                     fit: BoxFit.cover,
+                  //                     width: double.infinity,
+                  //                     height: 180,
+                  //                   ),
+                  //                 )
+                  //               : Column(
+                  //                   mainAxisSize: MainAxisSize.min,
+                  //                   children: [
+                  //                     // Top + Icon
+                  //                     CircleAvatar(
+                  //                       radius: 18,
+                  //                       child: Image.asset(
+                  //                           "assets/images/add button.png"),
+                  //                     ),
+                  //                     const SizedBox(
+                  //                         height:
+                  //                             20), // Space between icon and text
+                  //                     // Text below the icon
+                  //                     Text(
+                  //                       AppLocalizations.of(context)
+                  //                           .translate('background'),
+                  //                       textAlign: TextAlign.center,
+                  //                       style: TextStyle(
+                  //                         fontSize: 18,
+                  //                         fontWeight: FontWeight.normal,
+                  //                       ),
+                  //                     ),
+                  //                     const SizedBox(height: 10),
+                  //                   ],
+                  //                 ),
+                  //     ),
+                  //   ),
+                  // ),
                   GestureDetector(
-                    onTap: () => _showBottomSheet(context),
+                    onTap: () => _showBottomSheetForBackgroundImage(context),
                     child: Card(
                       margin: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
@@ -313,30 +412,14 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 12),
-                        child: _selectedImage != null &&
-                                _selectedImage!.path.isNotEmpty &&
-                                !_selectedImage!.path.contains("storage")
-                            ? SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      8), // Adjust the radius as needed
-                                  child: Image.file(
-                                    _selectedImage!,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: 180,
-                                  ),
-                                ),
-                              )
-                            : _selectedImage != null &&
-                                    _selectedImage!.path.isNotEmpty &&
-                                    _selectedImage!.path.contains("storage")
+                        child:
+                        _selectedImagePath != null &&
+                            _selectedImagePath!.isNotEmpty
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                         8), // Adjust the radius as needed
                                     child: Image.network(
-                                      "${Network.imgUrl}${_selectedImage!.path}",
+                                      "${Network.imgUrl}$_selectedImagePath",
                                       fit: BoxFit.cover,
                                       width: double.infinity,
                                       height: 180,
@@ -420,6 +503,69 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
     );
   }
 
+  void _showBottomSheetForBackgroundImage(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (BuildContext context) {
+    return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      ListView.separated
+        (
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+        return InkWell(
+          onTap: (){
+            _selectedImagePath = backgroundImageList?[index].filePath ?? "";
+            setState(() {
+
+            });
+            Navigator.pop(context);
+          },
+          child: Row(children: [
+            ClipRRect(
+              borderRadius:
+              const BorderRadius.all(
+                  Radius.circular(50)),
+              child: CachedNetworkImage(
+                height: 50,
+                width: 50,
+                fit: BoxFit.cover,
+                imageUrl:
+                "${Network.imgUrl}${backgroundImageList?[index].filePath ?? ""}",
+                progressIndicatorBuilder:
+                    (context, url,
+                    downloadProgress) =>
+                    Center(
+                      child: CircularProgressIndicator(
+                          value:
+                          downloadProgress
+                              .progress),
+                    ),
+                errorWidget:
+                    (context, url, error) =>
+                    Image.asset(
+                      "assets/logo/Central icon.png",
+                      height: 50,
+                      fit: BoxFit.fill,
+                      width: 50,
+                    ),
+              ),
+            ),
+            SizedBox(width: 5,),
+            Text(backgroundImageList?[index].name ?? "")
+          ],),
+        );
+      }, separatorBuilder: (context, index) {
+        return SizedBox(height: 10,);
+      }, itemCount: backgroundImageList?.length ?? 0)
+    ]));});}
+
   Future<bool> colorPickerDialog() async {
     return ColorPicker(
       // Update the dialogPickerColor using the callback.
@@ -500,23 +646,25 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
    //    'backgroung_image':file.toString()
    //  };
     var data=null;
-    if (selectedImage != null &&
-        selectedImage!.path != "" &&
-        !selectedImage!.path.contains("storage")) {
+    // if (selectedImage != null &&
+    //     selectedImage!.path != "" &&
+    //     !selectedImage!.path.contains("storage")) {
+    //   data = FormData.fromMap({
+    //    if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'backgroung_image':
+    //     await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
+    //     'step_no' : "4",
+    //     'card_style' : _currentColor.hex,
+    //     'card_name' : cardName.text.toString(),
+    //   });
+    // }else{
       data = FormData.fromMap({
-       if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'backgroung_image':
-        await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
         'step_no' : "4",
         'card_style' : _currentColor.hex,
         'card_name' : cardName.text.toString(),
+        "is_image":"no",
+       if(_selectedImagePath != null && _selectedImagePath!.isNotEmpty) 'backgroung_image':_selectedImagePath
       });
-    }else{
-      data = FormData.fromMap({
-        'step_no' : "4",
-        'card_style' : _currentColor.hex,
-        'card_name' : cardName.text.toString(),
-      });
-    }
+    // }
     _updateCardCubit?.cardUpdateApi(data,widget.cardId,);
   }
 

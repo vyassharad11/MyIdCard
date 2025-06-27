@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../models/background_image_model.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
@@ -463,6 +464,12 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiGetPrivacy(@Path("url") url,
+      @Header(authorization) token);
+
+  @GET("{url}background/images")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<BackgroundImageModel>> apiGetBackgroundImage(@Path("url") url,
       @Header(authorization) token);
 
 }

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../localStorage/storage.dart';
+import '../../models/background_image_model.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
 import '../../models/company_type_model.dart';
@@ -102,6 +103,13 @@ class CardRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiDeleteCard(dto,token2,id);
+  }
+
+  Future<HttpResponse<BackgroundImageModel>> apiGetBackgroundImage() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetBackgroundImage(dto,token2,);
   }
 
 }
