@@ -209,5 +209,11 @@
   "currentPassword": "Mot de passe actuel",
   "newPassword": "Nouveau mot de passe",
   "confirmPassword": "Confirmez le mot de passe",
-  "email": "E-mail"
+  "email": "E-mail",
+  "filters": "Filtres",
+  "typeOfCompany": "Type d'entreprise",
+  "enterJobTitle": "Entrez le titre du poste",
+  "showHiddenContactOnly": "Afficher uniquement les contacts masqués",
+  "showPhysicalContactOnly": "Afficher uniquement le contact physique",
+  "clear": "Claire"
 }
