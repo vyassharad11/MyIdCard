@@ -4,7 +4,9 @@ import 'package:retrofit/retrofit.dart';
 import '../../data/network/server_error.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../models/login_dto.dart';
+import '../../models/notification_model.dart';
 import '../../models/signup_dto.dart';
+import '../../models/subscription_model.dart';
 import '../../models/user_data_model.dart';
 import '../../models/utility_dto.dart';
 import '../api_resp_state.dart';
@@ -209,6 +211,48 @@ class AuthCubit extends Cubit<ResponseState> {
     try {
       httpResponse = await authRepository.apiGetPrivacy();
       dto = httpResponse.data as UtilityDto;
+      // await AppSession().storeAccessToken(dto.token ?? "");
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+ Future<void> apiGetNotification(limit,offset) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    NotificationModel dto;
+    try {
+      httpResponse = await authRepository.apiGetNotification(limit,offset);
+      dto = httpResponse.data as NotificationModel;
+      // await AppSession().storeAccessToken(dto.token ?? "");
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+ Future<void> apiDeleteNotification(id) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await authRepository.apiDeleteNotification(id);
+      dto = httpResponse.data as UtilityDto;
+      // await AppSession().storeAccessToken(dto.token ?? "");
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+ Future<void> apiGetPlan() async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    SubscriptionModel dto;
+    try {
+      httpResponse = await authRepository.apiGetPlan();
+      dto = httpResponse.data as SubscriptionModel;
       // await AppSession().storeAccessToken(dto.token ?? "");
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

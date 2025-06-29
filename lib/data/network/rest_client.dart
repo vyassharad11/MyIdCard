@@ -17,8 +17,10 @@ import '../../models/meeting_details_model.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/my_meetings_model.dart';
+import '../../models/notification_model.dart';
 import '../../models/recent_contact_mode.dart';
 import '../../models/social_data.dart';
+import '../../models/subscription_model.dart';
 import '../../models/tag_model.dart';
 import '../../models/team_member.dart';
 import '../../models/team_response.dart';
@@ -464,5 +466,29 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiGetPrivacy(@Path("url") url,
       @Header(authorization) token);
+
+ @GET("{url}notifications")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<NotificationModel>> apiGetNotification(@Path("url") url,
+      @Header(authorization) token,
+     @Query("limit") limit,
+     @Query("offset") offset
+     );
+
+ @DELETE("{url}notifications/{id}")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiDeleteNotification(@Path("url") url,
+      @Header(authorization) token,
+     @Path("id") id,
+     );
+
+ @GET("{url}plan")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<SubscriptionModel>> apiGetPlan(@Path("url") url,
+      @Header(authorization) token,
+     );
 
 }

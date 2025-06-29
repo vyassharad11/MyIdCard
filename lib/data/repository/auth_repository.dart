@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:my_di_card/models/subscription_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../localStorage/storage.dart';
 import '../../models/login_dto.dart';
+import '../../models/notification_model.dart';
 import '../../models/signup_dto.dart';
 import '../../models/user_data_model.dart';
 import '../../models/utility_dto.dart';
@@ -152,6 +154,28 @@ class AuthRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apiGetPrivacy(dto,token2,);
+  }
+
+ Future<HttpResponse<NotificationModel>> apiGetNotification(limit,offset) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetNotification(dto,token2,limit,offset);
+  }
+
+ Future<HttpResponse<UtilityDto>> apiDeleteNotification(id) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiDeleteNotification(dto,token2,id);
+  }
+
+
+ Future<HttpResponse<SubscriptionModel>> apiGetPlan() async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiGetPlan(dto,token2,);
   }
 
 
