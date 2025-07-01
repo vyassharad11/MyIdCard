@@ -6,6 +6,7 @@ import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/card_cubit.dart';
 import '../../data/repository/card_repository.dart';
 import '../../data/repository/card_repository.dart';
+import '../../language/app_localizations.dart';
 import '../../models/company_type_model.dart';
 import '../../utils/constant.dart';
 import '../../utils/utility.dart';
@@ -371,8 +372,8 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Filters',
+                     Text(
+                      AppLocalizations.of(context).translate('filters'),
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -395,7 +396,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 20),
                     // Type of Company dropdown
                     CustomDropdown(
-                      title: 'Type of Company',
+                      title:  AppLocalizations.of(context).translate('typeOfCompany'),
                       selectedValue: selectedValue,
                       callBack: (v, value) {
                         companyId = v;
@@ -412,7 +413,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         decoration: InputDecoration(
                           fillColor: Colors.grey.shade200,
                           filled: true,
-                          labelText: 'Enter job title',
+                          labelText:  AppLocalizations.of(context).translate('enterJobTitle'),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(10),
@@ -423,7 +424,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Text("Show Hidden Contact Only"),
+                        Text( AppLocalizations.of(context).translate('showHiddenContactOnly')),
                         SizedBox(
                           width: 10,
                         ),
@@ -443,7 +444,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Text("Show Physical Contact Only"),
+                        Text( AppLocalizations.of(context).translate('showPhysicalContactOnly')),
                         SizedBox(
                           width: 10,
                         ),
@@ -485,8 +486,8 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                           side: const BorderSide(
                               color: Colors.black38), // Border color
                         ),
-                        child: const Text(
-                          'Clear',
+                        child: Text(
+                            AppLocalizations.of(context).translate('clear'),
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
@@ -511,8 +512,8 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                           backgroundColor:
                               Colors.blueAccent, // Background color
                         ),
-                        child: const Text(
-                          'Save',
+                        child: Text(
+                            AppLocalizations.of(context).translate('save'),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

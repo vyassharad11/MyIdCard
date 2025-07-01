@@ -213,6 +213,12 @@
   "currentPassword": "Current Password",
   "newPassword": "New Password",
   "confirmPassword": "Confirm Password",
-  "email": "Email"
+  "email": "Email",
+  "filters": "Filters",
+  "typeOfCompany": "Type of Company",
+  "enterJobTitle": "Enter job title",
+  "showHiddenContactOnly": "Show Hidden Contact Only",
+  "showPhysicalContactOnly": "Show Physical Contact Only",
+  "clear": "Clear"
 
 }

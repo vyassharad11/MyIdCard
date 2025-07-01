@@ -2,6 +2,7 @@ C/C++ Structured Log_
 ]
 [C:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\additional_project_files.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	º‰‘âû2 ì§Ãçú2\
 Z
 XC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\android_gradle_build.json	º‰‘âû2š ÷§Ãçú2a
@@ -26,3 +27,29 @@ X
 VC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\symbol_folder_index.txt	º‰‘âû2M “¨Ãçú2W
 U
 SC:\flutter\src\flutter\packages\flutter_tools\gradle\src\main\groovy\CMakeLists.txt	º‰‘âû2§ “«Žá2
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	òžî’û2 ì§Ãçú2\
+Z
+XC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\android_gradle_build.json	óžî’û2š ÷§Ãçú2a
+_
+]C:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\android_gradle_build_mini.json	óžî’û2÷ ˆ¨Ãçú2N
+L
+JC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\build.ninja	óžî’û2òÓ ‘¦Ãçú2R
+P
+NC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\build.ninja.txt	óžî’û2W
+U
+SC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\build_file_index.txt	óžî’û2S ”¨Ãçú2X
+V
+TC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\compile_commands.json	óžî’û2\
+Z
+XC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\compile_commands.json.bin	óžî’û2	b
+`
+^C:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\metadata_generation_command.txt	óžî’û2
+­ ¨Ãçú2U
+S
+QC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\prefab_config.json	óžî’û2( ‘¨Ãçú2Z
+X
+VC:\MyIdCard\android\app\.cxx\RelWithDebInfo\6t4u2q5i\arm64-v8a\symbol_folder_index.txt	óžî’û2M “¨Ãçú2W
+U
+SC:\flutter\src\flutter\packages\flutter_tools\gradle\src\main\groovy\CMakeLists.txt	ôžî’û2§ “«Žá2
+>>>>>>> V1_Kapil
