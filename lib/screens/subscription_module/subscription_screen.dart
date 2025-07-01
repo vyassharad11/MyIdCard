@@ -174,7 +174,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Subscription action
-                          submitPlanId();
+                          // submitPlanId();
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
