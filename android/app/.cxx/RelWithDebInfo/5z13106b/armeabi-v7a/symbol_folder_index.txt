@@ -1,1 +1,0 @@
-/home/kapil/MyIdCard/build/app/intermediates/cxx/RelWithDebInfo/5z13106b/obj/armeabi-v7a

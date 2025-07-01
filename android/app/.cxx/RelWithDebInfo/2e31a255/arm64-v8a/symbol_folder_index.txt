@@ -1,1 +1,0 @@
-/Users/sharadvyas/Documents/MyIdCard/build/app/intermediates/cxx/RelWithDebInfo/2e31a255/obj/arm64-v8a
