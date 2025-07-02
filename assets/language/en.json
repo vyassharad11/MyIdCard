@@ -219,6 +219,9 @@
   "enterJobTitle": "Enter job title",
   "showHiddenContactOnly": "Show Hidden Contact Only",
   "showPhysicalContactOnly": "Show Physical Contact Only",
-  "clear": "Clear"
+  "clear": "Clear",
+  "uploadFromLibrary": "Upload From Library",
+  "camera": "Camera",
+  "gallery": "Gallery"
 
 }

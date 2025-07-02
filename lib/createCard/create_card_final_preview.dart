@@ -382,17 +382,31 @@ Color getTextColorFromHex(String hexColor) {
                                             ),
                                           ],
                                         )
-                                      : ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(18),
-                                              topRight: Radius.circular(18)),
-                                          child: Image.asset(
-                                            "assets/logo/Top with a picture.png",
-                                            height: 80,
-                                            fit: BoxFit.fitWidth,
-                                            width: double.infinity,
+                                      : Stack(
+                                        children: [
+                                          ClipRRect(
+                                              borderRadius: const BorderRadius.only(
+                                                  topLeft: Radius.circular(18),
+                                                  topRight: Radius.circular(18)),
+                                              child: Image.asset(
+                                                "assets/logo/Top with a picture.png",
+                                                height: 100,
+                                                fit: BoxFit.fitWidth,
+                                                width: double.infinity,
+                                              ),
+                                            ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0, left: 2),
+                                            child:Image.asset(
+                                              "assets/logo/Central icon.png",
+                                              height: 80,
+                                              fit: BoxFit.fill,
+                                              width: 80,
+                                            ),
                                           ),
-                                        )),
+                                        ],
+                                      )),
                               const SizedBox(
                                 height: 0,
                               ),

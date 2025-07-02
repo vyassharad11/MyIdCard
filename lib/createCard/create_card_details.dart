@@ -331,77 +331,8 @@ Future<void> apiGetBackgroundImage() async {
                   const SizedBox(
                     height: 20,
                   ),
-                  // GestureDetector(
-                  //   onTap: () => _showBottomSheet(context),
-                  //   child: Card(
-                  //     margin: EdgeInsets.zero,
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius:
-                  //           BorderRadius.circular(20), // Rounded corners
-                  //     ),
-                  //     elevation: 0,
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.symmetric(
-                  //           horizontal: 12.0, vertical: 12),
-                  //       child: _selectedImage != null &&
-                  //               _selectedImage!.path.isNotEmpty &&
-                  //               !_selectedImage!.path.contains("storage")
-                  //           ? SizedBox(
-                  //               width: MediaQuery.of(context).size.width,
-                  //               child: ClipRRect(
-                  //                 borderRadius: BorderRadius.circular(
-                  //                     8), // Adjust the radius as needed
-                  //                 child: Image.file(
-                  //                   _selectedImage!,
-                  //                   fit: BoxFit.cover,
-                  //                   width: double.infinity,
-                  //                   height: 180,
-                  //                 ),
-                  //               ),
-                  //             )
-                  //           : _selectedImage != null &&
-                  //                   _selectedImage!.path.isNotEmpty &&
-                  //                   _selectedImage!.path.contains("storage")
-                  //               ? ClipRRect(
-                  //                   borderRadius: BorderRadius.circular(
-                  //                       8), // Adjust the radius as needed
-                  //                   child: Image.network(
-                  //                     "${Network.imgUrl}${_selectedImage!.path}",
-                  //                     fit: BoxFit.cover,
-                  //                     width: double.infinity,
-                  //                     height: 180,
-                  //                   ),
-                  //                 )
-                  //               : Column(
-                  //                   mainAxisSize: MainAxisSize.min,
-                  //                   children: [
-                  //                     // Top + Icon
-                  //                     CircleAvatar(
-                  //                       radius: 18,
-                  //                       child: Image.asset(
-                  //                           "assets/images/add button.png"),
-                  //                     ),
-                  //                     const SizedBox(
-                  //                         height:
-                  //                             20), // Space between icon and text
-                  //                     // Text below the icon
-                  //                     Text(
-                  //                       AppLocalizations.of(context)
-                  //                           .translate('background'),
-                  //                       textAlign: TextAlign.center,
-                  //                       style: TextStyle(
-                  //                         fontSize: 18,
-                  //                         fontWeight: FontWeight.normal,
-                  //                       ),
-                  //                     ),
-                  //                     const SizedBox(height: 10),
-                  //                   ],
-                  //                 ),
-                  //     ),
-                  //   ),
-                  // ),
                   GestureDetector(
-                    onTap: () => _showBottomSheetForBackgroundImage(context),
+                    onTap: () => _showBottomSheet(context),
                     child: Card(
                       margin: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
@@ -412,39 +343,35 @@ Future<void> apiGetBackgroundImage() async {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 12),
-                        child:
-                        _selectedImagePath != null &&
-                            _selectedImagePath!.isNotEmpty
-                                ?
-                        ClipRRect(
-                          borderRadius:
-                          const BorderRadius.all(
-                              Radius.circular(8)),
-                          child: CachedNetworkImage(
-                            height:180,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            imageUrl:
-                            "${Network.imgUrl}${_selectedImagePath}",
-                            progressIndicatorBuilder:
-                                (context, url,
-                                downloadProgress) =>
-                                Center(
-                                  child: CircularProgressIndicator(
-                                      value:
-                                      downloadProgress
-                                          .progress),
+                        child: _selectedImage != null &&
+                                _selectedImage!.path.isNotEmpty &&
+                                !_selectedImage!.path.contains("storage")
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      8), // Adjust the radius as needed
+                                  child: Image.file(
+                                    _selectedImage!,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: 180,
+                                  ),
                                 ),
-                            errorWidget:
-                                (context, url, error) =>
-                                Image.asset(
-                                  "assets/logo/Central icon.png",
-                                  height: 180,
-                                  width: double.infinity,
-                                  fit: BoxFit.fill,
-                                ),
-                          ),
-                        )
+                              )
+                            : (_selectedImage != null &&
+                                    _selectedImage!.path.isNotEmpty &&
+                                    _selectedImage!.path.contains("storage")) || (_selectedImagePath != null && _selectedImagePath!.isNotEmpty)
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        8), // Adjust the radius as needed
+                                    child: Image.network(
+                                      "${Network.imgUrl}${_selectedImagePath ?? _selectedImage!.path}",
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: 180,
+                                    ),
+                                  )
                                 : Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -541,6 +468,7 @@ Future<void> apiGetBackgroundImage() async {
           itemBuilder: (context, index) {
         return InkWell(
           onTap: (){
+            _selectedImage = null;
             _selectedImagePath = backgroundImageList?[index].filePath ?? "";
             setState(() {
 
@@ -666,25 +594,25 @@ Future<void> apiGetBackgroundImage() async {
    //    'backgroung_image':file.toString()
    //  };
     var data=null;
-    // if (selectedImage != null &&
-    //     selectedImage!.path != "" &&
-    //     !selectedImage!.path.contains("storage")) {
-    //   data = FormData.fromMap({
-    //    if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'backgroung_image':
-    //     await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
-    //     'step_no' : "4",
-    //     'card_style' : _currentColor.hex,
-    //     'card_name' : cardName.text.toString(),
-    //   });
-    // }else{
+    if (selectedImage != null &&
+        selectedImage!.path != "" &&
+        !selectedImage!.path.contains("storage")) {
+      data = FormData.fromMap({
+       if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'backgroung_image':
+        await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
+        'step_no' : "4",
+        'card_style' : _currentColor.hex,
+        'card_name' : cardName.text.toString(),
+      });
+    }else{
       data = FormData.fromMap({
         'step_no' : "4",
         'card_style' : _currentColor.hex,
         'card_name' : cardName.text.toString(),
         "is_image":"no",
-       if(_selectedImagePath != null && _selectedImagePath!.isNotEmpty) 'backgroung_image':_selectedImagePath
+        if(_selectedImagePath != null && _selectedImagePath!.isNotEmpty) 'backgroung_image':_selectedImagePath
       });
-    // }
+    }
     _updateCardCubit?.cardUpdateApi(data,widget.cardId,);
   }
 
@@ -774,7 +702,7 @@ Future<void> apiGetBackgroundImage() async {
                   height: 20,
                 ),
                 title:  Text(AppLocalizations.of(context)
-                    .translate('useCamera'),),
+                    .translate('camera'),),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   // Add your logic for opening the camera
@@ -793,9 +721,24 @@ Future<void> apiGetBackgroundImage() async {
                   height: 20,
                 ),
                 title:  Text(AppLocalizations.of(context)
-                    .translate('chooseFromLibrary'),),
+                    .translate('gallery'),),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
+                  // Add your logic for picking an image from the gallery
+                },
+              ),
+              const Divider(
+                color: Colors.grey,
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                minLeadingWidth: 10,
+                leading: Icon(Icons.library_add,size: 18,),
+                title:  Text(AppLocalizations.of(context)
+                    .translate('uploadFromLibrary'),),
+                onTap: () {
+                  Navigator.pop(context);
+                 _showBottomSheetForBackgroundImage(context);
                   // Add your logic for picking an image from the gallery
                 },
               ),

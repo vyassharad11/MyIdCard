@@ -215,5 +215,8 @@
   "enterJobTitle": "Entrez le titre du poste",
   "showHiddenContactOnly": "Afficher uniquement les contacts masqués",
   "showPhysicalContactOnly": "Afficher uniquement le contact physique",
-  "clear": "Claire"
+  "clear": "Claire",
+  "uploadFromLibrary": "Télécharger depuis la bibliothèque",
+  "camera": "caméra",
+  "gallery": "galerie"
 }
