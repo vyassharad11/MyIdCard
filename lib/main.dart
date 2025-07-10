@@ -1,4 +1,5 @@
 import 'package:app_links/app_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,15 +7,24 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/localStorage/storage.dart';
 import 'package:my_di_card/utils/utility.dart';
 import 'package:provider/provider.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'language/app_localizations.dart';
 import 'language/locale_constant.dart';
 import 'notifire_class.dart';
 import 'screens/auth_module/welcome_screen.dart';
+// Top-level function for background message handling (required for Android/iOS)
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
+}
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // Register the background message handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await AppLinks().getLatestLink();
   runApp( MultiProvider(
     providers: [
@@ -56,6 +66,27 @@ class _MyAppState extends State<MyApp> {
       });
     });
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('📩 Foreground Message received: ${message.notification?.title}');
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('🟢 App opened from notification: ${message.notification?.title}');
+    });
+
+    // Request permission
+    FirebaseMessaging.instance.requestPermission();
+
+    // Get FCM token
+    FirebaseMessaging.instance.getToken().then((token) {
+      print('🔥 FCM Token: $token');
+    });
+    // TODO: implement initState
+    super.initState();
   }
 
   // This widget is the root of your application.

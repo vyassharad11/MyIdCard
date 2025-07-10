@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1029895654496",
+    "project_id": "mydicard-e441f",
+    "storage_bucket": "mydicard-e441f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029895654496:android:8854baa7f3c0c0fa74c705",
+        "android_client_info": {
+          "package_name": "com.example.my_di_card"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhg0AmNIPfo707FBiFFnVKXdFDa0_IBHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

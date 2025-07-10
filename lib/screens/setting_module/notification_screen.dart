@@ -16,7 +16,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  AuthCubit? notificationCubit,notificationDeleteCubit;
+  AuthCubit? notificationCubit,notificationDeleteCubit,apiTestSendNotificationCubit;
   bool isLoad = true;
   List<NotificationDatum> notificationList =[];
   int selectedIndex = 0;
@@ -24,8 +24,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     notificationCubit = AuthCubit(AuthRepository());
+    apiTestSendNotificationCubit = AuthCubit(AuthRepository());
     notificationDeleteCubit = AuthCubit(AuthRepository());
     apiGetNotification();
+    apiSendNotificationTest();
     // TODO: implement initState
     super.initState();
   }
@@ -34,8 +36,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void dispose() {
     notificationCubit?.close();
     notificationDeleteCubit?.close();
+    apiTestSendNotificationCubit?.close();
     notificationCubit = null;
     notificationDeleteCubit = null;
+    apiTestSendNotificationCubit = null;
     // TODO: implement dispose
     super.dispose();
   }
@@ -46,6 +50,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   apiDeleteNotification(id){
     notificationDeleteCubit?.apiDeleteNotification(id);
+  }
+  apiSendNotificationTest(){
+    Map<String, dynamic> data = {
+      "title": "Notification Test",
+      "msg": "test message",
+    };
+    apiTestSendNotificationCubit?.apiSendNotificationTest(data);
   }
 
 

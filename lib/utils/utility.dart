@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io' as IO;
 import 'package:another_flushbar/flushbar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -51,6 +52,11 @@ class Utility {
     }
     return platformName;
   }
+
+  static Future<String> getFcmToken() async {
+    String token = "";
+    token = await FirebaseMessaging.instance.getToken() ?? "";
+    debugPrint("FCM Token FCM Token : $token"); return token;}
 
   static String convertDateToFormat(String data) {
     // data = '2021-10-06T06:39:05.000Z';

@@ -178,5 +178,12 @@ class AuthRepository {
     return _apiClient.apiGetPlan(dto,token2,);
   }
 
+ Future<HttpResponse<UtilityDto>> apiSendNotificationTest(body) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiSendNotificationTest(dto,token2,body);
+  }
+
 
 }

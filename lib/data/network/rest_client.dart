@@ -498,4 +498,12 @@ abstract class RestClient {
   Future<HttpResponse<BackgroundImageModel>> apiGetBackgroundImage(@Path("url") url,
       @Header(authorization) token);
 
+
+@POST("{url}send/test-notification")
+  @Header(headerValue)
+  @Header(headerContentType)
+  Future<HttpResponse<UtilityDto>> apiSendNotificationTest(@Path("url") url,
+      @Header(authorization) token,
+      @Body() body);
+
 }

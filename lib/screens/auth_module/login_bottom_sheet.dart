@@ -28,6 +28,7 @@ import '../home_module/main_home_page.dart';
 import '../profile_mosule/profile_new.dart';
 import 'profile_bottom_sheet.dart';
 
+
 class LoginBottomSheetContent extends StatefulWidget {
   const LoginBottomSheetContent({super.key});
 
@@ -45,6 +46,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
 
   @override
   void initState() {
+    getOneSignalId();
     _authCubit = AuthCubit(AuthRepository());
     _googleLoginCubit = AuthCubit(AuthRepository());
     _appleLoginCubit = AuthCubit(AuthRepository());
@@ -84,11 +86,22 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
     super.dispose();
   }
 
+  String oneSignalId = "";
+
+  Future<void> getOneSignalId() async {
+    // await OneSignal.setAppId(
+    //     AppConfig.oneSignalAppId);
+    // if (deviceState != null || deviceState?.userId != null)
+     oneSignalId = await Utility.getFcmToken();
+    setState(() {}); print("oneSignalId>>>>>>>>>>>>>>>>>> ${oneSignalId}");}
+
   Future<void> apiSignIn() async {
     Utility.showLoader(context);
     Map<String, dynamic> data = {
       'email': _emailController.text.toString().trim(),
       'password': _passwordController.text.toString().trim(),
+      'player_id': oneSignalId,
+      'device_type': Platform.isIOS?"ios":"android",
     };
     _authCubit?.apiSignIn(data);
 
