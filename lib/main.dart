@@ -70,6 +70,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    _requestPermission();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('📩 Foreground Message received: ${message.notification?.title}');
     });
@@ -86,6 +87,19 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  void _requestPermission() async {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    print('🔐 Permission status: ${settings.authorizationStatus}');
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
