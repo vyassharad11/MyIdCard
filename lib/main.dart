@@ -82,9 +82,6 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.instance.requestPermission();
 
     // Get FCM token
-    FirebaseMessaging.instance.getToken().then((token) {
-      print('🔥 FCM Token: $token');
-    });
     // TODO: implement initState
     super.initState();
   }
