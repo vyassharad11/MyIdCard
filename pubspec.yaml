@@ -53,7 +53,7 @@ dependencies:
   provider:
   flutter_html:
   firebase_messaging:
-  firebase_core:
+  firebase_core: ^3.15.1
 #  uni_links: ^0.5.1
 #  qr: ^3.0.2,
 #  flutter_barcode_scanner: ^2.0.0
