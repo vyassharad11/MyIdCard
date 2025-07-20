@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:app_links/app_links.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ import '../../language/app_localizations.dart';
 import '../../models/card_list.dart';
 import '../../models/my_contact_model.dart';
 import '../../models/utility_dto.dart';
+import '../../notification_service.dart';
 import '../../notifire_class.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -39,7 +41,8 @@ import 'add_new_contact.dart';
 import 'package:http/http.dart' as http;
 
 class BottomNavBarExample extends StatefulWidget {
-  const BottomNavBarExample({super.key});
+ final int? tabBarIndex;
+  const BottomNavBarExample({super.key,this.tabBarIndex = 0});
 
   @override
   State<BottomNavBarExample> createState() => _BottomNavBarExampleState();
@@ -54,10 +57,79 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
 
   @override
   initState(){
+    _selectedIndex = widget.tabBarIndex ?? 0;
+    _requestPermission();
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        _handleNotificationClick(message);
+      }
+    });
+
+    // App in background but opened by tapping the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      _handleNotificationClick(message);
+    });
+
+    // App in foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      LocalNotificationService.showNotification(message);
+      // Utility().showFlushBar(context: context, message:message.notification != null? message.notification!.title.toString():"");
+      print('🔴 Foreground Message: ${message.notification?.title}');
+      // Optionally show local notification
+    });
+    // Request permission
+    FirebaseMessaging.instance.requestPermission();
+
+    // Get FCM token
     _addContactCubit = ContactCubit(ContactRepository());
     _initUniLinkStream();
     super.initState();
   }
+
+  void _handleNotificationClick(RemoteMessage message) {
+    final data = message.data;
+    print("🔔 User clicked notification: ${data}");
+    if(data["type"] == "contactAdd") {
+      navigatorKey.currentState?.push(
+        MaterialPageRoute(
+          builder: (_) => ContactDetails(contactId: int.parse(data["id"].toString()),tags: [],),
+        ),
+      );
+    }else if(
+        data["type"] == "groupSwitch" ||
+        data["type"] == "addMemberGroup" ||
+        data["type"] == "removeMemberGroup" ||
+        data["type"] == "teamMemberAdd" ||
+        data["type"] == "removeTeamMember" ||
+        data["type"] == "teamRequest"
+
+    ) {
+      setState(() {
+        _selectedIndex = 3;
+      });
+    }
+    // Example: Navigate to a specific screen
+    // if (data['type'] == 'chat') {
+    //   Navigator.pushNamed(context, '/chat', arguments: data['chatId']);
+    // } else if (data['type'] == 'profile') {
+    //   Navigator.pushNamed(context, '/profile', arguments: data['userId']);
+    // }
+  }
+
+  void _requestPermission() async {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    print('🔐 Permission status: ${settings.authorizationStatus}');
+  }
+
   _initUniLinkStream() async
   {
     _appLinks = AppLinks();

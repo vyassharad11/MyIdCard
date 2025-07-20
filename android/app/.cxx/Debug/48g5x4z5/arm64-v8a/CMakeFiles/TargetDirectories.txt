@@ -1,0 +1,2 @@
+D:/Mithlesh/MyIdCard/android/app/.cxx/Debug/48g5x4z5/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/Mithlesh/MyIdCard/android/app/.cxx/Debug/48g5x4z5/arm64-v8a/CMakeFiles/rebuild_cache.dir

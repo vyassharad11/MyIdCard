@@ -5,11 +5,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/localStorage/storage.dart';
+import 'package:my_di_card/screens/contact/contact_details_screen.dart';
+import 'package:my_di_card/screens/contact/other_card_details.dart';
+import 'package:my_di_card/screens/profile_mosule/edit_profile.dart';
 import 'package:my_di_card/utils/utility.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'language/app_localizations.dart';
 import 'language/locale_constant.dart';
+import 'notification_service.dart';
 import 'notifire_class.dart';
 import 'screens/auth_module/welcome_screen.dart';
 // Top-level function for background message handling (required for Android/iOS)
@@ -22,7 +26,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  LocalNotificationService.initialize(); // init local notifications
   // Register the background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await AppLinks().getLatestLink();
@@ -34,6 +38,7 @@ Future<void> main() async {
     ],
     child: const MyApp(),
   ));
+
   }
 
 class MyApp extends StatefulWidget {
@@ -70,36 +75,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _requestPermission();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('📩 Foreground Message received: ${message.notification?.title}');
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('🟢 App opened from notification: ${message.notification?.title}');
-    });
-
-    // Request permission
-    FirebaseMessaging.instance.requestPermission();
-
-    // Get FCM token
     // TODO: implement initState
     super.initState();
   }
 
-  void _requestPermission() async {
-    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    print('🔐 Permission status: ${settings.authorizationStatus}');
-  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

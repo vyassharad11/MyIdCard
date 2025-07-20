@@ -35,6 +35,7 @@ class NotificationModel {
 class NotificationDatum {
   int? id;
   int? userId;
+  int? actionId;
   String? title;
   String? message;
   String? type;
@@ -45,6 +46,7 @@ class NotificationDatum {
   NotificationDatum({
     this.id,
     this.userId,
+    this.actionId,
     this.title,
     this.message,
     this.type,
@@ -56,6 +58,7 @@ class NotificationDatum {
   factory NotificationDatum.fromJson(Map<String, dynamic> json) => NotificationDatum(
     id: json["id"],
     userId: json["user_id"],
+    actionId: json["action_id"],
     title: json["title"],
     message: json["message"],
     type: json["type"],
@@ -67,6 +70,7 @@ class NotificationDatum {
   Map<String, dynamic> toJson() => {
     "id": id,
     "user_id": userId,
+    "action_id": actionId,
     "title": title,
     "message": message,
     "type": type,

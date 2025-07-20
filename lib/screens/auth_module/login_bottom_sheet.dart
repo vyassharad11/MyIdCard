@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +21,7 @@ import '../../bloc/cubit/auth_cubit.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
+import '../../main.dart';
 import '../../utils/colors/colors.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
@@ -89,24 +91,34 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
   String oneSignalId = "";
 
   Future<void> getOneSignalId() async {
-    // await OneSignal.setAppId(
-    //     AppConfig.oneSignalAppId);
-    // if (deviceState != null || deviceState?.userId != null)
-     oneSignalId = await Utility.getFcmToken();
-    setState(() {}); print("oneSignalId>>>>>>>>>>>>>>>>>> ${oneSignalId}");}
+    print("oneSignalId>>>>>>>>>>>>>dddddd>>>>>asaasas}");
+
+     oneSignalId = await FirebaseMessaging.instance.getToken() ?? "";
+  }
 
   Future<void> apiSignIn() async {
     Utility.showLoader(context);
     Map<String, dynamic> data = {
       'email': _emailController.text.toString().trim(),
       'password': _passwordController.text.toString().trim(),
-      'player_id': oneSignalId,
+    if(oneSignalId.isNotEmpty)  'player_id': oneSignalId,
       'device_type': Platform.isIOS?"ios":"android",
     };
     _authCubit?.apiSignIn(data);
 
   }
-
+  getOneMoreToken() async {
+    oneSignalId = await FirebaseMessaging.instance.getToken() ?? "";
+    print("oneSignal<<><<id$oneSignalId");
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      'email': _emailController.text.toString().trim(),
+      'password': _passwordController.text.toString().trim(),
+      if(oneSignalId.isNotEmpty)  'player_id': oneSignalId,
+      'device_type': Platform.isIOS?"ios":"android",
+    };
+    _authCubit?.apiSignIn(data);
+  }
 
 
   Future<void> loginWithGoogle() async {
@@ -145,7 +157,9 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
       Map<String, dynamic> data = {
         'idToken': idToken,
         "email": googleUser.email.toString(),
-        "social_id": googleUser.id
+        "social_id": googleUser.id,
+        if(oneSignalId.isNotEmpty)'player_id': oneSignalId,
+        'device_type': Platform.isIOS?"ios":"android",
       };
       _googleLoginCubit?.apiSignupGoogle(data);
     } catch (e) {
@@ -189,7 +203,9 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         'identityToken': identityToken,
         'authorizationCode': authorizationCode,
         'email': appleCredential.email,
-        'social_id':appleCredential.userIdentifier
+        'social_id':appleCredential.userIdentifier,
+      if(oneSignalId.isNotEmpty)  'player_id': oneSignalId,
+        'device_type': Platform.isIOS?"ios":"android",
       };
 
       _appleLoginCubit?.apiSignupApple(data);
@@ -594,7 +610,10 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
                       if (validateForm()) {
                         if (validatePasswordRegx(
                             _passwordController.text.toString())) {
-                          apiSignIn();
+                          if(oneSignalId.isNotEmpty){
+                            apiSignIn();
+                          }else{
+                          getOneMoreToken();}
                         } else {
                           Fluttertoast.showToast(
                               msg:

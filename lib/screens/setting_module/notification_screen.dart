@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_di_card/bloc/cubit/auth_cubit.dart';
@@ -7,6 +8,8 @@ import '../../bloc/api_resp_state.dart';
 import '../../models/notification_model.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
+import '../contact/contact_details_screen.dart';
+import '../home_module/main_home_page.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -27,7 +30,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     apiTestSendNotificationCubit = AuthCubit(AuthRepository());
     notificationDeleteCubit = AuthCubit(AuthRepository());
     apiGetNotification();
-    apiSendNotificationTest();
+    // apiSendNotificationTest();
     // TODO: implement initState
     super.initState();
   }
@@ -162,6 +165,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     color: Colors.white,
                   ),
                 ),
+                onTap: (){
+                 if(notificationList?[index].type == "contactAdd"){
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => ContactDetails(contactId:notificationList?[index].actionId ?? 0 , tags: [],),));
+                 }else
+                if(
+                    notificationList?[index].type == "groupSwitch" ||
+                    notificationList?[index].type == "addMemberGroup" ||
+                    notificationList?[index].type == "removeMemberGroup" ||
+                    notificationList?[index].type == "teamMemberAdd" ||
+                    notificationList?[index].type == "removeTeamMember" ||
+                    notificationList?[index].type == "teamRequest")
+                   {
+                   Navigator.pushAndRemoveUntil(
+                     context,
+                     CupertinoPageRoute(builder: (builder) => BottomNavBarExample(tabBarIndex: 3,)),
+                         (route) => false,
+                   );
+                 }
+                },
                 title: Text(notificationList?[index].title ?? ""),
                 subtitle: Text(notificationList?[index].message ?? ""),
                 trailing: GestureDetector(

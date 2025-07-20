@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,6 +19,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../bloc/api_resp_state.dart';
 import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
+import '../../main.dart';
 import '../../models/error_mdodel.dart';
 import '../../models/login_api_reponse.dart';
 import '../../models/login_dto.dart';
@@ -52,6 +54,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
 
   @override
   void initState() {
+    getOneSignalId();
     _authCubit = AuthCubit(AuthRepository());
     _googleLoginCubit = AuthCubit(AuthRepository());
     _appleLoginCubit = AuthCubit(AuthRepository());
@@ -79,6 +82,14 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
     return regex.hasMatch(password);
   }
 
+  String oneSignalId = "";
+
+  Future<void> getOneSignalId() async {
+    print("oneSignalId>>>>>>>>>>>>>dddddd>>>>>asaasas}");
+
+    oneSignalId = await FirebaseMessaging.instance.getToken() ?? "";
+  }
+
   Future<void> registerVendor() async {
       Utility.showLoader(context);
       Map<String, dynamic> data = {
@@ -86,6 +97,8 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         'email': _emailController.text.toString().trim(),
         'password': _passwordController.text.toString().trim(),
         'password_confirmation': _passwordController.text.toString().trim(),
+        'player_id': oneSignalId,
+        'device_type': Platform.isIOS?"ios":"android",
     };
     _authCubit?.apiSignUp(data);
 
@@ -139,7 +152,9 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
     Map<String, dynamic> data = {
       'idToken': idToken,
       "email": email,
-      "social_id": id
+      "social_id": id,
+      if(oneSignalId.isNotEmpty)      'player_id': oneSignalId,
+      'device_type': Platform.isIOS?"ios":"android",
 
     };
     _googleLoginCubit?.apiSignupGoogle(data);
@@ -217,7 +232,9 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
         'identityToken': identityToken,
         'authorizationCode': authorizationCode,
         'email': appleCredential.email,
-        'social_id':appleCredential.userIdentifier
+        'social_id':appleCredential.userIdentifier,
+        if(oneSignalId.isNotEmpty)  'player_id': oneSignalId,
+        'device_type': Platform.isIOS?"ios":"android",
       };
       _appleLoginCubit?.apiSignupApple(data);
 
