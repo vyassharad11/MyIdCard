@@ -515,6 +515,7 @@ class _AccountPageState extends State<AccountPage> {
                                     },
                                     child:  Text(
                                         AppLocalizations.of(context).translate('upgrade'),
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 12),
                                     ),
                                   ),
@@ -910,7 +911,7 @@ class _AccountPageState extends State<AccountPage> {
                                 hintStyle:
                                 TextStyle(color: Colors.grey, fontSize: 14),
                                 filled: true,
-                                hintText: "Enter a team code to join team",
+                                hintText:                   AppLocalizations.of(context).translate('enterTeamCodeJoin'),
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 12),
                                 fillColor: Colors.grey[200],

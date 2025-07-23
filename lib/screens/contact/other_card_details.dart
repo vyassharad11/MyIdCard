@@ -337,7 +337,7 @@ Color getTextColorFromHex(String hexColor) {
                                                             ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 8.0, left: 2),
+                                        top: 10.0, left: 12),
                                     child:Image.asset(
                                       "assets/logo/Central icon.png",
                                       height: 80,

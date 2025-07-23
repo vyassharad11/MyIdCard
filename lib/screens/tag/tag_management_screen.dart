@@ -447,14 +447,15 @@ Future<void> apiGetCardTag(keyword) async {
                               },
                               itemBuilder: (BuildContext context) =>
                                   <PopupMenuEntry<String>>[
-                                const PopupMenuItem<String>(
+                                 PopupMenuItem<String>(
                                   value: 'Edit',
-                                  child: Text('Edit'),
+                                  child: Text(AppLocalizations.of(context).translate('edit'),
+                                  ),
                                 ),
-                                const PopupMenuItem<String>(
+                                 PopupMenuItem<String>(
                                   value: 'Delete',
                                   child: Text(
-                                    'Delete',
+                                  AppLocalizations.of(context).translate('delete'),
                                     style: TextStyle(color: Colors.redAccent),
                                   ),
                                 ),
@@ -610,7 +611,7 @@ Future<void> apiGetCardTag(keyword) async {
                     LengthLimitingTextInputFormatter(30),
                   ],
                   decoration: InputDecoration(
-                    hintText: 'Add Tag',
+                    hintText:  AppLocalizations.of(context).translate('addTag1'),
                     border: InputBorder.none,
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
@@ -796,7 +797,7 @@ Future<void> apiGetCardTag(keyword) async {
                     setState(() {});
                   },
                   decoration: InputDecoration(
-                    hintText: 'Edit Tag',
+                    hintText:  AppLocalizations.of(context).translate('editTag1'),
                     border: InputBorder.none,
                     hintStyle: TextStyle(color: Colors.grey),
                   ),

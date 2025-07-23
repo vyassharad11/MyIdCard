@@ -129,8 +129,8 @@
   "createCard1": "Créer une Carte",
   "createMyFirstCard": "Créez votre première Carte",
   "skipForNow": "Passer pour le moment",
-  "newCard": "Nouvelle Carte",
-  "newContact": "Nouveau Contact",
+  "newCard": "Carte",
+  "newContact": "Contact",
   "favoriteContacts": "Contacts Favoris",
   "unfavoriteD": "Supprimer des Favoris",
   "noRecordFound": "Aucune entrée trouvée",
@@ -182,7 +182,7 @@
   "editTag1": "Modifer un tag",
   "hintTageName": "Entrez le nouveau nom de tag",
   "shareTheCardContact": "Partagez la carte de votre contact",
-  "create": "créer",
+  "create": "Créer",
   "shareYourCard":"Partagez votre carte",
   "shareYourNew":"Partagez votre nouveau",
   "digitalBusinessCard":"Carte de visite numérique",
@@ -218,5 +218,11 @@
   "clear": "Claire",
   "uploadFromLibrary": "Télécharger depuis la bibliothèque",
   "camera": "caméra",
-  "gallery": "galerie"
+  "gallery": "galerie",
+  "tags": "balises",
+  "home":"Maison",
+  "search":"Recherche",
+  "enterNote": "Entrer une note",
+  "enterTeamCodeJoin": "Entrez un code d'équipe pour rejoindre l'équipe",
+  "enterDescription": "Entrez la description"
 }

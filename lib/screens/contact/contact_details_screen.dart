@@ -258,7 +258,7 @@ class _ContactDetailsState extends State<ContactDetails> {
           const Divider(
             color: Colors.grey,
           ),
-          if (isPhysicalContact == false)
+          // if (isPhysicalContact == false)
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 12),
               title:  Text(
@@ -272,7 +272,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                     addContact(
                         contactDetailsDatum?.firstName ?? "",
                         contactDetailsDatum?.lastName ?? "",
-                        contactDetailsDatum?.phoneNo ?? "");
+                         contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
                   },
                 ); // Add functionality here
               },
@@ -800,7 +800,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                           Radius.circular(18)),
                                               child: Image.asset(
                                                 "assets/logo/Top with a picture.png",
-                                                height: 80,
+                                                height: 102,
                                                 width: double.infinity,
                                                 fit: BoxFit.fitWidth,
                                               ),
@@ -815,7 +815,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 10.0, left: 8),
+                                                          top: 10.0, left: 12),
                                                   child: ClipRRect(
                                                     borderRadius:
                                                         const BorderRadius.all(
@@ -823,8 +823,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                                 50)),
                                                     child: Image.asset(
                                                       "assets/logo/Central icon.png",
-                                                      height: 65,
-                                                      width: 65,
+                                                      height: 80,
+                                                      width: 80,
                                                       fit: BoxFit.fitWidth,
                                                     ),
                                                   ),
@@ -1479,7 +1479,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 decoration: InputDecoration(
                                   fillColor: Colors.grey.shade200,
                                   filled: true,
-                                  labelText: 'Enter note',
+                                  labelText:AppLocalizations.of(context).translate('enterNote'),
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                     borderRadius: BorderRadius.circular(10),

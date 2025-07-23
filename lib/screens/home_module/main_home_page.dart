@@ -446,8 +446,8 @@ Color getTextColorFromHex(String hexColor) {
           elevation: 0,
           automaticallyImplyLeading: false,
           centerTitle: true,
-          title: const Text(
-            'Home',
+          title:  Text(
+            AppLocalizations.of(context).translate('home'),
             style: TextStyle(color: Colors.black),
           ),
           actions: [
@@ -556,9 +556,9 @@ Color getTextColorFromHex(String hexColor) {
                                                       const BorderRadius.all(
                                                           Radius.circular(80)),
                                                   child: CachedNetworkImage(
-                                                    height: 80,
-                                                    width: 80,
-                                                    fit: BoxFit.cover,
+                                                    height: 90,
+                                                    width: 90,
+                                                    fit: BoxFit.fill,
                                                     imageUrl:
                                                         "${Network.imgUrl}${cardList!.data![index].cardImage}",
                                                     progressIndicatorBuilder:
@@ -620,7 +620,7 @@ Color getTextColorFromHex(String hexColor) {
                                                         Radius.circular(18)),
                                             child: Image.asset(
                                               "assets/logo/Top with a picture.png",
-                                              height: 100,
+                                              height: 110,
                                               width: double.infinity,
                                               fit: BoxFit.fitWidth,
                                             ),
@@ -633,15 +633,15 @@ Color getTextColorFromHex(String hexColor) {
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    top: 10.0, left: 8),
+                                                    top: 10.0, left: 12),
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       const BorderRadius.all(
                                                           Radius.circular(50)),
                                                   child: Image.asset(
                                                     "assets/logo/Central icon.png",
-                                                    height: 80,
-                                                    width: 80,
+                                                    height: 87,
+                                                    width: 87,
                                                     fit: BoxFit.fitWidth,
                                                   ),
                                                 ),
@@ -929,6 +929,7 @@ Color getTextColorFromHex(String hexColor) {
                               // Text below the icon
                               Text(
                                 AppLocalizations.of(context).translate('newCard'),
+                                textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 18,
@@ -996,6 +997,7 @@ Color getTextColorFromHex(String hexColor) {
                               // Text below the icon
                               Text(
                                 AppLocalizations.of(context).translate('newContact'),
+                                textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 18,

@@ -358,7 +358,7 @@ bool isInTeam = false;
                             apiGetMyContact(v, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                           },
                           decoration: InputDecoration(
-                            hintText: 'Search...',
+                            hintText: '${AppLocalizations.of(context).translate('search')}...',
                             border: InputBorder.none,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
@@ -688,7 +688,7 @@ bool isInTeam = false;
   }
 
   Widget tabBarView() {
-    return  selectIndec == 1 ? tabBarTile("Tags",
+    return  selectIndec == 1 ? tabBarTile(AppLocalizations.of(context).translate('tags'),
         true) :
     TeamMemberContact();
   }

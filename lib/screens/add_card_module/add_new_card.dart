@@ -475,7 +475,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
                               Center(
                                 child: SizedBox(
                                   height: 35,
-                                  width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:170,
+                                  width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:180,
                                   child: ElevatedButton(
                                    // iconAlignment: IconAlignment.start,
                                     onPressed: () {

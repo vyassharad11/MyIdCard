@@ -390,19 +390,19 @@ Color getTextColorFromHex(String hexColor) {
                                                   topRight: Radius.circular(18)),
                                               child: Image.asset(
                                                 "assets/logo/Top with a picture.png",
-                                                height: 100,
+                                                height: 110,
                                                 fit: BoxFit.fitWidth,
                                                 width: double.infinity,
                                               ),
                                             ),
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 8.0, left: 2),
+                                                top: 10.0, left: 12),
                                             child:Image.asset(
                                               "assets/logo/Central icon.png",
-                                              height: 80,
+                                              height: 87,
                                               fit: BoxFit.fill,
-                                              width: 80,
+                                              width: 87,
                                             ),
                                           ),
                                         ],

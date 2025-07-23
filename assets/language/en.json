@@ -130,8 +130,8 @@
   "createCard1": "Create a card",
   "createMyFirstCard": "Create your first card",
   "skipForNow": "Skip for now",
-  "newCard": "New Card",
-  "newContact": "New Contact",
+  "newCard": "Card",
+  "newContact": "Contact",
   "favoriteContacts": "Favorite Contacts",
   "unfavoriteD": "Remove from Favorites",
   "noRecordFound": "No record found",
@@ -222,6 +222,11 @@
   "clear": "Clear",
   "uploadFromLibrary": "Upload From Library",
   "camera": "Camera",
-  "gallery": "Gallery"
+  "gallery": "Gallery",
+  "tags": "Tags",
+  "home": "Home",
+  "search": "Search",
+  "enterNote": "Enter note",
+  "enterTeamCodeJoin": "Enter a team code to join team"
 
 }

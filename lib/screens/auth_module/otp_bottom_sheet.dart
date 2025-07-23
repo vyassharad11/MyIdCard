@@ -261,7 +261,8 @@ class _EmailVerificationBottomSheetState
                                   toastLength: Toast.LENGTH_LONG);
                             }
                           },
-                          text: "Submit"),
+                          text:   AppLocalizations.of(context).translate('submit'),
+                      ),
 
                       // Submit Button
                     ],

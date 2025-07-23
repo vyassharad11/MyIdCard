@@ -152,7 +152,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                           ),
                         ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 115,
+                      width: MediaQuery.of(context).size.width - 135,
                       child: Center(
                         child: Text(
                           getCardModel?.cardName ?? "",
@@ -470,6 +470,7 @@ class _AddContactPreviewState extends State<AddContactPreview> {
                 ),
               ),
             ),
+            SizedBox(height: 20,),
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(

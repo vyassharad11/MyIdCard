@@ -83,7 +83,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
           centerTitle: true,
           iconTheme: const IconThemeData(color: Colors.black),
           title:  Text(
-            AppLocalizations.of(context).translate('meeting'),
+            AppLocalizations.of(context).translate('meetings'),
             style: TextStyle(
                 fontFamily: Constants.fontFamily,
                 fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),

@@ -551,7 +551,7 @@ class _SignUpBottomSheetContentState extends State<SignUpBottomSheetContent> {
                           }
                         }
                       },
-                      text: "Next"),
+                      text:   AppLocalizations.of(context).translate('next'),),
                   const SizedBox(height: 12),
 
                   Row(
