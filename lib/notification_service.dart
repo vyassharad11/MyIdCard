@@ -12,13 +12,27 @@ class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
-  static void initialize() {
+
+
+  static Future<void> initialize() async {
     const AndroidInitializationSettings androidInitializationSettings =
     AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const InitializationSettings initializationSettings = InitializationSettings(
-      android: androidInitializationSettings,
+    final DarwinInitializationSettings iosInitializationSettings =
+    DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+
+        // Handle iOS notification received while app is in foreground
+
     );
+    final InitializationSettings initializationSettings = InitializationSettings(
+      android: androidInitializationSettings,
+      iOS: DarwinInitializationSettings(),
+    );
+
+
     Map<String, String> parsePayloadString(String payload) {
       final cleaned = payload.replaceAll('{', '').replaceAll('}', '');
       final parts = cleaned.split(',');
@@ -72,6 +86,11 @@ class LocalNotificationService {
         'channel_name',
         importance: Importance.max,
         priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
       ),
     );
 

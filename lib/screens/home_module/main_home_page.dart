@@ -127,6 +127,7 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
       sound: true,
     );
 
+
     print('🔐 Permission status: ${settings.authorizationStatus}');
   }
 

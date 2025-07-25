@@ -2025,7 +2025,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(8)),
-                                  child: Text("Copy $title"))),
+                                  child: Text("${AppLocalizations.of(context).translate('copy')} $title"))),
                           SizedBox(
                             height: 30,
                           )
@@ -2053,8 +2053,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(8)),
-                                  child: Text("Copy $title"))),
-                          SizedBox(
+              child: Text("${AppLocalizations.of(context).translate('copy')} $title"))),
+
+          SizedBox(
                             height: 10,
                           ),
 
