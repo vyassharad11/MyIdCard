@@ -18,7 +18,7 @@ dependencies {
 }
 
 android {
-    namespace = "com.example.my_di_card"
+    namespace = "com.it.my_di_card"
     compileSdk = 35
     ndkVersion = "25.1.8937393"
 
@@ -34,7 +34,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.my_di_card"
+        applicationId = "com.it.my_di_card"
         minSdk = 23
         targetSdk = 34
         versionCode = flutter.versionCode
@@ -52,7 +52,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            signingConfig = signingConfigs.release
         }
     }
 }
