@@ -227,5 +227,11 @@
   "search": "Search",
   "enterNote": "Enter notes",
   "enterTeamCodeJoin": "Enter a team code to join team",
-  "copy": "copy"
+  "copy": "copy",
+  "errorForLogin": "Invalid email or password",
+  "freeTier": "Free tier",
+  "inviteMembers": "Invite Members",
+  "manageGroupsMembers": "Manage groups & Members",
+  "change": "Change Plan",
+  "free": "Free"
 }

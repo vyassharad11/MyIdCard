@@ -95,6 +95,7 @@ class Member {
   dynamic name;
   dynamic firstName;
   dynamic lastName;
+  Contact? contact;
   dynamic role;
   dynamic email;
   dynamic emailVerifiedAt;
@@ -115,6 +116,7 @@ class Member {
     this.name,
     required this.firstName,
     required this.lastName,
+    required this.contact,
     required this.role,
     required this.email,
     this.emailVerifiedAt,
@@ -138,6 +140,7 @@ class Member {
       firstName: json['first_name'],
       role: json['role'],
       lastName: json['last_name'],
+      contact: json["contact"] == null ? null : Contact.fromJson(json["contact"]),
       email: json['email'],
       emailVerifiedAt: json['email_verified_at'],
       mode: json['mode'],
@@ -161,6 +164,7 @@ class Member {
       'first_name': firstName,
       'role': role,
       'last_name': lastName,
+      "contact": contact?.toJson(),
       'email': email,
       'email_verified_at': emailVerifiedAt,
       'mode': mode,
@@ -202,6 +206,25 @@ class PageLink {
       'url': url,
       'label': label,
       'active': active,
+    };
+  }
+}
+class Contact {
+  dynamic id;
+
+  Contact({
+    this.id,
+  });
+
+  factory Contact.fromJson(Map<String, dynamic> json) {
+    return Contact(
+      id: json['id'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
     };
   }
 }

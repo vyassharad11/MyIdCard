@@ -267,18 +267,21 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
       if (state is ResponseStateLoading) {
       } else if (state is ResponseStateEmpty) {
         Utility.hideLoader(context);
-        Utility().showFlushBar(context: context, message: state.message,isError: true);
+        Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+            .translate('errorForLogin'),isError: true);
       } else if (state is ResponseStateNoInternet) {
         Utility.hideLoader(context);
-        Utility().showFlushBar(context: context, message: state.message,isError: true);
+        Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+            .translate('errorForLogin'),isError: true);
       } else if (state is ResponseStateError) {
         Utility.hideLoader(context);
-        Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+        Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+            .translate('errorForLogin'),isError: true);
       } else if (state is ResponseStateSuccess) {
         Utility.hideLoader(context);
         var dto = state.data as LoginDto;
         Storage().saveToken(dto.token.toString());
-        Storage().setIsIndivisual(dto != null && dto?.user?.role != Role.individual.name);
+        Storage().setIsIndivisual(dto != null && dto?.user?.role != Role.free.name && dto?.user?.role != Role.individual.name);
         if(dto.user != null) {
           Storage().saveUserToPreferences(dto.user!);
         }

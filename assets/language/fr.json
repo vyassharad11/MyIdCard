@@ -227,5 +227,11 @@
   "search":"Recherche",
   "enterNote": "Entrez une note",
   "enterTeamCodeJoin": "Entrez un code d'équipe pour rejoindre l'équipe",
-  "copy": "copie"
+  "copy": "copie",
+  "errorForLogin": "Email ou mot de passe invalide",
+  "freeTier":"Niveau gratuit",
+  "inviteMembers": "Inviter des membres",
+  "manageGroupsMembers": "Gérer les groupes et les membres",
+  "change": "changer de forfait",
+  "free": "Gratuite"
 }

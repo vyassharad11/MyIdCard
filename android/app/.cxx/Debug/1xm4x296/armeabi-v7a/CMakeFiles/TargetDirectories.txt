@@ -1,0 +1,2 @@
+/home/kapil/MyIdCard/android/app/.cxx/Debug/1xm4x296/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/kapil/MyIdCard/android/app/.cxx/Debug/1xm4x296/armeabi-v7a/CMakeFiles/rebuild_cache.dir

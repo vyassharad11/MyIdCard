@@ -31,7 +31,9 @@ class SubscriptionModel {
 class SubscriptionDatum {
   int? id;
   String? planName;
+  String? frPlanName;
   String? discription;
+  String? frDiscription;
   int? validity;
   int? price;
   int? noOfCard;
@@ -42,7 +44,9 @@ class SubscriptionDatum {
   SubscriptionDatum({
     this.id,
     this.planName,
+    this.frPlanName,
     this.discription,
+    this.frDiscription,
     this.validity,
     this.price,
     this.noOfCard,
@@ -54,7 +58,9 @@ class SubscriptionDatum {
   factory SubscriptionDatum.fromJson(Map<String, dynamic> json) => SubscriptionDatum(
     id: json["id"],
     planName: json["plan_name"],
+    frPlanName: json["fr_plan_name"],
     discription: json["discription"],
+    frDiscription: json["fr_discription"],
     validity: json["validity"],
     price: json["price"],
     noOfCard: json["no_of_card"],
@@ -66,7 +72,9 @@ class SubscriptionDatum {
   Map<String, dynamic> toJson() => {
     "id": id,
     "plan_name": planName,
+    "fr_plan_name": frPlanName,
     "discription": discription,
+    "fr_discription": frDiscription,
     "validity": validity,
     "price": price,
     "no_of_card": noOfCard,

@@ -1,0 +1,2 @@
+/home/kapil/MyIdCard/android/app/.cxx/RelWithDebInfo/5z13106b/x86/CMakeFiles/edit_cache.dir
+/home/kapil/MyIdCard/android/app/.cxx/RelWithDebInfo/5z13106b/x86/CMakeFiles/rebuild_cache.dir

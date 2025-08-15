@@ -169,7 +169,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
               teamResponse = dto;
               title.text = teamResponse?.data.teamName.toString() ?? "";
               description.text =
-                  teamResponse?.data.teamDescription.toString() ?? "";
+                  teamResponse?.data.teamDescription ?? "";
 
               if (teamResponse != null &&
                   teamResponse!.data.teamLogo != null) {
@@ -362,14 +362,11 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                                     .contains("storage")
                                             ? ClipRRect(
                                                 borderRadius: BorderRadius.circular(
-                                                    20), // Adjust the radius as needed
+                                                    80), // Adjust the radius as needed
                                                 child: Image.file(
                                                   _selectedImage!,
                                                   fit: BoxFit.cover,
-                                                  width:
-                                                      MediaQuery.sizeOf(context)
-                                                              .width /
-                                                          1.1,
+                                                  width:80,
                                                   height: 80,
                                                 ),
                                               )
@@ -381,14 +378,11 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                                 ? ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            20), // Adjust the radius as needed
+                                                            90), // Adjust the radius as needed
                                                     child: Image.network(
                                                       "${Network.imgUrl}${_selectedImage!.path}",
                                                       fit: BoxFit.cover,
-                                                      width:
-                                                      MediaQuery.sizeOf(context)
-                                                          .width /
-                                                          1.1,
+                                                      width:90,
                                                       height: 90,
                                                       errorBuilder: (context, error, stackTrace) {
                                                         return Container(height: 90,width:  MediaQuery.sizeOf(context)
@@ -460,10 +454,15 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      submitData(
-                                          cardImage: _selectedImage ?? File(""),
-                                          description: description.text,
-                                          title: title.text);
+                                      if(description.text.isNotEmpty) {
+                                        submitData(
+                                            cardImage: _selectedImage ??
+                                                File(""),
+                                            description: description.text,
+                                            title: title.text);
+                                      }else{
+                                        Utility().showFlushBar(context: context, message: "please enter description",isError: true);
+                                      }
                                     },
                                     child: const Text('Update'),
                                   ),
@@ -478,7 +477,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                       ),
                     ),
               const SizedBox(height: 14),
-              if (!isLoadingTeam)
+              if (!isLoadingTeam && widget.isCreate == false)
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16), // Rounded corners
@@ -554,9 +553,9 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                 },
                                 initialRole:
                                     teamMember[index].role.toString() ==
-                                            "member"
-                                        ? "Member"
-                                        : "Admin",
+                                            "tadmin"
+                                        ? "Admin"
+                                        : "Member",
                                 title: teamMember[index].firstName,
                               );
                             },
@@ -675,7 +674,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
             preferredCameraDevice: CameraDevice.front,
           );
           if (pickedFile != null) {
-            final value = await imageCropperFunc(pickedFile.path);
+            final value = await imageCropperFunc(pickedFile.path,isCircle: true);
             setState(() {
               _selectedImage = File(value.path);
             });

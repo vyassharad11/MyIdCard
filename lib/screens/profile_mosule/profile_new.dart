@@ -162,6 +162,7 @@ class _AccountPageState extends State<AccountPage> {
                     isError: true);
               } else if (state is ResponseStateSuccess) {
                 var dto = state.data as LoginDto;
+                Utility.hideLoader(context);
                 // if (dto.user != null) {
                 fetchUserData();
                 Utility().showFlushBar(
@@ -279,11 +280,11 @@ class _AccountPageState extends State<AccountPage> {
             } else if (state is ResponseStateSuccess) {
               var dto = state.data as User;
               user = dto;
-              Storage().setIsIndivisual(user != null && user?.role != Role.individual.name);
+              Storage().setIsIndivisual(user != null && user?.role != Role.free.name && user?.role != Role.individual.name);
               if(user != null) {
                 Storage().saveUserToPreferences(user!);
               }
-              if (user != null && user?.role != Role.individual.name) {
+              if (user != null && user?.role != Role.free.name && user?.role != Role.individual.name) {
                 getTeamMembers();
                 fetchTeamData();
                 fetchGroupData();
@@ -442,9 +443,10 @@ class _AccountPageState extends State<AccountPage> {
                     const SizedBox(height: 20),
 
                     // Subscription Info
-                    if(user?.planId != 3 &&
-                        (user?.role == Role.individual.name ||
-                            user?.role == Role.towner.name)) Container(
+                    // if(user?.planId != 3 &&
+                    //     (user?.role == Role.individual.name ||
+                    //         user?.role == Role.towner.name))
+                      Container(
                       padding:
                       const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                       decoration: BoxDecoration(
@@ -464,13 +466,14 @@ class _AccountPageState extends State<AccountPage> {
                                   context,
                                   CupertinoPageRoute(
                                       builder: (builder) =>
-                                          SubscriptionScreen())).then((
+                                          SubscriptionScreen(planId: user!.planId ?? "",))).then((
                                   onValue) {
-                                if (user != null &&
-                                    user?.role != Role.individual.name) {
+                                // if (user != null &&
+                                //     user?.role != Role.individual.name) {
+                                  fetchUserData();
                                   getTeamMembers();
                                   fetchTeamData();
-                                }
+                                // }
                               });
                             },
                             child: Row(
@@ -482,12 +485,13 @@ class _AccountPageState extends State<AccountPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        user?.planName ?? "ddd",
+                                        user?.planName ?? AppLocalizations.of(context).translate(
+                                      'freeTier'),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
 
-                                      Text(
+                                    if(user != null && user?.planId != null && user!.planId.toString().isNotEmpty && user?.planId != 1)  Text(
                                         AppLocalizations.of(context).translate(
                                             'manage'),
                                         style: const TextStyle(
@@ -497,7 +501,7 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?25:40,
+                                  height: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")? user?.planId == null || user?.planId ==1?25:50:60,
                                   width: 94,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -510,11 +514,24 @@ class _AccountPageState extends State<AccountPage> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => EditTeamPage(),));
+                                      Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                              builder: (builder) =>
+                                                  SubscriptionScreen(planId: user!.planId ?? 0,))).then((
+                                          onValue) {
+                                        // if (user != null &&
+                                        //     user?.role != Role.individual.name) {
+                                          fetchUserData();
+                                          getTeamMembers();
+                                          fetchTeamData();
+                                        // }
+                                      });
+                                      // Navigator.push(context, MaterialPageRoute(
+                                      //   builder: (context) => EditTeamPage(),));
                                     },
                                     child:  Text(
-                                        AppLocalizations.of(context).translate('upgrade'),
+                                      user?.planId == null || user?.planId ==1? AppLocalizations.of(context).translate('upgrade'):AppLocalizations.of(context).translate('change'),
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 12),
                                     ),
@@ -526,18 +543,18 @@ class _AccountPageState extends State<AccountPage> {
                         ],
                       ),
                     ),
-                    if(user?.planId != 3) const SizedBox(height: 20),
+                    if(user?.role != Role.free.name && user?.role != Role.individual.name) const SizedBox(height: 20),
                     // Team Information
-                    Align(
+                   if(user?.role != Role.free.name && user?.role != Role.individual.name) Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "(${ user?.role == Role.tadmin.name ?  AppLocalizations.of(context).translate('teamAdmin') :
-                        user?.role == Role.towner.name ?  AppLocalizations.of(context).translate('teamOwner') :user?.role == Role.member.name ?  AppLocalizations.of(context).translate('member'):user?.role == Role.individual.name?  AppLocalizations.of(context).translate('individual'): user?.role.toString()})",
+                        "${ user?.role == Role.tadmin.name ?  AppLocalizations.of(context).translate('teamAdmin') :
+                        user?.role == Role.towner.name ?  AppLocalizations.of(context).translate('teamOwner') :user?.role == Role.member.name ?  AppLocalizations.of(context).translate('member'):user?.role == Role.free.name?  AppLocalizations.of(context).translate('free'): user?.role.toString()}",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    if(user?.role != Role.individual.name) const SizedBox(
-                        height: 10),
+                    // if(user?.role != Role.individual.name) const SizedBox(
+                    //     height: 10),
                     teamResponse != null &&
                         teamResponse!.data.teamDescription != null &&
                         teamResponse!
@@ -549,9 +566,10 @@ class _AccountPageState extends State<AccountPage> {
                           Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (builder) => SubscriptionScreen()))
+                                  builder: (builder) => SubscriptionScreen(planId:  user!.planId ?? 0,)))
                               .then((onValue) {
                             // if(user != null && user?.role != Role.individual.name){
+                            fetchUserData();
                             getTeamMembers();
                             fetchTeamData();
                             // }
@@ -705,7 +723,7 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                     ) :
-                    isLoad == false && teamResponse != null && user?.planId == 3
+                    isLoad == false && teamResponse != null && (user?.planId == 3 || user?.planId == 4)
                         ? Container(
                       padding: EdgeInsets.all(16),
                       margin: EdgeInsets.only(top: 14),
@@ -764,9 +782,11 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     )
                         : SizedBox(),
-                    if(user?.role != Role.individual.name) const SizedBox(
+                    if(user?.role != Role.free.name && user?.role != Role.individual.name) const SizedBox(
                         height: 10),
-                    if(user?.role != Role.individual.name &&
+                    if(
+                    user?.role != Role.free.name &&
+                    user?.role != Role.individual.name &&
                         myGroupList.isNotEmpty) Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -774,7 +794,8 @@ class _AccountPageState extends State<AccountPage> {
                           color: Colors.grey.withOpacity(0.2)),
                       child: ListTile(
                         onTap: () {
-                          if (user?.role != Role.individual.name &&
+                          if (user?.role != Role.free.name &&
+                              user?.role != Role.individual.name &&
                               user?.role != Role.member.name &&
                               (user?.role != Role.towner.name ||
                                   user?.role != Role.tadmin.name ||
@@ -830,7 +851,9 @@ class _AccountPageState extends State<AccountPage> {
                             Text(
                               myGroupList[0].groupName ?? "-",
                             ),
-                            if( user?.role != Role.individual.name &&
+                            if(
+                            user?.role != Role.free.name &&
+                            user?.role != Role.individual.name &&
                                 user?.role != Role.member.name &&
                                 (user?.role != Role.towner.name ||
                                     user?.role != Role.tadmin.name ||
@@ -857,36 +880,39 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                     ),
-                    if((user?.role == Role.tadmin.name ||
-                        user?.role == Role.towner.name) &&
-                        myGroupList.isEmpty) InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => CreateGroupPage(),)).then((
-                            value) {
-                          fetchGroupData();
-                        },);
-                      },
-                      child: Container(height: 55,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        padding: const EdgeInsets.all(16),
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.grey.withOpacity(0.2)),
-                        child: Text( AppLocalizations.of(context).translate('createGroup'), style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 14),),),
-                    ),
-                    if(user?.role != Role.individual.name &&
+                    // if((user?.role == Role.tadmin.name ||
+                    //     user?.role == Role.towner.name) &&
+                    //     myGroupList.isEmpty) InkWell(
+                    //   onTap: () {
+                    //     Navigator.push(context, MaterialPageRoute(
+                    //       builder: (context) => CreateGroupPage(),)).then((
+                    //         value) {
+                    //       fetchGroupData();
+                    //     },);
+                    //   },
+                    //   child: Container(height: 55,
+                    //     width: MediaQuery
+                    //         .of(context)
+                    //         .size
+                    //         .width,
+                    //     padding: const EdgeInsets.all(16),
+                    //     alignment: Alignment.centerLeft,
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //         color: Colors.grey.withOpacity(0.2)),
+                    //     child: Text( AppLocalizations.of(context).translate('createGroup'), style: TextStyle(
+                    //         fontWeight: FontWeight.w500, fontSize: 14),),),
+                    // ),
+                    if(
+                    user?.role != Role.free.name &&
+                    user?.role != Role.individual.name &&
                         user?.role != Role.member.name) const SizedBox(
                         height: 20),
-                    if(user?.role == Role.individual.name &&
-                        user?.userStatusId == 2 &&
-                        user?.role != Role.member.name) ApprovalCard(),
-                    if(user?.role.toString() == Role.individual.name &&
+                    if(
+                        user?.userStatusId == 2) ApprovalCard(),
+                    if(
+                    user?.role.toString() == Role.free.name &&
+                    user?.role.toString() == Role.individual.name &&
                         user?.teamId == null && user?.userStatusId == 1) Card(
                       elevation: 0,
                       child: Padding(
@@ -957,8 +983,10 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ),
                     // Options
-                    if(user?.role == Role.tadmin.name ||
-                        user?.role == Role.towner.name) GestureDetector(
+                    if((teamResponse != null && teamResponse!.data != null  &&
+                        teamResponse!.data.teamDescription != null &&
+                        teamResponse!.data.teamDescription.toString().isNotEmpty )&&(user?.role == Role.tadmin.name ||
+                        user?.role == Role.towner.name)) GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -969,12 +997,13 @@ class _AccountPageState extends State<AccountPage> {
                       },
                       child: OptionTile(
                         icon: Icons.group_add,
-                        title: 'Invite Members',
+                        title: AppLocalizations.of(context).translate('inviteMembers'),
                       ),
                     ),
                     if((user?.role == Role.tadmin.name ||
-                        user?.role == Role.towner.name) &&
-                        myGroupList.isNotEmpty) GestureDetector(
+                        user?.role == Role.towner.name) && (teamResponse != null && teamResponse!.data != null  &&
+                        teamResponse!.data.teamDescription != null &&
+                        teamResponse!.data.teamDescription.toString().isNotEmpty )) GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -983,26 +1012,28 @@ class _AccountPageState extends State<AccountPage> {
                       },
                       child: OptionTile(
                         icon: Icons.people,
-                        title: 'Manage groups & Members',
+                        title: AppLocalizations.of(context).translate('manageGroupsMembers'),
                       ),
                     ),
 
-                    if(user?.role != Role.individual.name &&
-                        user?.role != Role.member.name) GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (builder) =>
-                                const BuySubscriptionPreviewScreen()));
-                      },
-                      child: OptionTile(
-                        icon: Icons.credit_card,
-                        title: 'Manage Team card template',
-                      ),
-                    ),
-                    if(user?.role == Role.towner.name ||
-                        user?.role == Role.tadmin.name || user?.role ==   Role.gadmin.name) GestureDetector(
+                    // if(user?.role != Role.individual.name &&
+                    //     user?.role != Role.member.name) GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //         context,
+                    //         CupertinoPageRoute(
+                    //             builder: (builder) =>
+                    //             const BuySubscriptionPreviewScreen()));
+                    //   },
+                    //   child: OptionTile(
+                    //     icon: Icons.credit_card,
+                    //     title: 'Manage Team card template',
+                    //   ),
+                    // ),
+                    if((teamResponse != null && teamResponse!.data != null  &&
+                        teamResponse!.data.teamDescription != null &&
+                        teamResponse!.data.teamDescription.toString().isNotEmpty )&&(user?.role == Role.towner.name ||
+                        user?.role == Role.tadmin.name || user?.role ==   Role.gadmin.name)) GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -1016,7 +1047,9 @@ class _AccountPageState extends State<AccountPage> {
                         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       ),
                     ),
-                    if(user?.role != null &&
+                    if((teamResponse != null && teamResponse!.data != null  &&
+                        teamResponse!.data.teamDescription != null &&
+                        teamResponse!.data.teamDescription.toString().isNotEmpty )&& user?.role != null &&
                         user?.role == Role.towner.name) GestureDetector(
                       onTap: () {
                         // showLogoutDialogForDeleteTeam(context);
@@ -1042,9 +1075,12 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                     ),
-                    if(user?.role != null &&
+                    if((teamResponse != null && teamResponse!.data != null  &&
+                        teamResponse!.data.teamDescription != null &&
+                        teamResponse!.data.teamDescription.toString().isNotEmpty )&&(user?.role != null &&
+                        user?.role != Role.free.name &&
                         user?.role != Role.individual.name &&
-                        user?.role != Role.towner.name) GestureDetector(
+                        user?.role != Role.towner.name)) GestureDetector(
                       onTap: () {
                         showLogoutDialogForLeaveTeam(context);
                       },
@@ -1209,83 +1245,86 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget ApprovalCard() {
-    return SizedBox(
-      height: 100,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        elevation: 1,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // First Row
-              Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: Colors.yellow.shade700,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    AppLocalizations.of(context).translate('approvalPending'),
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+    return Padding(
+      padding: const EdgeInsets.only(top: 18.0),
+      child: SizedBox(
+        height: 100,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 1,
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // First Row
+                Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.yellow.shade700,
                     ),
-                  ),
-                ],
-              ),
-
-              // Second Row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text(
-                        AppLocalizations.of(context).translate('manufacturingTeam'),
+                    const SizedBox(width: 8),
+                    Text(
+                      AppLocalizations.of(context).translate('approvalPending'),
                       style: TextStyle(
-                        color: Colors.black87,
+                        color: Colors.grey.shade500,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4.0),
-                    child: Container(
-                      height: 24, // Diameter of the circle
-                      width: 24,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: Colors.red.shade400, width: 2),
-                      ),
-                      child: Center(
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: Icon(
-                            Icons.clear,
-                            size: 16,
-                            color: Colors.red,
-                          ),
-                          onPressed: () {
-                            // Add your logic here
-                          },
+                  ],
+                ),
+
+                // Second Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text(
+                        user?.teamName ?? "",
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: Container(
+                        height: 24, // Diameter of the circle
+                        width: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: Colors.red.shade400, width: 2),
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            icon: Icon(
+                              Icons.clear,
+                              size: 16,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              // Add your logic here
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -1310,4 +1349,4 @@ class OptionTile extends StatelessWidget {
 }
 
 
-enum Role{individual,member,tadmin,towner,gadmin}
+enum Role{free,individual,member,tadmin,towner,gadmin}

@@ -1,19 +1,10 @@
 
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
-import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:my_di_card/data/repository/auth_repository.dart';
-import 'package:my_di_card/models/subscription_model.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/team/create_team.dart';
 
@@ -29,7 +20,8 @@ import 'package:http/http.dart' as http;
 
 class SubscriptionScreen extends StatefulWidget {
   final  bool? isFromCreateProfile;
-  const SubscriptionScreen({super.key,this.isFromCreateProfile = false});
+  int? planId;
+   SubscriptionScreen({super.key,this.isFromCreateProfile = false,this.planId});
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -37,22 +29,9 @@ class SubscriptionScreen extends StatefulWidget {
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   int planId = 1;
-  AuthCubit? _setPlanCubit,planCubit;
-  List<SubscriptionDatum> planList = [];
-  InAppPurchase? _iap;
-  List<ProductDetails> _products = [];
-  late StreamSubscription _subscription;
-  ProductDetails? pro;
-  PurchaseDetails? _purchaseDetails;
-  bool isRequestToPurchase = false;
-  var _purchaseId = "";
-  String monthlyPriceForAllCounty = "";
-  String yearlyPriceForAllCounty = "";
-  String symbolForAllCounty = "";
-  String subscriptionPlanID = "";
+  AuthCubit? _setPlanCubit;
 
-
-  Future<void> submitPlanId(_purchaseId) async {
+  Future<void> submitPlanId() async {
     Utility.showLoader(context);
     Map<String, dynamic> data = {
       "plan_id": planId.toString()
@@ -62,9 +41,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   @override
   void initState() {
+    planId = widget.planId ??0;
+    setState(() {
+
+    });
     _setPlanCubit = AuthCubit(AuthRepository());
-    planCubit = AuthCubit(AuthRepository());
-    planCubit?.apiGetPlan();
     super.initState();
   }
 
@@ -72,346 +53,105 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   void dispose() {
     _setPlanCubit?.close();
-    planCubit?.close();
     _setPlanCubit = null;
-    planCubit = null;
     // TODO: implement dispose
     super.dispose();
   }
-  bool isLoad = true;
-
-  Future<void> _initPurchaseStore() async {
-    // Check availability of InApp Purchases
-    _iap = InAppPurchase.instance;
-    bool? isAvailable = await _iap?.isAvailable();
-    if (!isAvailable!) {
-      debugPrint("===IAP is Available: $isAvailable");
-      return;
-    }
-
-    _subscription = _iap!.purchaseStream.listen((List<PurchaseDetails> purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (Object error) {
-      // handle error here.
-      debugPrint("===IAP onError: ${error}");
-    });
-
-    if (Platform.isIOS) {
-      final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
-      _iap!.getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
-      await iosPlatformAddition.setDelegate(ExamplePaymentQueueDelegate());
-    }
-  }
-
-  Future<void> _listenToPurchaseUpdated(
-      List<PurchaseDetails> purchaseDetailsList) async
-  {
-    for (final PurchaseDetails purchaseDetails in purchaseDetailsList) {
-      switch (purchaseDetails.status) {
-        case PurchaseStatus.pending:
-        // Handle pending state
-          debugPrint("===IAP Status:Pending");
-          break;
-
-        case PurchaseStatus.error:
-          debugPrint("===IAP Status:Error: ${purchaseDetails.error}");
-          setState(() {
-            isRequestToPurchase = false;
-          });
-          Utility().showFlushBar(
-              context: context,
-              message: purchaseDetails.error.toString(),
-              isError: true);
-          break;
-
-        case PurchaseStatus.purchased:
-          if (kDebugMode) {
-            print("AR purchased storeproduct ====  222222 ${_products}");
-          }
-          setState(() {
-            isRequestToPurchase = false;
-          });
-          _purchaseDetails = purchaseDetails;
-          if (kDebugMode) {
-            print("AR  purchased _purchaseDetails ====  222222 ${_purchaseDetails}");
-          }
-          _purchaseId = _purchaseDetails?.purchaseID ?? "";
-          if (kDebugMode) {
-            print("AR  purchased _purchaseId ====  222222 ${_purchaseId}");
-          }
-          var productID = _purchaseDetails?.productID ?? "";
-          print("AR  purchased productID ====  222222 ${productID}");
-          submitPlanId(_purchaseId);
-          break;
-        case PurchaseStatus.restored:
-          setState(() {
-            isRequestToPurchase = false;
-          });
-          _purchaseDetails = purchaseDetails;
-          _purchaseId = _purchaseDetails?.purchaseID ?? "";
-          submitPlanId(_purchaseId);
-          break;
-
-        case PurchaseStatus.canceled:
-          setState(() {
-            isRequestToPurchase = false;
-          });
-          debugPrint("===IAP Status:Canceled");
-          break;
-      }
-      if (purchaseDetails.pendingCompletePurchase) {
-        await _iap?.completePurchase(purchaseDetails);
-      }
-    }
-  }
-
-  ProductDetails _getProductDetails(String productId) {
-    // print("PLAN ID ==> $planID        SUBPLANID ==> $subscriptionPlanID");
-    ProductDetails proDetails =
-    _products.where((element) => element.id == productId).toList()[0];
-    return proDetails;
-  }
-
-  // Method to retrieve product list
-  Future<void> _getIAPStoreProductsDetail(Set<String> productIds) async {
-    ProductDetailsResponse response =
-    await _iap!.queryProductDetails(productIds);
-    setState(() {
-      _products.addAll(response.productDetails);
-      for (var e in response.productDetails) {
-        symbolForAllCounty = e.currencySymbol ?? "";
-        if(e.title.toLowerCase().contains("yearly")) {
-          yearlyPriceForAllCounty = e.price ?? "";
-        }else {
-          monthlyPriceForAllCounty = e.price ?? "";
-          print("storeproduct ====  11111 ${e.title}");
-          print("storeproduct ====  11111 ${e.currencySymbol}");
-          print("storeproduct ====  11111 ${e.price}");
-        }
-
-      }
-      print("storeproduct ====  11111 ${_products}");
-
-    });
-  }
-
-  // Method to purchase a product
-  void _buyProduct(ProductDetails prod) {
-    final PurchaseParam purchaseParam = PurchaseParam(productDetails: prod);
-    _iap?.buyNonConsumable(purchaseParam: purchaseParam);
-  }
-
-  //
-  // callBuyRechargePointApi(String purchaseId) {
-  //   if(mounted){
-  //     Utility.showLoader(context);
-  //   }
-  //   Map<String, dynamic> data = {
-  //     "planId": id.toString(),
-  //     "chargeId" : purchaseId,
-  //     "device_type" : Platform.isAndroid ? "android" : "ios"
-  //   };
-  //   // print("Data>>>${jsonEncode(data)}");
-  //   _buyPointsCubit?.apiUserSubscription(data);
-  // }
-
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(listeners: [
-      BlocListener<AuthCubit, ResponseState>(
-        bloc: _setPlanCubit,
-        listener: (context, state) {
-          if (state is ResponseStateLoading) {
-          } else if (state is ResponseStateEmpty) {
-            Utility.hideLoader(context);
-            Utility().showFlushBar(context: context, message: state.message,isError: true);
-          } else if (state is ResponseStateNoInternet) {
-            Utility.hideLoader(context);
-            Utility().showFlushBar(context: context, message: state.message,isError: true);
-          } else if (state is ResponseStateError) {
-            Utility.hideLoader(context);
-            Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
-          } else if (state is ResponseStateSuccess) {
-            Utility.hideLoader(context);
-            var dto = state.data as UtilityDto;
-            if(widget.isFromCreateProfile == true) {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
-            }else{
-              Navigator.pop(context);
-            }
-            Utility().showFlushBar(context: context, message: dto.message ?? "");
+    return BlocListener<AuthCubit, ResponseState>(
+      bloc: _setPlanCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+        } else if (state is ResponseStateSuccess) {
+          Utility.hideLoader(context);
+          var dto = state.data as UtilityDto;
+          if(widget.isFromCreateProfile == true) {
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+          }else{
+            Navigator.pop(context);
           }
-          setState(() {});
-        },),
-      BlocListener<AuthCubit, ResponseState>(
-        bloc: planCubit,
-        listener: (context, state) {
-          if (state is ResponseStateLoading) {
-          } else if (state is ResponseStateEmpty) {
-            isLoad = false;
-            Utility().showFlushBar(context: context, message: state.message,isError: true);
-          } else if (state is ResponseStateNoInternet) {
-            isLoad = false;
-            Utility().showFlushBar(context: context, message: state.message,isError: true);
-          } else if (state is ResponseStateError) {
-            isLoad = false;
-            Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
-          } else if (state is ResponseStateSuccess) {
-            var dto = state.data as SubscriptionModel;
-            if(dto != null && dto.data != null && dto.data!.isNotEmpty) {
-              planList.addAll(dto.data ?? []);
-            }
-            isLoad = false;
-          }
-          setState(() {});
-        },),
-    ],
+          Utility().showFlushBar(context: context, message: dto.message ?? "");
+        }
+        setState(() {});
+      },
       child: Scaffold(
-          backgroundColor: ColoursUtils.background.withOpacity(1.0),
-          appBar: AppBar(
-            elevation: 0,
-            automaticallyImplyLeading: true,
-            iconTheme: IconThemeData(color: Colors.black),
-            foregroundColor: Colors.white,
-            backgroundColor: ColoursUtils.background,
-            title: Text(
-              AppLocalizations.of(context).translate('upgradeToPremium'),
-              style: GoogleFonts.poppins(
-                textStyle: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.w600),
-              ),
+        backgroundColor: ColoursUtils.background.withOpacity(1.0),
+        appBar: AppBar(
+          elevation: 0,
+          automaticallyImplyLeading: true,
+          iconTheme: IconThemeData(color: Colors.black),
+          foregroundColor: Colors.white,
+          backgroundColor: ColoursUtils.background,
+          title: Text(
+            AppLocalizations.of(context).translate('upgradeToPremium'),
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.w600),
             ),
           ),
-          body: isLoad?Center(child: CircularProgressIndicator())
-              :planList != null && planList!.isNotEmpty ?
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      ListView.separated(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.only(right: 16,left: 16,bottom: 16),
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return SubscriptionOption(
-                              title: planList[index].planName ?? "",
-                              price: planList[index].price.toString() ?? "",
-                              isChecked: planId == planList[index].id,
-                              description: planList[index].discription ?? "",
-                              // discount: 'selected',
-                              // isDiscounted: false,
-                              onTap: () {
-                                debugPrint("ontap----");
-                                setState(() {
-                                  // ischecked = !ischecked;
-                                  planId = planList[index].id ?? 0;
-                                  setState(() {
+        ),
+        body: DefaultTabController(
+          length: 2, // Two tabs: Login and Sign Up
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Tab bar with "Login" and "Sign Up"
 
-                                  });
-                                });
-                                // Subscription logic for Free Tier
-                              },
-                            );
-                          }, separatorBuilder: (context, index) {
-                        return SizedBox(height: 0,);
-
-                      }, itemCount: planList.length ?? 0),
-                    ],
-                  ),
+              Container(
+                margin: const EdgeInsets.all(16),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border:
+                  Border.all(color: Colors.grey.withOpacity(0.3), width: 3),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Subscription action
-                      // submitPlanId();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      minimumSize: const Size(double.infinity, 50),
-                      backgroundColor: Colors.blue.withOpacity(0.5),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context).translate('subscribe'),
-                      style: TextStyle(color: Colors.white),
-                    ),
+                child: TabBar(
+                  tabAlignment: TabAlignment.fill,
+                  labelStyle: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w500),
+                  automaticIndicatorColorAdjustment: true,
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+                  unselectedLabelColor: Colors.black,
+                  isScrollable: false,
+                  indicatorPadding:
+                  const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
                   ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabs: const [
+                    Tab(text: 'Monthly'),
+                    Tab(text: 'Yearly'),
+                  ],
                 ),
-                // const SizedBox(height: 10),
-                // TextButton(
-                //   onPressed: () {
-                //     // Skip for now logic
-                //     submitPlanId();
-                //   },
-                //   child:  Text(
-                //     AppLocalizations.of(context).translate('skipForNow'),
-                //     style: TextStyle(color: Colors.black87),
-                //   ),
-                // ),
-                const SizedBox(height: 30),
-              ],
-            ),
-          ):Center(child: Text("No Record Found"),)
-
-        // DefaultTabController(
-        //   length: 2, // Two tabs: Login and Sign Up
-        //   child: Column(
-        //     mainAxisSize: MainAxisSize.min,
-        //     children: [
-        //       // Tab bar with "Login" and "Sign Up"
-        //
-        //       Container(
-        //         margin: const EdgeInsets.all(16),
-        //         width: double.infinity,
-        //         decoration: BoxDecoration(
-        //           border:
-        //               Border.all(color: Colors.grey.withOpacity(0.3), width: 3),
-        //           borderRadius: BorderRadius.circular(12),
-        //         ),
-        //         child: TabBar(
-        //           tabAlignment: TabAlignment.fill,
-        //           labelStyle: const TextStyle(
-        //               color: Colors.black, fontWeight: FontWeight.w500),
-        //           automaticIndicatorColorAdjustment: true,
-        //           labelPadding: const EdgeInsets.symmetric(horizontal: 20),
-        //           unselectedLabelColor: Colors.black,
-        //           isScrollable: false,
-        //           indicatorPadding:
-        //               const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-        //           indicator: BoxDecoration(
-        //             borderRadius: BorderRadius.circular(12),
-        //             color: Colors.white,
-        //           ),
-        //           indicatorSize: TabBarIndicatorSize.tab,
-        //           tabs: const [
-        //             Tab(text: 'Monthly'),
-        //             Tab(text: 'Yearly'),
-        //           ],
-        //         ),
-        //       ),
-        //       // Tab bar content (Login and Sign Up)
-        //       Expanded(
-        //         child: TabBarView(
-        //           children: [
-        //             // Login Tab
-        //             monthlyWidget(),
-        //             // Sign Up Tab
-        //             monthlyWidget(),
-        //           ],
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
+              ),
+              // Tab bar content (Login and Sign Up)
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // Login Tab
+                    monthlyWidget(),
+                    // Sign Up Tab
+                    monthlyWidget(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -424,7 +164,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-
           SubscriptionOption(
             title: 'Free Tier',
             price: '₹100',
@@ -445,10 +184,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             },
           ),
           SubscriptionOption(
-            title: planList?[0].planName ?? "",
+            title: 'Single User Tier',
             price: '₹200',
             isChecked:  planId == 2,
-            description: planList[0].discription ?? "",
+            description: 'Lorem ipsum dolor sit amet',
             isDiscounted: true,
             discount: 'For You 50% OFF',
             onTap: () {
@@ -493,19 +232,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           ElevatedButton(
             onPressed: () {
               // Subscription action
-              // submitPlanId("");
-              if (subscriptionPlanID.isNotEmpty) {
-                setState(() {
-                  isRequestToPurchase = true;
-                });
-                _buyProduct(_getProductDetails(
-                    "${subscriptionPlanID}"));
-              }
-              else {
-                Utility().showFlushBar(context: context,
-                    message: 'Please select your bundle.',
-                    isError: true);
-              }
+              submitPlanId();
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -523,7 +250,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           TextButton(
             onPressed: () {
               // Skip for now logic
-              // submitPlanId();
+              submitPlanId();
             },
             child:  Text(
               AppLocalizations.of(context).translate('skipForNow'),
@@ -588,40 +315,42 @@ class SubscriptionOption extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: Checkbox(
-                                checkColor: Colors.white,
-                                tristate: true,
-                                value:
-                                isChecked,
-                                activeColor: isChecked
-                                    ? ColoursUtils.primaryColor
-                                    : Colors.white,
-                                shape: const CircleBorder(),
-                                onChanged: (bool? value) {
-                                  // setState(() {
-                                  //   isChecked = value!;
-                                  // });
-                                },
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: Checkbox(
+                                  checkColor: Colors.white,
+                                  tristate: true,
+                                  value:
+                                  isChecked,
+                                  activeColor: isChecked
+                                      ? ColoursUtils.primaryColor
+                                      : Colors.white,
+                                  shape: const CircleBorder(),
+                                  onChanged: (bool? value) {
+                                    // setState(() {
+                                    //   isChecked = value!;
+                                    // });
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            title,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                            const SizedBox(
+                              width: 8,
                             ),
-                          ),
-                        ],
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Text(
                         price,
@@ -645,45 +374,39 @@ class SubscriptionOption extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Html(data: description),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          // if (isDiscounted)
-          //   Align(
-          //     alignment: const Alignment(1, 1),
-          //     child: Container(
-          //       decoration: BoxDecoration(
-          //           color: Colors.blue, borderRadius: BorderRadius.circular(4)),
-          //       child: Padding(
-          //         padding:
-          //             const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
-          //         child: Text(
-          //           discount!,
-          //           style: const TextStyle(
-          //             color: Colors.white,
-          //             fontSize: 14,
-          //             fontWeight: FontWeight.normal,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
+          if (isDiscounted)
+            Align(
+              alignment: const Alignment(1, 1),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+                child: Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+                  child: Text(
+                    discount!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
-  }
-}
-class ExamplePaymentQueueDelegate implements SKPaymentQueueDelegateWrapper {
-  @override
-  bool shouldContinueTransaction(
-      SKPaymentTransactionWrapper transaction, SKStorefrontWrapper storefront) {
-    return true;
-  }
-
-  @override
-  bool shouldShowPriceConsent() {
-    return false;
   }
 }

@@ -191,7 +191,7 @@ abstract class RestClient {
       @Header(authorization) token,);
 
 
- @POST("{url}team/approve-team-member")
+   @POST("{url}team/approve-team-member")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiApproveTeamMember(@Path("url") url,
