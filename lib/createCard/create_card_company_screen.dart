@@ -893,12 +893,15 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            selectedId == null || selectedId!.isEmpty
-                ? AppLocalizations.of(context)
-          .translate('selectCompanyType')
-                : companyList
-                    .firstWhere((item) => item.id.toString() == selectedId)
-                    .companyType!,
+            // "",
+        selectedId == null || selectedId!.isEmpty
+            ? AppLocalizations.of(context).translate('selectCompanyType')
+            : (companyList != null && companyList.isNotEmpty
+            ? companyList.firstWhere(
+              (item) => item.id.toString() == selectedId,
+          orElse: () => companyList.first, // fallback item
+        ).companyType ?? ""
+            : ""),
             style: TextStyle(
               fontWeight: FontWeight.w100,
               fontSize: 16,

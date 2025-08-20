@@ -95,7 +95,7 @@ class Member {
   dynamic name;
   dynamic firstName;
   dynamic lastName;
-  Contact? contact;
+  dynamic contact;
   dynamic role;
   dynamic email;
   dynamic emailVerifiedAt;
@@ -140,7 +140,7 @@ class Member {
       firstName: json['first_name'],
       role: json['role'],
       lastName: json['last_name'],
-      contact: json["contact"] == null ? null : Contact.fromJson(json["contact"]),
+      contact: json["contact"],
       email: json['email'],
       emailVerifiedAt: json['email_verified_at'],
       mode: json['mode'],
@@ -164,7 +164,7 @@ class Member {
       'first_name': firstName,
       'role': role,
       'last_name': lastName,
-      "contact": contact?.toJson(),
+      "contact": contact,
       'email': email,
       'email_verified_at': emailVerifiedAt,
       'mode': mode,

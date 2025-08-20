@@ -116,6 +116,13 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiSetPlan(@Path("url") url,
       @Body() body, @Header(authorization) token);
 
+  @POST("{url}subscribe")
+  @Header(headerValue)
+  @Header(headerContentType)
+  @FormUrlEncoded()
+  Future<HttpResponse<UtilityDto>> apisSubscribePlan(@Path("url") url,
+      @Body() body, @Header(authorization) token);
+
  @POST("{url}card/update/{id}")
   @Header(headerValue)
   @Header(headerContentType)

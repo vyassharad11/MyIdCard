@@ -162,6 +162,20 @@ class AuthCubit extends Cubit<ResponseState> {
     }
   }
 
+  Future<void> apisSubscribePlan(body,) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    UtilityDto dto;
+    try {
+      httpResponse = await authRepository.apisSubscribePlan(body,);
+      dto = httpResponse.data as UtilityDto;
+      // await AppSession().storeAccessToken(dto.token ?? "");
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
   Future<void> apiSupport(body,) async {
     emit(ResponseStateLoading());
     HttpResponse httpResponse;

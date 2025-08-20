@@ -233,5 +233,16 @@
   "inviteMembers": "Invite Members",
   "manageGroupsMembers": "Manage groups & Members",
   "change": "Change Plan",
-  "free": "Free"
+  "free": "Free",
+  "manageT": "Manage",
+  "subscribeBy":"Subscribed by Team Subscription",
+  "gAdmin": "Group Admin",
+  "editTeam" : "Edit Team",
+  "description": "Description",
+  "logo": "Logo",
+  "uploadLogo": "Upload Logo",
+  "members&Roles": "Members & Roles",
+  "removeMember": "Remove Member",
+  "doYouWantRemove": "Do you want to remove this member ?",
+  "remove": "Remove"
 }

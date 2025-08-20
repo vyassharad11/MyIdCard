@@ -233,5 +233,8 @@
   "inviteMembers": "Inviter des membres",
   "manageGroupsMembers": "Gérer les groupes et les membres",
   "change": "changer de forfait",
-  "free": "Gratuite"
+  "free": "Gratuite",
+  "manageT": "Gérer",
+  "subscribeBy": "Abonné par abonnement d'équipe",
+  "gAdmin": "Administrateur de groupe"
 }

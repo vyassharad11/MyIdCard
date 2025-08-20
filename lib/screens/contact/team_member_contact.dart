@@ -257,15 +257,15 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                   trailing: InkWell(
                       onTap: (){
                       if(teamMember[index]
-                          .contact?.id != null && teamMember[index]
-                          .contact!.id.toString().isNotEmpty) {
+                          .contact != null && teamMember[index]
+                          .contact!.toString().isNotEmpty) {
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
                             builder: (builder) =>
                                 ContactDetails(contactId: teamMember[index]
-                                    .contact?.id ?? 0,
-                                  contactIdForMeeting: teamMember[index].id,
+                                    .contact ?? 0,
+                                  contactIdForMeeting: teamMember[index].contact,
                                   tags: [],),
                           ),
                         );
@@ -286,19 +286,19 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                       },
                       child: const Icon(Icons.more_vert)),
                   onTap: () {
-    if(teamMember[index]
-        .contact?.id != null && teamMember[index]
-        .contact!.id.toString().isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (builder) =>
-                            ContactDetails(contactId: teamMember[index]
-                                .contact?.id ?? 0,
-                              contactIdForMeeting: teamMember[index].id,
-                              tags: [],),
-                      ),
-                    );
+                    if(teamMember[index]
+                        .contact != null && teamMember[index]
+                        .contact!.toString().isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (builder) =>
+                              ContactDetails(contactId: teamMember[index]
+                                  .contact ?? 0,
+                                contactIdForMeeting: teamMember[index].contact,
+                                tags: [],),
+                        ),
+                      );
     }else{
       Utility().showFlushBar(context: context, message: "This user doesn`t have any card.");
     }

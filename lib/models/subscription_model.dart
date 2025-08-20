@@ -31,11 +31,13 @@ class SubscriptionModel {
 class SubscriptionDatum {
   int? id;
   String? planName;
+  String? android;
+  String? ios;
   String? frPlanName;
   String? discription;
   String? frDiscription;
   int? validity;
-  int? price;
+  dynamic price;
   int? noOfCard;
   int? noOfMember;
   DateTime? createdAt;
@@ -44,6 +46,8 @@ class SubscriptionDatum {
   SubscriptionDatum({
     this.id,
     this.planName,
+    this.android,
+    this.ios,
     this.frPlanName,
     this.discription,
     this.frDiscription,
@@ -58,6 +62,8 @@ class SubscriptionDatum {
   factory SubscriptionDatum.fromJson(Map<String, dynamic> json) => SubscriptionDatum(
     id: json["id"],
     planName: json["plan_name"],
+    android: json["android"],
+    ios: json["ios"],
     frPlanName: json["fr_plan_name"],
     discription: json["discription"],
     frDiscription: json["fr_discription"],

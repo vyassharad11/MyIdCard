@@ -280,11 +280,11 @@ class _AccountPageState extends State<AccountPage> {
             } else if (state is ResponseStateSuccess) {
               var dto = state.data as User;
               user = dto;
-              Storage().setIsIndivisual(user != null && user?.role != Role.free.name && user?.role != Role.individual.name);
+              Storage().setIsIndivisual(user != null && (user?.role != Role.free.name || user?.role != Role.individual.name));
               if(user != null) {
                 Storage().saveUserToPreferences(user!);
               }
-              if (user != null && user?.role != Role.free.name && user?.role != Role.individual.name) {
+              if (user != null && (user?.role != Role.free.name || user?.role != Role.individual.name)) {
                 getTeamMembers();
                 fetchTeamData();
                 fetchGroupData();
@@ -460,6 +460,20 @@ class _AccountPageState extends State<AccountPage> {
                         children: [
                           const Icon(Icons.info_outline, color: Colors.black26),
                           const SizedBox(width: 10),
+                          user?.userStatusId == 2? Text(
+                            AppLocalizations.of(context).translate(
+                                'freeTier'),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold),
+                          ):
+                          user?.role == Role.tadmin.name || user?.role == Role.gadmin.name ||user?.role == Role.member.name?
+                          Text(
+                           AppLocalizations.of(context).translate(
+                                'subscribeBy'),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold),
+                          )
+                              :
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -491,12 +505,12 @@ class _AccountPageState extends State<AccountPage> {
                                             fontWeight: FontWeight.bold),
                                       ),
 
-                                    if(user != null && user?.planId != null && user!.planId.toString().isNotEmpty && user?.planId != 1)  Text(
-                                        AppLocalizations.of(context).translate(
-                                            'manage'),
-                                        style: const TextStyle(
-                                            color: Colors.grey),
-                                      ),
+                                    // if(user != null && user?.planId != null && user!.planId.toString().isNotEmpty && user?.planId != 1 && user?.planId !=2)  Text(
+                                    //     AppLocalizations.of(context).translate(
+                                    //         'manage'),
+                                    //     style: const TextStyle(
+                                    //         color: Colors.grey),
+                                    //   ),
                                     ],
                                   ),
                                 ),
@@ -531,7 +545,7 @@ class _AccountPageState extends State<AccountPage> {
                                       //   builder: (context) => EditTeamPage(),));
                                     },
                                     child:  Text(
-                                      user?.planId == null || user?.planId ==1? AppLocalizations.of(context).translate('upgrade'):AppLocalizations.of(context).translate('change'),
+                                      user?.planId == null || user?.planId ==1? AppLocalizations.of(context).translate('upgrade'):AppLocalizations.of(context).translate('manageT'),
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 12),
                                     ),
@@ -543,12 +557,12 @@ class _AccountPageState extends State<AccountPage> {
                         ],
                       ),
                     ),
-                    if(user?.role != Role.free.name && user?.role != Role.individual.name) const SizedBox(height: 20),
+                    if(user?.userStatusId != 2 && user?.role != Role.free.name && user?.role != Role.individual.name) const SizedBox(height: 20),
                     // Team Information
-                   if(user?.role != Role.free.name && user?.role != Role.individual.name) Align(
+                   if(user?.userStatusId != 2 && user?.role != Role.free.name && user?.role != Role.individual.name) Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "${ user?.role == Role.tadmin.name ?  AppLocalizations.of(context).translate('teamAdmin') :
+                        "${ user?.role == Role.gadmin.name ?  AppLocalizations.of(context).translate('gAdmin'):user?.role == Role.tadmin.name ?  AppLocalizations.of(context).translate('teamAdmin') :
                         user?.role == Role.towner.name ?  AppLocalizations.of(context).translate('teamOwner') :user?.role == Role.member.name ?  AppLocalizations.of(context).translate('member'):user?.role == Role.free.name?  AppLocalizations.of(context).translate('free'): user?.role.toString()}",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -781,12 +795,14 @@ class _AccountPageState extends State<AccountPage> {
                         ],
                       ),
                     )
-                        : SizedBox(),
-                    if(user?.role != Role.free.name && user?.role != Role.individual.name) const SizedBox(
+                        : SizedBox(), if(
+                    (user?.role != Role.free.name ||
+                        user?.role != Role.individual.name )&&  (user?.role != Role.towner.name && user?.role != Role.tadmin.name ) &&
+                        myGroupList.isNotEmpty) const SizedBox(
                         height: 10),
                     if(
-                    user?.role != Role.free.name &&
-                    user?.role != Role.individual.name &&
+                    (user?.role != Role.free.name ||
+                    user?.role != Role.individual.name )&&  (user?.role != Role.towner.name && user?.role != Role.tadmin.name ) &&
                         myGroupList.isNotEmpty) Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -794,8 +810,8 @@ class _AccountPageState extends State<AccountPage> {
                           color: Colors.grey.withOpacity(0.2)),
                       child: ListTile(
                         onTap: () {
-                          if (user?.role != Role.free.name &&
-                              user?.role != Role.individual.name &&
+                          if ((user?.role != Role.free.name ||
+                              user?.role != Role.individual.name) &&
                               user?.role != Role.member.name &&
                               (user?.role != Role.towner.name ||
                                   user?.role != Role.tadmin.name ||
@@ -852,8 +868,8 @@ class _AccountPageState extends State<AccountPage> {
                               myGroupList[0].groupName ?? "-",
                             ),
                             if(
-                            user?.role != Role.free.name &&
-                            user?.role != Role.individual.name &&
+                            (user?.role != Role.free.name ||
+                            user?.role != Role.individual.name) &&
                                 user?.role != Role.member.name &&
                                 (user?.role != Role.towner.name ||
                                     user?.role != Role.tadmin.name ||
@@ -904,15 +920,16 @@ class _AccountPageState extends State<AccountPage> {
                     //         fontWeight: FontWeight.w500, fontSize: 14),),),
                     // ),
                     if(
-                    user?.role != Role.free.name &&
-                    user?.role != Role.individual.name &&
+                    (
+                        user?.role.toString() == Role.free.name ||
+                            user?.role.toString() == Role.individual.name ) &&
                         user?.role != Role.member.name) const SizedBox(
                         height: 20),
                     if(
                         user?.userStatusId == 2) ApprovalCard(),
-                    if(
-                    user?.role.toString() == Role.free.name &&
-                    user?.role.toString() == Role.individual.name &&
+                    if((
+                    user?.role.toString() == Role.free.name ||
+                    user?.role.toString() == Role.individual.name )&&
                         user?.teamId == null && user?.userStatusId == 1) Card(
                       elevation: 0,
                       child: Padding(
@@ -1032,8 +1049,8 @@ class _AccountPageState extends State<AccountPage> {
                     // ),
                     if((teamResponse != null && teamResponse!.data != null  &&
                         teamResponse!.data.teamDescription != null &&
-                        teamResponse!.data.teamDescription.toString().isNotEmpty )&&(user?.role == Role.towner.name ||
-                        user?.role == Role.tadmin.name || user?.role ==   Role.gadmin.name)) GestureDetector(
+                        teamResponse!.data.teamDescription.toString().isNotEmpty )&& (user?.role !=   Role.gadmin.name) && (user?.role == Role.towner.name ||
+                        user?.role == Role.tadmin.name )) GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -1078,8 +1095,8 @@ class _AccountPageState extends State<AccountPage> {
                     if((teamResponse != null && teamResponse!.data != null  &&
                         teamResponse!.data.teamDescription != null &&
                         teamResponse!.data.teamDescription.toString().isNotEmpty )&&(user?.role != null &&
-                        user?.role != Role.free.name &&
-                        user?.role != Role.individual.name &&
+                        (user?.role != Role.free.name ||
+                        user?.role != Role.individual.name )&&
                         user?.role != Role.towner.name)) GestureDetector(
                       onTap: () {
                         showLogoutDialogForLeaveTeam(context);

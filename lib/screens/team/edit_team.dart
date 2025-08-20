@@ -22,6 +22,7 @@ import 'package:http/http.dart' as http;
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/card_cubit.dart';
 import '../../bloc/cubit/team_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../models/team_member.dart';
 import '../../models/team_response.dart';
 import '../../utils/image_cropo.dart';
@@ -128,7 +129,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
           } else if (state is ResponseStateError) {
             Utility.hideLoader(context);
           } else if (state is ResponseStateSuccess) {
-            var dto = state as UtilityDto;
+            var dto = state.data as UtilityDto;
             Utility().showFlushBar(context: context, message: dto.result?.message ?? "");
             teamMember.removeAt(selectedMemberIndex);
           }
@@ -241,7 +242,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
                   ),
                   Center(
                     child: Text(
-                      "${widget.isCreate == true?"Create":"Edit"} Team",
+                      widget.isCreate == true?AppLocalizations.of(context).translate('createTeam2')
+                          :AppLocalizations.of(context).translate('editTeam'),
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w500),
@@ -274,7 +276,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
-                                'Team Name',
+                                AppLocalizations.of(context).translate('teamname'),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -288,7 +290,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                 hintStyle:
                                     TextStyle(color: Colors.grey, fontSize: 16),
                                 filled: true,
-                                hintText: "Team Name",
+                                hintText: AppLocalizations.of(context).translate('teamname'),
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 12),
                                 fillColor: ColoursUtils.background,
@@ -302,7 +304,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
-                                'Description',
+                                AppLocalizations.of(context).translate('description'),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -319,7 +321,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 12),
                                 filled: true,
-                                hintText: "Description",
+                                hintText:  AppLocalizations.of(context).translate('description'),
                                 alignLabelWithHint: false,
                                 fillColor: ColoursUtils.background,
                                 border: OutlineInputBorder(
@@ -332,7 +334,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
-                                'Logo',
+                                AppLocalizations.of(context).translate('logo'),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -405,7 +407,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                                         // Icon(Icons.cloud_upload, color: Colors.grey),
                                                         SizedBox(height: 8),
                                                         Text(
-                                                          'Upload Logo',
+                                                            AppLocalizations.of(context).translate('uploadLogo'),
                                                           style: TextStyle(
                                                               color: Colors.grey),
                                                         ),
@@ -437,7 +439,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Cancel',
+                                    child:  Text(
+                                        AppLocalizations.of(context).translate('cancel'),
                                         style: TextStyle(color: Colors.black)),
                                   ),
                                 ),
@@ -464,7 +467,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                         Utility().showFlushBar(context: context, message: "please enter description",isError: true);
                                       }
                                     },
-                                    child: const Text('Update'),
+                                    child:  Text(AppLocalizations.of(context).translate('update'))
                                   ),
                                 ),
                               ],
@@ -487,10 +490,10 @@ class _EditTeamPageState extends State<EditTeamPage> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        const Align(
+                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Members & Roles',
+                     AppLocalizations.of(context).translate('members&Roles'),
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -507,7 +510,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
                           decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 14, vertical: 1),
-                            hintText: 'Search',
+                            hintText:
+                            AppLocalizations.of(context).translate('search'),
                             hintStyle: TextStyle(color: Colors.grey),
                             filled: true,
                             fillColor: ColoursUtils.background,
@@ -577,8 +581,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Remove Member'),
-          content: Text('Do you want to remove this member ?'),
+          title: Text(AppLocalizations.of(context).translate('removeMember')),
+          content: Text(AppLocalizations.of(context).translate('doYouWantRemove')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -588,13 +592,13 @@ class _EditTeamPageState extends State<EditTeamPage> {
                 apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
                 // Close the dialog
               },
-              child: Text('Remove'),
+              child: Text(AppLocalizations.of(context).translate('remove')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context).translate('cancel')),
             ),
           ],
         );
@@ -722,7 +726,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Use Camera'),
+                  child:  Text(AppLocalizations.of(context).translate('useCamera'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.camera);
@@ -743,7 +747,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Choose from Library'),
+                  child:  Text(AppLocalizations.of(context).translate('chooseFromLibrary')),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.gallery);

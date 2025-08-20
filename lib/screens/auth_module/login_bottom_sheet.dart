@@ -281,7 +281,7 @@ class _LoginBottomSheetContentState extends State<LoginBottomSheetContent> {
         Utility.hideLoader(context);
         var dto = state.data as LoginDto;
         Storage().saveToken(dto.token.toString());
-        Storage().setIsIndivisual(dto != null && dto?.user?.role != Role.free.name && dto?.user?.role != Role.individual.name);
+        Storage().setIsIndivisual(dto != null && (dto?.user?.role != Role.free.name || dto?.user?.role != Role.individual.name));
         if(dto.user != null) {
           Storage().saveUserToPreferences(dto.user!);
         }

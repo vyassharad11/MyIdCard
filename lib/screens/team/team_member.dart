@@ -499,6 +499,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 // Perform delete action here
                 Utility.showLoader(context);
                 apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
