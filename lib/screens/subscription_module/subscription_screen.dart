@@ -62,10 +62,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     };
     _setPlanCubit?.apiSetPlan(data);
   }
-  Future<void> apisSubscribePlan(_purchaseId) async {
+
+  Future<void> apisSubscribePlan() async {
     Utility.showLoader(context);
     Map<String, dynamic> data = {
-      "plan_id": planId.toString()
+      "plan_id": planId.toString(),
+      "transaction_id": _purchaseId
     };
     _subscribePlan?.apisSubscribePlan(data);
   }
@@ -250,7 +252,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
           } else if (state is ResponseStateSuccess) {
             var dto = state.data as UtilityDto;
-            apisSubscribePlan(0);
+            apisSubscribePlan();
             Utility().showFlushBar(context: context, message: dto.message ?? "");
           }
           setState(() {});
@@ -299,8 +301,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             if(dto != null && dto.data != null && dto.data!.isNotEmpty) {
               planList.addAll(dto.data ?? []);
               print("length${planList.length}");
-              Set<String> prodIds = planList.map((e) => e.android ?? "").toSet();
-              _getIAPStoreProductsDetail(prodIds);
+              if(Platform.isIOS) {
+                Set<String> prodIds = planList.map((e) => e.ios ?? "").toSet();
+                _getIAPStoreProductsDetail(prodIds);
+              }else{
+                Set<String> prodIds = planList.map((e) => e.android ?? "").toSet();
+                _getIAPStoreProductsDetail(prodIds);
+              }
             }
             isLoad = false;
           }
