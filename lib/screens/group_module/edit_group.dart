@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../models/group_member_model.dart';
 import '../../models/group_response.dart';
 import '../../models/team_member.dart';
@@ -256,7 +257,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                   ),
                   Center(
                     child: Text(
-                      "Edit Group",
+                        AppLocalizations.of(context).translate('editGroup'),
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w500),
@@ -284,7 +285,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          'Group Name',
+                            AppLocalizations.of(context).translate('groupName'),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -301,7 +302,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
                           // labelText: 'Team Name',
                           hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
                           filled: true,
-                          hintText: "Group Name",
+                          hintText:
+                          AppLocalizations.of(context).translate('groupName'),
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                           fillColor: ColoursUtils.background,
@@ -315,7 +317,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          'Description',
+                          AppLocalizations.of(context).translate('description'),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -336,7 +338,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                           filled: true,
-                          hintText: "Description",
+                          hintText:
+                          AppLocalizations.of(context).translate('description'),
                           alignLabelWithHint: false,
                           fillColor: ColoursUtils.background,
                           border: OutlineInputBorder(
@@ -349,7 +352,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          'Logo',
+                            AppLocalizations.of(context).translate('logo'),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -419,7 +422,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                                   // Icon(Icons.cloud_upload, color: Colors.grey),
                                                   SizedBox(height: 8),
                                                   Text(
-                                                    'Upload Logo',
+                                                    AppLocalizations.of(context).translate('uploadLogo'),
                                                     style: TextStyle(
                                                         color: Colors.grey),
                                                   ),
@@ -448,7 +451,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                 ),
                               ),
                               onPressed: () {Navigator.pop(context);},
-                              child: const Text('Cancel',
+                              child:  Text(                            AppLocalizations.of(context).translate('cancel'),
                                   style: TextStyle(color: Colors.black)),
                             ),
                           ),
@@ -472,7 +475,9 @@ class _EditGroupPageState extends State<EditGroupPage> {
 
                                 // editGroup(cardImage: _selectedImage ?? File(""),);
                               },
-                              child: const Text('Save'),
+                              child: Text(
+                                AppLocalizations.of(context).translate('save'),
+                              ),
                             ),
                           ),
                         ],
@@ -499,7 +504,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Members & Roles',
+                            AppLocalizations.of(context).translate('members&Roles'),
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                        if(widget.role == Role.towner.name || widget.role == Role.tadmin.name)   InkWell(
@@ -538,7 +543,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 14, vertical: 1),
-                          hintText: 'Search',
+                          hintText:
+                          AppLocalizations.of(context).translate('search'),
                           hintStyle: TextStyle(color: Colors.grey),
                           filled: true,
                           fillColor: ColoursUtils.background,
@@ -763,7 +769,9 @@ class _EditGroupPageState extends State<EditGroupPage> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Use Camera'),
+                  child: Text(
+                      AppLocalizations.of(context).translate('useCamera'),
+                      ),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.camera);
@@ -784,7 +792,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Choose from Library'),
+                  child: Text(
+                      AppLocalizations.of(context).translate('chooseFromLibrary'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.gallery);

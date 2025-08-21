@@ -244,5 +244,7 @@
   "members&Roles": "Members & Roles",
   "removeMember": "Remove Member",
   "doYouWantRemove": "Do you want to remove this member ?",
-  "remove": "Remove"
+  "remove": "Remove",
+  "editGroup": "Edit Group",
+  "groupName": "Group Name"
 }
