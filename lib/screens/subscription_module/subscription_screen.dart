@@ -32,7 +32,7 @@ import 'package:http/http.dart' as http;
 class SubscriptionScreen extends StatefulWidget {
   final  bool? isFromCreateProfile;
   int?planId;
-   SubscriptionScreen({super.key,this.isFromCreateProfile = false,this.planId});
+  SubscriptionScreen({super.key,this.isFromCreateProfile = false,this.planId});
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -42,6 +42,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   int planId = 1;
   AuthCubit? _setPlanCubit,planCubit,_subscribePlan;
   List<SubscriptionDatum> planList = [];
+  List<SubscriptionDatum> monthlyPlanList = [];
+  List<SubscriptionDatum> yearlyPlanList = [];
   InAppPurchase? _iap;
   List<ProductDetails> _products = [];
   late StreamSubscription _subscription;
@@ -49,6 +51,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   PurchaseDetails? _purchaseDetails;
   bool isRequestToPurchase = false;
   var _purchaseId = "";
+  String price = "";
+  String planType = "";
   String monthlyPriceForAllCounty = "";
   String yearlyPriceForAllCounty = "";
   String symbolForAllCounty = "";
@@ -65,15 +69,56 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   Future<void> apisSubscribePlan() async {
     Utility.showLoader(context);
+    DateTime today = DateTime.now();
+    DateTime oneMonthLater = addMonths(today, 1);
+    DateTime oneYearLater = addYears(today, 1);
     Map<String, dynamic> data = {
       "plan_id": planId.toString(),
-      "transaction_id": _purchaseId
+      "transaction_id": _purchaseId,
+      "status":"done",
+      "amount":price,
+      "coupon_id":"",
+      "start_date":today.toString(),
+      "end_date": planType == "monthly"?oneMonthLater.toString():oneYearLater.toString()
+
     };
     _subscribePlan?.apisSubscribePlan(data);
   }
 
+  DateTime addMonths(DateTime date, int monthsToAdd) {
+    int newYear = date.year;
+    int newMonth = date.month + monthsToAdd;
+    while (newMonth > 12) {
+      newMonth -= 12;
+      newYear++;
+    }
+
+    int day = date.day;
+    int lastDayOfNewMonth = DateTime(newYear, newMonth + 1, 0).day;
+    if (day > lastDayOfNewMonth) {
+      day = lastDayOfNewMonth;
+    }
+
+    return DateTime(newYear, newMonth, day, date.hour, date.minute, date.second);
+  }
+
+  DateTime addYears(DateTime date, int yearsToAdd) {
+    int newYear = date.year + yearsToAdd;
+    int newMonth = date.month;
+
+    int day = date.day;
+    int lastDayOfNewMonth = DateTime(newYear, newMonth + 1, 0).day;
+    if (day > lastDayOfNewMonth) {
+      day = lastDayOfNewMonth;
+    }
+
+    return DateTime(newYear, newMonth, day, date.hour, date.minute, date.second);
+  }
+
+
   @override
   void initState() {
+    planId == widget.planId ?? 0;
     _setPlanCubit = AuthCubit(AuthRepository());
     _subscribePlan = AuthCubit(AuthRepository());
     planCubit = AuthCubit(AuthRepository());
@@ -101,17 +146,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     _iap = InAppPurchase.instance;
     bool? isAvailable = await _iap?.isAvailable();
     if (!isAvailable!) {
-      debugPrint("===IAP is Available: $isAvailable");
+      print("===IAP is Available: $isAvailable");
       return;
     }
 
-    _subscription = _iap!.purchaseStream.listen((List<PurchaseDetails> purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
+    _subscription = _iap!.purchaseStream.listen(
+            (List<PurchaseDetails> purchaseDetailsList) {
+          _listenToPurchaseUpdated(purchaseDetailsList);
+        }, onDone: () {
       _subscription.cancel();
     }, onError: (Object error) {
       // handle error here.
-      debugPrint("===IAP onError: ${error}");
+      print("===IAP onError: ${error}");
     });
 
     if (Platform.isIOS) {
@@ -182,22 +228,46 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       }
     }
   }
-
   ProductDetails _getProductDetails(String productId) {
-    // print("PLAN ID ==> $planID        SUBPLANID ==> $subscriptionPlanID");
-    ProductDetails proDetails =
-    _products.where((element) => element.id == productId).toList()[0];
+    print(">>> Entered _getProductDetails for $productId");
+    for (var p in _products) {
+      print("Available product: ${p.id}");
+    }
+    final matched = _products.where((element) => element.id == productId).toList();
+
+    if (matched.isEmpty) {
+      print("⚠️ No product found for ID: $productId. Products list: $_products");
+      // return null;
+    }
+
+    final proDetails = matched.first;
+    print("PLAN ID ==> $proDetails   <><><>$productId    SUBPLANID ==> $subscriptionPlanID");
+
     return proDetails;
   }
 
+
   // Method to retrieve product list
+
+  // Future<void> _getIAPStoreProductsDetail(Set<String> productIds) async {
+  //   ProductDetailsResponse response =
+  //   await _iap!.queryProductDetails(productIds);
+  //   setState(() {
+  //     _products.addAll(response.productDetails);
+  //   });
+  // }
   Future<void> _getIAPStoreProductsDetail(Set<String> productIds) async {
+    print("freee>>>>>>>>>>>>>$productIds");
     ProductDetailsResponse response =
     await _iap!.queryProductDetails(productIds);
     setState(() {
+      print("response.productDetails${response.productDetails}>>${response.productDetails.length}");
       _products.addAll(response.productDetails);
       for (var e in response.productDetails) {
         symbolForAllCounty = e.currencySymbol ?? "";
+        print("storeproduct ====  11111 ${e.title}");
+        print("storeproduct ====  11111 ${e.currencySymbol}");
+        print("storeproduct ====  11111 ${e.price}");
         if(e.title.toLowerCase().contains("yearly")) {
           yearlyPriceForAllCounty = e.price ?? "";
         }else {
@@ -215,9 +285,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   // Method to purchase a product
   void _buyProduct(ProductDetails prod) {
+    print("_buyProduct Methode ==> $prod");
     final PurchaseParam purchaseParam = PurchaseParam(productDetails: prod);
     _iap?.buyNonConsumable(purchaseParam: purchaseParam);
   }
+
 
   //
   // callBuyRechargePointApi(String purchaseId) {
@@ -252,8 +324,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
           } else if (state is ResponseStateSuccess) {
             var dto = state.data as UtilityDto;
-            apisSubscribePlan();
-            Utility().showFlushBar(context: context, message: dto.message ?? "");
+            if(planId == 1){
+              Utility.hideLoader(context);
+              if(widget.isFromCreateProfile == true) {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+              }else{
+                Navigator.pop(context);
+              }
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
+            }else {
+              apisSubscribePlan();
+            }
           }
           setState(() {});
         },),
@@ -300,13 +382,42 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             var dto = state.data as SubscriptionModel;
             if(dto != null && dto.data != null && dto.data!.isNotEmpty) {
               planList.addAll(dto.data ?? []);
+              planList.forEach((element) {
+                print("planType>>>>>${element.type}");
+                if(element.id.toString() == "1"){
+                  print("plan>>>ssssss>>${element.id}");
+                  monthlyPlanList.add(element);
+                  yearlyPlanList.add(element);
+                }
+                if(element?.type == "monthly"){
+                  print("plan>>>ddddd>>${element.id}");
+                  monthlyPlanList.add(element);
+                }else if(element?.type == "yearly"){
+                  print("plan>>>yyyyy>>${element.id}");
+                  yearlyPlanList.add(element);
+                }
+              },);
+              monthlyPlanList.forEach((element) {
+                print("plan>>>nsmer>>${element.planName}");
+
+              },);
               print("length${planList.length}");
               if(Platform.isIOS) {
-                Set<String> prodIds = planList.map((e) => e.ios ?? "").toSet();
-                _getIAPStoreProductsDetail(prodIds);
+                Set<String>? proIds = planList
+                    ?.map((e) =>
+                e.ios.toString() ?? "")
+                    .toSet();
+                if (proIds != null) {
+                  _getIAPStoreProductsDetail(proIds);
+                }
               }else{
-                Set<String> prodIds = planList.map((e) => e.android ?? "").toSet();
-                _getIAPStoreProductsDetail(prodIds);
+                Set<String>? proIds = planList
+                    ?.map((e) =>
+                e.android.toString() ?? "")
+                    .toSet();
+                if (proIds != null) {
+                  _getIAPStoreProductsDetail(proIds);
+                }
               }
             }
             isLoad = false;
@@ -336,57 +447,121 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.only(right: 16,left: 16,bottom: 16),
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return SubscriptionOption(
-                        title: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?
-                        planList[index].planName ?? "":planList[index].frPlanName ?? "",
-                        price: planList[index].price.toString() ?? "",
-                        isChecked: planId == planList[index].id,
-                        description:  Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?
-                        planList[index].discription ?? "":planList[index].frDiscription ?? "",
-                        // discount: 'selected',
-                        // isDiscounted: false,
-                        onTap: () {
-                          debugPrint("ontap----");
-                          setState(() {
-                            // ischecked = !ischecked;
-                            planId = planList[index].id ?? 0;
-                            subscriptionPlanID = planList[index].android ?? "";
-                            setState(() {
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.withOpacity(0.3), width: 3),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: TabBar(
+                          tabAlignment: TabAlignment.fill,
+                          labelStyle: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                          unselectedLabelColor: Colors.black,
+                          isScrollable: false,
+                          indicatorPadding:
+                          const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          indicator: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                          ),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          tabs: const [
+                            Tab(text: 'Monthly'),
+                            Tab(text: 'Yearly'),
+                          ],
+                        ),
+                      ),
+                      Expanded( // ✅ now works correctly
+                        child: TabBarView(
+                          children: [
+                            /// monthly list
+                            ListView.separated(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              itemCount: monthlyPlanList.length,
+                              separatorBuilder: (_, __) => const SizedBox(height: 0),
+                              itemBuilder: (context, index) {
+                                return SubscriptionOption(
+                                  title: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
+                                      ? monthlyPlanList[index].planName ?? ""
+                                      : monthlyPlanList[index].frPlanName ?? "",
+                                  price: monthlyPlanList[index].price.toString(),
+                                  isChecked: planId == monthlyPlanList[index].id,
+                                  description: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
+                                      ? monthlyPlanList[index].discription ?? ""
+                                      : monthlyPlanList[index].frDiscription ?? "",
+                                  onTap: () {
+                                    setState(() {
+                                      price = monthlyPlanList[index].price.toString();
+                                      planType = monthlyPlanList[index].type.toString();
+                                      planId = monthlyPlanList[index].id ?? 0;
+                                      subscriptionPlanID =Platform.isIOS ? monthlyPlanList[index].ios ?? "" :  monthlyPlanList[index].android ?? "";
+                                    });
+                                  },
+                                );
+                              },
+                            ),
 
-                            });
-                          });
-                          // Subscription logic for Free Tier
-                        },
-                      );
-                    }, separatorBuilder: (context, index) {
-                  return SizedBox(height: 0,);
-
-                }, itemCount: planList.length ?? 0),
+                            /// yearly list
+                            ListView.separated(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              itemCount: yearlyPlanList.length,
+                              separatorBuilder: (_, __) => const SizedBox(height: 0),
+                              itemBuilder: (context, index) {
+                                return SubscriptionOption(
+                                  title: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
+                                      ? yearlyPlanList[index].planName ?? ""
+                                      : yearlyPlanList[index].frPlanName ?? "",
+                                  price: yearlyPlanList[index].price.toString(),
+                                  isChecked: planId == yearlyPlanList[index].id,
+                                  description: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
+                                      ? yearlyPlanList[index].discription ?? ""
+                                      : yearlyPlanList[index].frDiscription ?? "",
+                                  onTap: () {
+                                    setState(() {
+                                      price = monthlyPlanList[index].price.toString();
+                                      planId = yearlyPlanList[index].id ?? 0;
+                                      planType = monthlyPlanList[index].type.toString();
+                                      subscriptionPlanID =Platform.isIOS ? monthlyPlanList[index].ios ?? "" :  monthlyPlanList[index].android ?? "";
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
+
+              // ✅ Button stays fixed below TabBarView
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
                 child: ElevatedButton(
                   onPressed: () {
-                    if (subscriptionPlanID.isNotEmpty) {
+                    if (widget.planId == planId) {
+                      Navigator.pop(context);
+                    } else if (planId == 1) {
+                      submitPlanId("");
+                    } else if (subscriptionPlanID.isNotEmpty) {
                       setState(() {
                         isRequestToPurchase = true;
                       });
-                      _buyProduct(_getProductDetails(
-                          "${subscriptionPlanID}"));
+                      _buyProduct(_getProductDetails(subscriptionPlanID));
+                    } else {
+                      Utility().showFlushBar(
+                        context: context,
+                        message: 'Please select your bundle.',
+                        isError: true,
+                      );
                     }
-                    else {
-                      Utility().showFlushBar(context: context,
-                          message: 'Please select your bundle.',
-                          isError: true);
-                    }
-                    // Subscription action
-                    // submitPlanId();
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -397,75 +572,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                   child: Text(
                     AppLocalizations.of(context).translate('subscribe'),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
               // const SizedBox(height: 10),
-              // TextButton(
-              //   onPressed: () {
-              //     // Skip for now logic
-              //     submitPlanId();
-              //   },
-              //   child:  Text(
-              //     AppLocalizations.of(context).translate('skipForNow'),
-              //     style: TextStyle(color: Colors.black87),
-              //   ),
-              // ),
-              const SizedBox(height: 30),
+              TextButton(
+                onPressed: () {
+                  // Skip for now logic
+                  submitPlanId("");
+                },
+                child:  Text(
+                  AppLocalizations.of(context).translate('skipForNow'),
+                  style: TextStyle(color: Colors.black87),
+                ),
+              ),
+              const SizedBox(height: 16),
             ],
           ):Center(child: Text("No Record Found"),)
-
-        // DefaultTabController(
-        //   length: 2, // Two tabs: Login and Sign Up
-        //   child: Column(
-        //     mainAxisSize: MainAxisSize.min,
-        //     children: [
-        //       // Tab bar with "Login" and "Sign Up"
-        //
-        //       Container(
-        //         margin: const EdgeInsets.all(16),
-        //         width: double.infinity,
-        //         decoration: BoxDecoration(
-        //           border:
-        //               Border.all(color: Colors.grey.withOpacity(0.3), width: 3),
-        //           borderRadius: BorderRadius.circular(12),
-        //         ),
-        //         child: TabBar(
-        //           tabAlignment: TabAlignment.fill,
-        //           labelStyle: const TextStyle(
-        //               color: Colors.black, fontWeight: FontWeight.w500),
-        //           automaticIndicatorColorAdjustment: true,
-        //           labelPadding: const EdgeInsets.symmetric(horizontal: 20),
-        //           unselectedLabelColor: Colors.black,
-        //           isScrollable: false,
-        //           indicatorPadding:
-        //               const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-        //           indicator: BoxDecoration(
-        //             borderRadius: BorderRadius.circular(12),
-        //             color: Colors.white,
-        //           ),
-        //           indicatorSize: TabBarIndicatorSize.tab,
-        //           tabs: const [
-        //             Tab(text: 'Monthly'),
-        //             Tab(text: 'Yearly'),
-        //           ],
-        //         ),
-        //       ),
-        //       // Tab bar content (Login and Sign Up)
-        //       Expanded(
-        //         child: TabBarView(
-        //           children: [
-        //             // Login Tab
-        //             monthlyWidget(),
-        //             // Sign Up Tab
-        //             monthlyWidget(),
-        //           ],
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

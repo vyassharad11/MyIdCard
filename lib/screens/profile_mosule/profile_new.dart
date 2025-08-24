@@ -467,11 +467,22 @@ class _AccountPageState extends State<AccountPage> {
                                 fontWeight: FontWeight.bold),
                           ):
                           user?.role == Role.tadmin.name || user?.role == Role.gadmin.name ||user?.role == Role.member.name?
-                          Text(
-                           AppLocalizations.of(context).translate(
-                                'subscribeBy'),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context).translate(
+                                    'subscribeBy'),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                AppLocalizations.of(context).translate(
+                                    'manage'),
+                                style: const TextStyle(
+                                    color: Colors.grey),
+                              ),
+                            ],
                           )
                               :
                           GestureDetector(
