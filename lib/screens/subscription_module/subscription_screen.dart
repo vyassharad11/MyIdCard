@@ -40,7 +40,7 @@ class SubscriptionScreen extends StatefulWidget {
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   int planId = 1;
-  AuthCubit? _setPlanCubit,planCubit,_subscribePlan;
+  AuthCubit? _setPlanCubit,planCubit,_subscribePlan,_freePlanCubit;
   List<SubscriptionDatum> planList = [];
   List<SubscriptionDatum> monthlyPlanList = [];
   List<SubscriptionDatum> yearlyPlanList = [];
@@ -53,8 +53,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   var _purchaseId = "";
   String price = "";
   String planType = "";
-  String monthlyPriceForAllCounty = "";
-  String yearlyPriceForAllCounty = "";
+  String monthlyPriceIndividual = "";
+  String monthlyPriceTeam = "";
+  String yearlyPriceIndividual = "";
+  String yearlyPriceTeam = "";
   String symbolForAllCounty = "";
   String subscriptionPlanID = "";
 
@@ -65,6 +67,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       "plan_id": planId.toString()
     };
     _setPlanCubit?.apiSetPlan(data);
+  }
+
+  Future<void> freePlanSetApi() async {
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "plan_id": "1"
+    };
+    _freePlanCubit?.apiSetPlan(data);
   }
 
   Future<void> apisSubscribePlan() async {
@@ -120,6 +130,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void initState() {
     planId == widget.planId ?? 0;
     _setPlanCubit = AuthCubit(AuthRepository());
+    _freePlanCubit = AuthCubit(AuthRepository());
     _subscribePlan = AuthCubit(AuthRepository());
     planCubit = AuthCubit(AuthRepository());
     planCubit?.apiGetPlan();
@@ -132,7 +143,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void dispose() {
     _setPlanCubit?.close();
     _subscribePlan?.close();
+    _freePlanCubit?.close();
     planCubit?.close();
+    _freePlanCubit = null;
     _subscribePlan = null;
     _setPlanCubit = null;
     planCubit = null;
@@ -265,16 +278,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       _products.addAll(response.productDetails);
       for (var e in response.productDetails) {
         symbolForAllCounty = e.currencySymbol ?? "";
-        print("storeproduct ====  11111 ${e.title}");
+        print("storeproduct ====  11111ssss ${e.id}");
         print("storeproduct ====  11111 ${e.currencySymbol}");
         print("storeproduct ====  11111 ${e.price}");
-        if(e.title.toLowerCase().contains("yearly")) {
-          yearlyPriceForAllCounty = e.price ?? "";
-        }else {
-          monthlyPriceForAllCounty = e.price ?? "";
-          print("storeproduct ====  11111 ${e.title}");
-          print("storeproduct ====  11111 ${e.currencySymbol}");
-          print("storeproduct ====  11111 ${e.price}");
+        if(e.id == "com.mydicard.mydicard.individual") {
+          monthlyPriceIndividual = e.price ?? "";
+        }else if(e.id == "com.mydicard.mydicard.individual.annual") {
+          yearlyPriceIndividual = e.price ?? "";
+        }else if(e.id == "com.mydicard.mydicard.team") {
+          monthlyPriceTeam = e.price ?? "";
+        }else if(e.id == "com.mydicard.mydicard.team.annual"){
+          yearlyPriceTeam = e.price ?? "";
         }
 
       }
@@ -309,6 +323,32 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(listeners: [
+      BlocListener<AuthCubit, ResponseState>(
+        bloc: _freePlanCubit,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+            Utility().showFlushBar(context: context, message: state.message,isError: true);
+          } else if (state is ResponseStateNoInternet) {
+            Utility.hideLoader(context);
+            Utility().showFlushBar(context: context, message: state.message,isError: true);
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+            Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+          } else if (state is ResponseStateSuccess) {
+            var dto = state.data as UtilityDto;
+              Utility.hideLoader(context);
+              if(widget.isFromCreateProfile == true) {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+              }else{
+                Navigator.pop(context);
+              }
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
+          }
+          setState(() {});
+        },),
       BlocListener<AuthCubit, ResponseState>(
         bloc: _setPlanCubit,
         listener: (context, state) {
@@ -487,10 +527,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               separatorBuilder: (_, __) => const SizedBox(height: 0),
                               itemBuilder: (context, index) {
                                 return SubscriptionOption(
+                                  monthYear: "month",
                                   title: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? monthlyPlanList[index].planName ?? ""
                                       : monthlyPlanList[index].frPlanName ?? "",
-                                  price: monthlyPlanList[index].price.toString(),
+                                  price: index == 0?  "0${symbolForAllCounty}" :"${index ==1 ?monthlyPriceIndividual.toString():monthlyPriceTeam}${symbolForAllCounty}",
                                   isChecked: planId == monthlyPlanList[index].id,
                                   description: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? monthlyPlanList[index].discription ?? ""
@@ -514,10 +555,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               separatorBuilder: (_, __) => const SizedBox(height: 0),
                               itemBuilder: (context, index) {
                                 return SubscriptionOption(
+                                  monthYear: "year",
                                   title: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? yearlyPlanList[index].planName ?? ""
                                       : yearlyPlanList[index].frPlanName ?? "",
-                                  price: yearlyPlanList[index].price.toString(),
+                                  price: index == 0?  "0${symbolForAllCounty}" :"${index == 1?yearlyPriceIndividual.toString():yearlyPriceTeam}${symbolForAllCounty}",
                                   isChecked: planId == yearlyPlanList[index].id,
                                   description: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? yearlyPlanList[index].discription ?? ""
@@ -580,7 +622,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               TextButton(
                 onPressed: () {
                   // Skip for now logic
-                  submitPlanId("");
+                  freePlanSetApi();
                 },
                 child:  Text(
                   AppLocalizations.of(context).translate('skipForNow'),
@@ -589,135 +631,19 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               ),
               const SizedBox(height: 16),
             ],
-          ):Center(child: Text("No Record Found"),)
+          ) :Center(child: Text("No Record Found"),)
       ),
     );
   }
 
   bool ischecked = false;
 
-  Widget monthlyWidget() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-
-          SubscriptionOption(
-            title: 'Free Tier',
-            price: '₹100',
-            isChecked: planId == 1,
-            description: 'Lorem ipsum dolor sit amet',
-            discount: 'selected',
-            isDiscounted: false,
-            onTap: () {
-              debugPrint("ontap----");
-              setState(() {
-                // ischecked = !ischecked;
-                planId = 1;
-                setState(() {
-
-                });
-              });
-              // Subscription logic for Free Tier
-            },
-          ),
-          SubscriptionOption(
-            title: planList?[0].planName ?? "",
-            price: '₹200',
-            isChecked:  planId == 2,
-            description: planList[0].discription ?? "",
-            isDiscounted: true,
-            discount: 'For You 50% OFF',
-            onTap: () {
-              planId = 2;
-              setState(() {
-              });
-              // Subscription logic for Single User Tier
-            },
-          ),
-          SubscriptionOption(
-            title: 'Small Team Tier',
-            price: '₹400',
-            isChecked:  planId == 3,
-            description: 'Lorem ipsum dolor sit amet',
-            isDiscounted: false,
-            onTap: () {
-              planId = 3;
-              setState(() {
-
-              });
-              // Subscription logic for Small Team Tier
-              setState(() {
-                ischecked = !ischecked;
-              });
-            },
-          ),
-          SubscriptionOption(
-            title: 'Big Team Tier',
-            price: '₹800',
-            isChecked:  planId == 4,
-            description: 'Lorem ipsum dolor sit amet',
-            isDiscounted: false,
-            onTap: () {
-              planId = 4;
-              setState(() {
-
-              });
-              // Subscription logic for Big Team Tier
-            },
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Subscription action
-              // submitPlanId("");
-              if (subscriptionPlanID.isNotEmpty) {
-                setState(() {
-                  isRequestToPurchase = true;
-                });
-                _buyProduct(_getProductDetails(
-                    "${subscriptionPlanID}"));
-              }
-              else {
-                Utility().showFlushBar(context: context,
-                    message: 'Please select your bundle.',
-                    isError: true);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0),
-              ),
-              minimumSize: const Size(double.infinity, 50),
-              backgroundColor: Colors.blue.withOpacity(0.5),
-            ),
-            child: Text(
-              AppLocalizations.of(context).translate('subscribe'),
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              // Skip for now logic
-              // submitPlanId();
-            },
-            child:  Text(
-              AppLocalizations.of(context).translate('skipForNow'),
-              style: TextStyle(color: Colors.black87),
-            ),
-          ),
-          const SizedBox(height: 30),
-        ],
-      ),
-    );
-  }
 }
 
 class SubscriptionOption extends StatelessWidget {
   final String title;
   final String price;
+  final String monthYear;
   final String description;
   final String? discount;
   final bool isDiscounted;
@@ -727,6 +653,7 @@ class SubscriptionOption extends StatelessWidget {
   const SubscriptionOption({super.key,
     required this.title,
     required this.price,
+    required this.monthYear,
     required this.isChecked,
     required this.description,
     this.discount,
@@ -791,7 +718,7 @@ class SubscriptionOption extends StatelessWidget {
                             width: 8,
                           ),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width - 210,
+                            width: MediaQuery.of(context).size.width - 230,
                             child: Text(
                               title,
                               overflow: TextOverflow.fade,
@@ -815,7 +742,7 @@ class SubscriptionOption extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "/month",
+                        "/${monthYear}",
                         softWrap: true,
                         textAlign: TextAlign.end,
                         style: TextStyle(
