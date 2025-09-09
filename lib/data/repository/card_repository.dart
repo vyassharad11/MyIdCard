@@ -15,6 +15,7 @@ import '../../models/utility_dto.dart';
 import '../../utils/widgets/network.dart';
 import '../network/logging_interceptor.dart';
 import '../network/rest_client.dart';
+import 'auth_repository.dart';
 
 class CardRepository {
   final Dio _dio = Dio();
@@ -60,41 +61,41 @@ class CardRepository {
     return httpResponse;
 
 
-    return _apiClient.cardUpdateApi(dto,body,token2,id);
+    return _apiClient.cardUpdateApi(dto,body,token2,id,language);
   }
   Future<HttpResponse<UtilityDto>> cardUpdateApiOld(body,id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.cardUpdateApi(dto,body,token2,id);
+    return _apiClient.cardUpdateApi(dto,body,token2,id,language);
   }
 
   Future<HttpResponse<CompanyTypeModel>> apiGetCompanyType() async {
     var url = await Network.baseUrl;
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
-    return _apiClient.apiGetCompanyType(url, token2);
+    return _apiClient.apiGetCompanyType(url, token2,language);
   }
 
   Future<HttpResponse<GetCardModel>> apiGetCard(id) async {
     var url = await Network.baseUrl;
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
-    return _apiClient.apiGetCard(url, token2,id);
+    return _apiClient.apiGetCard(url, token2,id,language);
   }
 
   Future<HttpResponse<CardListModel>> apiGetMyCard() async {
     var url = await Network.baseUrl;
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
-    return _apiClient.apiGetMyCard(url, token2,);
+    return _apiClient.apiGetMyCard(url, token2,language);
   }
 
  Future<HttpResponse<SocialForCard>> apiGetSocials() async {
     var url = await Network.baseUrl;
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
-    return _apiClient.apiGetSocials(url, token2,);
+    return _apiClient.apiGetSocials(url, token2,language);
   }
 
 
@@ -102,14 +103,14 @@ class CardRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteCard(dto,token2,id);
+    return _apiClient.apiDeleteCard(dto,token2,id,language);
   }
 
   Future<HttpResponse<BackgroundImageModel>> apiGetBackgroundImage() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetBackgroundImage(dto,token2,);
+    return _apiClient.apiGetBackgroundImage(dto,token2,language);
   }
 
 }

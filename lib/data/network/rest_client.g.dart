@@ -27,10 +27,12 @@ class _RestClient implements RestClient {
   Future<HttpResponse<UtilityDto>> apiSignUp(
     dynamic url,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Accept-Language': language};
+    _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
       method: 'POST',
@@ -65,10 +67,12 @@ class _RestClient implements RestClient {
   Future<HttpResponse<LoginDto>> apiSignIn(
     dynamic url,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Accept-Language': language};
+    _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<LoginDto>>(Options(
       method: 'POST',
@@ -103,10 +107,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<User>> apiUserProfile(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<User>>(Options(
@@ -142,10 +150,12 @@ class _RestClient implements RestClient {
   Future<HttpResponse<LoginDto>> apiSignupGoogle(
     dynamic url,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Accept-Language': language};
+    _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<LoginDto>>(Options(
       method: 'POST',
@@ -180,10 +190,12 @@ class _RestClient implements RestClient {
   Future<HttpResponse<LoginDto>> apiSignupApple(
     dynamic url,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Accept-Language': language};
+    _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<LoginDto>>(Options(
       method: 'POST',
@@ -218,10 +230,12 @@ class _RestClient implements RestClient {
   Future<HttpResponse<LoginDto>> otpRegisterApi(
     dynamic url,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Accept-Language': language};
+    _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<LoginDto>>(Options(
       method: 'POST',
@@ -256,10 +270,12 @@ class _RestClient implements RestClient {
   Future<HttpResponse<UtilityDto>> otpResendApi(
     dynamic url,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Accept-Language': language};
+    _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
       method: 'POST',
@@ -295,10 +311,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic body,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<LoginDto>>(Options(
@@ -335,11 +355,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic body,
     dynamic token,
-  ) async
-  {
+    dynamic language,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -376,11 +399,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic body,
     dynamic token,
-  ) async
-  {
+    dynamic language,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -418,10 +444,14 @@ class _RestClient implements RestClient {
     dynamic body,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -457,10 +487,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<CompanyTypeModel>> apiGetCompanyType(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<CompanyTypeModel>>(Options(
@@ -496,10 +530,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<GetCardModel>>(Options(
@@ -534,10 +572,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<CardListModel>> apiGetMyCard(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<CardListModel>>(Options(
@@ -572,10 +614,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<SocialForCard>> apiGetSocials(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<SocialForCard>>(Options(
@@ -611,10 +657,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -652,12 +702,14 @@ class _RestClient implements RestClient {
     dynamic id,
     dynamic headerContentTypeMul,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Authorization': token,
       r'Accept': headerContentTypeMul,
+      r'Accept-Language': language,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
@@ -693,10 +745,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<TeamResponse>> apiGetMyTeam(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<TeamResponse>>(Options(
@@ -732,10 +788,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<TeamMembersResponse>>(Options(
@@ -771,10 +831,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -809,10 +873,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<UtilityDto>> apiLeaveTeam(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -848,10 +916,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -887,10 +959,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<TeamMembersResponse>>(Options(
@@ -926,10 +1002,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -965,10 +1045,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1005,10 +1089,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic body,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1044,10 +1132,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1083,10 +1175,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<GroupDataModel>>(Options(
@@ -1121,10 +1217,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<MyGroupListModel>> apiGetMyGroups(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<MyGroupListModel>>(Options(
@@ -1161,10 +1261,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic id,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<GroupMember>>(Options(
@@ -1200,10 +1304,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<GroupMember>>(Options(
@@ -1239,10 +1347,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<GroupDataModel>>(Options(
@@ -1278,10 +1390,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<GroupMember>>(Options(
@@ -1317,10 +1433,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1356,10 +1476,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1395,10 +1519,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1434,10 +1562,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1473,10 +1605,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1512,10 +1648,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<TagModel>>(Options(
@@ -1552,10 +1692,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic body,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1591,10 +1735,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1630,10 +1778,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<MyContactDto>>(Options(
@@ -1668,10 +1820,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<RecentContactDto>> apiGetRecentContact(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<RecentContactDto>>(Options(
@@ -1707,10 +1863,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<ContactDetailsDto>>(Options(
@@ -1746,10 +1906,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1785,10 +1949,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1824,10 +1992,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1864,10 +2036,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic body,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1903,10 +2079,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -1942,10 +2122,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<MyMeetingModel>>(Options(
@@ -1981,10 +2165,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<MeetingDetailsModel>>(Options(
@@ -2020,10 +2208,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<TagModel>>(Options(
@@ -2059,10 +2251,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2099,10 +2295,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic body,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2138,10 +2338,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2177,10 +2381,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2217,10 +2425,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic id,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2257,10 +2469,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic id,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2297,10 +2513,14 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic id,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2336,10 +2556,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2375,10 +2599,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2413,10 +2641,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<UtilityDto>> apiGetTerms(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2451,10 +2683,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<UtilityDto>> apiGetPrivacy(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2491,13 +2727,17 @@ class _RestClient implements RestClient {
     dynamic token,
     dynamic limit,
     dynamic offset,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'limit': limit,
       r'offset': offset,
     };
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<NotificationModel>>(Options(
@@ -2533,10 +2773,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic id,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(
@@ -2571,10 +2815,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<SubscriptionModel>> apiGetPlan(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<SubscriptionModel>>(Options(
@@ -2609,10 +2857,14 @@ class _RestClient implements RestClient {
   Future<HttpResponse<BackgroundImageModel>> apiGetBackgroundImage(
     dynamic url,
     dynamic token,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<BackgroundImageModel>>(Options(
@@ -2648,10 +2900,14 @@ class _RestClient implements RestClient {
     dynamic url,
     dynamic token,
     dynamic body,
+    dynamic language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'Accept-Language': language,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = body;
     final _options = _setStreamType<HttpResponse<UtilityDto>>(Options(

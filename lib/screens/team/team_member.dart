@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/team_cubit.dart';
 import '../../data/repository/team_repository.dart';
+import '../../language/app_localizations.dart';
 import '../../models/team_member.dart';
 import '../../utils/utility.dart';
 
@@ -232,7 +233,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                   ),
                   Center(
                     child: Text(
-                      "Team Members",
+                        AppLocalizations.of(context).translate('teamMembers'),
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w600),
@@ -259,10 +260,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Padding(
+                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.0),
                         child: Text(
-                          'Invite Members',
+                            AppLocalizations.of(context).translate('inviteMembers'),
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w700),
                         ),
@@ -280,7 +281,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 
                                 await Share.share(
                                   widget.teamCode ?? "",
-                                  subject: "Join My Team!",
+                                  subject: AppLocalizations.of(context).translate('joinMyTeam'),
                                   sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                                 );
                                 // FlutterShare.share(
@@ -316,7 +317,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Pending Request',
+                      AppLocalizations.of(context).translate('pendingRequest'),
                         style:
                             TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       ),
@@ -361,8 +362,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                                      });
                                      apiApproveTeamMember(unApprovedMember[index].id.toString(),"1");
                                    },
-                                   child: const Text(
-                                     'Approve',
+                                   child: Text(
+                           AppLocalizations.of(context).translate('approve'),
                                      style: TextStyle(fontSize: 12),
                                    ),
                                  ),
@@ -422,10 +423,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
-                      const Align(
+                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Members & Roles',
+                            AppLocalizations.of(context).translate('members&Roles'),
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -439,7 +440,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 14, vertical: 1),
-                          hintText: 'Search',
+                          hintText: AppLocalizations.of(context).translate('search'),
                           hintStyle: TextStyle(color: Colors.grey),
                           filled: true,
                           fillColor: ColoursUtils.background,
@@ -494,8 +495,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Remove Member'),
-          content: Text('Do you want to remove this member ?'),
+          title: Text(AppLocalizations.of(context).translate('removeMember')),
+          content: Text(AppLocalizations.of(context).translate('doYouWantRemove')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -505,13 +506,13 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 apiRemoveTeamMember(teamMember[index].id.toString() ?? "");
                 // Close the dialog
               },
-              child: Text('Remove'),
+              child: Text(AppLocalizations.of(context).translate('remove')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context).translate('cancel')),
             ),
           ],
         );

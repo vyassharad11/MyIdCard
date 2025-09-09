@@ -13,6 +13,7 @@ import '../../models/utility_dto.dart';
 import '../../utils/widgets/network.dart';
 import '../network/logging_interceptor.dart';
 import '../network/rest_client.dart';
+String language = "en";
 
 class AuthRepository {
   final Dio _dio = Dio();
@@ -44,48 +45,48 @@ class AuthRepository {
 
   Future<HttpResponse<UtilityDto>> apiSignUp(body) async {
     var dto = await Network.baseUrl;
-    return _apiClient.apiSignUp(dto, body);
+    return _apiClient.apiSignUp(dto, body,language);
   }
 
   Future<HttpResponse<LoginDto>> apiSignIn(body) async {
     var dto = await Network.baseUrl;
-    return _apiClient.apiSignIn(dto, body);
+    return _apiClient.apiSignIn(dto, body,language);
   }
 
   Future<HttpResponse<User>> apiUserProfile() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiUserProfile(dto, token2);
+    return _apiClient.apiUserProfile(dto, token2,language);
   }
 
 
   Future<HttpResponse<LoginDto>> apiSignupGoogle(body) async {
     var dto = await Network.baseUrl;
-    return _apiClient.apiSignupGoogle(dto, body);
+    return _apiClient.apiSignupGoogle(dto, body,language);
   }
 
 
   Future<HttpResponse<LoginDto>> apiSignupApple(body) async {
     var dto = await Network.baseUrl;
-    return _apiClient.apiSignupApple(dto, body);
+    return _apiClient.apiSignupApple(dto, body,language);
   }
 
   Future<HttpResponse<LoginDto>> otpRegisterApi(body) async {
     var dto = await Network.baseUrl;
-    return _apiClient.otpRegisterApi(dto, body);
+    return _apiClient.otpRegisterApi(dto, body,language);
   }
 
   Future<HttpResponse<UtilityDto>> otpResendApi(body) async {
     var dto = await Network.baseUrl;
-    return _apiClient.otpResendApi(dto,body);
+    return _apiClient.otpResendApi(dto,body,language);
   }
 
   Future<HttpResponse<LoginDto>> completeProfileApi(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.completeProfileApi(dto,body,token2,);
+    return _apiClient.completeProfileApi(dto,body,token2,language);
   }
   Future<HttpResponse<SignupDto>> completeProfileApiNew(body,) async {
     token = await Storage().getToken() ?? "";
@@ -126,55 +127,55 @@ class AuthRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiSetPlan(dto,body,token2,);
+    return _apiClient.apiSetPlan(dto,body,token2,language);
   }
 
   Future<HttpResponse<UtilityDto>> apisSubscribePlan(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apisSubscribePlan(dto,body,token2,);
+    return _apiClient.apisSubscribePlan(dto,body,token2,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiSupport(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiSupport(dto,token2,body,);
+    return _apiClient.apiSupport(dto,token2,body,language);
   }
   Future<HttpResponse<UtilityDto>> apiChangePassword(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiChangePassword(dto,token2,body,);
+    return _apiClient.apiChangePassword(dto,token2,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiGetTerms() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetTerms(dto,token2,);
+    return _apiClient.apiGetTerms(dto,token2,language);
   }
 
  Future<HttpResponse<UtilityDto>> apiGetPrivacy() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetPrivacy(dto,token2,);
+    return _apiClient.apiGetPrivacy(dto,token2,language);
   }
 
  Future<HttpResponse<NotificationModel>> apiGetNotification(limit,offset) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetNotification(dto,token2,limit,offset);
+    return _apiClient.apiGetNotification(dto,token2,limit,offset,language);
   }
 
  Future<HttpResponse<UtilityDto>> apiDeleteNotification(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteNotification(dto,token2,id);
+    return _apiClient.apiDeleteNotification(dto,token2,id,language);
   }
 
 
@@ -182,14 +183,14 @@ class AuthRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetPlan(dto,token2,);
+    return _apiClient.apiGetPlan(dto,token2,language);
   }
 
  Future<HttpResponse<UtilityDto>> apiSendNotificationTest(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiSendNotificationTest(dto,token2,body);
+    return _apiClient.apiSendNotificationTest(dto,token2,body,language);
   }
 
 

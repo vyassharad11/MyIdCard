@@ -319,7 +319,8 @@ class _ContactDetailsState extends State<ContactDetails> {
       try {
         await FlutterContacts.insertContact(newContact);
         Utility().showFlushBar(
-            context: context, message: 'Contact added successfully');
+            context: context, message: AppLocalizations.of(context)
+            .translate('contactAddSuccessfully'),);
       } catch (e) {
         print('Error adding contact: $e');
       }
@@ -2017,7 +2018,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 Navigator.pop(context);
                                 Utility().showFlushBar(
                                     context: context,
-                                    message: "copy into clipboard");
+                                    message: AppLocalizations.of(context)
+                                        .translate('copyIntoClipboard'),);
                               },
                               child: Container(
                                   height: 20,
@@ -2045,7 +2047,8 @@ class _ContactDetailsState extends State<ContactDetails> {
                                 Navigator.pop(context);
                                 Utility().showFlushBar(
                                     context: context,
-                                    message: "copy into clipboard");
+                                    message: AppLocalizations.of(context)
+                                        .translate('copyIntoClipboard'),);
                               },
                               child: Container(
                                   height: 20,

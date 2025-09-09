@@ -404,8 +404,8 @@ int selectedIndex = 0;
                               ),
                               indicatorSize: TabBarIndicatorSize.tab,
                               tabs: [
-                                Tab(text: "All"),
-                                Tab(text: "Without Group"),
+                                Tab(text: AppLocalizations.of(context).translate('all')),
+                                Tab(text: AppLocalizations.of(context).translate('withoutGroup'),),
                               ],
                             ),
                           ),
@@ -423,7 +423,7 @@ int selectedIndex = 0;
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 14, vertical: 1),
-                              hintText: 'Search',
+                              hintText: AppLocalizations.of(context).translate('search'),
                               hintStyle: TextStyle(color: Colors.grey),
                               filled: true,
                               fillColor: ColoursUtils.background,

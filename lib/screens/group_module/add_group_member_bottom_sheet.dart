@@ -4,6 +4,7 @@ import 'package:my_di_card/data/repository/group_repository.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/group_cubit.dart';
+import '../../language/app_localizations.dart';
 import '../../models/group_member_model.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/colors/colors.dart';
@@ -118,7 +119,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 24,),
-            Text("Add Members",style: TextStyle(fontSize: 16,fontWeight:FontWeight.w500 ),),
+            Text(AppLocalizations.of(context).translate('addMembers'),style: TextStyle(fontSize: 16,fontWeight:FontWeight.w500 ),),
             SizedBox(height: 16,),
            TextField(
               onChanged: (v){
@@ -127,7 +128,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
               decoration: InputDecoration(
                 contentPadding:
                 EdgeInsets.symmetric(horizontal: 14, vertical: 1),
-                hintText: 'Search',
+                hintText: AppLocalizations.of(context).translate('search'),
                 hintStyle: TextStyle(color: Colors.grey),
                 filled: true,
                 fillColor: ColoursUtils.background,
@@ -209,7 +210,7 @@ class _AddGroupMemberBottomSheetState extends State<AddGroupMemberBottomSheet> {
             if(groupMember.isEmpty) SizedBox(
                 height: 400,
                 width: MediaQuery.of(context).size.width,
-                child: Center(child: Text("No record found")))
+                child: Center(child: Text(AppLocalizations.of(context).translate('noRecordFound'),)))
           ],
         ),
       ),

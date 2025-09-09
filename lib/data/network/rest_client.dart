@@ -43,6 +43,7 @@ abstract class RestClient {
   static const headerContentTypeMul = "Content-Type: application/json";
 
   static const authorization = "Authorization";
+  static const language = "Accept-Language";
 
   // @GET("base.json")
   // @Header(headerValue)
@@ -53,14 +54,18 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<UtilityDto>> apiSignUp(@Path("url") url,
-       @Body() body);
+       @Body() body,
+      @Header(language) language
+      );
 
   @POST("{url}auth/login")
   @Header(headerValue)
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<LoginDto>> apiSignIn(@Path("url") url,
-       @Body() body);
+       @Body() body,
+  @Header(language) language
+      );
 
 
 @GET("{url}user")
@@ -68,7 +73,7 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<User>> apiUserProfile(@Path("url") url,
-    @Header(authorization) token);
+    @Header(authorization) token,  @Header(language) language);
 
 
   @POST("{url}oauth/google/login/callback")
@@ -76,7 +81,7 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<LoginDto>> apiSignupGoogle(@Path("url") url,
-       @Body() body);
+       @Body() body,  @Header(language) language);
 
 
 @POST("{url}oauth/apple/login/callback")
@@ -84,21 +89,21 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<LoginDto>> apiSignupApple(@Path("url") url,
-       @Body() body);
+       @Body() body,  @Header(language) language);
 
 @POST("{url}auth/verify-code")
   @Header(headerValue)
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<LoginDto>> otpRegisterApi(@Path("url") url,
-       @Body() body);
+       @Body() body,  @Header(language) language);
 
 
 @POST("{url}auth/resend-verify-code")
   @Header(headerValue)
   @Header(headerContentType)
   @FormUrlEncoded()
-  Future<HttpResponse<UtilityDto>> otpResendApi(@Path("url") url,@Body() body);
+  Future<HttpResponse<UtilityDto>> otpResendApi(@Path("url") url,@Body() body,  @Header(language) language);
 
 
   @POST("{url}user/complete-profile")
@@ -106,7 +111,7 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<LoginDto>> completeProfileApi(@Path("url") url,
-      @Body() body, @Header(authorization) token);
+      @Body() body, @Header(authorization) token,  @Header(language) language);
 
 
   @POST("{url}user/set-plan")
@@ -114,128 +119,128 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<UtilityDto>> apiSetPlan(@Path("url") url,
-      @Body() body, @Header(authorization) token);
+      @Body() body, @Header(authorization) token,  @Header(language) language);
 
   @POST("{url}subscribe")
   @Header(headerValue)
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<UtilityDto>> apisSubscribePlan(@Path("url") url,
-      @Body() body, @Header(authorization) token);
+      @Body() body, @Header(authorization) token,  @Header(language) language);
 
  @POST("{url}card/update/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<UtilityDto>> cardUpdateApi(@Path("url") url,
-      @Body() body, @Header(authorization) token,  @Path("id") id,);
+      @Body() body, @Header(authorization) token,  @Path("id") id,  @Header(language) language);
 
 
   @GET("{url}companytype/get")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<CompanyTypeModel>> apiGetCompanyType(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,  @Header(language) language);
 
   @GET("{url}card/get/{cardId}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GetCardModel>> apiGetCard(@Path("url") url,
-      @Header(authorization) token,@Path("cardId") id,);
+      @Header(authorization) token,@Path("cardId") id,  @Header(language) language);
 
   @POST("{url}card/get-my-card")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<CardListModel>> apiGetMyCard(@Path("url") url,
-      @Header(authorization) token,);
+      @Header(authorization) token,  @Header(language) language);
 
   @GET("{url}socials")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<SocialForCard>> apiGetSocials(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,  @Header(language) language);
 
 
   @POST("{url}card/destroy/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteCard(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
 
   @POST("{url}team/update/{id}")
   // @Header(headerValue)
   // @Header(headerContentTypeMul)
   Future<HttpResponse<UtilityDto>> apiCreateUpdateTeam(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,@Header("Accept") headerContentTypeMul,@Body() body);
+      @Header(authorization) token,@Path("id") id,@Header("Accept") headerContentTypeMul,@Body() body,  @Header(language) language);
 
 
   @GET("{url}team/get-my-team")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TeamResponse>> apiGetMyTeam(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,  @Header(language) language);
 
 
  @POST("{url}team/get-team-member")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TeamMembersResponse>> apiGetTeamMember(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
  @POST("{url}team/remove-from-team-member")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiRemoveTeamMember(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
  @GET("{url}team/leave-team")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiLeaveTeam(@Path("url") url,
-      @Header(authorization) token,);
+      @Header(authorization) token,  @Header(language) language);
 
 
    @POST("{url}team/approve-team-member")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiApproveTeamMember(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
  @POST("{url}team/get-unapproved-team-member")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TeamMembersResponse>> apiGetUnApproveTeamMember(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
  @POST("{url}team/delete/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteTeam(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
 
  @POST("{url}group/store")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiCreateGroup(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
  @POST("{url}group/update/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiUpdateGroup(@Path("url") url,
-      @Header(authorization) token,@Body() body,@Path("id") id,);
+      @Header(authorization) token,@Body() body,@Path("id") id,  @Header(language) language);
 
  @POST("{url}group/destroy/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteGroup(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
 
 
@@ -243,117 +248,117 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupDataModel>> apiGetGroupDetails(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
 
   @GET("{url}group/get-my-groups")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<MyGroupListModel>> apiGetMyGroups(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,  @Header(language) language);
 
 
 @POST("{url}group/get-group-member/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetGroupMember(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,@Body() body,);
+      @Header(authorization) token,@Path("id") id,@Body() body,  @Header(language) language);
 
 
 @POST("{url}group/get-my-group-members")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetAllGroupMembers(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
 @GET("{url}group/get-group-by-team/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupDataModel>> apiGetGroupByTeam(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
 
 @POST("{url}team/get-available-member-to-add-in-group")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<GroupMember>> apiGetActiveMemberForGroup(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
 @POST("{url}group/remove-member")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiRemoveGroupMember(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 @POST("{url}group/swirch-role")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiSwitchGroupMemberRole(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 @POST("{url}group/add-member")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddGroupMember(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 @POST("{url}tag/store")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddTag(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
   @GET("{url}tag/get/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiGetTag(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
   @POST("{url}tag/get-team-tag")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TagModel>> apiGetTeamTag(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
   @POST("{url}tag/update/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiUpdateTag(@Path("url") url,
-      @Header(authorization) token,@Body() body,@Path("id") id,);
+      @Header(authorization) token,@Body() body,@Path("id") id,  @Header(language) language);
 
 
   @POST("{url}tag/destroy/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteTag(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
 
   @POST("{url}contact/get-my-contact")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<MyContactDto>> apiGetMyContact(@Path("url") url,
-      @Header(authorization) token,@Body() body );
+      @Header(authorization) token,@Body() body ,  @Header(language) language);
 
   @POST("{url}contact/get-recent-contact")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<RecentContactDto>> apiGetRecentContact(@Path("url") url,
-      @Header(authorization) token );
+      @Header(authorization) token,  @Header(language) language );
 
   @GET("{url}contact/get/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<ContactDetailsDto>> apiGetContactDetail(@Path("url") url,
-      @Header(authorization) token,@Path("id") id ,);
+      @Header(authorization) token,@Path("id") id ,  @Header(language) language);
 
   @POST("{url}contact/store")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddContact(@Path("url") url,
-      @Header(authorization) token,@Body() body ,);
+      @Header(authorization) token,@Body() body ,  @Header(language) language);
 
 
 
@@ -362,118 +367,118 @@ abstract class RestClient {
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteContact(@Path("url") url,
-      @Header(authorization) token,@Path("id") id  ,);
+      @Header(authorization) token,@Path("id") id  ,  @Header(language) language);
 
   @POST("{url}contact/meeting/store")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiCreateMeeting(@Path("url") url,
-      @Header(authorization) token,@Body() body ,);
+      @Header(authorization) token,@Body() body ,  @Header(language) language);
 
 
   @POST("{url}contact/meeting/update/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiUpdateMeeting(@Path("url") url,
-      @Header(authorization) token,@Body() body ,@Path("id") id );
+      @Header(authorization) token,@Body() body ,@Path("id") id,  @Header(language) language );
 
 
   @POST("{url}contact/meeting/destroy/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteMeeting(@Path("url") url,
-      @Header(authorization) token,@Path("id") id );
+      @Header(authorization) token,@Path("id") id,  @Header(language) language );
 
 
   @POST("{url}contact/meeting/get-my-meeting")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<MyMeetingModel>> apiGetMyMeetings(@Path("url") url,
-      @Header(authorization) token,@Body() body  );
+      @Header(authorization) token,@Body() body ,  @Header(language) language );
 
   @GET("{url}contact/meeting/get/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<MeetingDetailsModel>> apiGetMeetingDetails(@Path("url") url,
-      @Header(authorization) token,@Path("id") id  );
+      @Header(authorization) token,@Path("id") id,  @Header(language) language  );
 
 
   @POST("{url}contact/tag/get-my-tag")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<TagModel>> apiGetCardTag(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
   @POST("{url}contact/tag/store")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddCardTag(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
   @POST("{url}contact/tag/update/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiUpdateCardTag(@Path("url") url,
-      @Header(authorization) token,@Body() body,@Path("id") id);
+      @Header(authorization) token,@Body() body,@Path("id") id,  @Header(language) language);
 
 
   @POST("{url}contact/tag/destroy/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiDeleteCardTag(@Path("url") url,
-      @Header(authorization) token,@Path("id") id);
+      @Header(authorization) token,@Path("id") id,  @Header(language) language);
 
   @POST("{url}contact/tag/add-tag")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiAddTagInContact(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
   @POST("{url}contact/update-status/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiContactHideUnHide(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,@Body() body,);
+      @Header(authorization) token,@Path("id") id,@Body() body,  @Header(language) language);
 
 
   @POST("{url}contact/update-favorite-status/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiContactFavUnFav(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,@Body() body,);
+      @Header(authorization) token,@Path("id") id,@Body() body,  @Header(language) language);
 
   @POST("{url}contact/update-notes/{id}")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiUpdateNotes(@Path("url") url,
-      @Header(authorization) token,@Path("id") id,@Body() body,);
+      @Header(authorization) token,@Path("id") id,@Body() body,  @Header(language) language);
 
   @POST("{url}support-query")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiSupport(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
   @POST("{url}auth/change-password")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiChangePassword(@Path("url") url,
-      @Header(authorization) token,@Body() body,);
+      @Header(authorization) token,@Body() body,  @Header(language) language);
 
 
   @GET("{url}policies/terms")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiGetTerms(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,  @Header(language) language);
 
   @GET("{url}policies/privacy")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiGetPrivacy(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,  @Header(language) language);
 
  @GET("{url}notifications")
   @Header(headerValue)
@@ -481,7 +486,8 @@ abstract class RestClient {
   Future<HttpResponse<NotificationModel>> apiGetNotification(@Path("url") url,
       @Header(authorization) token,
      @Query("limit") limit,
-     @Query("offset") offset
+     @Query("offset") offset,
+     @Header(language) language
      );
 
  @DELETE("{url}notifications/{id}")
@@ -490,6 +496,7 @@ abstract class RestClient {
   Future<HttpResponse<UtilityDto>> apiDeleteNotification(@Path("url") url,
       @Header(authorization) token,
      @Path("id") id,
+     @Header(language) language
      );
 
  @GET("{url}plan")
@@ -497,13 +504,14 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<SubscriptionModel>> apiGetPlan(@Path("url") url,
       @Header(authorization) token,
+     @Header(language) language
      );
 
   @GET("{url}background/images")
   @Header(headerValue)
   @Header(headerContentType)
   Future<HttpResponse<BackgroundImageModel>> apiGetBackgroundImage(@Path("url") url,
-      @Header(authorization) token);
+      @Header(authorization) token,  @Header(language) language);
 
 
 @POST("{url}send/test-notification")
@@ -511,6 +519,7 @@ abstract class RestClient {
   @Header(headerContentType)
   Future<HttpResponse<UtilityDto>> apiSendNotificationTest(@Path("url") url,
       @Header(authorization) token,
-      @Body() body);
+      @Body() body,
+  @Header(language) language);
 
 }

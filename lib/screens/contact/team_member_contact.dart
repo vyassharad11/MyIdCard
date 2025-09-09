@@ -270,7 +270,8 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                           ),
                         );
                       }else{
-                        Utility().showFlushBar(context: context, message: "This user doesn`t have any card.");
+                        Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+                            .translate('thisUserDoesnt'),);
                       }
                       //   showModalBottomSheet(
                       //   context: context,
@@ -300,7 +301,8 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                         ),
                       );
     }else{
-      Utility().showFlushBar(context: context, message: "This user doesn`t have any card.");
+      Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+          .translate('thisUserDoesnt'),);
     }
 
                     // Navigator.push(

@@ -415,7 +415,8 @@ Future<void> apiGetBackgroundImage() async {
                             Utility.showLoader(context);
                             submitData(_selectedImage ?? File(""));
                           }else{
-                            Utility().showFlushBar(context: context, message: "Please enter card name",isError: true);
+                            Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+                                .translate('pleaseEnterCardName'),isError: true);
                           }
 
                           // Handle button press

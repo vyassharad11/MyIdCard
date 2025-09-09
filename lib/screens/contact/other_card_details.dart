@@ -1034,7 +1034,8 @@ Color getTextColorFromHex(String hexColor) {
                           Navigator.pop(context);
                           Utility().showFlushBar(
                               context: context,
-                              message: "copy into clipboard");
+                              message:  AppLocalizations.of(context)
+                                  .translate('copyIntoClipboard'),);
                         },
                         child: Container(
                             height: 20,

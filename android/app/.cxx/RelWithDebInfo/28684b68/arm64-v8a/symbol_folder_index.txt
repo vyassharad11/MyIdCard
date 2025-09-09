@@ -1,0 +1,1 @@
+/home/kapil/new/MyIdCard/build/app/intermediates/cxx/RelWithDebInfo/28684b68/obj/arm64-v8a

@@ -12,6 +12,7 @@ import 'package:my_di_card/screens/profile_mosule/edit_profile.dart';
 import 'package:my_di_card/utils/utility.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'data/repository/auth_repository.dart';
 import 'language/app_localizations.dart';
 import 'language/locale_constant.dart';
 import 'notification_service.dart';
@@ -37,7 +38,9 @@ Future<void> main() async {
         create: (_) => LocalizationNotifier(Locale('en')),
       ),
     ],
-    child: const MyApp(),
+    child: SafeArea(
+        top: false,
+        child: const MyApp()),
   ));
 
   }
@@ -85,6 +88,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     Storage().getLanguage().then((value) {
       final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
+      language = value ?? "";
       langNotifier.setAppLocal(Locale(value.isNotEmpty ? value : "en"));
     },);
     var langNotifier = Provider.of<LocalizationNotifier>(context);

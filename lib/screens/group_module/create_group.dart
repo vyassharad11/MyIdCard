@@ -15,6 +15,7 @@ import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import '../../bloc/api_resp_state.dart';
+import '../../language/app_localizations.dart';
 import '../../localStorage/storage.dart';
 import '../../models/utility_dto.dart';
 import '../../utils/image_cropo.dart';
@@ -112,7 +113,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                     ),
                     Center(
                       child: Text(
-                        "Create Group",
+                        AppLocalizations.of(context).translate('createGroup'),
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w500),
@@ -140,7 +141,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            'Group Name',
+                            AppLocalizations.of(context).translate('groupName'),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
@@ -154,7 +155,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                             hintStyle:
                                 TextStyle(color: Colors.grey, fontSize: 16),
                             filled: true,
-                            hintText: "Group Name",
+                            hintText: AppLocalizations.of(context).translate('groupName'),
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 12),
                             fillColor: Colors.grey[200],
@@ -168,7 +169,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            'Description',
+                              AppLocalizations.of(context).translate('description'),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
@@ -185,7 +186,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 12),
                             filled: true,
-                            hintText: "Description",
+                            hintText: AppLocalizations.of(context).translate('description'),
                             alignLabelWithHint: false,
                             fillColor: Colors.grey[200],
                             border: OutlineInputBorder(
@@ -198,7 +199,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            'Logo',
+                              AppLocalizations.of(context).translate('logo'),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
@@ -265,7 +266,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                                                     // Icon(Icons.cloud_upload, color: Colors.grey),
                                                     SizedBox(height: 8),
                                                     Text(
-                                                      'Upload Logo',
+                                                      AppLocalizations.of(context).translate('uploadLogo'),
                                                       style: TextStyle(
                                                           color: Colors.grey),
                                                     ),
@@ -294,7 +295,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                                   ),
                                 ),
                                 onPressed: () {},
-                                child: const Text('Cancel',
+                                child: Text(AppLocalizations.of(context).translate('cancel'),
                                     style: TextStyle(color: Colors.black)),
                               ),
                             ),
@@ -316,7 +317,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                                       description: description.text,
                                       title: title.text);
                                 },
-                                child: const Text('Create'),
+                                child: Text(AppLocalizations.of(context).translate('create'),),
                               ),
                             ),
                           ],
@@ -475,7 +476,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Use Camera'),
+                  child:  Text(AppLocalizations.of(context).translate('useCamera'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.camera);
@@ -496,7 +497,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: const Text('Choose from Library'),
+                  child:  Text(AppLocalizations.of(context).translate('chooseFromLibrary'),),
                 ),
                 onTap: () {
                   _pickImage(ImageSource.gallery);

@@ -20,6 +20,7 @@ import '../../models/utility_dto.dart';
 import '../../utils/widgets/network.dart';
 import '../network/logging_interceptor.dart';
 import '../network/rest_client.dart';
+import 'auth_repository.dart';
 
 class GroupRepository {
   final Dio _dio = Dio();
@@ -65,7 +66,7 @@ class GroupRepository {
 
 
 
-     return _apiClient.apiCreateGroup(dto,token2,body);
+     return _apiClient.apiCreateGroup(dto,token2,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiUpdateGroup(body,id) async {
@@ -103,56 +104,56 @@ class GroupRepository {
     return httpResponse;
 
 
-    return _apiClient.apiUpdateGroup(dto,token2,body,id);
+    return _apiClient.apiUpdateGroup(dto,token2,body,id,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiDeleteGroup(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteGroup(dto,token2,id);
+    return _apiClient.apiDeleteGroup(dto,token2,id,language);
   }
 
   Future<HttpResponse<MyGroupListModel>> apiGetMyGroups() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyGroups(dto,token2);
+    return _apiClient.apiGetMyGroups(dto,token2,language);
   }
 
   Future<HttpResponse<GroupDataModel>> apiGetGroupDetails(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetGroupDetails(dto,token2,id);
+    return _apiClient.apiGetGroupDetails(dto,token2,id,language);
   }
 
   Future<HttpResponse<GroupMember>> apiGetGroupMember(id,body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetGroupMember(dto,token2,id,body);
+    return _apiClient.apiGetGroupMember(dto,token2,id,body,language);
   }
 
   Future<HttpResponse<GroupMember>> apiGetAllGroupMembers(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetAllGroupMembers(dto,token2,body);
+    return _apiClient.apiGetAllGroupMembers(dto,token2,body,language);
   }
 
   Future<HttpResponse<GroupDataModel>> apiGetGroupByTeam(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetGroupByTeam(dto,token2,id);
+    return _apiClient.apiGetGroupByTeam(dto,token2,id,language);
   }
 
   Future<HttpResponse<GroupMember>> apiGetActiveMemberForGroup(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetActiveMemberForGroup(dto,token2,body);
+    return _apiClient.apiGetActiveMemberForGroup(dto,token2,body,language);
   }
 
 
@@ -160,49 +161,49 @@ Future<HttpResponse<UtilityDto>> apiRemoveGroupMember(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiRemoveGroupMember(dto,token2,body);
+    return _apiClient.apiRemoveGroupMember(dto,token2,body,language);
   }
 
 Future<HttpResponse<UtilityDto>> apiSwitchGroupMemberRole(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiSwitchGroupMemberRole(dto,token2,body);
+    return _apiClient.apiSwitchGroupMemberRole(dto,token2,body,language);
   }
 
 Future<HttpResponse<UtilityDto>> apiAddGroupMember(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiAddGroupMember(dto,token2,body);
+    return _apiClient.apiAddGroupMember(dto,token2,body,language);
   }
 
 Future<HttpResponse<UtilityDto>> apiAddTag(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiAddTag(dto,token2,body);
+    return _apiClient.apiAddTag(dto,token2,body,language);
   }
 
 Future<HttpResponse<UtilityDto>> apiGetTag(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetTag(dto,token2,id);
+    return _apiClient.apiGetTag(dto,token2,id,language);
   }
 
 Future<HttpResponse<TagModel>> apiGetTeamTag(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetTeamTag(dto,token2,body);
+    return _apiClient.apiGetTeamTag(dto,token2,body,language);
   }
 
 Future<HttpResponse<UtilityDto>> apiUpdateTag(body,id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiUpdateTag(dto,token2,body,id);
+    return _apiClient.apiUpdateTag(dto,token2,body,id,language);
   }
 
 
@@ -210,7 +211,7 @@ Future<HttpResponse<UtilityDto>> apiDeleteTag(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteTag(dto,token2,id);
+    return _apiClient.apiDeleteTag(dto,token2,id,language);
   }
 
 }

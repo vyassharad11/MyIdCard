@@ -464,7 +464,8 @@ class _EditTeamPageState extends State<EditTeamPage> {
                                             description: description.text,
                                             title: title.text);
                                       }else{
-                                        Utility().showFlushBar(context: context, message: "please enter description",isError: true);
+                                        Utility().showFlushBar(context: context, message:  AppLocalizations.of(context)
+                                            .translate('pleaseEnterDesc'),isError: true);
                                       }
                                     },
                                     child:  Text(AppLocalizations.of(context).translate('update'))

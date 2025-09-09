@@ -246,5 +246,21 @@
   "doYouWantRemove": "Do you want to remove this member ?",
   "remove": "Remove",
   "editGroup": "Edit Group",
-  "groupName": "Group Name"
+  "groupName": "Group Name",
+  "all": "All",
+  "withoutGroup": "Without Group",
+  "teamMembers": "Team Members",
+  "joinMyTeam": "Join My Team!",
+  "pendingRequest": "Pending Request",
+  "approve":"Approve",
+  "admin": "Admin",
+  "addMembers": "Add Members",
+  "pleaseEnterCardName": "Please enter card name",
+  "file10": "File is too large. Max allowed size is 10MB.",
+  "contactAddSuccessfully": "Contact added successfully",
+  "copyIntoClipboard": "copy into clipboard",
+  "thisUserDoesnt": "This user doesn`t have any card.",
+  "pleaseEnterDesc": "please enter description",
+  "aMailWasSent": "A mail was sent to you to update your password.",
+  "thisEmailIsNotExist": "This email ID does not exist"
 }

@@ -25,6 +25,7 @@ import '../../models/utility_dto.dart';
 import '../../utils/widgets/network.dart';
 import '../network/logging_interceptor.dart';
 import '../network/rest_client.dart';
+import 'auth_repository.dart';
 
 class ContactRepository {
   final Dio _dio = Dio();
@@ -41,14 +42,14 @@ class ContactRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyContact(dto,token2,body);
+    return _apiClient.apiGetMyContact(dto,token2,body,language);
   }
 
   Future<HttpResponse<RecentContactDto>> apiGetRecentContact() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetRecentContact(dto,token2,);
+    return _apiClient.apiGetRecentContact(dto,token2,language);
   }
 
 
@@ -56,14 +57,14 @@ class ContactRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetContactDetail(dto,token2,id);
+    return _apiClient.apiGetContactDetail(dto,token2,id,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiAddContact(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiAddContact(dto,token2,body);
+    return _apiClient.apiAddContact(dto,token2,body,language);
   }
 
 
@@ -103,42 +104,42 @@ class ContactRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteContact(dto,token2,id);
+    return _apiClient.apiDeleteContact(dto,token2,id,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiCreateMeeting(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiCreateMeeting(dto,token2,body);
+    return _apiClient.apiCreateMeeting(dto,token2,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiUpdateMeeting(body,id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiUpdateMeeting(dto,token2,body,id);
+    return _apiClient.apiUpdateMeeting(dto,token2,body,id,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiDeleteMeeting(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteMeeting(dto,token2,id);
+    return _apiClient.apiDeleteMeeting(dto,token2,id,language);
   }
 
   Future<HttpResponse<MyMeetingModel>> apiGetMyMeetings(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyMeetings(dto,token2,body);
+    return _apiClient.apiGetMyMeetings(dto,token2,body,language);
   }
 
   Future<HttpResponse<MeetingDetailsModel>> apiGetMeetingDetails(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMeetingDetails(dto,token2,id);
+    return _apiClient.apiGetMeetingDetails(dto,token2,id,language);
   }
 
 
@@ -146,14 +147,14 @@ class ContactRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetCardTag(dto,token2,body);
+    return _apiClient.apiGetCardTag(dto,token2,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiAddCardTag(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiAddCardTag(dto,token2,body);
+    return _apiClient.apiAddCardTag(dto,token2,body,language);
   }
 
 
@@ -161,21 +162,21 @@ class ContactRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiUpdateCardTag(dto,token2,body,id);
+    return _apiClient.apiUpdateCardTag(dto,token2,body,id,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiDeleteCardTag(id) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteCardTag(dto,token2,id);
+    return _apiClient.apiDeleteCardTag(dto,token2,id,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiAddTagInContact(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiAddTagInContact(dto,token2,body);
+    return _apiClient.apiAddTagInContact(dto,token2,body,language);
   }
 
 
@@ -183,14 +184,14 @@ class ContactRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiContactHideUnHide(dto,token2,id,body);
+    return _apiClient.apiContactHideUnHide(dto,token2,id,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiContactFavUnFav(id,body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiContactFavUnFav(dto,token2,id,body);
+    return _apiClient.apiContactFavUnFav(dto,token2,id,body,language);
   }
 
 
@@ -198,7 +199,7 @@ class ContactRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiUpdateNotes(dto,token2,id,body);
+    return _apiClient.apiUpdateNotes(dto,token2,id,body,language);
   }
 
 

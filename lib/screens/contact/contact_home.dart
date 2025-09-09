@@ -713,7 +713,8 @@ bool isInTeam = false;
       try {
         await FlutterContacts.insertContact(newContact);
         Utility().showFlushBar(
-            context: context, message: 'Contact added successfully');
+            context: context, message:  AppLocalizations.of(context)
+            .translate('contactAddSuccessfully'),);
       } catch (e) {
         print('Error adding contact: $e');
       }

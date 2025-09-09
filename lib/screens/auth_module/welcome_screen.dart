@@ -8,6 +8,7 @@ import 'package:my_di_card/screens/home_module/first_card.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/repository/auth_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../language/locale_constant.dart';
 import '../../notifire_class.dart';
@@ -223,10 +224,12 @@ class _WelcomePageState extends State<WelcomePage> {
                       if (index == 0) {
                         final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                         langNotifier.setAppLocal(Locale("en"));
+                        language = "en";
                         Storage().setLanguage("en");
                       } else {
                         final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                         langNotifier.setAppLocal(Locale("fr"));
+                        language = "fr";
                         Storage().setLanguage("fr");
                      }
                     });

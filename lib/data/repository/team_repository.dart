@@ -16,6 +16,7 @@ import '../../models/utility_dto.dart';
 import '../../utils/widgets/network.dart';
 import '../network/logging_interceptor.dart';
 import '../network/rest_client.dart';
+import 'auth_repository.dart';
 
 class TeamRepository {
   final Dio _dio = Dio();
@@ -71,28 +72,28 @@ class TeamRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetMyTeam(dto,token2,);
+    return _apiClient.apiGetMyTeam(dto,token2,language);
   }
 
   Future<HttpResponse<TeamMembersResponse>> apiGetTeamMember(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetTeamMember(dto,token2,body);
+    return _apiClient.apiGetTeamMember(dto,token2,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiRemoveTeamMember(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiRemoveTeamMember(dto,token2,body);
+    return _apiClient.apiRemoveTeamMember(dto,token2,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiLeaveTeam() async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiLeaveTeam(dto,token2,);
+    return _apiClient.apiLeaveTeam(dto,token2,language);
   }
 
 
@@ -100,21 +101,21 @@ class TeamRepository {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiApproveTeamMember(dto,token2,body);
+    return _apiClient.apiApproveTeamMember(dto,token2,body,language);
   }
 
   Future<HttpResponse<TeamMembersResponse>> apiGetUnApproveTeamMember(body) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiGetUnApproveTeamMember(dto,token2,body);
+    return _apiClient.apiGetUnApproveTeamMember(dto,token2,body,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiDeleteTeam(body,) async {
     token = await Storage().getToken() ?? "";
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
-    return _apiClient.apiDeleteTeam(dto,token2,body,);
+    return _apiClient.apiDeleteTeam(dto,token2,body,language);
   }
 
 }

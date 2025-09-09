@@ -566,10 +566,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                       : yearlyPlanList[index].frDiscription ?? "",
                                   onTap: () {
                                     setState(() {
+<<<<<<< Updated upstream
                                       price = monthlyPlanList[index].price.toString();
                                       planId = yearlyPlanList[index].id ?? 0;
                                       planType = monthlyPlanList[index].type.toString();
                                       subscriptionPlanID =Platform.isIOS ? monthlyPlanList[index].ios ?? "" :  monthlyPlanList[index].android ?? "";
+=======
+                                      price = yearlyPlanList[index].price.toString();
+                                      planId = yearlyPlanList[index].id ?? 0;
+                                      planType = yearlyPlanList[index].type.toString();
+                                      subscriptionPlanID =Platform.isIOS ? yearlyPlanList[index].ios ?? "" :  yearlyPlanList[index].android ?? "";
+>>>>>>> Stashed changes
                                     });
                                   },
                                 );

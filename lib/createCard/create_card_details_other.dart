@@ -611,7 +611,8 @@ class _CreateCardScreenDetailsOtherState
           });
         });
       }else{
-        Utility().showFlushBar(context: context, message: "File is too large. Max allowed size is 10MB.",isError: true);
+        Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+            .translate('file10'),isError: true);
       }}
   }
 
@@ -764,7 +765,8 @@ class _CreateCardScreenDetailsOtherState
               debugPrint("Image Path: ${pickedFile.path}");
             }
           }else{
-            Utility().showFlushBar(context: context, message: "File is too large. Max allowed size is 10MB.",isError: true);
+            Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+                .translate('file10'),isError: true);
           }
         } catch (e) {
           debugPrint("Error picking image: $e");
@@ -799,7 +801,8 @@ class _CreateCardScreenDetailsOtherState
               debugPrint("Image Path: ${pickedFile.path}");
             }
           }else{
-            Utility().showFlushBar(context: context, message: "File is too large. Max allowed size is 10MB.",isError: true);
+            Utility().showFlushBar(context: context, message:AppLocalizations.of(context)
+                .translate('file10'),isError: true);
           }
         } catch (e) {
           debugPrint("Error picking image: $e");

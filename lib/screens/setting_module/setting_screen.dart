@@ -438,6 +438,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   selectedLanguage = 'English';
                   final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                   langNotifier.setAppLocal(Locale("en"));
+                  language = "en";
                   Storage().setLanguage("en");
                   // MyApp.setLocale(context, Locale('en'));
                 });
@@ -454,6 +455,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   // _selectedValue = 'French';
                   // _selectedLanguageId = '2';
                   selectedLanguage = 'French';
+                  language = "fr";
                   final langNotifier = Provider.of<LocalizationNotifier>(context, listen: false);
                   langNotifier.setAppLocal(Locale("fr"));
                   Storage().setLanguage("fr");

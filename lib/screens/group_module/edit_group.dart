@@ -884,7 +884,7 @@ class CustomRowWidget extends StatelessWidget {
               size: 16,
             ),
             underline: SizedBox(),
-            items: ["Admin", "Member"].map((String role) {
+            items: [AppLocalizations.of(context).translate('admin'), AppLocalizations.of(context).translate('member')].map((String role) {
               return DropdownMenuItem<String>(
                 value: role,
                 child: Text(

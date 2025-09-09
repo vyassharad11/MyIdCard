@@ -266,7 +266,7 @@ class _ShareCardBottomSheetStateOther extends State<ShareCardBottomSheetOther> {
             Center(
               child: SizedBox(
                 height: 35,
-                width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:170,
+                width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:180,
                 child: ElevatedButton(
                   // iconAlignment: IconAlignment.start,
                   onPressed: () {
@@ -430,7 +430,7 @@ class _ShareOtherCardBottomSheetState extends State<ShareOtherCardBottomSheet> {
             Center(
               child: SizedBox(
                 height: 35,
-                width: 160,
+                width: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?160:180,
                 child: ElevatedButton(
                   // iconAlignment: IconAlignment.start,
                   onPressed: () {
