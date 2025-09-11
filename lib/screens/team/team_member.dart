@@ -21,10 +21,12 @@ import '../../data/repository/team_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../models/team_member.dart';
 import '../../utils/utility.dart';
+import '../profile_mosule/profile_new.dart';
 
 class TeamMemberPage extends StatefulWidget {
   String? teamCode;
-   TeamMemberPage({super.key,this.teamCode});
+  String? role;
+   TeamMemberPage({super.key,this.teamCode,this.role});
 
   @override
   State<TeamMemberPage> createState() => _TeamMemberPageState();
@@ -101,6 +103,12 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     _approvedCubit?.apiApproveTeamMember(data);
   }
 
+  Map<String, int> rolePriority = {
+    Role.towner.name: 0,
+    Role.tadmin.name: 1,
+    Role.member.name: 2,
+  };
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -123,6 +131,11 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
               var dto = state.data as TeamMembersResponse;
               teamMember.clear();
               teamMember.addAll(dto.data.members);
+              teamMember.sort((a, b) {
+                int aPriority = rolePriority[a.role?.toLowerCase() ?? ''] ?? 99;
+                int bPriority = rolePriority[b.role?.toLowerCase() ?? ''] ?? 99;
+                return aPriority.compareTo(bPriority);
+              });
             }
             setState(() {});
           },
@@ -312,7 +325,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -334,7 +347,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                            Padding(
                              padding: const EdgeInsets.only(left: 4.0),
                              child: Text(
-                             unApprovedMember[index].firstName ?? "",
+                             "${unApprovedMember[index].firstName ?? ""} ${unApprovedMember[index].lastName ?? ""}",
                                style: TextStyle(
                                  color: Colors.black87,
                                  fontSize: 14,
@@ -419,7 +432,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                   borderRadius: BorderRadius.circular(16), // Rounded corners
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(bottom: 8.0,top: 8,right: 12,left: 12),
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
@@ -460,6 +473,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                           padding: EdgeInsets.only(),
                           itemBuilder: (ctx, index) {
                             return CustomRowWidget(
+                              role: widget.role ?? "",
                               description: teamMember[index].lastName ?? "",
                               imageUrl: teamMember[index].avatar ?? "" ,
                               onDelete: () {
@@ -474,7 +488,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                                 });
                               },
                               title: teamMember[index].firstName ?? "",
-                              initialRole: selecteValie,
+                              initialRole: teamMember[index].role ?? "" ,
                             );
                           },
                           physics: AlwaysScrollableScrollPhysics(),
@@ -648,6 +662,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
 class CustomRowWidget extends StatelessWidget {
   final String imageUrl;
   final String title;
+  final String role;
   final String description;
   final String initialRole;
   final Function(String) onRoleChanged;
@@ -658,6 +673,7 @@ class CustomRowWidget extends StatelessWidget {
     required this.title,
     required this.description,
     this.initialRole = "Member",
+    required this.role,
     required this.onRoleChanged,
     required this.onDelete,
   });
@@ -707,7 +723,10 @@ class CustomRowWidget extends StatelessWidget {
           ),
 
           const SizedBox(width: 16),
-          Row(
+      if(initialRole == Role.towner.name || initialRole == Role.tadmin.name)Text(
+          initialRole == Role.towner.name?"Owner":"Admin"
+      ),
+      if((role == Role.towner.name || role != Role.tadmin.name) && initialRole == Role.member.name)    Row(
             children: [
               SizedBox(
                 width: 8,

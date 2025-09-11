@@ -79,7 +79,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          centerTitle: false,
+          centerTitle: true,
           elevation: 0,
           title: Text(
             AppLocalizations.of(context).translate('addNewCard'),
@@ -126,7 +126,7 @@ class _AddNewCardHomeState extends State<AddNewCardHome> {
             width: MediaQuery.of(context).size.width,child:_getShimmerView()):
               cardList != null && cardList!.data!.isNotEmpty?
               SizedBox(
-                height: MediaQuery.of(context).size.height / 1.27,
+                height: MediaQuery.of(context).size.height / 1.30,
                 width: MediaQuery.of(context).size.width,
                 child: Swiper(
                   itemCount: cardList!.data!.length,

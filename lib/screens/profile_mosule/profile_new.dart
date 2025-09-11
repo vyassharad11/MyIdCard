@@ -136,7 +136,7 @@ class _AccountPageState extends State<AccountPage> {
       debugPrint("Failed to clear SharedPreferences.");
     }
   }
-
+  Member? owner;
 
   @override
   Widget build(BuildContext context) {
@@ -249,6 +249,7 @@ class _AccountPageState extends State<AccountPage> {
               var dto = state.data as TeamMembersResponse;
               teamMember.clear();
               teamMember.addAll(dto.data.members);
+               owner = teamMember.firstWhere((member) => member.role == Role.towner.name);
             }
             setState(() {});
           },
@@ -340,7 +341,7 @@ class _AccountPageState extends State<AccountPage> {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (builder) => SettingScreen()));
+                                builder: (builder) => SettingScreen(role: user?.role ?? "",)));
                       }, // Default action: Go back
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -448,7 +449,7 @@ class _AccountPageState extends State<AccountPage> {
                     //         user?.role == Role.towner.name))
                       Container(
                       padding:
-                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                      const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.blue, width: 1),
                         color:
@@ -643,7 +644,7 @@ class _AccountPageState extends State<AccountPage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.asset(
-                                      "assets/images/Ellipse 5.png",
+                                      "assets/logo/Central icon.png",
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -665,61 +666,27 @@ class _AccountPageState extends State<AccountPage> {
                                           color: Color(0xFF949494)),
                                     ),
                                     Row(children: [
-                                      if(teamMember.isNotEmpty) ClipRRect(
+                                      if(owner != null) ClipRRect(
                                         borderRadius: BorderRadius.circular(16),
                                         child: Image.network(
-                                          "${Network.imgUrl}${teamMember[0]
-                                              .avatar ?? ""}",
+                                          "${Network.imgUrl}${owner?.avatar ?? ""}",
                                           fit: BoxFit.cover,
                                           width: 16,height: 16,
                                           errorBuilder: (context, error,
                                               stackTrace) {
-                                            return Container(height: 16,
-                                              width: 16,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey,
-                                                  borderRadius: BorderRadius
-                                                      .circular(16)),);
+                                            return ClipRRect(
+                                              borderRadius: BorderRadius.circular(16),
+                                              child: Image.asset(
+                                                "assets/logo/Central icon.png",
+                                                fit: BoxFit.cover,
+                                              ),
+                                            );
                                           },
                                         ),
                                       ),
                                       SizedBox(width: 5,),
-                                      if(teamMember.isNotEmpty) Text(
-                                        teamMember[0].firstName ?? "",
-                                      ),
-                                      if(teamMember.isNotEmpty &&
-                                          teamMember.length > 1) SizedBox(
-                                        width: 8,),
-                                      if(teamMember.isNotEmpty &&
-                                          teamMember.length > 1) Container(
-                                        width: 1,
-                                        height: 5,
-                                        color: Colors.grey,),
-                                      if(teamMember.isNotEmpty &&
-                                          teamMember.length > 1) ClipRRect(
-                                        borderRadius: BorderRadius.circular(16),
-                                        child: Image.network(
-                                          height: 16,width: 16,
-                                          "${Network.imgUrl}${teamMember[1]
-                                              .avatar ?? ""}",
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (context, error,
-                                              stackTrace) {
-                                            return Container(height: 16,
-                                              width: 16,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey,
-                                                  borderRadius: BorderRadius
-                                                      .circular(16)),);
-                                          },
-                                        ),
-                                      ),
-                                      if(teamMember.isNotEmpty &&
-                                          teamMember.length > 1) SizedBox(
-                                        width: 5,),
-                                      if(teamMember.isNotEmpty &&
-                                          teamMember.length > 1) Text(
-                                        teamMember[1].firstName ?? "",
+                                       Text(
+                                         "${owner?.firstName ?? ""} ${owner?.lastName ?? ""}",
                                       ),
                                     ],)
                                   ],
@@ -1020,6 +987,7 @@ class _AccountPageState extends State<AccountPage> {
                             context,
                             CupertinoPageRoute(
                                 builder: (builder) => TeamMemberPage(
+                                  role: user?.role ?? "",
                                   teamCode: teamResponse?.data?.teamCode
                                       .toString(),)));
                       },
@@ -1095,7 +1063,7 @@ class _AccountPageState extends State<AccountPage> {
                               width: 20,
                               height: 20,
                             ),
-                            SizedBox(width: 14,),
+                            SizedBox(width: 20,),
                             Text( AppLocalizations.of(context).translate('deleteTeam'),
                                 style: TextStyle(color: Colors.redAccent)),
 

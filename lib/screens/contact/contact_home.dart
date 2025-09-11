@@ -254,7 +254,7 @@ bool isInTeam = false;
           elevation: 0,
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          centerTitle: false,
+          centerTitle: true,
           title:  Text(
             AppLocalizations.of(context).translate('contacts'),
             style: TextStyle(

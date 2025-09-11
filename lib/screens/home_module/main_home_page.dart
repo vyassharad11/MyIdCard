@@ -474,7 +474,7 @@ Color getTextColorFromHex(String hexColor) {
               isLoad == true ? _getShimmerView():
               cardList != null && cardList!.data!.isNotEmpty?
                 SizedBox(
-                  height: 330,
+                  height: 300,
                   child: Swiper(
                     itemCount: cardList!.data!.length,
                     itemBuilder: (BuildContext context, int index) {

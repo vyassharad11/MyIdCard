@@ -515,6 +515,7 @@ Color getTextColorFromHex(String hexColor) {
                                           "");
                                     },
                                         "${AppLocalizations.of(context).translate('sendLocation')}",
+                                        "${AppLocalizations.of(context).translate("copyLocation")}",
                                         getCardModel
                                             ?.companyAddress
                                             .toString() ??
@@ -601,6 +602,7 @@ Color getTextColorFromHex(String hexColor) {
                                             //     subject: "");
                                           },
                                           AppLocalizations.of(context).translate('sendEmail'),
+                                          AppLocalizations.of(context).translate('copyEmail'),
                                           getCardModel
                                               ?.workEmail
                                               .toString() ??
@@ -642,6 +644,7 @@ Color getTextColorFromHex(String hexColor) {
                                                 "");
                                           },
                                               AppLocalizations.of(context).translate('phone'),
+                                              AppLocalizations.of(context).translate('copyPhone'),
                                               getCardModel?.phoneNo
                                                   .toString() ??
                                                   "",
@@ -666,6 +669,7 @@ Color getTextColorFromHex(String hexColor) {
                                                     "sms:${getCardModel?.phoneNo.toString() ?? ""}?body=");
                                               },
                                               AppLocalizations.of(context).translate('sendMessage'),
+                                              AppLocalizations.of(context).translate('copyMessage'),
                                               getCardModel?.phoneNo
                                                   .toString() ??
                                                   "",
@@ -948,6 +952,7 @@ Color getTextColorFromHex(String hexColor) {
       BuildContext context,
       Function callBack,
       title,
+  subTitle,
       link,
       isLocation,
       ) {
@@ -1014,7 +1019,7 @@ Color getTextColorFromHex(String hexColor) {
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8)),
-                            child: Text("Copy $title"))),
+                            child: Text("$subTitle"))),
                     SizedBox(
                       height: 30,
                     )

@@ -36,11 +36,13 @@ class ContactDetails extends StatefulWidget {
   final int contactId;
   final int? contactIdForMeeting;
   final List<TagDatum> tags;
+  final bool? isFromTeam;
 
   const ContactDetails(
       {super.key,
       required this.contactId,
       this.contactIdForMeeting,
+      this.isFromTeam = false,
       required this.tags});
 
   @override
@@ -178,6 +180,45 @@ class _ContactDetailsState extends State<ContactDetails> {
     } else {
       throw 'Could not launch $emailUri';
     }
+  }
+
+  Widget teamContact(BuildContext context){
+    return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+        ListTile(
+        title: Text(
+        AppLocalizations.of(context).translate("addPrivate"),
+    style: TextStyle(color: Colors.black, fontSize: 14),
+    ),
+    onTap: () {
+    Navigator.pop(context);
+    },
+    ),
+    const Divider(
+    color: Colors.grey,
+    ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                title:  Text(
+                  AppLocalizations.of(context).translate('exportToContactsApp'),
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  requestPermissions().then(
+                        (value) {
+                      addContact(
+                          contactDetailsDatum?.firstName ?? "",
+                          contactDetailsDatum?.lastName ?? "",
+                          contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
+                    },
+                  ); // Add functionality here
+                },
+              ),
+    ]));
   }
 
   Widget buildContactBottomSheetContent(BuildContext context) {
@@ -1350,7 +1391,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                               ),
                             ),
                     ),
-                    Padding(
+                    if(widget.isFromTeam == false)   Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
                       child: Row(
@@ -1448,7 +1489,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                         ],
                       ),
                     ),
-                    Padding(
+                    if(widget.isFromTeam == false)     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: contactDetailsDatum != null &&
                               contactDetailsDatum?.notes != null &&
@@ -1489,10 +1530,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                               ),
                             ),
                     ),
-                    const SizedBox(
+                    if(widget.isFromTeam == false)   const SizedBox(
                       height: 16,
                     ),
-                    SizedBox(
+                if(widget.isFromTeam == false)    SizedBox(
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),

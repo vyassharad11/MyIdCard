@@ -265,6 +265,7 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                             builder: (builder) =>
                                 ContactDetails(contactId: teamMember[index]
                                     .contact ?? 0,
+                                  isFromTeam: true,
                                   contactIdForMeeting: teamMember[index].contact,
                                   tags: [],),
                           ),
@@ -296,6 +297,7 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                           builder: (builder) =>
                               ContactDetails(contactId: teamMember[index]
                                   .contact ?? 0,
+                                isFromTeam: true,
                                 contactIdForMeeting: teamMember[index].contact,
                                 tags: [],),
                         ),

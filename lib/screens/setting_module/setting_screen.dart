@@ -19,11 +19,13 @@ import '../../main.dart';
 import '../../notifire_class.dart';
 import '../../utils/utility.dart';
 import '../auth_module/welcome_screen.dart';
+import '../profile_mosule/profile_new.dart';
 import '../subscription_module/subscription_screen.dart';
 import 'change_password.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({super.key});
+  String? role;
+   SettingScreen({super.key,this.role});
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -168,7 +170,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 const SizedBox(height: 14),
                 // Delete Account (Separate Widget)
-                Card(
+            widget.role == Role.tadmin.name || widget.role == Role.gadmin.name ||widget.role == Role.member.name
+            ?SizedBox():    Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -197,7 +200,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 14),
+                widget.role == Role.tadmin.name || widget.role == Role.gadmin.name ||widget.role == Role.member.name
+                    ?SizedBox():   const SizedBox(height: 14),
                 // Delete Account (Separate Widget)
                 Card(
                   shape: RoundedRectangleBorder(
