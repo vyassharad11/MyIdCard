@@ -274,7 +274,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                        Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        padding: EdgeInsets.symmetric(horizontal: 4.0),
                         child: Text(
                             AppLocalizations.of(context).translate('inviteMembers'),
                           style: TextStyle(
@@ -721,12 +721,13 @@ class CustomRowWidget extends StatelessWidget {
               ],
             ),
           ),
-
+        // Text("${initialRole}    >>>>>>>>>>>${role}"),
           const SizedBox(width: 16),
       if(initialRole == Role.towner.name || initialRole == Role.tadmin.name)Text(
           initialRole == Role.towner.name?"Owner":"Admin"
       ),
-      if((role == Role.towner.name || role != Role.tadmin.name) && initialRole == Role.member.name)    Row(
+      if(((role == Role.towner.name || role == Role.tadmin.name)) && (initialRole == Role.member.name ||
+          initialRole == Role.gadmin.name || initialRole == Role.individual.name || initialRole == Role.free.name))   Row(
             children: [
               SizedBox(
                 width: 8,
@@ -744,7 +745,7 @@ class CustomRowWidget extends StatelessWidget {
                     ),
                     child: Center(
                       child: Icon(
-                        Icons.clear,
+                        Icons.restore_from_trash,
                         size: 16,
                         color: Colors.black,
                       ),

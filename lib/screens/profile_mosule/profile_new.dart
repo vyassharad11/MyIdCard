@@ -249,7 +249,11 @@ class _AccountPageState extends State<AccountPage> {
               var dto = state.data as TeamMembersResponse;
               teamMember.clear();
               teamMember.addAll(dto.data.members);
-               owner = teamMember.firstWhere((member) => member.role == Role.towner.name);
+              if(teamMember != null && teamMember!.isNotEmpty) {
+                owner = teamMember.firstWhere((member) =>
+                member.role ==
+                    Role.towner.name);
+              }
             }
             setState(() {});
           },
@@ -341,7 +345,7 @@ class _AccountPageState extends State<AccountPage> {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (builder) => SettingScreen(role: user?.role ?? "",)));
+                                builder: (builder) => SettingScreen(role: user?.role ?? "",planId: user!.planId.toString() ?? "",)));
                       }, // Default action: Go back
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -527,7 +531,7 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")? user?.planId == null || user?.planId ==1?25:50:60,
+                                  height: Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")? user?.planId == null || user?.planId ==1?25:40:60,
                                   width: 94,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -650,7 +654,7 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                 ),
 
-                                SizedBox(width: 10,),
+                                SizedBox(width: 12,),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -666,7 +670,8 @@ class _AccountPageState extends State<AccountPage> {
                                           color: Color(0xFF949494)),
                                     ),
                                     Row(children: [
-                                      if(owner != null) ClipRRect(
+                                      if(owner != null)
+                                        ClipRRect(
                                         borderRadius: BorderRadius.circular(16),
                                         child: Image.network(
                                           "${Network.imgUrl}${owner?.avatar ?? ""}",
@@ -677,6 +682,7 @@ class _AccountPageState extends State<AccountPage> {
                                             return ClipRRect(
                                               borderRadius: BorderRadius.circular(16),
                                               child: Image.asset(
+                                                width: 16,height: 16,
                                                 "assets/logo/Central icon.png",
                                                 fit: BoxFit.cover,
                                               ),
@@ -693,7 +699,7 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                                 Spacer(),
                                 // if(user?.role != Role.individual.name && user?.role != Role.member.name && (user?.role != Role.towner.name || user?.role != Role.tadmin.name))
-                                if(user?.role == Role.towner.name)
+                                if(user?.role == Role.towner.name || user?.role == Role.tadmin.name)
                                   InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -1063,7 +1069,7 @@ class _AccountPageState extends State<AccountPage> {
                               width: 20,
                               height: 20,
                             ),
-                            SizedBox(width: 20,),
+                            SizedBox(width: 35,),
                             Text( AppLocalizations.of(context).translate('deleteTeam'),
                                 style: TextStyle(color: Colors.redAccent)),
 

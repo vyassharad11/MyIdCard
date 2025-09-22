@@ -213,7 +213,9 @@ class _ContactDetailsState extends State<ContactDetails> {
                       addContact(
                           contactDetailsDatum?.firstName ?? "",
                           contactDetailsDatum?.lastName ?? "",
-                          contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
+                          contactDetailsDatum != null && contactDetailsDatum!.phone != null &&
+                              contactDetailsDatum!.phone.toString().isNotEmpty ?
+                          contactDetailsDatum?.phone :  contactDetailsDatum?.phoneNo);
                     },
                   ); // Add functionality here
                 },
@@ -333,6 +335,50 @@ class _ContactDetailsState extends State<ContactDetails> {
               // Add delete functionality here
             },
           ),
+          const Divider(
+            color: Colors.grey,
+          ),
+        ],
+      ),
+    );
+  }
+  Widget buildContactBottomSheetTeam(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            title: Text(
+                  AppLocalizations.of(context).translate('addPrivate'),
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+            onTap: () {
+              // Add functionality here
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+          ),
+          // if (isPhysicalContact == false)
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+              title:  Text(
+                AppLocalizations.of(context).translate('exportToContactsApp'),
+                style: TextStyle(color: Colors.black, fontSize: 14),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                requestPermissions().then(
+                  (value) {
+                    addContact(
+                        contactDetailsDatum?.firstName ?? "",
+                        contactDetailsDatum?.lastName ?? "",
+                         contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
+                  },
+                ); // Add functionality here
+              },
+            ),
           const Divider(
             color: Colors.grey,
           ),
@@ -548,7 +594,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                         ),
                       ),
                       builder: (context) {
-                        return buildContactBottomSheetContent(context);
+                        return widget.isFromTeam == false?buildContactBottomSheetContent(context):buildContactBottomSheetTeam(context);
                       },
                     );
                   },
@@ -601,6 +647,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                           "");
                                     },
                                         AppLocalizations.of(context).translate('phone'),
+                                        AppLocalizations.of(context).translate('copyPhone'),
                                         contactDetailsDatum?.phone
                                             .toString() ??
                                             "",
@@ -642,6 +689,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                           //     subject: "");
                                         },
                                         AppLocalizations.of(context).translate('sendEmail'),
+                                        AppLocalizations.of(context).translate('copyEmail'),
                                         contactDetailsDatum
                                             ?.email
                                             .toString() ??
@@ -1044,6 +1092,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                       "");
                                                 },
                                                     AppLocalizations.of(context).translate('phone'),
+                                                    AppLocalizations.of(context).translate('copyPhone'),
                                                     contactDetailsDatum?.phoneNo
                                                             .toString() ??
                                                         "",
@@ -1084,6 +1133,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                   //     subject: "");
                                                 },
                                                     AppLocalizations.of(context).translate('sendEmail'),
+                                                    AppLocalizations.of(context).translate('copyEmail'),
                                                     contactDetailsDatum
                                                             ?.workEmail
                                                             .toString() ??
@@ -1120,6 +1170,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                       "sms:${contactDetailsDatum?.phoneNo.toString() ?? ""}?body=");
                                                 },
                                                     AppLocalizations.of(context).translate('sendMessage'),
+                                                    AppLocalizations.of(context).translate('copyMessage'),
                                                     contactDetailsDatum?.phoneNo
                                                             .toString() ??
                                                         "",
@@ -1155,6 +1206,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                                       "");
                                                 },
                                                     AppLocalizations.of(context).translate('sendLocation'),
+                                                    AppLocalizations.of(context).translate('copyLocation'),
                                                     contactDetailsDatum
                                                             ?.companyAddress
                                                             .toString() ??
@@ -2001,7 +2053,8 @@ class _ContactDetailsState extends State<ContactDetails> {
     BuildContext context,
     Function callBack,
     title,
-    link,
+      subTitle,
+      link,
     isLocation,
   ) {
     showModalBottomSheet(
@@ -2068,7 +2121,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(8)),
-                                  child: Text("${AppLocalizations.of(context).translate('copy')} $title"))),
+                                  child: Text(subTitle))),
                           SizedBox(
                             height: 30,
                           )

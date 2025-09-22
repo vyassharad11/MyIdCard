@@ -25,7 +25,8 @@ import 'change_password.dart';
 
 class SettingScreen extends StatefulWidget {
   String? role;
-   SettingScreen({super.key,this.role});
+  String? planId;
+   SettingScreen({super.key,this.role,this.planId});
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -195,7 +196,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SubscriptionScreen(),
+                            builder: (context) => SubscriptionScreen(planId: int.parse(widget.planId ?? "",)),
                           ));
                     },
                   ),

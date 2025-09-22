@@ -27,18 +27,21 @@ class CompanyTypeModel {
 class DataCompany {
   int? id;
   dynamic companyType;
+  dynamic companyTypeFr;
 
-  DataCompany({this.id, this.companyType});
+  DataCompany({this.id, this.companyType,this.companyTypeFr});
 
   DataCompany.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     companyType = json['company_type'];
+    companyTypeFr = json['company_type_fr'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['company_type'] = companyType;
+    data['company_type_fr'] = companyTypeFr;
     return data;
   }
 }

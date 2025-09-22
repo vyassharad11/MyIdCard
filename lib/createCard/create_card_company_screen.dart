@@ -14,12 +14,14 @@ import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/utils/common_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../bloc/api_resp_state.dart';
 import '../bloc/cubit/auth_cubit.dart';
 import '../language/app_localizations.dart';
 import '../models/card_get_model.dart';
 import '../models/company_model.dart';
 import '../models/company_type_model.dart';
+import '../notifire_class.dart';
 import '../utils/colors/colors.dart';
 import '../utils/image_cropo.dart';
 import '../utils/utility.dart';
@@ -829,6 +831,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
       ),
@@ -846,32 +849,34 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                 style: const TextStyle(color: Colors.black, fontSize: 18),
               ),
               SizedBox(height: 20),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: companyList.length,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final item = companyList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedId = item.id.toString(); // Update selected ID
-                        selectedTitle = item.companyType ?? "";
-                      });
-                      Navigator.pop(context); // Close the bottom sheet
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        item.companyType!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: companyList.length,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final item = companyList[index];
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedId = item.id.toString(); // Update selected ID
+                          selectedTitle = Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?item.companyType ?? "":item.companyTypeFr;
+                        });
+                        Navigator.pop(context); // Close the bottom sheet
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?item.companyType ?? "":item.companyTypeFr,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ],
           ),

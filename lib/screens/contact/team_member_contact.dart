@@ -148,22 +148,22 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                    width: 10), // Space between search box and filter icon
+                // const SizedBox(
+                //     width: 10), // Space between search box and filter icon
                 // Filter Icon Button
-                IconButton(
-                  icon: const Icon(Icons.filter_list, color: Colors.black),
-                  onPressed: () {
-                    // Filter button functionality
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   isScrollControlled: true,
-                    //   backgroundColor:
-                    //   Colors.transparent, // To make corners rounded
-                    //   builder: (context) => FullScreenBottomSheet(),
-                    // );
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.filter_list, color: Colors.black),
+                //   onPressed: () {
+                //     // Filter button functionality
+                //     // showModalBottomSheet(
+                //     //   context: context,
+                //     //   isScrollControlled: true,
+                //     //   backgroundColor:
+                //     //   Colors.transparent, // To make corners rounded
+                //     //   builder: (context) => FullScreenBottomSheet(),
+                //     // );
+                //   },
+                // ),
               ],
             ),
           ),
