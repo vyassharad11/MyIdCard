@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -17,6 +18,7 @@ import 'package:my_di_card/models/subscription_model.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/team/create_team.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/auth_cubit.dart';
@@ -52,6 +54,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   bool isRequestToPurchase = false;
   var _purchaseId = "";
   String price = "";
+  int selectedIndex = 0;
   String planType = "";
   String monthlyPriceIndividual = "";
   String monthlyPriceTeam = "";
@@ -59,6 +62,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   String yearlyPriceTeam = "";
   String symbolForAllCounty = "";
   String subscriptionPlanID = "";
+  AuthCubit? _termsPolicyCubit;
 
 
   Future<void> submitPlanId(_purchaseId) async {
@@ -75,6 +79,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       "plan_id": "1"
     };
     _freePlanCubit?.apiSetPlan(data);
+  }
+
+
+  apiGetTermsAndPolicy(title) {
+    if (title == "Privacy Policy") {
+      _termsPolicyCubit?.apiGetPrivacy();
+    } else {
+      _termsPolicyCubit?.apiGetTerms();
+    }
   }
 
   Future<void> apisSubscribePlan() async {
@@ -128,10 +141,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   @override
   void initState() {
-    planId == widget.planId ?? 0;
+    print("plsnId >>>>>>>>>>>>${widget.planId}");
+    planId = widget.planId ?? 0;
     _setPlanCubit = AuthCubit(AuthRepository());
     _freePlanCubit = AuthCubit(AuthRepository());
     _subscribePlan = AuthCubit(AuthRepository());
+    _termsPolicyCubit = AuthCubit(AuthRepository());
     planCubit = AuthCubit(AuthRepository());
     planCubit?.apiGetPlan();
     _initPurchaseStore();
@@ -281,11 +296,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         print("storeproduct ====  11111ssss ${e.id}");
         print("storeproduct ====  11111 ${e.currencySymbol}");
         print("storeproduct ====  11111 ${e.price}");
-        if(e.id == "com.mydicard.mydicard.individual") {
+        if(e.id == "com.mydicard.mydicard.individual" || e.id == "com.mydicard.mydicard.individual.monthly") {
           monthlyPriceIndividual = e.price ?? "";
         }else if(e.id == "com.mydicard.mydicard.individual.annual") {
           yearlyPriceIndividual = e.price ?? "";
-        }else if(e.id == "com.mydicard.mydicard.team") {
+        }else if(e.id == "com.mydicard.mydicard.team" || e.id == "com.mydicard.mydicard.team.monthly") {
           monthlyPriceTeam = e.price ?? "";
         }else if(e.id == "com.mydicard.mydicard.team.annual"){
           yearlyPriceTeam = e.price ?? "";
@@ -349,6 +364,28 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           }
           setState(() {});
         },),
+      BlocListener<AuthCubit, ResponseState>(
+        bloc: _termsPolicyCubit,
+        listener: (context, state) {
+          if (state is ResponseStateLoading) {
+          } else if (state is ResponseStateEmpty) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateNoInternet) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateError) {
+            Utility.hideLoader(context);
+          } else if (state is ResponseStateSuccess) {
+            Utility.hideLoader(context);
+            var dto = state.data as UtilityDto;
+            if(Provider.of<LocalizationNotifier>(context,listen: false).appLocal == Locale("en")){
+              launch(dto.url ?? "");}else{
+              launch(dto.url ?? "");
+            }
+            setState(() {});
+          }
+          setState(() {});
+        },
+      ),
       BlocListener<AuthCubit, ResponseState>(
         bloc: _setPlanCubit,
         listener: (context, state) {
@@ -531,7 +568,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                   title: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? monthlyPlanList[index].planName ?? ""
                                       : monthlyPlanList[index].frPlanName ?? "",
-                                  price: index == 0?  "0${symbolForAllCounty}" :"${index ==1 ?monthlyPriceIndividual.toString():monthlyPriceTeam}${symbolForAllCounty}",
+                                  price: index == 0?  "${symbolForAllCounty}0" :"${index ==1 ?monthlyPriceIndividual.toString():monthlyPriceTeam}",
                                   isChecked: planId == monthlyPlanList[index].id,
                                   description: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? monthlyPlanList[index].discription ?? ""
@@ -559,7 +596,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                   title: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? yearlyPlanList[index].planName ?? ""
                                       : yearlyPlanList[index].frPlanName ?? "",
-                                  price: index == 0?  "0${symbolForAllCounty}" :"${index == 1?yearlyPriceIndividual.toString():yearlyPriceTeam}${symbolForAllCounty}",
+                                  price: index == 0?  "0${symbolForAllCounty}" :"${index == 1?yearlyPriceIndividual.toString():yearlyPriceTeam}",
                                   isChecked: planId == yearlyPlanList[index].id,
                                   description: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? yearlyPlanList[index].discription ?? ""
@@ -584,7 +621,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               ),
 
               // ✅ Button stays fixed below TabBarView
-              Padding(
+              (
+                  (widget.planId == 4 && (planId == 1 || planId == 2 || planId == 3 )) ||
+                  (widget.planId == 5 && planId != 5) ||
+
+                  ((widget.planId == 3 && (planId != 4)) ||widget.planId == 2 ) &&
+                  (
+                      ((widget.planId == 2 || widget.planId == 4)&& (planId == 1))
+                  || ((widget.planId == 3 || widget.planId == 5))&&
+                  (planId == 1 || planId == 2 || planId == 4 ))) ?   Padding(
                 padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
                 child: ElevatedButton(
                   onPressed: () {
@@ -610,15 +655,95 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     minimumSize: const Size(double.infinity, 50),
-                    backgroundColor: Colors.blue.withOpacity(0.5),
+                    backgroundColor: planId == 1 ?Colors.redAccent:       Colors.blue.withOpacity(0.5),
                   ),
                   child: Text(
-                    AppLocalizations.of(context).translate('subscribe'),
+                    AppLocalizations.of(context).translate(planId == 1 ?'unSubscribe':"change"),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ):
+            Padding(
+                padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (widget.planId == planId) {
+                      Navigator.pop(context);
+                    } else if (planId == 1) {
+                      submitPlanId("");
+                    } else if (subscriptionPlanID.isNotEmpty) {
+                      setState(() {
+                        isRequestToPurchase = true;
+                      });
+                      _buyProduct(_getProductDetails(subscriptionPlanID));
+                    } else {
+                      Utility().showFlushBar(
+                        context: context,
+                        message: 'Please select your bundle.',
+                        isError: true,
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor:widget.planId ==0 || widget.planId == 1?Colors.blue: Colors.blue.withOpacity(0.5),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context).translate( widget.planId != 1 && widget.planId != 0 && widget.planId == planId?"managePlan":widget.planId != planId && widget.planId != 1 && widget.planId != 0 ?
+                        "change":
+                  'subscribe'),
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
               // const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text:
+                        Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?
+                        "Enjoy a one-month free trial for new subscribers (forfeited if you purchase before it ends). After the trial, your plan auto-renews unless canceled 24 hours in advance, with payment charged to your device account. By subscribing, you agree to our":
+                        "Essai gratuit d’un mois pour les nouveaux abonnés. À la fin de l’essai, l’abonnement se renouvelle automatiquement sauf résiliation 24h avant. Le paiement sera débité à la fin de l’essai. En vous abonnant, vous acceptez nos ",
+                        style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),
+                      ),
+                      TextSpan(
+                        text:
+                        Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?
+                        " Terms":" Conditions",
+                        style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300,color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Utility.showLoader(context);
+                            apiGetTermsAndPolicy(
+                                "");
+                          },
+                      ),
+                      TextSpan(text: Provider.of<LocalizationNotifier>(context,listen: false).appLocal == Locale("en")?" and ":" et notre ",
+                        style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),),
+                      TextSpan(
+                        text:
+                        Provider.of<LocalizationNotifier>(context,listen: false).appLocal == Locale("en")?
+                        "Privacy.":"Politique de confidentialité.",
+                        style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300,color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Utility.showLoader(context);
+                            apiGetTermsAndPolicy("Privacy Policy");
+                          },
+                      ),
+                   // if(  Provider.of<LocalizationNotifier>(context).appLocal == Locale("en"))   TextSpan(text: " \nPlease read Terms of use",
+                   //   style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),)
+                    ],
+                  ),
+                ),
+              ),
+              if(widget.isFromCreateProfile == true)
               TextButton(
                 onPressed: () {
                   // Skip for now logic

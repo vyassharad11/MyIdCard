@@ -92,6 +92,7 @@ class TeamMembersData {
 
 class Member {
   dynamic id;
+  dynamic cardId;
   dynamic name;
   dynamic firstName;
   dynamic lastName;
@@ -113,6 +114,7 @@ class Member {
 
   Member({
     required this.id,
+     this.cardId,
     this.name,
     required this.firstName,
     required this.lastName,
@@ -136,6 +138,7 @@ class Member {
   factory Member.fromJson(Map<String, dynamic> json) {
     return Member(
       id: json['id'],
+      cardId: json['cardId'],
       name: json['name'],
       firstName: json['first_name'],
       role: json['role'],
@@ -160,6 +163,7 @@ class Member {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'cardId': cardId,
       'name': name,
       'first_name': firstName,
       'role': role,

@@ -1,6 +1,8 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../bloc/api_resp_state.dart';
 import '../../bloc/cubit/card_cubit.dart';
@@ -8,6 +10,7 @@ import '../../data/repository/card_repository.dart';
 import '../../data/repository/card_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../models/company_type_model.dart';
+import '../../notifire_class.dart';
 import '../../utils/constant.dart';
 import '../../utils/utility.dart';
 import '../meetings/metting_details.dart';
@@ -283,6 +286,7 @@ class _AddContactNotesState extends State<AddContactNotes> {
 class FullScreenBottomSheet extends StatefulWidget {
   bool? isHowPhysical;
   bool? isHide;
+  List<DataCompany>? companyList; // List to hold parsed data
   String? companyTypeId, companyName, selectedValue;
   Function(bool ishide, String companyTypeId, String companyName, bool isPhysic,
       String selectedValue)? callBack;
@@ -291,6 +295,7 @@ class FullScreenBottomSheet extends StatefulWidget {
       {super.key,
       this.callBack,
       this.isHide,
+      this.companyList,
       this.companyName,
       this.companyTypeId,
       this.isHowPhysical,
@@ -331,6 +336,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
   CompanyTypeModel? companyTypeModel;
 
   Future<void> fetchData() async {
+    Utility.showLoader(context);
     _getGetCompanyTypeCubit?.apiGetCompanyType();
   }
 
@@ -351,6 +357,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
             var dto = state.data as CompanyTypeModel;
             companyTypeModel = dto;
             companyList = dto.data ?? [];
+            print("cocddd${companyList.length}");
           }
           setState(() {});
         },
@@ -395,14 +402,36 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 10),
                     const SizedBox(height: 20),
                     // Type of Company dropdown
-                    CustomDropdown(
-                      title:  AppLocalizations.of(context).translate('typeOfCompany'),
-                      selectedValue: selectedValue,
-                      callBack: (v, value) {
-                        companyId = v;
-                        selectedValue = value;
-                        setState(() {});
+
+                    InkWell(
+                      onTap: (){
+                        showBottomSheetCompanyType((id, name,nameFr) {
+                          companyId = id;
+                          selectedValue =
+                              Provider.of<LocalizationNotifier>(context, listen: false).appLocal == Locale("en")?name : nameFr;
+                          setState(() {
+
+                          });
+                          // Navigator.pop(context);
+                        },);
                       },
+                      child: Container(height: 45,
+                          width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.black)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width-85,
+                            child: Text(selectedValue.isNotEmpty ? selectedValue :AppLocalizations.of(context).translate('typeOfCompany'),
+                            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),overflow: TextOverflow.ellipsis,),
+                          ),
+                          Icon(Icons.arrow_drop_down_sharp,size: 20,)
+                        ],
+                      ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     // Function dropdown
@@ -424,7 +453,9 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Text( AppLocalizations.of(context).translate('showHiddenContactOnly')),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width-70,
+                            child: Text( AppLocalizations.of(context).translate('showHiddenContactOnly'))),
                         SizedBox(
                           width: 10,
                         ),
@@ -444,7 +475,9 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Text( AppLocalizations.of(context).translate('showPhysicalContactOnly')),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width-70,
+                            child: Text( AppLocalizations.of(context).translate('showPhysicalContactOnly'))),
                         SizedBox(
                           width: 10,
                         ),
@@ -525,6 +558,69 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
           ),
         ));
   }
+  showBottomSheetCompanyType(void Function(String id, String name,String nameFr) callBack) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 20),
+              Text(
+                AppLocalizations.of(context)
+                    .translate('selectCompanyType'),
+                style: const TextStyle(color: Colors.black, fontSize: 18,fontWeight: FontWeight.w700),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: companyList.length,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final item = companyList[index];
+                    return GestureDetector(
+                      onTap: () {
+                        // selectedValue =
+                        // Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?
+                        // item.companyType ?? "":
+                        // item.companyType;
+                        // selectedValue = "sss";
+                        Navigator.pop(context);
+                        setState(() {
+
+                        });
+                        callBack.call( item.id.toString(),item.companyType,item.companyTypeFr
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?item.companyType ?? "":item.companyTypeFr,                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
 }
 
 class CustomDropdown extends StatefulWidget {

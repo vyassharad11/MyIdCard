@@ -463,56 +463,58 @@ Future<void> apiGetBackgroundImage() async {
     child: Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      ListView.separated
-        (
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-        return InkWell(
-          onTap: (){
-            _selectedImage = null;
-            _selectedImagePath = backgroundImageList?[index].filePath ?? "";
-            setState(() {
-
-            });
-            Navigator.pop(context);
-          },
-          child: Row(children: [
-            ClipRRect(
-              borderRadius:
-              const BorderRadius.all(
-                  Radius.circular(50)),
-              child: CachedNetworkImage(
-                height: 50,
-                width: 50,
-                fit: BoxFit.cover,
-                imageUrl:
-                "${Network.imgUrl}${backgroundImageList?[index].filePath ?? ""}",
-                progressIndicatorBuilder:
-                    (context, url,
-                    downloadProgress) =>
-                    Center(
-                      child: CircularProgressIndicator(
-                          value:
-                          downloadProgress
-                              .progress),
-                    ),
-                errorWidget:
-                    (context, url, error) =>
-                    Image.asset(
-                      "assets/logo/Central icon.png",
-                      height: 50,
-                      fit: BoxFit.fill,
-                      width: 50,
-                    ),
+      Expanded(
+        child: ListView.separated
+          (
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+          return InkWell(
+            onTap: (){
+              _selectedImage = null;
+              _selectedImagePath = backgroundImageList?[index].filePath ?? "";
+              setState(() {
+        
+              });
+              Navigator.pop(context);
+            },
+            child: Row(children: [
+              ClipRRect(
+                borderRadius:
+                const BorderRadius.all(
+                    Radius.circular(50)),
+                child: CachedNetworkImage(
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.cover,
+                  imageUrl:
+                  "${Network.imgUrl}${backgroundImageList?[index].filePath ?? ""}",
+                  progressIndicatorBuilder:
+                      (context, url,
+                      downloadProgress) =>
+                      Center(
+                        child: CircularProgressIndicator(
+                            value:
+                            downloadProgress
+                                .progress),
+                      ),
+                  errorWidget:
+                      (context, url, error) =>
+                      Image.asset(
+                        "assets/logo/Central icon.png",
+                        height: 50,
+                        fit: BoxFit.fill,
+                        width: 50,
+                      ),
+                ),
               ),
-            ),
-            SizedBox(width: 5,),
-            Text(backgroundImageList?[index].name ?? "")
-          ],),
-        );
-      }, separatorBuilder: (context, index) {
-        return SizedBox(height: 10,);
-      }, itemCount: backgroundImageList?.length ?? 0)
+              SizedBox(width: 5,),
+              Text(backgroundImageList?[index].name ?? "")
+            ],),
+          );
+        }, separatorBuilder: (context, index) {
+          return SizedBox(height: 10,);
+        }, itemCount: backgroundImageList?.length ?? 0),
+      )
     ]));});}
 
   Future<bool> colorPickerDialog() async {

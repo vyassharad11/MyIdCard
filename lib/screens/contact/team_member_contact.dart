@@ -13,6 +13,7 @@ import '../../models/team_member.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import 'contact_details_screen.dart';
+import 'other_card_details.dart';
 
 class TeamMemberContact extends StatefulWidget {
   const TeamMemberContact({super.key});
@@ -148,22 +149,22 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                    width: 10), // Space between search box and filter icon
+                // const SizedBox(
+                //     width: 10), // Space between search box and filter icon
                 // Filter Icon Button
-                IconButton(
-                  icon: const Icon(Icons.filter_list, color: Colors.black),
-                  onPressed: () {
-                    // Filter button functionality
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   isScrollControlled: true,
-                    //   backgroundColor:
-                    //   Colors.transparent, // To make corners rounded
-                    //   builder: (context) => FullScreenBottomSheet(),
-                    // );
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.filter_list, color: Colors.black),
+                //   onPressed: () {
+                //     // Filter button functionality
+                //     // showModalBottomSheet(
+                //     //   context: context,
+                //     //   isScrollControlled: true,
+                //     //   backgroundColor:
+                //     //   Colors.transparent, // To make corners rounded
+                //     //   builder: (context) => FullScreenBottomSheet(),
+                //     // );
+                //   },
+                // ),
               ],
             ),
           ),
@@ -257,17 +258,19 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                   trailing: InkWell(
                       onTap: (){
                       if(teamMember[index]
-                          .contact != null && teamMember[index]
-                          .contact!.toString().isNotEmpty) {
+                          .cardId != null && teamMember[index]
+                          .cardId!.toString().isNotEmpty) {
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
                             builder: (builder) =>
-                                ContactDetails(contactId: teamMember[index]
-                                    .contact ?? 0,
-                                  isFromTeam: true,
-                                  contactIdForMeeting: teamMember[index].contact,
-                                  tags: [],),
+                                OtherCardDetails(
+                                  cardId: teamMember[index]
+                                      .cardId
+                                      .toString() ??
+                                      "",
+                                  isOtherCard: true,
+                                ),
                           ),
                         );
                       }else{
@@ -289,17 +292,19 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                       child: const Icon(Icons.more_vert)),
                   onTap: () {
                     if(teamMember[index]
-                        .contact != null && teamMember[index]
-                        .contact!.toString().isNotEmpty) {
+                        .cardId != null && teamMember[index]
+                        .cardId!.toString().isNotEmpty) {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
                           builder: (builder) =>
-                              ContactDetails(contactId: teamMember[index]
-                                  .contact ?? 0,
-                                isFromTeam: true,
-                                contactIdForMeeting: teamMember[index].contact,
-                                tags: [],),
+                              OtherCardDetails(
+                                cardId: teamMember[index]
+                                    .cardId
+                                    .toString() ??
+                                    "",
+                                isOtherCard: true,
+                              ),
                         ),
                       );
     }else{
