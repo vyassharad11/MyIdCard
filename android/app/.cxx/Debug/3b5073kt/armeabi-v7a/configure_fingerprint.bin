@@ -2,6 +2,7 @@ C/C++ Structured Logz
 x
 v/home/kapil/Documents/flutter_linux_3.24.2-stable/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	äïõý˜3¤ Ðõ¸§Ð2e
 c
 a/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/additional_project_files.txt	äïõý˜3 ‡ê²Ï“3b
@@ -26,3 +27,29 @@ Y
 W/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/prefab_config.json	åïõý˜3( ê²Ï“3`
 ^
 \/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/symbol_folder_index.txt	åïõý˜3S ê²Ï“3
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	”é „—3¤ Ðõ¸§Ð2e
+c
+a/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/additional_project_files.txt	”é „—3 ‡ê²Ï“3b
+`
+^/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/android_gradle_build.json	”é „—3± ‰ê²Ï“3g
+e
+c/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/android_gradle_build_mini.json	•é „—3Ð ê²Ï“3T
+R
+P/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/build.ninja	•é „—3Õ¶ ßé²Ï“3X
+V
+T/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/build.ninja.txt	•é „—3]
+[
+Y/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/build_file_index.txt	•é „—3v ê²Ï“3^
+\
+Z/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/compile_commands.json	•é „—3	b
+`
+^/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/compile_commands.json.bin	•é „—3
+h
+f
+d/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/metadata_generation_command.txt	•é „—3• ê²Ï“3[
+Y
+W/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/prefab_config.json	•é „—3( ê²Ï“3`
+^
+\/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/armeabi-v7a/symbol_folder_index.txt	•é „—3S ê²Ï“3
+>>>>>>> 0bed49a6ec23a6e52a365f6fa947965fce8eb33c

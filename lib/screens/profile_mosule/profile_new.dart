@@ -333,7 +333,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     Center(
                       child: Text(
-                          AppLocalizations.of(context).translate('myaccount'),
+                        AppLocalizations.of(context).translate('myaccount'),
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w500),
@@ -382,35 +382,51 @@ class _AccountPageState extends State<AccountPage> {
                           },);
                         },
                         child:
-                    user != null && user!.avatar != null
-                      ? Stack(
-                        children: [
-                          ClipRRect(
-                                              borderRadius: BorderRadius.circular(
-                            10000.0),
-                                              child: CachedNetworkImage(
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.fitWidth,
-                          imageUrl: "${Network.imgUrl}${user!.avatar}",
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                              Center(
-                                child: CircularProgressIndicator(
-                                    value: downloadProgress.progress),
+                        user != null && user!.avatar != null
+                            ? Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  10000.0),
+                              child: CachedNetworkImage(
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.fitWidth,
+                                imageUrl: "${Network.imgUrl}${user!.avatar}",
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                    Center(
+                                      child: CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                                    ),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                      "assets/logo/Central icon.png",
+                                      height: 80,
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                    ),
                               ),
-                          errorWidget: (context, url, error) =>
-                              Image.asset(
-                                "assets/logo/Central icon.png",
-                                height: 80,
-                                fit: BoxFit.fill,
-                                width: double.infinity,
+                            ),
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: CircleAvatar(
+                                radius: 15,
+                                backgroundColor: Colors.blue,
+                                child: Icon(Icons.edit_outlined,
+                                    size: 15, color: Colors.white),
                               ),
-                                              ),
-                                            ),
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
+                            ),
+                          ],
+                        )
+                            : const CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage(
+                              'assets/logo/Central icon.png'),
+                          // Replace with actual image URL
+                          child: Align(
+                            alignment: Alignment.bottomRight,
                             child: CircleAvatar(
                               radius: 15,
                               backgroundColor: Colors.blue,
@@ -418,23 +434,7 @@ class _AccountPageState extends State<AccountPage> {
                                   size: 15, color: Colors.white),
                             ),
                           ),
-                        ],
-                      )
-                      : const CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage(
-                        'assets/logo/Central icon.png'),
-                    // Replace with actual image URL
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.blue,
-                        child: Icon(Icons.edit_outlined,
-                            size: 15, color: Colors.white),
-                      ),
-                    ),
-                  )),
+                        )),
 
                     const SizedBox(height: 10),
                     Text(
@@ -453,7 +453,7 @@ class _AccountPageState extends State<AccountPage> {
                     // if(user?.planId != 3 &&
                     //     (user?.role == Role.individual.name ||
                     //         user?.role == Role.towner.name))
-                      Container(
+                    Container(
                       padding:
                       const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
                       decoration: BoxDecoration(
@@ -502,9 +502,9 @@ class _AccountPageState extends State<AccountPage> {
                                   onValue) {
                                 // if (user != null &&
                                 //     user?.role != Role.individual.name) {
-                                  fetchUserData();
-                                  getTeamMembers();
-                                  fetchTeamData();
+                                fetchUserData();
+                                getTeamMembers();
+                                fetchTeamData();
                                 // }
                               });
                             },
@@ -518,17 +518,17 @@ class _AccountPageState extends State<AccountPage> {
                                     children: [
                                       Text(
                                         user?.planName ?? AppLocalizations.of(context).translate(
-                                      'freeTier'),
+                                            'freeTier'),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
 
-                                    // if(user != null && user?.planId != null && user!.planId.toString().isNotEmpty && user?.planId != 1 && user?.planId !=2)  Text(
-                                    //     AppLocalizations.of(context).translate(
-                                    //         'manage'),
-                                    //     style: const TextStyle(
-                                    //         color: Colors.grey),
-                                    //   ),
+                                      // if(user != null && user?.planId != null && user!.planId.toString().isNotEmpty && user?.planId != 1 && user?.planId !=2)  Text(
+                                      //     AppLocalizations.of(context).translate(
+                                      //         'manage'),
+                                      //     style: const TextStyle(
+                                      //         color: Colors.grey),
+                                      //   ),
                                     ],
                                   ),
                                 ),
@@ -554,9 +554,9 @@ class _AccountPageState extends State<AccountPage> {
                                           onValue) {
                                         // if (user != null &&
                                         //     user?.role != Role.individual.name) {
-                                          fetchUserData();
-                                          getTeamMembers();
-                                          fetchTeamData();
+                                        fetchUserData();
+                                        getTeamMembers();
+                                        fetchTeamData();
                                         // }
                                       });
                                       // Navigator.push(context, MaterialPageRoute(
@@ -577,7 +577,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     if(user?.userStatusId != 2 && user?.role != Role.free.name && user?.role != Role.individual.name) const SizedBox(height: 20),
                     // Team Information
-                   if(user?.userStatusId != 2 && user?.role != Role.free.name && user?.role != Role.individual.name) Align(
+                    if(user?.userStatusId != 2 && user?.role != Role.free.name && user?.role != Role.individual.name) Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "${ user?.role == Role.gadmin.name ?  AppLocalizations.of(context).translate('gAdmin'):user?.role == Role.tadmin.name ?  AppLocalizations.of(context).translate('teamAdmin') :
@@ -674,27 +674,27 @@ class _AccountPageState extends State<AccountPage> {
                                     Row(children: [
                                       if(owner != null)
                                         ClipRRect(
-                                        borderRadius: BorderRadius.circular(16),
-                                        child: Image.network(
-                                          "${Network.imgUrl}${owner?.avatar ?? ""}",
-                                          fit: BoxFit.cover,
-                                          width: 16,height: 16,
-                                          errorBuilder: (context, error,
-                                              stackTrace) {
-                                            return ClipRRect(
-                                              borderRadius: BorderRadius.circular(16),
-                                              child: Image.asset(
-                                                width: 16,height: 16,
-                                                "assets/logo/Central icon.png",
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          },
+                                          borderRadius: BorderRadius.circular(16),
+                                          child: Image.network(
+                                            "${Network.imgUrl}${owner?.avatar ?? ""}",
+                                            fit: BoxFit.cover,
+                                            width: 16,height: 16,
+                                            errorBuilder: (context, error,
+                                                stackTrace) {
+                                              return ClipRRect(
+                                                borderRadius: BorderRadius.circular(16),
+                                                child: Image.asset(
+                                                  width: 16,height: 16,
+                                                  "assets/logo/Central icon.png",
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
-                                      ),
                                       SizedBox(width: 5,),
-                                       Text(
-                                         "${owner?.firstName ?? ""} ${owner?.lastName ?? ""}",
+                                      Text(
+                                        "${owner?.firstName ?? ""} ${owner?.lastName ?? ""}",
                                       ),
                                     ],)
                                   ],
@@ -773,7 +773,7 @@ class _AccountPageState extends State<AccountPage> {
                                 },);
                               },
                               child:  Text(
-                                  AppLocalizations.of(context).translate('createTeam2'),
+                                AppLocalizations.of(context).translate('createTeam2'),
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
@@ -785,10 +785,10 @@ class _AccountPageState extends State<AccountPage> {
                     (user?.role != Role.free.name ||
                         user?.role != Role.individual.name )&&  (user?.role != Role.towner.name && user?.role != Role.tadmin.name ) &&
                         myGroupList.isNotEmpty) const SizedBox(
-                        height: 10),
+                          height: 10),
                     if(
                     (user?.role != Role.free.name ||
-                    user?.role != Role.individual.name )&&  (user?.role != Role.towner.name && user?.role != Role.tadmin.name ) &&
+                        user?.role != Role.individual.name )&&  (user?.role != Role.towner.name && user?.role != Role.tadmin.name ) &&
                         myGroupList.isNotEmpty) Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -855,7 +855,7 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             if(
                             (user?.role != Role.free.name ||
-                            user?.role != Role.individual.name) &&
+                                user?.role != Role.individual.name) &&
                                 user?.role != Role.member.name &&
                                 (user?.role != Role.towner.name ||
                                     user?.role != Role.tadmin.name ||
@@ -912,10 +912,10 @@ class _AccountPageState extends State<AccountPage> {
                         user?.role != Role.member.name) const SizedBox(
                         height: 20),
                     if(
-                        user?.userStatusId == 2) ApprovalCard(),
+                    user?.userStatusId == 2) ApprovalCard(),
                     if((
-                    user?.role.toString() == Role.free.name ||
-                    user?.role.toString() == Role.individual.name )&&
+                        user?.role.toString() == Role.free.name ||
+                            user?.role.toString() == Role.individual.name )&&
                         user?.teamId == null && user?.userStatusId == 1) Card(
                       elevation: 0,
                       child: Padding(
@@ -926,7 +926,7 @@ class _AccountPageState extends State<AccountPage> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
-                                  AppLocalizations.of(context).translate('teamCode1'),
+                                AppLocalizations.of(context).translate('teamCode1'),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -1083,7 +1083,7 @@ class _AccountPageState extends State<AccountPage> {
                         teamResponse!.data.teamDescription != null &&
                         teamResponse!.data.teamDescription.toString().isNotEmpty )&&(user?.role != null &&
                         (user?.role != Role.free.name ||
-                        user?.role != Role.individual.name )&&
+                            user?.role != Role.individual.name )&&
                         user?.role != Role.towner.name)) GestureDetector(
                       onTap: () {
                         showLogoutDialogForLeaveTeam(context);

@@ -106,29 +106,29 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
     return  MultiBlocListener(
       listeners: [
         BlocListener<ContactCubit, ResponseState>(
-    bloc: _addContactCubit,
-    listener: (context, state) {
-      if (state is ResponseStateLoading) {
-      } else if (state is ResponseStateEmpty) {
-        Utility.hideLoader(context);
-        Utility().showFlushBar(
-            context: context, message: state.message, isError: true);
-      } else if (state is ResponseStateNoInternet) {
-        Utility.hideLoader(context);
-        Utility().showFlushBar(
-            context: context, message: state.message, isError: true);
-      } else if (state is ResponseStateError) {
-        Utility.hideLoader(context);
-        Utility().showFlushBar(
-            context: context, message: state.errorMessage, isError: true);
-      } else if (state is ResponseStateSuccess) {
-        Utility.hideLoader(context);
-        var dto = state.data as UtilityDto;
-        Utility()
-            .showFlushBar(context: context, message: dto.message ?? "");
-      }
-      setState(() {});
-    }),
+            bloc: _addContactCubit,
+            listener: (context, state) {
+              if (state is ResponseStateLoading) {
+              } else if (state is ResponseStateEmpty) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context, message: state.message, isError: true);
+              } else if (state is ResponseStateNoInternet) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context, message: state.message, isError: true);
+              } else if (state is ResponseStateError) {
+                Utility.hideLoader(context);
+                Utility().showFlushBar(
+                    context: context, message: state.errorMessage, isError: true);
+              } else if (state is ResponseStateSuccess) {
+                Utility.hideLoader(context);
+                var dto = state.data as UtilityDto;
+                Utility()
+                    .showFlushBar(context: context, message: dto.message ?? "");
+              }
+              setState(() {});
+            }),
         BlocListener<GroupCubit, ResponseState>(
           bloc: getGroupCubit,
           listener: (context, state) {
@@ -241,7 +241,7 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
           ),
           const SizedBox(height: 10),
           // Add some space between title and list
-         if(myGroupList.isNotEmpty) SizedBox(
+          if(myGroupList.isNotEmpty) SizedBox(
             height: 35, // Fixed height for tag list items
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -320,60 +320,60 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                             .cardId != null && teamMember[index]
                             .cardId!.toString().isNotEmpty)
                           showModalBottomSheet(
-                            context: context,
-                            useSafeArea: true,
-                            isScrollControlled: false,
-                            constraints: BoxConstraints(maxHeight: MediaQuery
-                                .of(context)
-                                .size
-                                .height - 100, minHeight: 10),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
-                            ),
-                            builder: (context) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                                  title:  Text(
-                                    AppLocalizations.of(context).translate('exportToContactsApp'),
-                                    style: TextStyle(color: Colors.black, fontSize: 14),
-                                  ),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    requestPermissions().then((value) {
-                                      addContact(teamMember[index].firstName ?? "",
-                                          teamMember[index].lastName ?? "",
-                                          teamMember[index].phoneNumber.toString());
-                                    },); // Add functionality here
-                                  },
-                                ),
-                                  if(teamMember[index]
-                                      .cardId != null && teamMember[index]
-                                      .cardId!.toString().isNotEmpty)     const Divider(
-                                  color: Colors.grey,
-                                ),
-                                  if(teamMember[index]
-                                      .cardId != null && teamMember[index]
-                                      .cardId!.toString().isNotEmpty)     ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                                  title:  Text(
-                                    AppLocalizations.of(context).translate('addPrivate'),
-                                    style: TextStyle(color: Colors.black, fontSize: 14),
-                                  ),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    Utility.showLoader(context);
-                                    Map<String, dynamic> data = {
-                                      "card_id": teamMember[index].cardId,
-                                    };
-                                    _addContactCubit?.apiAddContact(data);
-                                  },
-                                ),
-                              ],);
-                            });
+                              context: context,
+                              useSafeArea: true,
+                              isScrollControlled: false,
+                              constraints: BoxConstraints(maxHeight: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height - 100, minHeight: 10),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                              ),
+                              builder: (context) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                      title:  Text(
+                                        AppLocalizations.of(context).translate('exportToContactsApp'),
+                                        style: TextStyle(color: Colors.black, fontSize: 14),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        requestPermissions().then((value) {
+                                          addContact(teamMember[index].firstName ?? "",
+                                              teamMember[index].lastName ?? "",
+                                              teamMember[index].phoneNumber.toString());
+                                        },); // Add functionality here
+                                      },
+                                    ),
+                                    if(teamMember[index]
+                                        .cardId != null && teamMember[index]
+                                        .cardId!.toString().isNotEmpty)     const Divider(
+                                      color: Colors.grey,
+                                    ),
+                                    if(teamMember[index]
+                                        .cardId != null && teamMember[index]
+                                        .cardId!.toString().isNotEmpty)     ListTile(
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                      title:  Text(
+                                        AppLocalizations.of(context).translate('addPrivate'),
+                                        style: TextStyle(color: Colors.black, fontSize: 14),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        Utility.showLoader(context);
+                                        Map<String, dynamic> data = {
+                                          "card_id": teamMember[index].cardId,
+                                        };
+                                        _addContactCubit?.apiAddContact(data);
+                                      },
+                                    ),
+                                  ],);
+                              });
                       },
                       child: const Icon(Icons.more_vert)),
                   onTap: () {
@@ -393,20 +393,20 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                               ),
                         ),
                       );
-    }else{
-      Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
-          .translate('thisUserDoesnt'),);
-    }
+                    }else{
+                      Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+                          .translate('thisUserDoesnt'),);
+                    }
 
                     // Navigator.push(
                     //   context,
-                      // CupertinoPageRoute(
-                      //   builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,contactIdForMeeting: myContactList[index].id,tags: tags,),
-                      // ),
+                    // CupertinoPageRoute(
+                    //   builder: (builder) =>  ContactDetails(contactId: myContactList[index].cardId ?? 0,contactIdForMeeting: myContactList[index].id,tags: tags,),
+                    // ),
                     // ).then((value) {
                     //   if(value == 2){
-                        // apiGetMyContact();
-                      // }
+                    // apiGetMyContact();
+                    // }
                     // },);
                     // Add your onTap functionality here if needed
                   },

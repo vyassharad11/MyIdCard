@@ -43,7 +43,7 @@ class _AddContactNotesState extends State<AddContactNotes> {
                   context: context,
                   isScrollControlled: true,
                   backgroundColor:
-                      Colors.transparent, // To make corners rounded
+                  Colors.transparent, // To make corners rounded
                   builder: (context) => FullScreenBottomSheet(),
                 );
               },
@@ -56,7 +56,7 @@ class _AddContactNotesState extends State<AddContactNotes> {
           children: [
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(8),
@@ -103,7 +103,7 @@ class _AddContactNotesState extends State<AddContactNotes> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.grey[200], // Light background color
                   borderRadius: BorderRadius.circular(8), // Rounded corners
@@ -293,13 +293,13 @@ class FullScreenBottomSheet extends StatefulWidget {
 
   FullScreenBottomSheet(
       {super.key,
-      this.callBack,
-      this.isHide,
-      this.companyList,
-      this.companyName,
-      this.companyTypeId,
-      this.isHowPhysical,
-      this.selectedValue});
+        this.callBack,
+        this.isHide,
+        this.companyList,
+        this.companyName,
+        this.companyTypeId,
+        this.isHowPhysical,
+        this.selectedValue});
 
   @override
   State<FullScreenBottomSheet> createState() => _FullScreenBottomSheetState();
@@ -375,14 +375,14 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
               SizedBox(height: 10,),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric( horizontal: 20),
+                const EdgeInsets.symmetric( horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Text(
+                    Text(
                       AppLocalizations.of(context).translate('filters'),
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -408,7 +408,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         showBottomSheetCompanyType((id, name,nameFr) {
                           companyId = id;
                           selectedValue =
-                              Provider.of<LocalizationNotifier>(context, listen: false).appLocal == Locale("en")?name : nameFr;
+                          Provider.of<LocalizationNotifier>(context, listen: false).appLocal == Locale("en")?name : nameFr;
                           setState(() {
 
                           });
@@ -416,21 +416,21 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         },);
                       },
                       child: Container(height: 45,
-                          width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.black)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width-85,
-                            child: Text(selectedValue.isNotEmpty ? selectedValue :AppLocalizations.of(context).translate('typeOfCompany'),
-                            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),overflow: TextOverflow.ellipsis,),
-                          ),
-                          Icon(Icons.arrow_drop_down_sharp,size: 20,)
-                        ],
-                      ),
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.black)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width-85,
+                              child: Text(selectedValue.isNotEmpty ? selectedValue :AppLocalizations.of(context).translate('typeOfCompany'),
+                                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),overflow: TextOverflow.ellipsis,),
+                            ),
+                            Icon(Icons.arrow_drop_down_sharp,size: 20,)
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -520,7 +520,7 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                               color: Colors.black38), // Border color
                         ),
                         child: Text(
-                            AppLocalizations.of(context).translate('clear'),
+                          AppLocalizations.of(context).translate('clear'),
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
@@ -543,10 +543,10 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                             borderRadius: BorderRadius.circular(30),
                           ),
                           backgroundColor:
-                              Colors.blueAccent, // Background color
+                          Colors.blueAccent, // Background color
                         ),
                         child: Text(
-                            AppLocalizations.of(context).translate('save'),
+                          AppLocalizations.of(context).translate('save'),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -605,9 +605,9 @@ class _FullScreenBottomSheetState extends State<FullScreenBottomSheet> {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")?item.companyType ?? "":item.companyTypeFr,                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
                         ),
                       ),
                     );
@@ -631,10 +631,10 @@ class CustomDropdown extends StatefulWidget {
 
   CustomDropdown(
       {super.key,
-      required this.title,
-      this.companyList,
-      this.callBack,
-      this.selectedValue});
+        required this.title,
+        this.companyList,
+        this.callBack,
+        this.selectedValue});
 
   @override
   _CustomDropdownState createState() => _CustomDropdownState();

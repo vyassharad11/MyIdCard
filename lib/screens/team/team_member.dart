@@ -26,7 +26,7 @@ import '../profile_mosule/profile_new.dart';
 class TeamMemberPage extends StatefulWidget {
   String? teamCode;
   String? role;
-   TeamMemberPage({super.key,this.teamCode,this.role});
+  TeamMemberPage({super.key,this.teamCode,this.role});
 
   @override
   State<TeamMemberPage> createState() => _TeamMemberPageState();
@@ -53,14 +53,14 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
     super.initState();
   }
 
-@override
+  @override
   void dispose() {
-  _getTeamMember?.close();
-  _removeMember?.close();
-  _getUnApprovedCubit?.close();
-  _getTeamMember = null;
-  _getUnApprovedCubit = null;
-  _removeMember = null;
+    _getTeamMember?.close();
+    _removeMember?.close();
+    _getUnApprovedCubit?.close();
+    _getTeamMember = null;
+    _getUnApprovedCubit = null;
+    _removeMember = null;
     // TODO: implement dispose
     super.dispose();
   }
@@ -246,7 +246,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                   ),
                   Center(
                     child: Text(
-                        AppLocalizations.of(context).translate('teamMembers'),
+                      AppLocalizations.of(context).translate('teamMembers'),
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w600),
@@ -273,10 +273,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                       Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4.0),
                         child: Text(
-                            AppLocalizations.of(context).translate('inviteMembers'),
+                          AppLocalizations.of(context).translate('inviteMembers'),
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w700),
                         ),
@@ -325,101 +325,101 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                      AppLocalizations.of(context).translate('pendingRequest'),
+                        AppLocalizations.of(context).translate('pendingRequest'),
                         style:
-                            TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                     ListView.separated(
-                         shrinkWrap: true,
-                         padding: EdgeInsets.zero,
-                         itemBuilder: (context, index) {
-                       return  Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
-                           Padding(
-                             padding: const EdgeInsets.only(left: 4.0),
-                             child: Text(
-                             "${unApprovedMember[index].firstName ?? ""} ${unApprovedMember[index].lastName ?? ""}",
-                               style: TextStyle(
-                                 color: Colors.black87,
-                                 fontSize: 14,
-                                 fontWeight: FontWeight.w600,
-                               ),
-                             ),
-                           ),
-                           Row(
-                             children: [
-                               SizedBox(
-                                 height: 25,
-                                 child: ElevatedButton(
-                                   style: ElevatedButton.styleFrom(
-                                     padding: EdgeInsets.symmetric(
-                                         horizontal: 8, vertical: 0),
-                                     elevation: 0,
-                                     backgroundColor: Colors.blue,
-                                     shape: RoundedRectangleBorder(
-                                       borderRadius: BorderRadius.circular(16),
-                                     ),
-                                   ),
-                                   onPressed: () {
-                                     setState(() {
-                                       unApprovedSelectedIndex = index;
-                                     });
-                                     apiApproveTeamMember(unApprovedMember[index].id.toString(),"1");
-                                   },
-                                   child: Text(
-                           AppLocalizations.of(context).translate('approve'),
-                                     style: TextStyle(fontSize: 12),
-                                   ),
-                                 ),
-                               ),
-                               SizedBox(
-                                 width: 8,
-                               ),
-                               Padding(
-                                 padding: const EdgeInsets.only(right: 4.0),
-                                 child: Container(
-                                   height: 21, // Diameter of the circle
-                                   width: 21,
-                                   decoration: BoxDecoration(
-                                     shape: BoxShape.circle,
-                                     border: Border.all(
-                                         color: Colors.red.shade400, width: 2),
-                                   ),
-                                   child: Center(
-                                     child: IconButton(
-                                       padding: EdgeInsets.zero,
-                                       icon: Icon(
-                                         Icons.clear,
-                                         size: 16,
-                                         color: Colors.red,
-                                       ),
-                                       onPressed: () {
-                                         setState(() {
-                                           unApprovedSelectedIndex = index;
-                                         });
-                                         apiApproveTeamMember(unApprovedMember[index].id,"0");
-                                         // Add your logic here
-                                       },
-                                     ),
-                                   ),
-                                 ),
-                               ),
-                             ],
-                           ),
-                         ],
-                       );
-                     }, separatorBuilder: (context, index) {
-                       return SizedBox(height: 12,);
-                     }, itemCount: unApprovedMember.length)
+                      ListView.separated(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, index) {
+                            return  Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 4.0),
+                                  child: Text(
+                                    "${unApprovedMember[index].firstName ?? ""} ${unApprovedMember[index].lastName ?? ""}",
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 25,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 0),
+                                          elevation: 0,
+                                          backgroundColor: Colors.blue,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            unApprovedSelectedIndex = index;
+                                          });
+                                          apiApproveTeamMember(unApprovedMember[index].id.toString(),"1");
+                                        },
+                                        child: Text(
+                                          AppLocalizations.of(context).translate('approve'),
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 4.0),
+                                      child: Container(
+                                        height: 21, // Diameter of the circle
+                                        width: 21,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Colors.red.shade400, width: 2),
+                                        ),
+                                        child: Center(
+                                          child: IconButton(
+                                            padding: EdgeInsets.zero,
+                                            icon: Icon(
+                                              Icons.clear,
+                                              size: 16,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                unApprovedSelectedIndex = index;
+                                              });
+                                              apiApproveTeamMember(unApprovedMember[index].id,"0");
+                                              // Add your logic here
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }, separatorBuilder: (context, index) {
+                        return SizedBox(height: 12,);
+                      }, itemCount: unApprovedMember.length)
                     ],
                   ),
                 ),
@@ -436,10 +436,10 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
-                       Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                            AppLocalizations.of(context).translate('members&Roles'),
+                          AppLocalizations.of(context).translate('members&Roles'),
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -452,7 +452,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                         },
                         decoration: InputDecoration(
                           contentPadding:
-                              EdgeInsets.symmetric(horizontal: 14, vertical: 1),
+                          EdgeInsets.symmetric(horizontal: 14, vertical: 1),
                           hintText: AppLocalizations.of(context).translate('search'),
                           hintStyle: TextStyle(color: Colors.grey),
                           filled: true,
@@ -466,7 +466,7 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
                       const SizedBox(height: 10),
 
                       // List of Members
-                    if(teamMember.isNotEmpty)  SizedBox(
+                      if(teamMember.isNotEmpty)  SizedBox(
                         height: MediaQuery.sizeOf(context).height / 2,
                         child: ListView.builder(
                           itemCount: teamMember.length,
@@ -548,8 +548,8 @@ class _TeamMemberPageState extends State<TeamMemberPage> {
       final permissionStatus = source == ImageSource.camera
           ? await Permission.camera.request()
           : androidInfo.version.sdkInt <= 32
-              ? await Permission.storage.request()
-              : await Permission.photos.request();
+          ? await Permission.storage.request()
+          : await Permission.photos.request();
 
       if (permissionStatus.isGranted) {
         try {
@@ -668,7 +668,7 @@ class CustomRowWidget extends StatelessWidget {
   final Function(String) onRoleChanged;
   final VoidCallback onDelete;
 
-  const CustomRowWidget({super.key, 
+  const CustomRowWidget({super.key,
     required this.imageUrl,
     required this.title,
     required this.description,
@@ -721,13 +721,13 @@ class CustomRowWidget extends StatelessWidget {
               ],
             ),
           ),
-        // Text("${initialRole}    >>>>>>>>>>>${role}"),
+          // Text("${initialRole}    >>>>>>>>>>>${role}"),
           const SizedBox(width: 16),
-      if(initialRole == Role.towner.name || initialRole == Role.tadmin.name)Text(
-          initialRole == Role.towner.name?"Owner":"Admin"
-      ),
-      if(((role == Role.towner.name || role == Role.tadmin.name)) && (initialRole == Role.member.name ||
-          initialRole == Role.gadmin.name || initialRole == Role.individual.name || initialRole == Role.free.name))   Row(
+          if(initialRole == Role.towner.name || initialRole == Role.tadmin.name)Text(
+              initialRole == Role.towner.name?"Owner":"Admin"
+          ),
+          if(((role == Role.towner.name || role == Role.tadmin.name)) && (initialRole == Role.member.name ||
+              initialRole == Role.gadmin.name || initialRole == Role.individual.name || initialRole == Role.free.name))   Row(
             children: [
               SizedBox(
                 width: 8,

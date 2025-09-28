@@ -187,7 +187,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         _selectedImage!.path != "" &&
         !_selectedImage!.path.contains("storage")) {
       data = FormData.fromMap({
-       if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'company_logo':
+        if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'company_logo':
         await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
         'step_no' : "2",
         'company_name' : companyName.text.toString().trim(),
@@ -293,9 +293,9 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
                   context,
                   MaterialPageRoute(
                       builder: (builder) => CreateCardScreenSocial(
-                            cardId: widget.cardId,
-                            isEdit: widget.isEdit,
-                          )));
+                        cardId: widget.cardId,
+                        isEdit: widget.isEdit,
+                      )));
               Utility().showFlushBar(context: context, message: dto.message ?? "");
             }
             setState(() {});
@@ -333,8 +333,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
             } else if (state is ResponseStateSuccess) {
               Utility.hideLoader(context);
               var dto = state.data as GetCardModel;
-                selectedTitle = dto.data?.companyType?.companyType ?? '';
-                selectedId = dto.data?.companyTypeId.toString() ?? "";
+              selectedTitle = dto.data?.companyType?.companyType ?? '';
+              selectedId = dto.data?.companyTypeId.toString() ?? "";
               companyName.text = dto.data?.companyName ?? "";
               jobTitle.text = dto.data?.jobTitle ?? "";
               companyAddress.text = dto.data?.companyAddress ?? "";
@@ -350,405 +350,405 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
           },
         ),
       ],
-        child: GestureDetector(
-          onTap: CommonUtils.closeKeyBoard,
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: GestureDetector(
-                            onTap: () =>
-                                Navigator.pop(context), // Default action: Go back
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              elevation: 2,
-                              child: const Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
+      child: GestureDetector(
+        onTap: CommonUtils.closeKeyBoard,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: GestureDetector(
+                          onTap: () =>
+                              Navigator.pop(context), // Default action: Go back
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            elevation: 2,
+                            child: const Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Icon(
+                                Icons.arrow_back,
+                                size: 20,
+                                color: Colors.black,
                               ),
                             ),
                           ),
                         ),
-                        Center(
-                          child: Text(
-                            AppLocalizations.of(context).translate('createCardOn'),
-                            style:
-                                TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 10,
-                          height: 3,
-                          color: Colors.black,
-                        ),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Container(
-                          width: 30,
-                          height: 3,
-                          color: Colors.black,
-                        ),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Container(
-                          width: 10,
-                          height: 3,
-                          color: Colors.grey.withOpacity(0.3),
-                        ),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Container(
-                          width: 10,
-                          height: 3,
-                          color: Colors.grey.withOpacity(0.3),
-                        ),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Container(
-                          width: 10,
-                          height: 3,
-                          color: Colors.grey.withOpacity(0.3),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                     Center(
-                      child: Text(
-                          AppLocalizations.of(context)
-                              .translate('companyDetails'),
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
                       ),
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context).translate('createCardOn'),
+                          style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 30,
+                        height: 3,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Container(
+                        width: 10,
+                        height: 3,
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text(
+                      AppLocalizations.of(context)
+                          .translate('companyDetails'),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 10),
-                    Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          _showBottomSheet(context);
-                        },
-                        child: Stack(
-                          children: [
-                            _selectedImage != null &&
-                                    _selectedImage!.path.isNotEmpty &&
-                                    !_selectedImage!.path.contains("storage")
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        4), // Adjust the radius as needed
-                                    child: Image.file(
-                                      _selectedImage!,
-                                      fit: BoxFit.cover,
-                                      width: 80,
-                                      height: 80,
-                                    ),
-                                  )
-                                : _selectedImage != null &&
-                                        _selectedImage!.path.isNotEmpty &&
-                                        _selectedImage!.path.contains("storage")
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            4), // Adjust the radius as needed
-                                        child: Image.network(
-                                          "${Network.imgUrl}${_selectedImage!.path}",
-                                          fit: BoxFit.cover,
-                                          width: 80,
-                                          height: 80,
-                                        ),
-                                      )
-                                    : Container(
-                                        width: 80, // Adjust the size as needed
-                                        height: 80,
-                                        decoration: BoxDecoration(
-                                          color: ColoursUtils
-                                              .background, // Grey background color
-                                          shape: BoxShape.rectangle, // Circular shape
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(22.0),
-                                          child: Image.asset(
-                                            "assets/images/image-01.png",
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        _showBottomSheet(context);
+                      },
+                      child: Stack(
+                        children: [
+                          _selectedImage != null &&
+                              _selectedImage!.path.isNotEmpty &&
+                              !_selectedImage!.path.contains("storage")
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                4), // Adjust the radius as needed
+                            child: Image.file(
+                              _selectedImage!,
+                              fit: BoxFit.cover,
+                              width: 80,
+                              height: 80,
+                            ),
+                          )
+                              : _selectedImage != null &&
+                              _selectedImage!.path.isNotEmpty &&
+                              _selectedImage!.path.contains("storage")
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                4), // Adjust the radius as needed
+                            child: Image.network(
+                              "${Network.imgUrl}${_selectedImage!.path}",
+                              fit: BoxFit.cover,
+                              width: 80,
+                              height: 80,
+                            ),
+                          )
+                              : Container(
+                            width: 80, // Adjust the size as needed
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: ColoursUtils
+                                  .background, // Grey background color
+                              shape: BoxShape.rectangle, // Circular shape
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(22.0),
+                              child: Image.asset(
+                                "assets/images/image-01.png",
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
 
-                            // Positioned plus icon at the bottom right corner
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
+                          // Positioned plus icon at the bottom right corner
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .blue, // Background color of the plus icon
+                                shape: BoxShape.rectangle,
+                                border: Border.all(
                                   color: Colors
-                                      .blue, // Background color of the plus icon
-                                  shape: BoxShape.rectangle,
-                                  border: Border.all(
-                                    color: Colors
-                                        .white, // White border around the plus icon
-                                    width: 3,
-                                  ),
+                                      .white, // White border around the plus icon
+                                  width: 3,
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(
-                                      4.0), // Padding around the plus icon
-                                  child: Icon(
-                                    Icons.add, // Plus icon
-                                    size: 12, // Size of the plus icon
-                                    color: Colors.white, // Color of the plus icon
-                                  ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(
+                                    4.0), // Padding around the plus icon
+                                child: Icon(
+                                  Icons.add, // Plus icon
+                                  size: 12, // Size of the plus icon
+                                  color: Colors.white, // Color of the plus icon
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text(
+                      AppLocalizations.of(context).translate('companylogo'),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal),
                     ),
-                    Center(
-                      child: Text(
-                        AppLocalizations.of(context).translate('companylogo'),
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal),
-                      ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    const SizedBox(height: 20),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: ColoursUtils.background, // Light white color
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        controller: companyName,
-                        // maxLength: 28,
-                        decoration: InputDecoration(
-                          hintText:
-                              AppLocalizations.of(context).translate('companyname'),
-                          border: InputBorder.none,
-                          hintStyle: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      controller: companyName,
+                      // maxLength: 28,
+                      decoration: InputDecoration(
+                        hintText:
+                        AppLocalizations.of(context).translate('companyname'),
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    companyList.isEmpty
-                        ? SizedBox() // Show a loader until data is available
-                        : selectedTitle != null && selectedTitle!.isNotEmpty
-                            ? GestureDetector(
-                                onTap: () {
-                                  showBottomSheetCompanyType();
-                                },
-                                child: titleShewoEdt())
-                            : companyTypeBottomSheet(context),
-                    const SizedBox(height: 20),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: ColoursUtils.background, // Light white color
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        controller: jobTitle,
-                        // maxLength: 28,
-                        decoration: InputDecoration(
-                          hintText:
-                              AppLocalizations.of(context).translate('jobtitle'),
-                          border: InputBorder.none,
-                          hintStyle: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                  ),
+                  const SizedBox(height: 20),
+                  companyList.isEmpty
+                      ? SizedBox() // Show a loader until data is available
+                      : selectedTitle != null && selectedTitle!.isNotEmpty
+                      ? GestureDetector(
+                      onTap: () {
+                        showBottomSheetCompanyType();
+                      },
+                      child: titleShewoEdt())
+                      : companyTypeBottomSheet(context),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      controller: jobTitle,
+                      // maxLength: 28,
+                      decoration: InputDecoration(
+                        hintText:
+                        AppLocalizations.of(context).translate('jobtitle'),
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: ColoursUtils.background, // Light white color
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        controller: companyAddress,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)
-                              .translate('companyaddress'),
-                          border: InputBorder.none,
-                          hintStyle: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      controller: companyAddress,
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)
+                            .translate('companyaddress'),
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: ColoursUtils.background, // Light white color
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        controller: companyWebsite,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)
-                              .translate('companyWebsite'),
-                          border: InputBorder.none,
-                          hintStyle: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      controller: companyWebsite,
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)
+                            .translate('companyWebsite'),
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: ColoursUtils.background, // Light white color
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        controller: workEmail,
-                        decoration: InputDecoration(
-                          hintText:
-                              AppLocalizations.of(context).translate('workemail'),
-                          border: InputBorder.none,
-                          hintStyle: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: workEmail,
+                      decoration: InputDecoration(
+                        hintText:
+                        AppLocalizations.of(context).translate('workemail'),
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColoursUtils.background, // Light white color
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: ColoursUtils.background, // Light white color
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: workPhone,
-                        decoration: InputDecoration(
-                          hintText:
-                              AppLocalizations.of(context).translate('phoneumber'),
-                          border: InputBorder.none,
-                          hintStyle: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: workPhone,
+                      decoration: InputDecoration(
+                        hintText:
+                        AppLocalizations.of(context).translate('phoneumber'),
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    SizedBox(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                       // iconAlignment: IconAlignment.start,
-                        onPressed: () {
-                          // Handle button press
-                          submitData();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue, // Background color
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // Rounded corners
-                          ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      // iconAlignment: IconAlignment.start,
+                      onPressed: () {
+                        // Handle button press
+                        submitData();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue, // Background color
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(30), // Rounded corners
                         ),
-                        child:  Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
+                      ),
+                      child:  Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
                             AppLocalizations.of(context)
-                            .translate('continue'), // Right side text
-                              style: TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          ],
-                        ),
+                                .translate('continue'), // Right side text
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
             ),
           ),
         ),
+      ),
     );
   }
 
@@ -763,8 +763,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
       final permissionStatus = source == ImageSource.camera
           ? await Permission.camera.request()
           : androidInfo.version.sdkInt <= 32
-              ? await Permission.storage.request()
-              : await Permission.photos.request();
+          ? await Permission.storage.request()
+          : await Permission.photos.request();
 
       if (permissionStatus.isGranted) {
         try {
@@ -811,7 +811,7 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
   // Function to show permission denied message
   void _showPermissionDeniedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(
+      SnackBar(
         content: Text(AppLocalizations.of(context)
             .translate('permissionText'),),
       ),
@@ -844,8 +844,8 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
             children: [
               SizedBox(height: 20),
               Text(
-                  AppLocalizations.of(context)
-                      .translate('selectCompanyType'),
+                AppLocalizations.of(context)
+                    .translate('selectCompanyType'),
                 style: const TextStyle(color: Colors.black, fontSize: 18),
               ),
               SizedBox(height: 20),
@@ -899,19 +899,19 @@ class _CreateCardScreen2State extends State<CreateCardScreen2> {
         children: [
           Text(
             // "",
-        selectedId == null || selectedId!.isEmpty
-            ? AppLocalizations.of(context).translate('selectCompanyType')
-            : (companyList != null && companyList.isNotEmpty
-            ? companyList.firstWhere(
-              (item) => item.id.toString() == selectedId,
-          orElse: () => companyList.first, // fallback item
-        ).companyType ?? ""
-            : ""),
+            selectedId == null || selectedId!.isEmpty
+                ? AppLocalizations.of(context).translate('selectCompanyType')
+                : (companyList != null && companyList.isNotEmpty
+                ? companyList.firstWhere(
+                  (item) => item.id.toString() == selectedId,
+              orElse: () => companyList.first, // fallback item
+            ).companyType ?? ""
+                : ""),
             style: TextStyle(
               fontWeight: FontWeight.w100,
               fontSize: 16,
               color: selectedId == null ||
-                      selectedId!.isEmpty && selectedTitle == null
+                  selectedId!.isEmpty && selectedTitle == null
                   ? Colors.grey[500]
                   : Colors.black,
             ),

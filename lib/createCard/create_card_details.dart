@@ -30,7 +30,7 @@ import 'package:dio/dio.dart';
 class CreateCardScreenDetails extends StatefulWidget {
   final String cardId;
   final bool isEdit;
-   const CreateCardScreenDetails(
+  const CreateCardScreenDetails(
       {super.key, required this.cardId, required this.isEdit});
 
   @override
@@ -61,7 +61,7 @@ class _CreateCardScreenDetailsState extends State<CreateCardScreenDetails> {
   Future<void> fetchEditData() async {
     _getCardCubit?.apiGetCard(widget.cardId);
   }
-Future<void> apiGetBackgroundImage() async {
+  Future<void> apiGetBackgroundImage() async {
     _getBackgroundImageCubit?.apiGetBackgroundImage();
   }
 
@@ -70,452 +70,452 @@ Future<void> apiGetBackgroundImage() async {
   Widget build(BuildContext context) {
     return
       MultiBlocListener(listeners: [
-      BlocListener<CardCubit, ResponseState>(
-      bloc: _getCardCubit,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateNoInternet) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateError) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateSuccess) {
-          Utility.hideLoader(context);
-          var dto = state.data as GetCardModel;
-          cardName.text = dto.data?.cardName.toString() ?? "";
-          if (dto.data?.backgroungImage != null) {
-            _selectedImage = File(dto.data?.backgroungImage);
-            _selectedImagePath = dto.data?.backgroungImage;
-          }
-          if (dto.data?.cardStyle != null) {
-            _currentColor = Color(int.parse('0xFF${dto.data!.cardStyle!}'));
-          }
-        }
-        setState(() {});
-      },),
-      BlocListener<CardCubit, ResponseState>(
-      bloc: _getBackgroundImageCubit,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateNoInternet) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateError) {
-          Utility.hideLoader(context);
-        } else if (state is ResponseStateSuccess) {
-          Utility.hideLoader(context);
-          var dto = state.data as BackgroundImageModel;
-          if(dto != null && dto.data != null){
-            backgroundImageList = dto.data;
-          }
-        }
-        setState(() {});
-      },),
+        BlocListener<CardCubit, ResponseState>(
+          bloc: _getCardCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as GetCardModel;
+              cardName.text = dto.data?.cardName.toString() ?? "";
+              if (dto.data?.backgroungImage != null) {
+                _selectedImage = File(dto.data?.backgroungImage);
+                _selectedImagePath = dto.data?.backgroungImage;
+              }
+              if (dto.data?.cardStyle != null) {
+                _currentColor = Color(int.parse('0xFF${dto.data!.cardStyle!}'));
+              }
+            }
+            setState(() {});
+          },),
+        BlocListener<CardCubit, ResponseState>(
+          bloc: _getBackgroundImageCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as BackgroundImageModel;
+              if(dto != null && dto.data != null){
+                backgroundImageList = dto.data;
+              }
+            }
+            setState(() {});
+          },),
 
         BlocListener<CardCubit, ResponseState>(
-      bloc: _updateCardCubit,
-      listener: (context, state) {
-        if (state is ResponseStateLoading) {
-        } else if (state is ResponseStateEmpty) {
-          Utility.hideLoader(context);
-          Utility().showFlushBar(context: context, message: state.message,isError: true);
-        } else if (state is ResponseStateNoInternet) {
-          Utility.hideLoader(context);
-          Utility().showFlushBar(context: context, message: state.message,isError: true);
-        } else if (state is ResponseStateError) {
-          Utility.hideLoader(context);
-          Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
-        } else if (state is ResponseStateSuccess) {
-          Utility.hideLoader(context);
-          var dto = state.data as UtilityDto;
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (builder) => CreateCardScreenDetailsOther(
-                    cardId: widget.cardId,
-                    isEdit: widget.isEdit,
-                  )));
-          Utility().showFlushBar(context: context, message: dto.message ?? "");
-        }
-        setState(() {});
-      },),
+          bloc: _updateCardCubit,
+          listener: (context, state) {
+            if (state is ResponseStateLoading) {
+            } else if (state is ResponseStateEmpty) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
+            } else if (state is ResponseStateNoInternet) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.message,isError: true);
+            } else if (state is ResponseStateError) {
+              Utility.hideLoader(context);
+              Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+            } else if (state is ResponseStateSuccess) {
+              Utility.hideLoader(context);
+              var dto = state.data as UtilityDto;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (builder) => CreateCardScreenDetailsOther(
+                        cardId: widget.cardId,
+                        isEdit: widget.isEdit,
+                      )));
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
+            }
+            setState(() {});
+          },),
       ],
-      child: GestureDetector(
-        onTap: CommonUtils.closeKeyBoard,
-        child: Scaffold(
-          backgroundColor: ColoursUtils.background,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: GestureDetector(
-                          onTap: () =>
-                              Navigator.pop(context), // Default action: Go back
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            elevation: 3,
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Icon(
-                                Icons.arrow_back,
-                                size: 20,
-                                color: Colors.black,
+        child: GestureDetector(
+          onTap: CommonUtils.closeKeyBoard,
+          child: Scaffold(
+            backgroundColor: ColoursUtils.background,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: GestureDetector(
+                            onTap: () =>
+                                Navigator.pop(context), // Default action: Go back
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              elevation: 3,
+                              child: const Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Center(
-                        child: Text(
-                          AppLocalizations.of(context).translate('createCardOn'),
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 30,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context).translate('CardDetail'),
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Light white color
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      controller: cardName,
-                      // maxLength: 22,
-                      decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context).translate('CardName'),
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                  // Container(
-                  //   height: 50,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.grey.withOpacity(0.3), // Light white color
-                  //     borderRadius: BorderRadius.circular(8),
-                  //   ),
-                  //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  //   child: TextField(
-                  //     controller: cardName,
-                  //     decoration: InputDecoration(
-                  //       hintText:
-                  //           AppLocalizations.of(context).translate('CardName'),
-                  //       border: InputBorder.none,
-                  //       hintStyle: TextStyle(color: Colors.grey),
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(height: 20),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 0,
-                    margin: EdgeInsets.zero,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 12),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context).translate('CardStyle'),
+                        Center(
+                          child: Text(
+                            AppLocalizations.of(context).translate('createCardOn'),
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w600),
+                                fontSize: 24, fontWeight: FontWeight.w600),
                           ),
-                          // Space between text and row
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)
-                                .translate('selectCardColor'),),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                            onTap: colorPickerDialog,
-                            trailing: Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                color: _currentColor,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 30,
+                          height: 3,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: Text(
+                        AppLocalizations.of(context).translate('CardDetail'),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () => _showBottomSheet(context),
-                    child: Card(
-                      margin: EdgeInsets.zero,
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Light white color
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        controller: cardName,
+                        // maxLength: 22,
+                        decoration: InputDecoration(
+                          hintText:
+                          AppLocalizations.of(context).translate('CardName'),
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ),
+                    // Container(
+                    //   height: 50,
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.grey.withOpacity(0.3), // Light white color
+                    //     borderRadius: BorderRadius.circular(8),
+                    //   ),
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: TextField(
+                    //     controller: cardName,
+                    //     decoration: InputDecoration(
+                    //       hintText:
+                    //           AppLocalizations.of(context).translate('CardName'),
+                    //       border: InputBorder.none,
+                    //       hintStyle: TextStyle(color: Colors.grey),
+                    //     ),
+                    //   ),
+                    // ),
+                    const SizedBox(height: 20),
+                    Card(
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(20), // Rounded corners
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       elevation: 0,
+                      margin: EdgeInsets.zero,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 12),
-                        child: _selectedImage != null &&
-                                _selectedImage!.path.isNotEmpty &&
-                                !_selectedImage!.path.contains("storage")
-                            ? SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      8), // Adjust the radius as needed
-                                  child: Image.file(
-                                    _selectedImage!,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: 180,
-                                  ),
-                                ),
-                              )
-                            : (_selectedImage != null &&
-                                    _selectedImage!.path.isNotEmpty &&
-                                    _selectedImage!.path.contains("storage")) || (_selectedImagePath != null && _selectedImagePath!.isNotEmpty)
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        8), // Adjust the radius as needed
-                                    child: Image.network(
-                                      "${Network.imgUrl}${_selectedImagePath ?? _selectedImage!.path}",
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 180,
-                                    ),
-                                  )
-                                : Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Top + Icon
-                                      CircleAvatar(
-                                        radius: 18,
-                                        child: Image.asset(
-                                            "assets/images/add button.png"),
-                                      ),
-                                      const SizedBox(
-                                          height:
-                                              20), // Space between icon and text
-                                      // Text below the icon
-                                      Text(
-                                        AppLocalizations.of(context)
-                                            .translate('background'),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                    ],
-                                  ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 2),
-                    child: SizedBox(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                       // iconAlignment: IconAlignment.start,
-                        onPressed: () {
-                          if(cardName.text.isNotEmpty) {
-                            Utility.showLoader(context);
-                            submitData(_selectedImage ?? File(""));
-                          }else{
-                            Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
-                                .translate('pleaseEnterCardName'),isError: true);
-                          }
-
-                          // Handle button press
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue, // Background color
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // Rounded corners
-                          ),
-                        ),
-                        child:  Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              AppLocalizations.of(context)
-                                  .translate('continue'),// Right side text
-                              style: TextStyle(color: Colors.white, fontSize: 16),
+                              AppLocalizations.of(context).translate('CardStyle'),
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            // Space between text and row
+                            ListTile(
+                              title: Text(AppLocalizations.of(context)
+                                  .translate('selectCardColor'),),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                              onTap: colorPickerDialog,
+                              trailing: Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                  color: _currentColor,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () => _showBottomSheet(context),
+                      child: Card(
+                        margin: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(20), // Rounded corners
+                        ),
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 12),
+                          child: _selectedImage != null &&
+                              _selectedImage!.path.isNotEmpty &&
+                              !_selectedImage!.path.contains("storage")
+                              ? SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  8), // Adjust the radius as needed
+                              child: Image.file(
+                                _selectedImage!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 180,
+                              ),
+                            ),
+                          )
+                              : (_selectedImage != null &&
+                              _selectedImage!.path.isNotEmpty &&
+                              _selectedImage!.path.contains("storage")) || (_selectedImagePath != null && _selectedImagePath!.isNotEmpty)
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                8), // Adjust the radius as needed
+                            child: Image.network(
+                              "${Network.imgUrl}${_selectedImagePath ?? _selectedImage!.path}",
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: 180,
+                            ),
+                          )
+                              : Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Top + Icon
+                              CircleAvatar(
+                                radius: 18,
+                                child: Image.asset(
+                                    "assets/images/add button.png"),
+                              ),
+                              const SizedBox(
+                                  height:
+                                  20), // Space between icon and text
+                              // Text below the icon
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('background'),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
+                      child: SizedBox(
+                        height: 45,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          // iconAlignment: IconAlignment.start,
+                          onPressed: () {
+                            if(cardName.text.isNotEmpty) {
+                              Utility.showLoader(context);
+                              submitData(_selectedImage ?? File(""));
+                            }else{
+                              Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
+                                  .translate('pleaseEnterCardName'),isError: true);
+                            }
+
+                            // Handle button press
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue, // Background color
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(30), // Rounded corners
+                            ),
+                          ),
+                          child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('continue'),// Right side text
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   void _showBottomSheetForBackgroundImage(BuildContext context) {
     showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (BuildContext context) {
-    return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Expanded(
-        child: ListView.separated
-          (
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-          return InkWell(
-            onTap: (){
-              _selectedImage = null;
-              _selectedImagePath = backgroundImageList?[index].filePath ?? "";
-              setState(() {
-        
-              });
-              Navigator.pop(context);
-            },
-            child: Row(children: [
-              ClipRRect(
-                borderRadius:
-                const BorderRadius.all(
-                    Radius.circular(50)),
-                child: CachedNetworkImage(
-                  height: 50,
-                  width: 50,
-                  fit: BoxFit.cover,
-                  imageUrl:
-                  "${Network.imgUrl}${backgroundImageList?[index].filePath ?? ""}",
-                  progressIndicatorBuilder:
-                      (context, url,
-                      downloadProgress) =>
-                      Center(
-                        child: CircularProgressIndicator(
-                            value:
-                            downloadProgress
-                                .progress),
-                      ),
-                  errorWidget:
-                      (context, url, error) =>
-                      Image.asset(
-                        "assets/logo/Central icon.png",
-                        height: 50,
-                        fit: BoxFit.fill,
-                        width: 50,
-                      ),
-                ),
-              ),
-              SizedBox(width: 5,),
-              Text(backgroundImageList?[index].name ?? "")
-            ],),
-          );
-        }, separatorBuilder: (context, index) {
-          return SizedBox(height: 10,);
-        }, itemCount: backgroundImageList?.length ?? 0),
-      )
-    ]));});}
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (BuildContext context) {
+          return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: ListView.separated
+                        (
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: (){
+                                _selectedImage = null;
+                                _selectedImagePath = backgroundImageList?[index].filePath ?? "";
+                                setState(() {
+
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: Row(children: [
+                                ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(50)),
+                                  child: CachedNetworkImage(
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                    "${Network.imgUrl}${backgroundImageList?[index].filePath ?? ""}",
+                                    progressIndicatorBuilder:
+                                        (context, url,
+                                        downloadProgress) =>
+                                        Center(
+                                          child: CircularProgressIndicator(
+                                              value:
+                                              downloadProgress
+                                                  .progress),
+                                        ),
+                                    errorWidget:
+                                        (context, url, error) =>
+                                        Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 50,
+                                          fit: BoxFit.fill,
+                                          width: 50,
+                                        ),
+                                  ),
+                                ),
+                                SizedBox(width: 5,),
+                                Text(backgroundImageList?[index].name ?? "")
+                              ],),
+                            );
+                          }, separatorBuilder: (context, index) {
+                        return SizedBox(height: 10,);
+                      }, itemCount: backgroundImageList?.length ?? 0),
+                    )
+                  ]));});}
 
   Future<bool> colorPickerDialog() async {
     return ColorPicker(
@@ -530,18 +530,18 @@ Future<void> apiGetBackgroundImage() async {
       runSpacing: 5,
       wheelDiameter: 155,
       heading: Text(
-          AppLocalizations.of(context)
-              .translate('selectCardColor'),
+        AppLocalizations.of(context)
+            .translate('selectCardColor'),
         style: Theme.of(context).textTheme.titleSmall,
       ),
       subheading: Text(
-          AppLocalizations.of(context)
-              .translate('selectColorShade'),
+        AppLocalizations.of(context)
+            .translate('selectColorShade'),
         style: Theme.of(context).textTheme.titleSmall,
       ),
       wheelSubheading: Text(
-          AppLocalizations.of(context)
-              .translate('selectedColorAndshades'),
+        AppLocalizations.of(context)
+            .translate('selectedColorAndshades'),
         style: Theme.of(context).textTheme.titleSmall,
       ),
       showMaterialName: true,
@@ -577,31 +577,31 @@ Future<void> apiGetBackgroundImage() async {
       },
       transitionDuration: const Duration(milliseconds: 400),
       constraints:
-          const BoxConstraints(minHeight: 460, minWidth: 300, maxWidth: 320),
+      const BoxConstraints(minHeight: 460, minWidth: 300, maxWidth: 320),
     );
   }
 
   Future<void> submitData(File selectedImage) async {
-   //  var file;
-   //  Utility.showLoader(context);
-   //  if (!selectedImage.path.contains("storage")) {
-   //     file = await http.MultipartFile.fromPath(
-   //      'backgroung_image',
-   //      selectedImage.path,
-   //    );
-   //  }
-   //  Map<String, dynamic> data = {
-   //  'step_no' : "4",
-   //  'card_style' : _currentColor.hex,
-   // 'card_name' : cardName.text.toString(),
-   //    'backgroung_image':file.toString()
-   //  };
+    //  var file;
+    //  Utility.showLoader(context);
+    //  if (!selectedImage.path.contains("storage")) {
+    //     file = await http.MultipartFile.fromPath(
+    //      'backgroung_image',
+    //      selectedImage.path,
+    //    );
+    //  }
+    //  Map<String, dynamic> data = {
+    //  'step_no' : "4",
+    //  'card_style' : _currentColor.hex,
+    // 'card_name' : cardName.text.toString(),
+    //    'backgroung_image':file.toString()
+    //  };
     var data=null;
     if (selectedImage != null &&
         selectedImage!.path != "" &&
         !selectedImage!.path.contains("storage")) {
       data = FormData.fromMap({
-       if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'backgroung_image':
+        if(_selectedImage != null && _selectedImage!.path.isNotEmpty) 'backgroung_image':
         await MultipartFile.fromFile(_selectedImage!.path, filename: "demo.png"),
         'step_no' : "4",
         'card_style' : _currentColor.hex,
@@ -630,8 +630,8 @@ Future<void> apiGetBackgroundImage() async {
       final permissionStatus = source == ImageSource.camera
           ? await Permission.camera.request()
           : androidInfo.version.sdkInt <= 32
-              ? await Permission.storage.request()
-              : await Permission.photos.request();
+          ? await Permission.storage.request()
+          : await Permission.photos.request();
 
       if (permissionStatus.isGranted) {
         try {
@@ -741,7 +741,7 @@ Future<void> apiGetBackgroundImage() async {
                     .translate('uploadFromLibrary'),),
                 onTap: () {
                   Navigator.pop(context);
-                 _showBottomSheetForBackgroundImage(context);
+                  _showBottomSheetForBackgroundImage(context);
                   // Add your logic for picking an image from the gallery
                 },
               ),

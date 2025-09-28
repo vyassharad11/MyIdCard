@@ -2,6 +2,7 @@ C/C++ Structured Logz
 x
 v/home/kapil/Documents/flutter_linux_3.24.2-stable/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	®ðõý˜3¤ Ðõ¸§Ð2`
 ^
 \/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/additional_project_files.txt	®ðõý˜3  ù²Ï“3]
@@ -26,3 +27,29 @@ T
 R/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/prefab_config.json	®ðõý˜3( ¸ù²Ï“3[
 Y
 W/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/symbol_folder_index.txt	®ðõý˜3N ¸ù²Ï“3
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	Îé „—3¤ Ðõ¸§Ð2`
+^
+\/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/additional_project_files.txt	Îé „—3  ù²Ï“3]
+[
+Y/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/android_gradle_build.json	Îé „—3§ ¤ù²Ï“3b
+`
+^/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/android_gradle_build_mini.json	Îé „—3Æ ´ù²Ï“3O
+M
+K/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/build.ninja	Îé „—3¼¶ ƒù²Ï“3S
+Q
+O/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/build.ninja.txt	Îé „—3X
+V
+T/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/build_file_index.txt	Îé „—3v ¸ù²Ï“3Y
+W
+U/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/compile_commands.json	Îé „—3	]
+[
+Y/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/compile_commands.json.bin	Îé „—3
+c
+a
+_/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/metadata_generation_command.txt	Îé „—3ü ¸ù²Ï“3V
+T
+R/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/prefab_config.json	Îé „—3( ¸ù²Ï“3[
+Y
+W/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86_64/symbol_folder_index.txt	Îé „—3N ¸ù²Ï“3
+>>>>>>> 0bed49a6ec23a6e52a365f6fa947965fce8eb33c

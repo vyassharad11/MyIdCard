@@ -40,10 +40,10 @@ class ContactDetails extends StatefulWidget {
 
   const ContactDetails(
       {super.key,
-      required this.contactId,
-      this.contactIdForMeeting,
-      this.isFromTeam = false,
-      required this.tags});
+        required this.contactId,
+        this.contactIdForMeeting,
+        this.isFromTeam = false,
+        required this.tags});
 
   @override
   State<ContactDetails> createState() => _ContactDetailsState();
@@ -60,7 +60,7 @@ class _ContactDetailsState extends State<ContactDetails> {
   TextEditingController notesController = TextEditingController();
   bool isEdit = false;
   bool isLoad = true;
-   bool isPhysicalContact = false;
+  bool isPhysicalContact = false;
 
 
   @override
@@ -98,8 +98,8 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   Future<void> apiUpdateNotes(
-    cardId,text
-  ) async {
+      cardId,text
+      ) async {
     Map<String, dynamic> data = {
       "notes": text,
     };
@@ -188,18 +188,18 @@ class _ContactDetailsState extends State<ContactDetails> {
         child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-        ListTile(
-        title: Text(
-        AppLocalizations.of(context).translate("addPrivate"),
-    style: TextStyle(color: Colors.black, fontSize: 14),
-    ),
-    onTap: () {
-    Navigator.pop(context);
-    },
-    ),
-    const Divider(
-    color: Colors.grey,
-    ),
+              ListTile(
+                title: Text(
+                  AppLocalizations.of(context).translate("addPrivate"),
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              const Divider(
+                color: Colors.grey,
+              ),
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                 title:  Text(
@@ -220,7 +220,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                   ); // Add functionality here
                 },
               ),
-    ]));
+            ]));
   }
 
   Widget buildContactBottomSheetContent(BuildContext context) {
@@ -250,8 +250,8 @@ class _ContactDetailsState extends State<ContactDetails> {
           ListTile(
             title: Text(
               contactDetailsDatum != null &&
-                      contactDetailsDatum!.contactTags != null &&
-                      contactDetailsDatum!.contactTags!.isNotEmpty
+                  contactDetailsDatum!.contactTags != null &&
+                  contactDetailsDatum!.contactTags!.isNotEmpty
                   ? AppLocalizations.of(context).translate('editTag')
                   : AppLocalizations.of(context).translate('addTag'),
               style: TextStyle(color: Colors.black, fontSize: 14),
@@ -274,7 +274,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                   contactTags: contactDetailsDatum?.contactTags ?? [],
                 ),
               ).whenComplete(
-                () {
+                    () {
                   getContactDetail();
                 },
               );
@@ -302,24 +302,24 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           // if (isPhysicalContact == false)
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-              title:  Text(
-                AppLocalizations.of(context).translate('exportToContactsApp'),
-                style: TextStyle(color: Colors.black, fontSize: 14),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                requestPermissions().then(
-                  (value) {
-                    addContact(
-                        contactDetailsDatum?.firstName ?? "",
-                        contactDetailsDatum?.lastName ?? "",
-                         contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
-                  },
-                ); // Add functionality here
-              },
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            title:  Text(
+              AppLocalizations.of(context).translate('exportToContactsApp'),
+              style: TextStyle(color: Colors.black, fontSize: 14),
             ),
+            onTap: () {
+              Navigator.pop(context);
+              requestPermissions().then(
+                    (value) {
+                  addContact(
+                      contactDetailsDatum?.firstName ?? "",
+                      contactDetailsDatum?.lastName ?? "",
+                      contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
+                },
+              ); // Add functionality here
+            },
+          ),
           const Divider(
             color: Colors.grey,
           ),
@@ -350,7 +350,7 @@ class _ContactDetailsState extends State<ContactDetails> {
         children: [
           ListTile(
             title: Text(
-                  AppLocalizations.of(context).translate('addPrivate'),
+              AppLocalizations.of(context).translate('addPrivate'),
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             onTap: () {
@@ -361,24 +361,24 @@ class _ContactDetailsState extends State<ContactDetails> {
             color: Colors.grey,
           ),
           // if (isPhysicalContact == false)
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-              title:  Text(
-                AppLocalizations.of(context).translate('exportToContactsApp'),
-                style: TextStyle(color: Colors.black, fontSize: 14),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                requestPermissions().then(
-                  (value) {
-                    addContact(
-                        contactDetailsDatum?.firstName ?? "",
-                        contactDetailsDatum?.lastName ?? "",
-                         contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
-                  },
-                ); // Add functionality here
-              },
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            title:  Text(
+              AppLocalizations.of(context).translate('exportToContactsApp'),
+              style: TextStyle(color: Colors.black, fontSize: 14),
             ),
+            onTap: () {
+              Navigator.pop(context);
+              requestPermissions().then(
+                    (value) {
+                  addContact(
+                      contactDetailsDatum?.firstName ?? "",
+                      contactDetailsDatum?.lastName ?? "",
+                      contactDetailsDatum?.phone ??  contactDetailsDatum?.phoneNo);
+                },
+              ); // Add functionality here
+            },
+          ),
           const Divider(
             color: Colors.grey,
           ),
@@ -406,7 +406,7 @@ class _ContactDetailsState extends State<ContactDetails> {
       try {
         await FlutterContacts.insertContact(newContact);
         Utility().showFlushBar(
-            context: context, message: AppLocalizations.of(context)
+          context: context, message: AppLocalizations.of(context)
             .translate('contactAddSuccessfully'),);
       } catch (e) {
         print('Error adding contact: $e');
@@ -518,7 +518,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               contactDetailsDatum = dto.data;
               notesController.text = contactDetailsDatum?.notes ?? "";
               if(contactDetailsDatum?.contactTypeId ==2){
-              isPhysicalContact =true; }else{
+                isPhysicalContact =true; }else{
                 isPhysicalContact = false;
               }
               setLink();
@@ -605,50 +605,495 @@ class _ContactDetailsState extends State<ContactDetails> {
           child: isLoad
               ? shimmerView()
               : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 12),
+                child: isPhysicalContact
+                    ? Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 12),
-                      child: isPhysicalContact
-                          ? Column(
-                            children: [
-                              ClipRRect(
+                    ClipRRect(
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(8)),
+                      child: CachedNetworkImage(
+                        height: 170,
+                        width: double.infinity,
+                        fit: BoxFit.fitWidth,
+                        imageUrl:
+                        "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                              value: downloadProgress.progress),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Image.asset(
+                              "assets/logo/Top with a picture.png",
+                              height: 80,
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                            ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Row(children: [
+                        InkWell(
+                          onTap: () {
+                            _showBottomSheet(context, () {
+                              dialNumber(contactDetailsDatum
+                                  ?.phone
+                                  .toString() ??
+                                  "");
+                            },
+                                AppLocalizations.of(context).translate('phone'),
+                                AppLocalizations.of(context).translate('copyPhone'),
+                                contactDetailsDatum?.phone
+                                    .toString() ??
+                                    "",
+                                false);
+                          },
+                          child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
                                   borderRadius:
-                                      const BorderRadius.all(Radius.circular(8)),
-                                  child: CachedNetworkImage(
-                                    height: 170,
+                                  BorderRadius.circular(
+                                      45),
+                                  color: contactDetailsDatum
+                                      ?.cardStyle !=
+                                      null
+                                      ? Color(int.parse(
+                                      '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                      : Colors.blue),
+                              child: Icon(
+                                Icons.call,
+                                color: Colors.white,
+                              )),
+                        ),
+                        SizedBox(width: 10,),
+                        InkWell(
+                          onTap: () {
+                            _showBottomSheet(context,
+                                    () async {
+                                  // await launch("${contactDetailsDatum
+                                  //     ?.workEmail ??
+                                  //     ""}?subject=&body=");
+                                  await launch(
+                                      "mailto:${contactDetailsDatum?.email ?? ""}?subject=&body=");
+                                  // openGmail(
+                                  //     body: "",
+                                  //     email: contactDetailsDatum
+                                  //             ?.workEmail ??
+                                  //         "",
+                                  //     subject: "");
+                                },
+                                AppLocalizations.of(context).translate('sendEmail'),
+                                AppLocalizations.of(context).translate('copyEmail'),
+                                contactDetailsDatum
+                                    ?.email
+                                    .toString() ??
+                                    "",
+                                false);
+                          },
+                          child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(
+                                      45),
+                                  color: contactDetailsDatum
+                                      ?.cardStyle !=
+                                      null
+                                      ? Color(int.parse(
+                                      '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                      : Colors.blue),
+                              child: Icon(
+                                Icons.mail_outline_outlined,
+                                color: Colors.white,
+                              )),
+                        ),
+                      ],),)
+                  ],
+                )
+                    : Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        18), // if you need this
+                    side: const BorderSide(
+                      color: Colors.white,
+                      width: 2,
+                    ),
+                  ),
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      contactDetailsDatum?.backgroungImage != null && contactDetailsDatum?.cardImage != null
+                          ? Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius:
+                            const BorderRadius.only(
+                                topLeft:
+                                Radius.circular(18),
+                                topRight:
+                                Radius.circular(18)),
+                            child: CachedNetworkImage(
+                              height: 102,
+                              width: double.infinity,
+                              fit: BoxFit.fitWidth,
+                              imageUrl:
+                              "${Network.imgUrl}${contactDetailsDatum?.backgroungImage}",
+                              progressIndicatorBuilder:
+                                  (context, url,
+                                  downloadProgress) =>
+                                  Center(
+                                    child:
+                                    CircularProgressIndicator(
+                                        value:
+                                        downloadProgress
+                                            .progress),
+                                  ),
+                              errorWidget:
+                                  (context, url, error) =>
+                                  Image.asset(
+                                    "assets/logo/Top with a picture.png",
+                                    height: 80,
+                                    fit: BoxFit.fill,
                                     width: double.infinity,
+                                  ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment
+                                .spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(
+                                    top: 16.0, left: 12),
+                                child: contactDetailsDatum != null &&  contactDetailsDatum!.cardImage != null &&  contactDetailsDatum!.cardImage.toString().isNotEmpty?  ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(
+                                          60)),
+                                  child: CachedNetworkImage(
+                                    height: 80,
+                                    width: 80,
                                     fit: BoxFit.fitWidth,
                                     imageUrl:
-                                        "${Network.imgUrl}${contactDetailsDatum?.cardImage ?? ""}",
+                                    "${Network.imgUrl}${contactDetailsDatum?.cardImage}",
                                     progressIndicatorBuilder:
-                                        (context, url, downloadProgress) => Center(
-                                      child: CircularProgressIndicator(
-                                          value: downloadProgress.progress),
-                                    ),
-                                    errorWidget: (context, url, error) =>
+                                        (context, url,
+                                        downloadProgress) =>
+                                        Center(
+                                          child: CircularProgressIndicator(
+                                              value:
+                                              downloadProgress
+                                                  .progress),
+                                        ),
+                                    errorWidget: (context,
+                                        url, error) =>
                                         Image.asset(
-                                      "assets/logo/Top with a picture.png",
-                                      height: 80,
-                                      fit: BoxFit.fill,
-                                      width: double.infinity,
+                                          "assets/logo/Central icon.png",
+                                          height: 80,
+                                          fit: BoxFit.fill,
+                                          width: 80,
+                                        ),
+                                  ),
+                                ): Image.asset(
+                                  "assets/logo/Central icon.png",
+                                  height: 80,
+                                  fit: BoxFit.fill,
+                                  width: 80,
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) =>
+                                                OtherCardDetails(
+                                                  cardId: contactDetailsDatum
+                                                      ?.cardId
+                                                      .toString() ??
+                                                      "",
+                                                  isOtherCard: true,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.info_rounded,
+                                        color: Colors.white,
+                                        size: 32,
+                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      showModalBottomSheet(
+                                        context: context,
+                                        useSafeArea: true,
+                                        isScrollControlled: true,
+                                        shape:
+                                        const RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.vertical(
+                                              top: Radius
+                                                  .circular(
+                                                  20)),
+                                        ),
+                                        builder: (context) =>
+                                            ShareOtherCardBottomSheet(
+                                              cardData:
+                                              contactDetailsDatum,
+                                            ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 28,
+                                      height: 28,
+                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
+                                      child: Center(
+                                        child: Image.asset(
+                                          "assets/images/send-01.png",
+                                          height: 16,
+                                          width: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
                                     ),
                                   ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      )
+                          : Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius:
+                            const BorderRadius.only(
+                                topLeft:
+                                Radius.circular(18),
+                                topRight:
+                                Radius.circular(18)),
+                            child: Image.asset(
+                              "assets/logo/Top with a picture.png",
+                              height: 102,
+                              width: double.infinity,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment
+                                .spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(
+                                    top: 10.0, left: 12),
+                                child: ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(
+                                          50)),
+                                  child: Image.asset(
+                                    "assets/logo/Central icon.png",
+                                    height: 80,
+                                    width: 80,
+                                    fit: BoxFit.fitWidth,
+                                  ),
                                 ),
-                              Padding(padding: EdgeInsets.symmetric(vertical: 16),
-                              child: Row(children: [
+                              ),
+                              Column(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) =>
+                                                OtherCardDetails(
+                                                  cardId: contactDetailsDatum
+                                                      ?.cardId
+                                                      .toString() ??
+                                                      "",
+                                                  isOtherCard: true,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.info_rounded,
+                                        color: Colors.white,
+                                        size: 32,
+                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      showModalBottomSheet(
+                                        context: context,
+                                        useSafeArea: true,
+                                        isScrollControlled: true,
+                                        shape:
+                                        const RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.vertical(
+                                              top: Radius
+                                                  .circular(
+                                                  20)),
+                                        ),
+                                        builder: (context) =>
+                                            ShareOtherCardBottomSheet(
+                                              cardData:
+                                              contactDetailsDatum,
+                                            ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 28,
+                                      height: 28,
+                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
+                                      child: Center(
+                                        child: Image.asset(
+                                          "assets/images/send-01.png",
+                                          height: 16,
+                                          width: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 20),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?MediaQuery.of(context).size.width - 150:MediaQuery.of(context).size.width-60,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 17,
+                                      ),
+                                      Text(
+                                        "${contactDetailsDatum?.firstName ?? ""} ${contactDetailsDatum?.lastName ?? ""}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight:
+                                            FontWeight.w500,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        contactDetailsDatum
+                                            ?.jobTitle ??
+                                            "",
+                                        overflow: TextOverflow.ellipsis,
+
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight:
+                                            FontWeight.normal,
+                                            color: Colors.black45),
+                                      ),
+                                      // Text(
+                                      //   contactDetailsDatum
+                                      //           ?.companyName ??
+                                      //       "",
+                                      //   overflow: TextOverflow.ellipsis,
+                                      //
+                                      //   style: TextStyle(
+                                      //       fontSize: 14,
+                                      //       fontWeight:
+                                      //           FontWeight.normal,
+                                      //       color: Colors.black45),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                                if( contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty)       ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(
+                                          75)),
+                                  child: CachedNetworkImage(
+                                    height: 75,
+                                    width: 75,
+                                    fit: BoxFit.fitWidth,
+                                    imageUrl:
+                                    "${Network.imgUrl}${contactDetailsDatum?.companyLogo ?? ""}",
+                                    progressIndicatorBuilder:
+                                        (context, url,
+                                        downloadProgress) =>
+                                        Center(
+                                          child: CircularProgressIndicator(
+                                              value:
+                                              downloadProgress
+                                                  .progress),
+                                        ),
+                                    errorWidget: (context,
+                                        url, error) =>
+                                        Image.asset(
+                                          "assets/logo/Central icon.png",
+                                          height: 80,
+                                          fit: BoxFit.fill,
+                                          width: double.infinity,
+                                        ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Container(
+                              height: 1,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 18),
+                              color: Colors.black12,
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              children: [
                                 InkWell(
                                   onTap: () {
                                     _showBottomSheet(context, () {
                                       dialNumber(contactDetailsDatum
-                                          ?.phone
+                                          ?.phoneNo
                                           .toString() ??
                                           "");
                                     },
                                         AppLocalizations.of(context).translate('phone'),
                                         AppLocalizations.of(context).translate('copyPhone'),
-                                        contactDetailsDatum?.phone
+                                        contactDetailsDatum?.phoneNo
                                             .toString() ??
                                             "",
                                         false);
@@ -671,7 +1116,6 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         color: Colors.white,
                                       )),
                                 ),
-                                SizedBox(width: 10,),
                                 InkWell(
                                   onTap: () {
                                     _showBottomSheet(context,
@@ -680,7 +1124,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                           //     ?.workEmail ??
                                           //     ""}?subject=&body=");
                                           await launch(
-                                              "mailto:${contactDetailsDatum?.email ?? ""}?subject=&body=");
+                                              "mailto:${contactDetailsDatum?.workEmail ?? ""}?subject=&body=");
                                           // openGmail(
                                           //     body: "",
                                           //     email: contactDetailsDatum
@@ -691,7 +1135,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         AppLocalizations.of(context).translate('sendEmail'),
                                         AppLocalizations.of(context).translate('copyEmail'),
                                         contactDetailsDatum
-                                            ?.email
+                                            ?.workEmail
                                             .toString() ??
                                             "",
                                         false);
@@ -714,1041 +1158,597 @@ class _ContactDetailsState extends State<ContactDetails> {
                                         color: Colors.white,
                                       )),
                                 ),
-                              ],),)
-                            ],
-                          )
-                          : Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    18), // if you need this
-                                side: const BorderSide(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
-                              elevation: 4,
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  contactDetailsDatum?.backgroungImage != null && contactDetailsDatum?.cardImage != null
-                                      ? Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(18),
-                                                      topRight:
-                                                          Radius.circular(18)),
-                                              child: CachedNetworkImage(
-                                                height: 102,
-                                                width: double.infinity,
-                                                fit: BoxFit.fitWidth,
-                                                imageUrl:
-                                                    "${Network.imgUrl}${contactDetailsDatum?.backgroungImage}",
-                                                progressIndicatorBuilder:
-                                                    (context, url,
-                                                            downloadProgress) =>
-                                                        Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          value:
-                                                              downloadProgress
-                                                                  .progress),
-                                                ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(
-                                                  "assets/logo/Top with a picture.png",
-                                                  height: 80,
-                                                  fit: BoxFit.fill,
-                                                  width: double.infinity,
-                                                ),
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 16.0, left: 12),
-                                                  child: contactDetailsDatum != null &&  contactDetailsDatum!.cardImage != null &&  contactDetailsDatum!.cardImage.toString().isNotEmpty?  ClipRRect(
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                60)),
-                                                    child: CachedNetworkImage(
-                                                      height: 80,
-                                                      width: 80,
-                                                      fit: BoxFit.fitWidth,
-                                                      imageUrl:
-                                                          "${Network.imgUrl}${contactDetailsDatum?.cardImage}",
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                                  downloadProgress) =>
-                                                              Center(
-                                                        child: CircularProgressIndicator(
-                                                            value:
-                                                                downloadProgress
-                                                                    .progress),
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Image.asset(
-                                                        "assets/logo/Central icon.png",
-                                                        height: 80,
-                                                        fit: BoxFit.fill,
-                                                        width: 80,
-                                                      ),
-                                                    ),
-                                                  ): Image.asset(
-                                                    "assets/logo/Central icon.png",
-                                                    height: 80,
-                                                    fit: BoxFit.fill,
-                                                    width: 80,
-                                                  ),
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (builder) =>
-                                                                  OtherCardDetails(
-                                                                cardId: contactDetailsDatum
-                                                                        ?.cardId
-                                                                        .toString() ??
-                                                                    "",
-                                                                isOtherCard: true,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                        icon: Icon(
-                                                          Icons.info_rounded,
-                                                          color: Colors.white,
-                                                          size: 32,
-                                                        )),
-                                                    InkWell(
-                                                      onTap: (){
-                                                        showModalBottomSheet(
-                                                          context: context,
-                                                          useSafeArea: true,
-                                                          isScrollControlled: true,
-                                                          shape:
-                                                          const RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius.vertical(
-                                                                top: Radius
-                                                                    .circular(
-                                                                    20)),
-                                                          ),
-                                                          builder: (context) =>
-                                                              ShareOtherCardBottomSheet(
-                                                                cardData:
-                                                                contactDetailsDatum,
-                                                              ),
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        width: 28,
-                                                        height: 28,
-                                                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
-                                                        child: Center(
-                                                          child: Image.asset(
-                                                            "assets/images/send-01.png",
-                                                            height: 16,
-                                                            width: 16,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      : Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(18),
-                                                      topRight:
-                                                          Radius.circular(18)),
-                                              child: Image.asset(
-                                                "assets/logo/Top with a picture.png",
-                                                height: 102,
-                                                width: double.infinity,
-                                                fit: BoxFit.fitWidth,
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10.0, left: 12),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                50)),
-                                                    child: Image.asset(
-                                                      "assets/logo/Central icon.png",
-                                                      height: 80,
-                                                      width: 80,
-                                                      fit: BoxFit.fitWidth,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (builder) =>
-                                                                  OtherCardDetails(
-                                                                    cardId: contactDetailsDatum
-                                                                        ?.cardId
-                                                                        .toString() ??
-                                                                        "",
-                                                                    isOtherCard: true,
-                                                                  ),
-                                                            ),
-                                                          );
-                                                        },
-                                                        icon: Icon(
-                                                          Icons.info_rounded,
-                                                          color: Colors.white,
-                                                          size: 32,
-                                                        )),
-                                                    InkWell(
-                                                      onTap: (){
-                                                        showModalBottomSheet(
-                                                          context: context,
-                                                          useSafeArea: true,
-                                                          isScrollControlled: true,
-                                                          shape:
-                                                          const RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius.vertical(
-                                                                top: Radius
-                                                                    .circular(
-                                                                    20)),
-                                                          ),
-                                                          builder: (context) =>
-                                                              ShareOtherCardBottomSheet(
-                                                                cardData:
-                                                                contactDetailsDatum,
-                                                              ),
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        width: 28,
-                                                        height: 28,
-                                                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(17)),
-                                                        child: Center(
-                                                          child: Image.asset(
-                                                            "assets/images/send-01.png",
-                                                            height: 16,
-                                                            width: 16,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12.0, horizontal: 20),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty?MediaQuery.of(context).size.width - 150:MediaQuery.of(context).size.width-60,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 17,
-                                                  ),
-                                                  Text(
-                                                    "${contactDetailsDatum?.firstName ?? ""} ${contactDetailsDatum?.lastName ?? ""}",
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.black),
-                                                  ),
-                                                  Text(
-                                                    contactDetailsDatum
-                                                            ?.jobTitle ??
-                                                        "",
-                                                    overflow: TextOverflow.ellipsis,
+                                InkWell(
+                                  onTap: () {
+                                    _showBottomSheet(context,
+                                            () async {
+                                          // openSMS(contactDetailsDatum?.phoneNo
+                                          //         .toString() ??
+                                          //     "");
 
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        color: Colors.black45),
-                                                  ),
-                                                  // Text(
-                                                  //   contactDetailsDatum
-                                                  //           ?.companyName ??
-                                                  //       "",
-                                                  //   overflow: TextOverflow.ellipsis,
-                                                  //
-                                                  //   style: TextStyle(
-                                                  //       fontSize: 14,
-                                                  //       fontWeight:
-                                                  //           FontWeight.normal,
-                                                  //       color: Colors.black45),
-                                                  // ),
-                                                ],
-                                              ),
-                                            ),
-                                           if( contactDetailsDatum != null &&  contactDetailsDatum!.companyLogo != null &&  contactDetailsDatum!.companyLogo.toString().isNotEmpty)       ClipRRect(
-                                              borderRadius:
-                                              const BorderRadius.all(
-                                                  Radius.circular(
-                                                      75)),
-                                              child: CachedNetworkImage(
-                                                height: 75,
-                                                width: 75,
-                                                fit: BoxFit.fitWidth,
-                                                imageUrl:
-                                                "${Network.imgUrl}${contactDetailsDatum?.companyLogo ?? ""}",
-                                                progressIndicatorBuilder:
-                                                    (context, url,
-                                                    downloadProgress) =>
-                                                    Center(
-                                                      child: CircularProgressIndicator(
-                                                          value:
-                                                          downloadProgress
-                                                              .progress),
+                                          await launch(
+                                              "sms:${contactDetailsDatum?.phoneNo.toString() ?? ""}?body=");
+                                        },
+                                        AppLocalizations.of(context).translate('sendMessage'),
+                                        AppLocalizations.of(context).translate('copyMessage'),
+                                        contactDetailsDatum?.phoneNo
+                                            .toString() ??
+                                            "",
+                                        false);
+                                  },
+                                  child: Container(
+                                    height: 45,
+                                    width: 45,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            45),
+                                        color: contactDetailsDatum
+                                            ?.cardStyle !=
+                                            null
+                                            ? Color(int.parse(
+                                            '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                            : Colors.blue),
+                                    child: Center(
+                                        child: Image.asset(
+                                          "assets/images/message_ic.png",
+                                          color: Colors.white,
+                                          width: 24,
+                                          height: 24,
+                                        )),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    _showBottomSheet(context, () {
+                                      _openMap(contactDetailsDatum
+                                          ?.companyAddress ??
+                                          "");
+                                    },
+                                        AppLocalizations.of(context).translate('sendLocation'),
+                                        AppLocalizations.of(context).translate('copyLocation'),
+                                        contactDetailsDatum
+                                            ?.companyAddress
+                                            .toString() ??
+                                            "",
+                                        false);
+                                  },
+                                  child: Container(
+                                      height: 45,
+                                      width: 45,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              45),
+                                          color: contactDetailsDatum
+                                              ?.cardStyle !=
+                                              null
+                                              ? Color(int.parse(
+                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                              : Colors.blue),
+                                      child: Icon(
+                                        Icons.location_on_outlined,
+                                        color: Colors.white,
+                                        size: 28,
+                                      )),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    launchUrlGet(
+                                      contactDetailsDatum
+                                          ?.companyWebsite ??
+                                          "",
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 45,
+                                    width: 45,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            45),
+                                        color: contactDetailsDatum
+                                            ?.cardStyle !=
+                                            null
+                                            ? Color(int.parse(
+                                            '0xFF${contactDetailsDatum!.cardStyle!}'))
+                                            : Colors.blue),
+                                    child: Center(
+                                        child: Image.asset(
+                                          "assets/images/link_ic.png",
+                                          width: 24,
+                                          height: 24,
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              children: [
+                                if(linkdinLink != null && linkdinLink!.isNotEmpty)       InkWell(
+                                  onTap: () {
+                                    print("setLink??>sssssss>>>>>>>>>>$linkdinLink");
+                                    launchUrlGet(
+                                      linkdinLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/linkdin.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                if(faceBookLink != null && faceBookLink!.isNotEmpty)           InkWell(
+                                  onTap: () {
+                                    launchUrlGet(
+                                      faceBookLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/fb.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                if(twitterLink != null && twitterLink!.isNotEmpty)       InkWell(
+                                  onTap: () {
+                                    launchUrlGet(
+                                      twitterLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/x_fill.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                if(instaLink != null && instaLink!.isNotEmpty)               InkWell(
+                                  onTap: () {
+                                    launchUrlGet(
+                                      instaLink ?? "",
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    "assets/images/insta.png",
+                                    height: 55,
+                                    width: 45,
+                                  ),
+                                ),
+                                if (contactDetailsDatum != null &&
+                                    contactDetailsDatum!.cardDocuments != null && contactDetailsDatum!.cardDocuments!.isNotEmpty)    InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        useSafeArea: true,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.vertical(top: Radius.circular(20)),
+                                        ),
+                                        builder: (context) =>
+                                            Container(
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))),
+                                              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200,minHeight: 100),
+                                              padding: EdgeInsets.only(bottom: 12),
+                                              child: ListView.separated(
+                                                shrinkWrap: true,
+                                                physics: const NeverScrollableScrollPhysics(),
+                                                separatorBuilder: (crtx, index) {
+                                                  return Container(
+                                                    height: 1,
+                                                    color: ColoursUtils.background,
+                                                    margin: const EdgeInsets.symmetric(
+                                                        horizontal: 12, vertical: 8),
+                                                  );
+                                                },
+                                                padding: EdgeInsets.zero,
+                                                itemCount: contactDetailsDatum!.cardDocuments!.length,
+                                                itemBuilder: (context, index) {
+                                                  return InkWell(
+                                                    onTap: (){
+                                                      Navigator.pop(context);
+                                                      if(
+                                                      contactDetailsDatum!.cardDocuments![index].document.toString().contains("png") ||
+                                                          contactDetailsDatum!.cardDocuments![index].document.toString().contains("jpg") ||
+                                                          contactDetailsDatum!.cardDocuments![index].document.toString().contains("jpeg")
+                                                      ) {
+                                                        Navigator.push(context, MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DocumentPreview(
+                                                                imageUrl: contactDetailsDatum!
+                                                                    .cardDocuments![index]
+                                                                    .document ?? "",),));
+                                                        // Handle delete action
+                                                      }else{
+                                                        launch("${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document ?? ""}");
+                                                      }
+                                                    },
+                                                    child: ListTile(
+                                                      leading: SizedBox(
+                                                        width: 40,
+                                                        height: 40,
+                                                        child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(
+                                                                30), // Rounded corners for image
+                                                            child: SizedBox(
+                                                              height: 40,
+                                                              child: CachedNetworkImage(
+                                                                height: 40,
+                                                                fit: BoxFit.fitWidth,
+                                                                imageUrl:
+                                                                "${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document.toString()}",
+                                                                progressIndicatorBuilder:
+                                                                    (context, url,
+                                                                    downloadProgress) =>
+                                                                    Center(
+                                                                      child:
+                                                                      CircularProgressIndicator(
+                                                                          value: downloadProgress
+                                                                              .progress),
+                                                                    ),
+                                                                errorWidget:
+                                                                    (context, url, error) =>
+                                                                    Image.asset(
+                                                                      "assets/images/Frame 508.png",
+                                                                      height: 40,
+                                                                      fit: BoxFit.fill,
+                                                                      width: double.infinity,
+                                                                    ),
+                                                              ),
+                                                            )),
+                                                      ),
+                                                      title: Text(
+                                                        contactDetailsDatum!
+                                                            .cardDocuments![index].documentsName
+                                                            .toString(),
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      // trailing: IconButton(
+                                                      //   icon: Padding(
+                                                      //     padding: const EdgeInsets.all(4),
+                                                      //     child: Image.asset(
+                                                      //         "assets/images/Frame 415.png"),
+                                                      //   ),
+                                                      //   color: Colors.grey,
+                                                      //   onPressed: () {
+                                                      //     // Handle delete action
+                                                      //   },
+                                                      // ),
                                                     ),
-                                                errorWidget: (context,
-                                                    url, error) =>
-                                                    Image.asset(
-                                                      "assets/logo/Central icon.png",
-                                                      height: 80,
-                                                      fit: BoxFit.fill,
-                                                      width: double.infinity,
-                                                    ),
+                                                  );
+
+                                                  // return SizedBox();
+                                                },
                                               ),
                                             )
-                                          ],
-                                        ),
-                                        Container(
-                                          height: 1,
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 18),
-                                          color: Colors.black12,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                _showBottomSheet(context, () {
-                                                  dialNumber(contactDetailsDatum
-                                                          ?.phoneNo
-                                                          .toString() ??
-                                                      "");
-                                                },
-                                                    AppLocalizations.of(context).translate('phone'),
-                                                    AppLocalizations.of(context).translate('copyPhone'),
-                                                    contactDetailsDatum?.phoneNo
-                                                            .toString() ??
-                                                        "",
-                                                    false);
-                                              },
-                                              child: Container(
-                                                  height: 45,
-                                                  width: 45,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              45),
-                                                      color: contactDetailsDatum
-                                                                  ?.cardStyle !=
-                                                              null
-                                                          ? Color(int.parse(
-                                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
-                                                          : Colors.blue),
-                                                  child: Icon(
-                                                    Icons.call,
-                                                    color: Colors.white,
-                                                  )),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                _showBottomSheet(context,
-                                                    () async {
-                                                  // await launch("${contactDetailsDatum
-                                                  //     ?.workEmail ??
-                                                  //     ""}?subject=&body=");
-                                                  await launch(
-                                                      "mailto:${contactDetailsDatum?.workEmail ?? ""}?subject=&body=");
-                                                  // openGmail(
-                                                  //     body: "",
-                                                  //     email: contactDetailsDatum
-                                                  //             ?.workEmail ??
-                                                  //         "",
-                                                  //     subject: "");
-                                                },
-                                                    AppLocalizations.of(context).translate('sendEmail'),
-                                                    AppLocalizations.of(context).translate('copyEmail'),
-                                                    contactDetailsDatum
-                                                            ?.workEmail
-                                                            .toString() ??
-                                                        "",
-                                                    false);
-                                              },
-                                              child: Container(
-                                                  height: 45,
-                                                  width: 45,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              45),
-                                                      color: contactDetailsDatum
-                                                                  ?.cardStyle !=
-                                                              null
-                                                          ? Color(int.parse(
-                                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
-                                                          : Colors.blue),
-                                                  child: Icon(
-                                                    Icons.mail_outline_outlined,
-                                                    color: Colors.white,
-                                                  )),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                _showBottomSheet(context,
-                                                    () async {
-                                                  // openSMS(contactDetailsDatum?.phoneNo
-                                                  //         .toString() ??
-                                                  //     "");
-
-                                                  await launch(
-                                                      "sms:${contactDetailsDatum?.phoneNo.toString() ?? ""}?body=");
-                                                },
-                                                    AppLocalizations.of(context).translate('sendMessage'),
-                                                    AppLocalizations.of(context).translate('copyMessage'),
-                                                    contactDetailsDatum?.phoneNo
-                                                            .toString() ??
-                                                        "",
-                                                    false);
-                                              },
-                                              child: Container(
-                                                height: 45,
-                                                width: 45,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            45),
-                                                    color: contactDetailsDatum
-                                                                ?.cardStyle !=
-                                                            null
-                                                        ? Color(int.parse(
-                                                            '0xFF${contactDetailsDatum!.cardStyle!}'))
-                                                        : Colors.blue),
-                                                child: Center(
-                                                    child: Image.asset(
-                                                  "assets/images/message_ic.png",
-                                                  color: Colors.white,
-                                                  width: 24,
-                                                  height: 24,
-                                                )),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                _showBottomSheet(context, () {
-                                                  _openMap(contactDetailsDatum
-                                                          ?.companyAddress ??
-                                                      "");
-                                                },
-                                                    AppLocalizations.of(context).translate('sendLocation'),
-                                                    AppLocalizations.of(context).translate('copyLocation'),
-                                                    contactDetailsDatum
-                                                            ?.companyAddress
-                                                            .toString() ??
-                                                        "",
-                                                    false);
-                                              },
-                                              child: Container(
-                                                  height: 45,
-                                                  width: 45,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              45),
-                                                      color: contactDetailsDatum
-                                                                  ?.cardStyle !=
-                                                              null
-                                                          ? Color(int.parse(
-                                                              '0xFF${contactDetailsDatum!.cardStyle!}'))
-                                                          : Colors.blue),
-                                                  child: Icon(
-                                                    Icons.location_on_outlined,
-                                                    color: Colors.white,
-                                                    size: 28,
-                                                  )),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                launchUrlGet(
-                                                  contactDetailsDatum
-                                                          ?.companyWebsite ??
-                                                      "",
-                                                );
-                                              },
-                                              child: Container(
-                                                height: 45,
-                                                width: 45,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            45),
-                                                    color: contactDetailsDatum
-                                                                ?.cardStyle !=
-                                                            null
-                                                        ? Color(int.parse(
-                                                            '0xFF${contactDetailsDatum!.cardStyle!}'))
-                                                        : Colors.blue),
-                                                child: Center(
-                                                    child: Image.asset(
-                                                  "assets/images/link_ic.png",
-                                                  width: 24,
-                                                  height: 24,
-                                                  color: Colors.white,
-                                                )),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                     if(linkdinLink != null && linkdinLink!.isNotEmpty)       InkWell(
-                                              onTap: () {
-                                                print("setLink??>sssssss>>>>>>>>>>$linkdinLink");
-                                                launchUrlGet(
-                                                  linkdinLink ?? "",
-                                                );
-                                              },
-                                              child: Image.asset(
-                                                "assets/images/linkdin.png",
-                                                height: 55,
-                                                width: 45,
-                                              ),
-                                            ),
-                                            if(faceBookLink != null && faceBookLink!.isNotEmpty)           InkWell(
-                                              onTap: () {
-                                                launchUrlGet(
-                                                  faceBookLink ?? "",
-                                                );
-                                              },
-                                              child: Image.asset(
-                                                "assets/images/fb.png",
-                                                height: 55,
-                                                width: 45,
-                                              ),
-                                            ),
-                                            if(twitterLink != null && twitterLink!.isNotEmpty)       InkWell(
-                                              onTap: () {
-                                                launchUrlGet(
-                                                  twitterLink ?? "",
-                                                );
-                                              },
-                                              child: Image.asset(
-                                                "assets/images/x_fill.png",
-                                                height: 55,
-                                                width: 45,
-                                              ),
-                                            ),
-                                            if(instaLink != null && instaLink!.isNotEmpty)               InkWell(
-                                              onTap: () {
-                                                launchUrlGet(
-                                                  instaLink ?? "",
-                                                );
-                                              },
-                                              child: Image.asset(
-                                                "assets/images/insta.png",
-                                                height: 55,
-                                                width: 45,
-                                              ),
-                                            ),
-                                            if (contactDetailsDatum != null &&
-                                                contactDetailsDatum!.cardDocuments != null && contactDetailsDatum!.cardDocuments!.isNotEmpty)    InkWell(
-                                              onTap: () {
-                                                showModalBottomSheet(
-                                                    context: context,
-                                                    useSafeArea: true,
-                                                    isScrollControlled: true,
-                                                    shape: const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.vertical(top: Radius.circular(20)),
-                                                    ),
-                                                    builder: (context) =>
-                                                       Container(
-                                                         decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))),
-                                                         constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200,minHeight: 100),
-                                                         padding: EdgeInsets.only(bottom: 12),
-                                                         child: ListView.separated(
-                                                           shrinkWrap: true,
-                                                           physics: const NeverScrollableScrollPhysics(),
-                                                           separatorBuilder: (crtx, index) {
-                                                             return Container(
-                                                               height: 1,
-                                                               color: ColoursUtils.background,
-                                                               margin: const EdgeInsets.symmetric(
-                                                                   horizontal: 12, vertical: 8),
-                                                             );
-                                                           },
-                                                           padding: EdgeInsets.zero,
-                                                           itemCount: contactDetailsDatum!.cardDocuments!.length,
-                                                           itemBuilder: (context, index) {
-                                                             return InkWell(
-                                                               onTap: (){
-                                                                 Navigator.pop(context);
-                                                                 if(
-                                                                 contactDetailsDatum!.cardDocuments![index].document.toString().contains("png") ||
-                                                                     contactDetailsDatum!.cardDocuments![index].document.toString().contains("jpg") ||
-                                                                     contactDetailsDatum!.cardDocuments![index].document.toString().contains("jpeg")
-                                                                 ) {
-                                                                   Navigator.push(context, MaterialPageRoute(
-                                                                     builder: (context) =>
-                                                                         DocumentPreview(
-                                                                           imageUrl: contactDetailsDatum!
-                                                                               .cardDocuments![index]
-                                                                               .document ?? "",),));
-                                                                   // Handle delete action
-                                                                 }else{
-                                                                   launch("${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document ?? ""}");
-                                                                 }
-                                                               },
-                                                               child: ListTile(
-                                                                 leading: SizedBox(
-                                                                   width: 40,
-                                                                   height: 40,
-                                                                   child: ClipRRect(
-                                                                       borderRadius: BorderRadius.circular(
-                                                                           30), // Rounded corners for image
-                                                                       child: SizedBox(
-                                                                         height: 40,
-                                                                         child: CachedNetworkImage(
-                                                                           height: 40,
-                                                                           fit: BoxFit.fitWidth,
-                                                                           imageUrl:
-                                                                           "${Network.imgUrl}${contactDetailsDatum!.cardDocuments![index].document.toString()}",
-                                                                           progressIndicatorBuilder:
-                                                                               (context, url,
-                                                                               downloadProgress) =>
-                                                                               Center(
-                                                                                 child:
-                                                                                 CircularProgressIndicator(
-                                                                                     value: downloadProgress
-                                                                                         .progress),
-                                                                               ),
-                                                                           errorWidget:
-                                                                               (context, url, error) =>
-                                                                               Image.asset(
-                                                                                 "assets/images/Frame 508.png",
-                                                                                 height: 40,
-                                                                                 fit: BoxFit.fill,
-                                                                                 width: double.infinity,
-                                                                               ),
-                                                                         ),
-                                                                       )),
-                                                                 ),
-                                                                 title: Text(
-                                                                   contactDetailsDatum!
-                                                                       .cardDocuments![index].documentsName
-                                                                       .toString(),
-                                                                   overflow: TextOverflow.ellipsis,
-                                                                 ),
-                                                                 // trailing: IconButton(
-                                                                 //   icon: Padding(
-                                                                 //     padding: const EdgeInsets.all(4),
-                                                                 //     child: Image.asset(
-                                                                 //         "assets/images/Frame 415.png"),
-                                                                 //   ),
-                                                                 //   color: Colors.grey,
-                                                                 //   onPressed: () {
-                                                                 //     // Handle delete action
-                                                                 //   },
-                                                                 // ),
-                                                               ),
-                                                             );
-
-                                                             // return SizedBox();
-                                                           },
-                                                         ),
-                                                       )
-                                                );
-                                              },
-                                              child: Image.asset(
-                                                "assets/images/other.png",
-                                                height: 55,
-                                                width: 45,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                    ),
-                    if(widget.isFromTeam == false)   Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context).translate('notes'),
-                            style: TextStyle(
-                              color: Colors.black, // Text color
-                              fontSize: 14,
-                            ),
-                          ),
-                          Spacer(),
-                          contactDetailsDatum == null ||
-                                  contactDetailsDatum?.notes == null ||
-                                  contactDetailsDatum!.notes!.isEmpty
-                              ? InkWell(
-                                  onTap: () {
-                                    if (notesController.text.isNotEmpty) {
-                                      Utility.showLoader(context);
-                                      apiUpdateNotes(
-                                          contactDetailsDatum?.id.toString() ??
-                                              "",notesController.text);
-                                    } else {
-                                      Utility().showFlushBar(
-                                          context: context,
-                                          message: AppLocalizations.of(context).translate('enterNotes'),
-                                          isError: true);
-                                    }
+                                    );
                                   },
-                                  child: Text(
-                                    AppLocalizations.of(context).translate('add'), // Right side text
-                                    style: TextStyle(
-                                        color: Colors.blue, fontSize: 16),
+                                  child: Image.asset(
+                                    "assets/images/other.png",
+                                    height: 55,
+                                    width: 45,
                                   ),
-                                )
-                              : isEdit == true
-                                  ? InkWell(
-                                      onTap: () {
-                                        if (notesController.text.isNotEmpty) {
-                                          Utility.showLoader(context);
-                                          apiUpdateNotes(contactDetailsDatum?.id
-                                                  .toString() ??
-                                              "",notesController.text);
-                                        } else {
-                                          Utility().showFlushBar(
-                                              context: context,
-                                              message: AppLocalizations.of(context).translate('enterNotes'),
-                                              isError: true);
-                                        }
-                                      },
-                                      child: Text(
-                                        AppLocalizations.of(context).translate('update'), // Right side text
-                                        style: TextStyle(
-                                            color: Colors.blue, fontSize: 16),
-                                      ),
-                                    )
-                                  : SizedBox(),
-                          if (contactDetailsDatum != null &&
-                              contactDetailsDatum?.notes != null &&
-                              contactDetailsDatum!.notes!.isNotEmpty &&
-                              isEdit == false)
-                               InkWell(
-                                 onTap: (){
-                                   isEdit = true;
-                                   setState(() {});
-                                 },
-                                 child: Image.asset(
-                                  "assets/images/edit-05.png",
-                                  color: Colors.grey,
-                                  height: 20,
-                                  width: 20,
-                                                             ),
-                               ), if (contactDetailsDatum != null &&
-                              contactDetailsDatum?.notes != null &&
-                              contactDetailsDatum!.notes!.isNotEmpty &&
-                              isEdit == false)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 12.0),
-                              child: InkWell(
-                                onTap: (){
-                                  Utility.showLoader(context);
-                                  apiUpdateNotes(contactDetailsDatum?.id
-                                      .toString() ??
-                                      "","");
-                                },
-                                child: Image.asset(
-                                    "assets/images/delete_icon.png",
-                                    color: Colors.grey,
-                                    height: 20,
-                                    width: 20,
                                 ),
-                              ),
-                            )
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if(widget.isFromTeam == false)   Padding(
+                padding:
+                EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).translate('notes'),
+                      style: TextStyle(
+                        color: Colors.black, // Text color
+                        fontSize: 14,
                       ),
                     ),
-                    if(widget.isFromTeam == false)     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: contactDetailsDatum != null &&
-                              contactDetailsDatum?.notes != null &&
-                              contactDetailsDatum!.notes!.isNotEmpty &&
-                              isEdit == false
-                          ? Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              decoration: BoxDecoration(
-                                color:
-                                    Colors.grey[200], // Light background color
-                                borderRadius:
-                                    BorderRadius.circular(8), // Rounded corners
-                              ),
+                    Spacer(),
+                    contactDetailsDatum == null ||
+                        contactDetailsDatum?.notes == null ||
+                        contactDetailsDatum!.notes!.isEmpty
+                        ? InkWell(
+                      onTap: () {
+                        if (notesController.text.isNotEmpty) {
+                          Utility.showLoader(context);
+                          apiUpdateNotes(
+                              contactDetailsDatum?.id.toString() ??
+                                  "",notesController.text);
+                        } else {
+                          Utility().showFlushBar(
+                              context: context,
+                              message: AppLocalizations.of(context).translate('enterNotes'),
+                              isError: true);
+                        }
+                      },
+                      child: Text(
+                        AppLocalizations.of(context).translate('add'), // Right side text
+                        style: TextStyle(
+                            color: Colors.blue, fontSize: 16),
+                      ),
+                    )
+                        : isEdit == true
+                        ? InkWell(
+                      onTap: () {
+                        if (notesController.text.isNotEmpty) {
+                          Utility.showLoader(context);
+                          apiUpdateNotes(contactDetailsDatum?.id
+                              .toString() ??
+                              "",notesController.text);
+                        } else {
+                          Utility().showFlushBar(
+                              context: context,
+                              message: AppLocalizations.of(context).translate('enterNotes'),
+                              isError: true);
+                        }
+                      },
+                      child: Text(
+                        AppLocalizations.of(context).translate('update'), // Right side text
+                        style: TextStyle(
+                            color: Colors.blue, fontSize: 16),
+                      ),
+                    )
+                        : SizedBox(),
+                    if (contactDetailsDatum != null &&
+                        contactDetailsDatum?.notes != null &&
+                        contactDetailsDatum!.notes!.isNotEmpty &&
+                        isEdit == false)
+                      InkWell(
+                        onTap: (){
+                          isEdit = true;
+                          setState(() {});
+                        },
+                        child: Image.asset(
+                          "assets/images/edit-05.png",
+                          color: Colors.grey,
+                          height: 20,
+                          width: 20,
+                        ),
+                      ), if (contactDetailsDatum != null &&
+                        contactDetailsDatum?.notes != null &&
+                        contactDetailsDatum!.notes!.isNotEmpty &&
+                        isEdit == false)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: InkWell(
+                          onTap: (){
+                            Utility.showLoader(context);
+                            apiUpdateNotes(contactDetailsDatum?.id
+                                .toString() ??
+                                "","");
+                          },
+                          child: Image.asset(
+                            "assets/images/delete_icon.png",
+                            color: Colors.grey,
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+              if(widget.isFromTeam == false)     Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: contactDetailsDatum != null &&
+                    contactDetailsDatum?.notes != null &&
+                    contactDetailsDatum!.notes!.isNotEmpty &&
+                    isEdit == false
+                    ? Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color:
+                    Colors.grey[200], // Light background color
+                    borderRadius:
+                    BorderRadius.circular(8), // Rounded corners
+                  ),
+                  child: Text(
+                    contactDetailsDatum?.notes ?? "",
+                    style: TextStyle(
+                      color: Colors.black, // Text color
+                      fontSize: 14,
+                    ),
+                  ),
+                )
+                    : SizedBox(
+                  height: 100,
+                  child: TextField(
+                    maxLines: 3,
+                    controller: notesController,
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey.shade200,
+                      filled: true,
+                      labelText:AppLocalizations.of(context).translate('enterNote'),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              if(widget.isFromTeam == false)   const SizedBox(
+                height: 16,
+              ),
+              if(widget.isFromTeam == false)    SizedBox(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding:
+                              EdgeInsets.symmetric(horizontal: 12.0),
                               child: Text(
-                                contactDetailsDatum?.notes ?? "",
+                                AppLocalizations.of(context).translate('meetings'),
                                 style: TextStyle(
-                                  color: Colors.black, // Text color
-                                  fontSize: 14,
-                                ),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
                               ),
-                            )
-                          : SizedBox(
-                              height: 100,
-                              child: TextField(
-                                maxLines: 3,
-                                controller: notesController,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.grey.shade200,
-                                  filled: true,
-                                  labelText:AppLocalizations.of(context).translate('enterNote'),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(10),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  right: 20, top: 6),
+                              child: ClipOval(
+                                child: Material(
+                                  color: Colors.blue, // Button color
+                                  child: InkWell(
+                                    splashColor:
+                                    Colors.blue, // Splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreateEditMeeting(
+                                                  contactId: widget
+                                                      .contactIdForMeeting
+                                                      .toString(),
+                                                ),
+                                          )).then(
+                                            (value) {
+                                          apiGetMyMeetings();
+                                        },
+                                      );
+                                    },
+                                    child: const SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        )),
                                   ),
                                 ),
                               ),
                             ),
-                    ),
-                    if(widget.isFromTeam == false)   const SizedBox(
-                      height: 16,
-                    ),
-                if(widget.isFromTeam == false)    SizedBox(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                   Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 12.0),
-                                    child: Text(
-                                      AppLocalizations.of(context).translate('meetings'),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 20, top: 6),
-                                    child: ClipOval(
-                                      child: Material(
-                                        color: Colors.blue, // Button color
-                                        child: InkWell(
-                                          splashColor:
-                                              Colors.blue, // Splash color
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CreateEditMeeting(
-                                                    contactId: widget
-                                                        .contactIdForMeeting
-                                                        .toString(),
-                                                  ),
-                                                )).then(
-                                              (value) {
-                                                apiGetMyMeetings();
-                                              },
-                                            );
-                                          },
-                                          child: const SizedBox(
-                                              width: 40,
-                                              height: 40,
-                                              child: Icon(
-                                                Icons.add,
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (meetings.isNotEmpty)
-                                SizedBox(
-                                  height: 200,
-                                  child: ListView.separated(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    separatorBuilder: (ctx, index) {
-                                      return Container(
-                                        color: Colors.black12,
-                                        height: 1,
-                                      );
-                                    },
-                                    itemCount: meetings.length,
-                                    itemBuilder: (context, index) {
-                                      final meeting = meetings[index];
-                                      return ListTile(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              builder: (builder) =>
-                                                  MeetingDetailsScreen(
-                                                meetingId:
-                                                    meetings[index].id ?? 0,
-                                                contactId: contactDetailsDatum
-                                                    ?.id
-                                                    .toString(),
-                                              ),
+                          ],
+                        ),
+                        if (meetings.isNotEmpty)
+                          SizedBox(
+                            height: 200,
+                            child: ListView.separated(
+                              physics:
+                              const NeverScrollableScrollPhysics(),
+                              separatorBuilder: (ctx, index) {
+                                return Container(
+                                  color: Colors.black12,
+                                  height: 1,
+                                );
+                              },
+                              itemCount: meetings.length,
+                              itemBuilder: (context, index) {
+                                final meeting = meetings[index];
+                                return ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (builder) =>
+                                            MeetingDetailsScreen(
+                                              meetingId:
+                                              meetings[index].id ?? 0,
+                                              contactId: contactDetailsDatum
+                                                  ?.id
+                                                  .toString(),
                                             ),
-                                          ).then(
-                                            (value) {
-                                              apiGetMyMeetings();
-                                            },
-                                          );
-                                        },
-                                        title: Text(
-                                          meeting.title ?? '',
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        subtitle: Text(
-                                          meeting.purpose ?? '',
-                                          style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        trailing: Text(
-                                          DateFormat('d MMMM yyyy').format(
-                                              meeting.dateTime ??
-                                                  DateTime.now()),
-                                          style: TextStyle(
-                                              color: Colors.blue, fontSize: 14),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (builder) => MeetingsScreen(
-                                        contactId: contactDetailsDatum?.id ?? 0,
                                       ),
-                                    ),
-                                  );
-                                },
-                                child:  Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context).translate('viewAllMeetings'),
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      width: 12,
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.black,
-                                      size: 20,
-                                    )
-                                  ],
+                                    ).then(
+                                          (value) {
+                                        apiGetMyMeetings();
+                                      },
+                                    );
+                                  },
+                                  title: Text(
+                                    meeting.title ?? '',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  subtitle: Text(
+                                    meeting.purpose ?? '',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  trailing: Text(
+                                    DateFormat('d MMMM yyyy').format(
+                                        meeting.dateTime ??
+                                            DateTime.now()),
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 14),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (builder) => MeetingsScreen(
+                                  contactId: contactDetailsDatum?.id ?? 0,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
+                            );
+                          },
+                          child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context).translate('viewAllMeetings'),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: Colors.black,
+                                size: 20,
+                              )
                             ],
                           ),
                         ),
-                      ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1772,7 +1772,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                     Stack(
+                Stack(
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -1801,10 +1801,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                             width: 50,
                             decoration: BoxDecoration(
                               color:Color(0x72231532),
-                            borderRadius:
-                            const BorderRadius.all(
-                                Radius.circular(
-                                    50)),),
+                              borderRadius:
+                              const BorderRadius.all(
+                                  Radius.circular(
+                                      50)),),
                           ),
                         ),
                       ],
@@ -2011,7 +2011,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 width: double.infinity,
                 height: 60,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: Color(0x72231532), // Light background color
                   borderRadius: BorderRadius.circular(8), // Rounded corners
@@ -2038,7 +2038,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 width: double.infinity,
                 height: 100,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: Color(0x72231532), // Light background color
                   borderRadius: BorderRadius.circular(8), // Rounded corners
@@ -2050,13 +2050,13 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   void _showBottomSheet(
-    BuildContext context,
-    Function callBack,
-    title,
+      BuildContext context,
+      Function callBack,
+      title,
       subTitle,
       link,
-    isLocation,
-  ) {
+      isLocation,
+      ) {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.white,
@@ -2073,93 +2073,93 @@ class _ContactDetailsState extends State<ContactDetails> {
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               child: !isLocation
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                          // Add Tag Input Field
-                          const SizedBox(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Add Tag Input Field
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    InkWell(
+                        onTap: () {
+                          callBack.call();
+                          Navigator.pop(context);
+                        },
+                        child: !isLocation
+                            ? Container(
                             height: 20,
-                          ),
-                          InkWell(
-                              onTap: () {
-                                callBack.call();
-                                Navigator.pop(context);
-                              },
-                              child: !isLocation
-                                  ? Container(
-                                      height: 20,
-                                      width: MediaQuery.of(context).size.width -
-                                          30,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(title))
-                                  : null),
-                          SizedBox(
+                            width: MediaQuery.of(context).size.width -
+                                30,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                BorderRadius.circular(8)),
+                            child: Text(title))
+                            : null),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    InkWell(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: link));
+                          Navigator.pop(context);
+                          Utility().showFlushBar(
+                            context: context,
+                            message: AppLocalizations.of(context)
+                                .translate('copyIntoClipboard'),);
+                        },
+                        child: Container(
                             height: 20,
-                          ),
-                          Divider(
-                            height: 1,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          InkWell(
-                              onTap: () {
-                                Clipboard.setData(ClipboardData(text: link));
-                                Navigator.pop(context);
-                                Utility().showFlushBar(
-                                    context: context,
-                                    message: AppLocalizations.of(context)
-                                        .translate('copyIntoClipboard'),);
-                              },
-                              child: Container(
-                                  height: 20,
-                                  width: MediaQuery.of(context).size.width - 30,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Text(subTitle))),
-                          SizedBox(
-                            height: 30,
-                          )
-                        ])
+                            width: MediaQuery.of(context).size.width - 30,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text(subTitle))),
+                    SizedBox(
+                      height: 30,
+                    )
+                  ])
                   : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                          // Add Tag Input Field
-                          SizedBox(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Add Tag Input Field
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    InkWell(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: link));
+                          Navigator.pop(context);
+                          Utility().showFlushBar(
+                            context: context,
+                            message: AppLocalizations.of(context)
+                                .translate('copyIntoClipboard'),);
+                        },
+                        child: Container(
                             height: 20,
-                          ),
+                            width: MediaQuery.of(context).size.width - 30,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text("${AppLocalizations.of(context).translate('copy')} $title"))),
 
-                          InkWell(
-                              onTap: () {
-                                Clipboard.setData(ClipboardData(text: link));
-                                Navigator.pop(context);
-                                Utility().showFlushBar(
-                                    context: context,
-                                    message: AppLocalizations.of(context)
-                                        .translate('copyIntoClipboard'),);
-                              },
-                              child: Container(
-                                  height: 20,
-                                  width: MediaQuery.of(context).size.width - 30,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8)),
-              child: Text("${AppLocalizations.of(context).translate('copy')} $title"))),
+                    SizedBox(
+                      height: 10,
+                    ),
 
-          SizedBox(
-                            height: 10,
-                          ),
-
-                          SizedBox(
-                            height: 40,
-                          )
-                        ]));
+                    SizedBox(
+                      height: 40,
+                    )
+                  ]));
         });
   }
 }

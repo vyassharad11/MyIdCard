@@ -2,6 +2,7 @@ C/C++ Structured Logz
 x
 v/home/kapil/Documents/flutter_linux_3.24.2-stable/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	»ïõý˜3¤ Ðõ¸§Ð2c
 a
 _/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/additional_project_files.txt	»ïõý˜3 ²Þ²Ï“3`
@@ -26,3 +27,29 @@ W
 U/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/prefab_config.json	»ïõý˜3( ØÞ²Ï“3^
 \
 Z/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/symbol_folder_index.txt	»ïõý˜3Q ØÞ²Ï“3
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	€é „—3¤ Ðõ¸§Ð2c
+a
+_/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/additional_project_files.txt	€é „—3 ²Þ²Ï“3`
+^
+\/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/android_gradle_build.json	€é „—3­ ÂÞ²Ï“3e
+c
+a/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/android_gradle_build_mini.json	€é „—3Ì ÖÞ²Ï“3R
+P
+N/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/build.ninja	€é „—3Ë¶ îÝ²Ï“3V
+T
+R/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/build.ninja.txt	€é „—3[
+Y
+W/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/build_file_index.txt	€é „—3v ØÞ²Ï“3\
+Z
+X/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/compile_commands.json	€é „—3	`
+^
+\/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/compile_commands.json.bin	€é „—3
+f
+d
+b/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/metadata_generation_command.txt	€é „—3‹ ×Þ²Ï“3Y
+W
+U/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/prefab_config.json	€é „—3( ØÞ²Ï“3^
+\
+Z/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/arm64-v8a/symbol_folder_index.txt	€é „—3Q ØÞ²Ï“3
+>>>>>>> 0bed49a6ec23a6e52a365f6fa947965fce8eb33c

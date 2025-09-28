@@ -2,6 +2,7 @@ C/C++ Structured Logz
 x
 v/home/kapil/Documents/flutter_linux_3.24.2-stable/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	þïõý˜3¤ Ðõ¸§Ð2]
 [
 Y/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/additional_project_files.txt	ÿïõý˜3 Šò²Ï“3Z
@@ -26,3 +27,29 @@ Q
 O/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/prefab_config.json	ðõý˜3( ‘ò²Ï“3X
 V
 T/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/symbol_folder_index.txt	ðõý˜3K ‘ò²Ï“3
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	±é „—3¤ Ðõ¸§Ð2]
+[
+Y/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/additional_project_files.txt	±é „—3 Šò²Ï“3Z
+X
+V/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/android_gradle_build.json	±é „—3¡ ò²Ï“3_
+]
+[/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/android_gradle_build_mini.json	±é „—3À ò²Ï“3L
+J
+H/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/build.ninja	±é „—3­¶ îñ²Ï“3P
+N
+L/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/build.ninja.txt	±é „—3U
+S
+Q/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/build_file_index.txt	±é „—3v ‘ò²Ï“3V
+T
+R/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/compile_commands.json	±é „—3	Z
+X
+V/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/compile_commands.json.bin	±é „—3
+`
+^
+\/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/metadata_generation_command.txt	±é „—3í ‘ò²Ï“3S
+Q
+O/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/prefab_config.json	±é „—3( ‘ò²Ï“3X
+V
+T/home/kapil/new/MyIdCard/android/app/.cxx/Debug/3b5073kt/x86/symbol_folder_index.txt	±é „—3K ‘ò²Ï“3
+>>>>>>> 0bed49a6ec23a6e52a365f6fa947965fce8eb33c
