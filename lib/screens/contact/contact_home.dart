@@ -817,7 +817,7 @@ bool isInTeam = false;
               requestPermissions().then((value) {
                 addContact(myContactList[index].firstName ?? "",
                     myContactList[index].lastName ?? "",
-                    myContactList[index].phoneNo ?? "");
+                    myContactList[index].phoneNo ?? myContactList[index].phone);
               },); // Add functionality here
             },
           ),
@@ -864,6 +864,7 @@ bool isInTeam = false;
               onTap: (){
                   setState(() {
                     selectIndec = 1;
+                    apiGetMyContact(controller.text, isHideF,companyTypeIdF,isPhisical == true?"2":"",companyNameF);
                   });
               },
               child: Container(

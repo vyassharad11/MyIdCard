@@ -169,6 +169,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
   bool isLoad = true;
 
+  Future<void> _openSubscription() async {
+    if (Platform.isAndroid) {
+      final url =
+          "https://play.google.com/store/account/subscriptions?package=com.it.my_di_card";
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      }
+    } else if (Platform.isIOS) {
+      final url = "https://apps.apple.com/account/subscriptions";
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      }
+    }
+  }
   Future<void> _initPurchaseStore() async {
     // Check availability of InApp Purchases
     _iap = InAppPurchase.instance;
@@ -636,12 +650,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     if (widget.planId == planId) {
                       Navigator.pop(context);
                     } else if (planId == 1) {
-                      submitPlanId("");
+                      _openSubscription();
+                      // submitPlanId("");
                     } else if (subscriptionPlanID.isNotEmpty) {
+                      if(widget.planId! < planId){
                       setState(() {
                         isRequestToPurchase = true;
                       });
-                      _buyProduct(_getProductDetails(subscriptionPlanID));
+                      _buyProduct(_getProductDetails(subscriptionPlanID));}else{
+                        _openSubscription();
+                      }
                     } else {
                       Utility().showFlushBar(
                         context: context,
@@ -670,12 +688,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     if (widget.planId == planId) {
                       Navigator.pop(context);
                     } else if (planId == 1) {
-                      submitPlanId("");
+                      _openSubscription();
+                      // submitPlanId("");
                     } else if (subscriptionPlanID.isNotEmpty) {
-                      setState(() {
-                        isRequestToPurchase = true;
-                      });
-                      _buyProduct(_getProductDetails(subscriptionPlanID));
+                      if(widget.planId! < planId){
+                        setState(() {
+                          isRequestToPurchase = true;
+                        });
+                        _buyProduct(_getProductDetails(subscriptionPlanID));}else{
+                        _openSubscription();
+                      }
                     } else {
                       Utility().showFlushBar(
                         context: context,

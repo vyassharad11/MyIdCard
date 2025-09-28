@@ -116,6 +116,7 @@ class ContactDatum {
   String? companyWebsite;
   String? workEmail;
   String? phoneNo;
+  String? phone;
   String? cardStyle;
   String? backgroungImage;
   String? cardName;
@@ -145,6 +146,7 @@ class ContactDatum {
     this.companyWebsite,
     this.workEmail,
     this.phoneNo,
+    this.phone,
     this.cardStyle,
     this.backgroungImage,
     this.cardName,
@@ -175,6 +177,7 @@ class ContactDatum {
     companyWebsite: json["company_website"],
     workEmail: json["work_email"],
     phoneNo: json["phone_no"],
+    phone: json["phone"],
     cardStyle: json["card_style"],
     backgroungImage: json["backgroung_image"],
     cardName: json["card_name"],
@@ -205,6 +208,7 @@ class ContactDatum {
     "company_website": companyWebsite,
     "work_email": workEmail,
     "phone_no": phoneNo,
+    "phone": phone,
     "card_style": cardStyle,
     "backgroung_image": backgroungImage,
     "card_name": cardName,

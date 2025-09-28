@@ -182,7 +182,7 @@ Color getTextColorFromHex(String hexColor) {
                           overflow: TextOverflow.ellipsis,
                           style:  TextStyle(
                             color: getTextColorFromHex(
-                                '0xFF${getCardModel!.cardStyle!}'),
+                                '0xFF${getCardModel!.cardStyle ?? ""}'),
                               fontSize: 24, fontWeight: FontWeight.w600),
                         ),
                       ),
