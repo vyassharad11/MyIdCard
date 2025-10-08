@@ -142,7 +142,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   void initState() {
     print("plsnId >>>>>>>>>>>>${widget.planId}");
-    planId = widget.planId ?? 0;
+    planId = widget.planId ?? 1;
     _setPlanCubit = AuthCubit(AuthRepository());
     _freePlanCubit = AuthCubit(AuthRepository());
     _subscribePlan = AuthCubit(AuthRepository());
@@ -367,14 +367,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
           } else if (state is ResponseStateSuccess) {
             var dto = state.data as UtilityDto;
-            Utility.hideLoader(context);
-            if(widget.isFromCreateProfile == true) {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
-            }else{
-              Navigator.pop(context);
-            }
-            Utility().showFlushBar(context: context, message: dto.message ?? "");
+              Utility.hideLoader(context);
+              if(widget.isFromCreateProfile == true) {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (builder) => FirstCardScreen()));
+              }else{
+                Navigator.pop(context);
+              }
+              Utility().showFlushBar(context: context, message: dto.message ?? "");
           }
           setState(() {});
         },),
@@ -635,15 +635,46 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               ),
 
               // ✅ Button stays fixed below TabBarView
+             widget.isFromCreateProfile == true? Padding(
+                  padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (planId == 1) {
+                        freePlanSetApi();
+                      } else if (subscriptionPlanID.isNotEmpty) {
+                          setState(() {
+                            isRequestToPurchase = true;
+                          });
+                          _buyProduct(_getProductDetails(subscriptionPlanID));
+                      } else {
+                        Utility().showFlushBar(
+                          context: context,
+                          message: 'Please select your bundle.',
+                          isError: true,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      minimumSize: const Size(double.infinity, 50),
+                      backgroundColor:   Colors.blue,
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context).translate("subscribe"),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  )):
               (
                   (widget.planId == 4 && (planId == 1 || planId == 2 || planId == 3 )) ||
-                      (widget.planId == 5 && planId != 5) ||
+                  (widget.planId == 5 && planId != 5) ||
 
-                      ((widget.planId == 3 && (planId != 4)) ||widget.planId == 2 ) &&
-                          (
-                              ((widget.planId == 2 || widget.planId == 4)&& (planId == 1))
-                                  || ((widget.planId == 3 || widget.planId == 5))&&
-                                  (planId == 1 || planId == 2 || planId == 4 ))) ?   Padding(
+                  ((widget.planId == 3 && (planId != 4)) ||widget.planId == 2 ) &&
+                  (
+                      ((widget.planId == 2 || widget.planId == 4)&& (planId == 1))
+                  || ((widget.planId == 3 || widget.planId == 5))&&
+                  (planId == 1 || planId == 2 || planId == 4 ))) ?   Padding(
                 padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
                 child: ElevatedButton(
                   onPressed: () {
@@ -654,10 +685,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       // submitPlanId("");
                     } else if (subscriptionPlanID.isNotEmpty) {
                       if(widget.planId! < planId){
-                        setState(() {
-                          isRequestToPurchase = true;
-                        });
-                        _buyProduct(_getProductDetails(subscriptionPlanID));}else{
+                      setState(() {
+                        isRequestToPurchase = true;
+                      });
+                      _buyProduct(_getProductDetails(subscriptionPlanID));}else{
                         _openSubscription();
                       }
                     } else {
@@ -681,13 +712,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                 ),
               ):
-              Padding(
+            Padding(
                 padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
                 child: ElevatedButton(
                   onPressed: () {
-                    if (widget.planId == planId) {
-                      Navigator.pop(context);
-                    } else if (planId == 1) {
+                    if (planId == 1) {
+                      freePlanSetApi();
+                    } else if (widget.planId == planId) {
                       _openSubscription();
                       // submitPlanId("");
                     } else if (subscriptionPlanID.isNotEmpty) {
@@ -715,8 +746,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                   child: Text(
                     AppLocalizations.of(context).translate( widget.planId != 1 && widget.planId != 0 && widget.planId == planId?"managePlan":widget.planId != planId && widget.planId != 1 && widget.planId != 0 ?
-                    "change":
-                    'subscribe'),
+                        "change":
+                  'subscribe'),
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
@@ -759,23 +790,23 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             apiGetTermsAndPolicy("Privacy Policy");
                           },
                       ),
-                      // if(  Provider.of<LocalizationNotifier>(context).appLocal == Locale("en"))   TextSpan(text: " \nPlease read Terms of use",
-                      //   style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),)
+                   // if(  Provider.of<LocalizationNotifier>(context).appLocal == Locale("en"))   TextSpan(text: " \nPlease read Terms of use",
+                   //   style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),)
                     ],
                   ),
                 ),
               ),
               if(widget.isFromCreateProfile == true)
-                TextButton(
-                  onPressed: () {
-                    // Skip for now logic
-                    freePlanSetApi();
-                  },
-                  child:  Text(
-                    AppLocalizations.of(context).translate('skipForNow'),
-                    style: TextStyle(color: Colors.black87),
-                  ),
+              TextButton(
+                onPressed: () {
+                  // Skip for now logic
+                  freePlanSetApi();
+                },
+                child:  Text(
+                  AppLocalizations.of(context).translate('skipForNow'),
+                  style: TextStyle(color: Colors.black87),
                 ),
+              ),
               const SizedBox(height: 16),
             ],
           ) :Center(child: Text("No Record Found"),)

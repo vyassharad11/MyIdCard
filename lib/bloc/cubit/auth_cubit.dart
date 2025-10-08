@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../data/network/server_error.dart';
 import '../../data/repository/auth_repository.dart';
+import '../../models/ard_id.dart';
 import '../../models/login_dto.dart';
 import '../../models/notification_model.dart';
 import '../../models/signup_dto.dart';
@@ -169,6 +170,21 @@ class AuthCubit extends Cubit<ResponseState> {
     try {
       httpResponse = await authRepository.apisSubscribePlan(body,);
       dto = httpResponse.data as UtilityDto;
+      // await AppSession().storeAccessToken(dto.token ?? "");
+      emit(ResponseStateSuccess(dto));
+    } on DioError catch (error) {
+      emit(ServerError.mapDioErrorToState(error));
+    }
+  }
+
+
+  Future<void> apiCreateCard(body,) async {
+    emit(ResponseStateLoading());
+    HttpResponse httpResponse;
+    GetCardId dto;
+    try {
+      httpResponse = await authRepository.apiCreateCard(body,);
+      dto = httpResponse.data as GetCardId;
       // await AppSession().storeAccessToken(dto.token ?? "");
       emit(ResponseStateSuccess(dto));
     } on DioError catch (error) {

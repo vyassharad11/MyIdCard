@@ -28,7 +28,7 @@ import 'change_password.dart';
 class SettingScreen extends StatefulWidget {
   String? role;
   String? planId;
-  SettingScreen({super.key,this.role,this.planId});
+   SettingScreen({super.key,this.role,this.planId});
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -84,7 +84,7 @@ class _SettingScreenState extends State<SettingScreen> {
               Utility.hideLoader(context);
               var dto = state.data as UtilityDto;
               if(Provider.of<LocalizationNotifier>(context).appLocal == Locale("en")){
-                launch(dto.url ?? "");}else{
+              launch(dto.url ?? "");}else{
                 launch(dto.url ?? "");
               }
               setState(() {});
@@ -173,8 +173,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 const SizedBox(height: 14),
                 // Delete Account (Separate Widget)
-                widget.role == Role.tadmin.name || widget.role == Role.gadmin.name ||widget.role == Role.member.name
-                    ?SizedBox():    Card(
+            widget.role == Role.tadmin.name || widget.role == Role.gadmin.name ||widget.role == Role.member.name
+            ?SizedBox():    Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -557,11 +557,11 @@ class _SettingScreenState extends State<SettingScreen> {
     if (success) {
       Future.delayed(
         const Duration(seconds: 2),
-            () {
+        () {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (builder) => WelcomePage()),
-                (route) => false,
+            (route) => false,
           );
           Utility.hideLoader(context);
         },

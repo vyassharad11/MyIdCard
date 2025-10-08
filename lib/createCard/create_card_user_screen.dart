@@ -4,19 +4,24 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:my_di_card/data/repository/auth_repository.dart';
 import 'package:my_di_card/localStorage/storage.dart';
+import 'package:my_di_card/models/utility_dto.dart';
 import 'package:my_di_card/screens/utils_crop.dart';
 import 'package:my_di_card/utils/colors/colors.dart';
 import 'package:my_di_card/utils/common_utils.dart';
 import 'package:my_di_card/utils/widgets/network.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../bloc/api_resp_state.dart';
+import '../bloc/cubit/auth_cubit.dart';
 import '../language/app_localizations.dart';
 import '../models/ard_id.dart';
 import '../models/card_get_model.dart';
@@ -40,335 +45,369 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
   String _selectedLanguageId = "1";
   bool isCardCreate = false;
   String cardId = "";
+  File? cardImage;
+AuthCubit?authCubit;
+
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async{
-        showDeleteDialog(context);
-      return false;
+    return  BlocListener<AuthCubit, ResponseState>(
+      bloc: authCubit,
+      listener: (context, state) {
+        if (state is ResponseStateLoading) {
+        } else if (state is ResponseStateEmpty) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
+        } else if (state is ResponseStateNoInternet) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.message,isError: true);
+        } else if (state is ResponseStateError) {
+          Utility.hideLoader(context);
+          Utility().showFlushBar(context: context, message: state.errorMessage,isError: true);
+        } else if (state is ResponseStateSuccess) {
+          // Utility.hideLoader(context);
+          var dto = state.data as GetCardId;
+          // GetCardId getCardId = GetCardId.fromJson(s);
+          Utility().showFlushBar(context: context, message: dto.message ?? "");
+          cardId = dto.data?.id.toString() ?? "" ;
+
+          submitData(
+              cardId: dto.data?.id.toString() ?? "",
+              cardImage: cardImage ?? File(""),
+              firstName: firstname.text,
+              lastName: lastName.text,
+              languageId: _selectedLanguageId.toString());
+          Storage().setFirstCardSkip(false);
+        }
+        setState(() {});
       },
-      child: GestureDetector(
-        onTap: CommonUtils.closeKeyBoard,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () =>
-                // Navigator.of(context).pop(),
-                            showDeleteDialog(context), // Default action: Go back
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          elevation: 2,
-                          child: const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Icon(
-                              Icons.arrow_back,
-                              size: 20,
-                              color: Colors.black,
+      child: WillPopScope(
+        onWillPop: () async{
+          showDeleteDialog(context);
+        return false;
+        },
+        child: GestureDetector(
+          onTap: CommonUtils.closeKeyBoard,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () =>
+                  // Navigator.of(context).pop(),
+                              showDeleteDialog(context), // Default action: Go back
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            elevation: 2,
+                            child: const Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Icon(
+                                Icons.arrow_back,
+                                size: 20,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Center(
-                        child: Text(
-                          AppLocalizations.of(context)
-                              .translate('createCardOn'),
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w600),
+                        Center(
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('createCardOn'),
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.w600),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 3,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 3,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate('personal'),
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 3,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Container(
+                          width: 10,
+                          height: 3,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate('personal'),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        final isShowRemovePhoto = _selectedImage != null &&
-                            _selectedImage!.path.isNotEmpty &&
-                            (!_selectedImage!.path.contains("storage") ||
-                                _selectedImage!.path.contains("storage"));
-                        _showBottomSheet(context, isShowRemovePhoto);
-                      },
-                      child: Stack(
-                        children: [
-                          // Rounded user icon with grey background
-                          _selectedImage != null &&
-                                  _selectedImage!.path.isNotEmpty &&
-                                  !_selectedImage!.path.contains("storage")
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      50), // Adjust the radius as needed
-                                  child: Image.file(
-                                    _selectedImage!,
-                                    fit: BoxFit.cover,
-                                    width: 80,
-                                    height: 80,
-                                  ),
-                                )
-                              : _selectedImage != null &&
-                                      _selectedImage!.path.isNotEmpty &&
-                                      _selectedImage!.path.contains("storage")
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          50), // Adjust the radius as needed
-                                      child: Image.network(
-                                        "${Network.imgUrl}${_selectedImage!.path}",
-                                        fit: BoxFit.cover,
-                                        width: 80,
-                                        height: 80,
-                                      ),
-                                    )
-                                  : Container(
-                                      width: 80, // Adjust the size as needed
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          final isShowRemovePhoto = _selectedImage != null &&
+                              _selectedImage!.path.isNotEmpty &&
+                              (!_selectedImage!.path.contains("storage") ||
+                                  _selectedImage!.path.contains("storage"));
+                          _showBottomSheet(context, isShowRemovePhoto);
+                        },
+                        child: Stack(
+                          children: [
+                            // Rounded user icon with grey background
+                            _selectedImage != null &&
+                                    _selectedImage!.path.isNotEmpty &&
+                                    !_selectedImage!.path.contains("storage")
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        50), // Adjust the radius as needed
+                                    child: Image.file(
+                                      _selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: 80,
                                       height: 80,
-                                      decoration: BoxDecoration(
-                                        color: ColoursUtils
-                                            .background, // Grey background color
-                                        shape: BoxShape.circle, // Circular shape
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(22.0),
-                                        child: Image.asset(
-                                          "assets/images/user.png",
-                                          fit: BoxFit.contain,
+                                    ),
+                                  )
+                                : _selectedImage != null &&
+                                        _selectedImage!.path.isNotEmpty &&
+                                        _selectedImage!.path.contains("storage")
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            50), // Adjust the radius as needed
+                                        child: Image.network(
+                                          "${Network.imgUrl}${_selectedImage!.path}",
+                                          fit: BoxFit.cover,
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                      )
+                                    : Container(
+                                        width: 80, // Adjust the size as needed
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          color: ColoursUtils
+                                              .background, // Grey background color
+                                          shape: BoxShape.circle, // Circular shape
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Image.asset(
+                                            "assets/images/user.png",
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                          // Positioned plus icon at the bottom right corner
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors
-                                    .blue, // Background color of the plus icon
-                                shape: BoxShape.circle,
-                                border: Border.all(
+                            // Positioned plus icon at the bottom right corner
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                decoration: BoxDecoration(
                                   color: Colors
-                                      .white, // White border around the plus icon
-                                  width: 3,
+                                      .blue, // Background color of the plus icon
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // White border around the plus icon
+                                    width: 3,
+                                  ),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(
+                                      4.0), // Padding around the plus icon
+                                  child: Icon(
+                                    Icons.add, // Plus icon
+                                    size: 12, // Size of the plus icon
+                                    color: Colors.white, // Color of the plus icon
+                                  ),
                                 ),
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(
-                                    4.0), // Padding around the plus icon
-                                child: Icon(
-                                  Icons.add, // Plus icon
-                                  size: 12, // Size of the plus icon
-                                  color: Colors.white, // Color of the plus icon
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate('profilePicture'),
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  bottomSheetDropdown(context),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      controller: firstname,
-                      // maxLength: 15,
-                      decoration: const InputDecoration(
-                        hintText: 'First Name *',
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: ColoursUtils.background, // Light white color
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextField(
-                      // maxLength: 15,
-                      controller: lastName,
-                      decoration: const InputDecoration(
-                        hintText: 'Last Name *',
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    // margin: const EdgeInsets.symmetric(horizontal: 0),
-                    child: SizedBox(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                       // iconAlignment: IconAlignment.start,
-                        onPressed: () {
-                          if (firstname.text.isNotEmpty) {
-                            if (lastName.text.isNotEmpty) {
-                              if (widget.isEdit) {
-                                Utility.showLoader(context);
-
-                                submitData(
-                                  cardId: widget.cardId.toString(),
-                                  cardImage: _selectedImage ?? File(""),
-                                  firstName: firstname.text.trim(),
-                                  lastName: lastName.text.trim(),
-                                  languageId: _selectedLanguageId.toString(),
-                                );
-                              } else {
-                                Utility.showLoader(context);
-
-                                getUserId(
-                                    languageId: _selectedLanguageId.toString(),
-                                    firstName: firstname.text.trim(),
-                                    lastName: lastName.text.trim(),
-                                    cardImage: _selectedImage ?? File(""));
-                              }
-                            } else {
-                              Fluttertoast.showToast(msg: "Please Enter Last Name");
-                            }
-                          } else {
-                            Fluttertoast.showToast(msg: "Please Enter First Name");
-                          }
-                          // Handle button press
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue, // Background color
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // Rounded corners
-                          ),
-                        ),
-                        child:  Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)
-                                  .translate('continue'), // Right side text
-                              style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate('profilePicture'),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    bottomSheetDropdown(context),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        controller: firstname,
+                        // maxLength: 15,
+                        decoration: const InputDecoration(
+                          hintText: 'First Name *',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColoursUtils.background, // Light white color
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        // maxLength: 15,
+                        controller: lastName,
+                        decoration: const InputDecoration(
+                          hintText: 'Last Name *',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      // margin: const EdgeInsets.symmetric(horizontal: 0),
+                      child: SizedBox(
+                        height: 45,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                         // iconAlignment: IconAlignment.start,
+                          onPressed: () {
+                            if (firstname.text.isNotEmpty) {
+                              if (lastName.text.isNotEmpty) {
+                                if (widget.isEdit) {
+                                  Utility.showLoader(context);
+
+                                  submitData(
+                                    cardId: widget.cardId.toString(),
+                                    cardImage: _selectedImage ?? File(""),
+                                    firstName: firstname.text.trim(),
+                                    lastName: lastName.text.trim(),
+                                    languageId: _selectedLanguageId.toString(),
+                                  );
+                                } else {
+                                  Utility.showLoader(context);
+
+                                  getUserId(
+                                      languageId: _selectedLanguageId.toString(),
+                                      firstName: firstname.text.trim(),
+                                      lastName: lastName.text.trim(),
+                                      cardImage: _selectedImage ?? File(""));
+                                }
+                              } else {
+                                Fluttertoast.showToast(msg: "Please Enter Last Name");
+                              }
+                            } else {
+                              Fluttertoast.showToast(msg: "Please Enter First Name");
+                            }
+                            // Handle button press
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue, // Background color
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // Rounded corners
+                            ),
+                          ),
+                          child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('continue'), // Right side text
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -379,6 +418,7 @@ class _CreateCardScreen1State extends State<CreateCardScreen1> {
 
   @override
   void initState() {
+    authCubit = AuthCubit(AuthRepository());
     if (widget.isEdit) {
       fetchEditData();
     } else {
@@ -462,6 +502,7 @@ String cardImageF = "";
     required String lastName,
     required File cardImage, // Card image file
   }) async {
+    debugPrint("${cardImage.path}--->>>>>>>>>PATH");
     var token = await Storage().getToken();
 
     String apiUrl =
@@ -475,7 +516,7 @@ String cardImageF = "";
       request.fields['language_id'] = languageId;
       request.fields['first_name'] = firstName;
       request.fields['last_name'] = lastName;
-
+      debugPrint("${cardImage.path}--->>>>>>>>>PATH");
       // Add the image to the request
       if (cardImage.path != "" && !cardImage.path.contains("storage")) {
         var file = await http.MultipartFile.fromPath(
@@ -534,46 +575,15 @@ String cardImageF = "";
       required String firstName,
       required String lastName,
       required File cardImage}) async {
-    var token = await Storage().getToken();
+    cardImage = cardImage;
+    Utility.showLoader(context);
+    Map<String, dynamic> data = {
+      "language_id": languageId.toString(),
+      "first_name": firstName,
+      "last_name": lastName ?? "",
+    };
+    authCubit?.apiCreateCard(data);
 
-    const String apiUrl =
-        "${Network.baseUrl}card/store"; // Replace with your API endpoint
-
-    try {
-      // Prepare the multipart request
-      var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
-        ..fields['language_id'] = languageId.toString()
-        ..fields['first_name'] = firstName
-        ..fields['last_name'] = lastName
-        ..headers.addAll({
-          'Authorization': 'Bearer $token', // Add your authorization token
-        });
-
-      // Send the request
-      var response = await request.send();
-
-      // Handle the response
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.bytesToString();
-        final data = jsonDecode(responseData);
-        GetCardId getCardId = GetCardId.fromJson(data);
-        print("cardId<<<<<<<<<<<<<<<<<<${getCardId.data?.id}");
-        cardId = getCardId.data?.id.toString() ?? "" ;
-
-        submitData(
-            cardId: getCardId.data!.id.toString(),
-            cardImage: cardImage,
-            firstName: firstName,
-            lastName: lastName,
-            languageId: languageId.toString());
-        debugPrint("Data submitted successfully: $data");
-        Storage().setFirstCardSkip(false);
-      } else {
-        debugPrint("Failed to submit data. Status Code: ${response.statusCode}");
-      }
-    } catch (error) {
-      debugPrint("An error occurred: $error");
-    }
   }
 
   void showDeleteDialog(BuildContext context) {
