@@ -11,6 +11,7 @@ class UtilityDto {
     this.message,
     this.token,
     this.url,
+    this.id,
     this.urlFr,
   });
 
@@ -19,6 +20,7 @@ class UtilityDto {
   String? token;
   String? url;
   String? urlFr;
+  dynamic id;
 
   factory UtilityDto.fromJson(Map<String, dynamic> json) => UtilityDto(
     result:
@@ -27,6 +29,7 @@ class UtilityDto {
     url: json["url"],
     token: json["token"],
     urlFr: json["url_fr"],
+    id: json["id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +37,7 @@ class UtilityDto {
     "message": message,
     "url": url,
     "url_fr": urlFr,
+    "id": id,
     "token": token,
   };
 }

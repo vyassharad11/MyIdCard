@@ -371,6 +371,7 @@ class _EditProfileState extends State<EditProfile> {
     var data=null;
 
     if (!cardImage.path.contains("storage")) {
+      print("image>>>>>>>>>>>>>");
       data =  FormData.fromMap({
         if(_selectedImage != null && cardImage.path.isNotEmpty ) 'avatar':
         await MultipartFile.fromFile(cardImage.path, filename: "demo.png")
@@ -378,9 +379,12 @@ class _EditProfileState extends State<EditProfile> {
         'first_name': firstName.toString().trim(),
         'last_name': lastName.toString(),
         'team_code': teamCode.toString(),
+        if(_selectedImage == null || cardImage.path.isEmpty ) 'remove_avatar': "Yes",
+        if(_selectedImage == null || _selectedImage!.path == "")'remove_avtar': "yes",
         'language_id': selectedLanguage == 'French'?"2":"1"
       });
     }else{
+      print("no image>>>>>>>>>>>>>");
       data = FormData.fromMap({
         'first_name': firstName.toString().trim(),
         'last_name': lastName.toString(),

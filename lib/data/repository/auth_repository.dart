@@ -5,6 +5,7 @@ import 'package:my_di_card/models/subscription_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../localStorage/storage.dart';
+import '../../models/ard_id.dart';
 import '../../models/login_dto.dart';
 import '../../models/notification_model.dart';
 import '../../models/signup_dto.dart';
@@ -135,6 +136,13 @@ class AuthRepository {
     var token2 = "Bearer $token";
     var dto = await Network.baseUrl;
     return _apiClient.apisSubscribePlan(dto,body,token2,language);
+  }
+
+  Future<HttpResponse<GetCardId>> apiCreateCard(body,) async {
+    token = await Storage().getToken() ?? "";
+    var token2 = "Bearer $token";
+    var dto = await Network.baseUrl;
+    return _apiClient.apiCreateCard(dto,body,token2,language);
   }
 
   Future<HttpResponse<UtilityDto>> apiSupport(body,) async {

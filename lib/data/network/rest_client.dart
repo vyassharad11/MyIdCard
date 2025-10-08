@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:my_di_card/models/utility_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../models/ard_id.dart';
 import '../../models/background_image_model.dart';
 import '../../models/card_get_model.dart';
 import '../../models/card_list.dart';
@@ -126,6 +127,13 @@ abstract class RestClient {
   @Header(headerContentType)
   @FormUrlEncoded()
   Future<HttpResponse<UtilityDto>> apisSubscribePlan(@Path("url") url,
+      @Body() body, @Header(authorization) token,  @Header(language) language);
+
+  @POST("{url}card/store")
+  @Header(headerValue)
+  @Header(headerContentType)
+  @FormUrlEncoded()
+  Future<HttpResponse<GetCardId>> apiCreateCard(@Path("url") url,
       @Body() body, @Header(authorization) token,  @Header(language) language);
 
  @POST("{url}card/update/{id}")

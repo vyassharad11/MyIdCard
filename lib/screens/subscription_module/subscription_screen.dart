@@ -142,7 +142,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   void initState() {
     print("plsnId >>>>>>>>>>>>${widget.planId}");
-    planId = widget.planId ?? 0;
+    planId = widget.planId ?? 1;
     _setPlanCubit = AuthCubit(AuthRepository());
     _freePlanCubit = AuthCubit(AuthRepository());
     _subscribePlan = AuthCubit(AuthRepository());
@@ -169,6 +169,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
   bool isLoad = true;
 
+  Future<void> _openSubscription() async {
+    if (Platform.isAndroid) {
+      final url =
+          "https://play.google.com/store/account/subscriptions?package=com.it.my_di_card";
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      }
+    } else if (Platform.isIOS) {
+      final url = "https://apps.apple.com/account/subscriptions";
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      }
+    }
+  }
   Future<void> _initPurchaseStore() async {
     // Check availability of InApp Purchases
     _iap = InAppPurchase.instance;
@@ -621,6 +635,37 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               ),
 
               // ✅ Button stays fixed below TabBarView
+             widget.isFromCreateProfile == true? Padding(
+                  padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (planId == 1) {
+                        freePlanSetApi();
+                      } else if (subscriptionPlanID.isNotEmpty) {
+                          setState(() {
+                            isRequestToPurchase = true;
+                          });
+                          _buyProduct(_getProductDetails(subscriptionPlanID));
+                      } else {
+                        Utility().showFlushBar(
+                          context: context,
+                          message: 'Please select your bundle.',
+                          isError: true,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      minimumSize: const Size(double.infinity, 50),
+                      backgroundColor:   Colors.blue,
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context).translate("subscribe"),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  )):
               (
                   (widget.planId == 4 && (planId == 1 || planId == 2 || planId == 3 )) ||
                   (widget.planId == 5 && planId != 5) ||
@@ -636,12 +681,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     if (widget.planId == planId) {
                       Navigator.pop(context);
                     } else if (planId == 1) {
-                      submitPlanId("");
+                      _openSubscription();
+                      // submitPlanId("");
                     } else if (subscriptionPlanID.isNotEmpty) {
+                      if(widget.planId! < planId){
                       setState(() {
                         isRequestToPurchase = true;
                       });
-                      _buyProduct(_getProductDetails(subscriptionPlanID));
+                      _buyProduct(_getProductDetails(subscriptionPlanID));}else{
+                        _openSubscription();
+                      }
                     } else {
                       Utility().showFlushBar(
                         context: context,
@@ -667,15 +716,19 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 padding: const EdgeInsets.only(top:16,left: 16.0,right: 16,bottom: 6),
                 child: ElevatedButton(
                   onPressed: () {
-                    if (widget.planId == planId) {
-                      Navigator.pop(context);
-                    } else if (planId == 1) {
-                      submitPlanId("");
+                    if (planId == 1) {
+                      freePlanSetApi();
+                    } else if (widget.planId == planId) {
+                      _openSubscription();
+                      // submitPlanId("");
                     } else if (subscriptionPlanID.isNotEmpty) {
-                      setState(() {
-                        isRequestToPurchase = true;
-                      });
-                      _buyProduct(_getProductDetails(subscriptionPlanID));
+                      if(widget.planId! < planId){
+                        setState(() {
+                          isRequestToPurchase = true;
+                        });
+                        _buyProduct(_getProductDetails(subscriptionPlanID));}else{
+                        _openSubscription();
+                      }
                     } else {
                       Utility().showFlushBar(
                         context: context,

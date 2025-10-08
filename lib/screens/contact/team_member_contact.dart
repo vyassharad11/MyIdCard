@@ -1,19 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/api_resp_state.dart';
+import '../../bloc/cubit/contact_cubit.dart';
 import '../../bloc/cubit/group_cubit.dart';
 import '../../bloc/cubit/team_cubit.dart';
+import '../../data/repository/contact_repository.dart';
 import '../../data/repository/group_repository.dart';
 import '../../data/repository/team_repository.dart';
 import '../../language/app_localizations.dart';
 import '../../models/my_group_list_model.dart';
 import '../../models/team_member.dart';
+import '../../models/utility_dto.dart';
 import '../../utils/utility.dart';
 import '../../utils/widgets/network.dart';
 import 'contact_details_screen.dart';
 import 'other_card_details.dart';
+import 'package:flutter_contacts/contact.dart' as contact;
 
 class TeamMemberContact extends StatefulWidget {
   const TeamMemberContact({super.key});
@@ -29,6 +35,7 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
   GroupCubit? getGroupCubit;
   List<MyGroupListDatum> myGroupList = [];
   TextEditingController searchController = TextEditingController();
+  ContactCubit? _addContactCubit;
 
 
   void getTeamMembers(int page, String keyword) async {
@@ -55,6 +62,7 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
     // TODO: implement initState
     getGroupCubit = GroupCubit(GroupRepository());
     _getTeamMember = TeamCubit(TeamRepository());
+    _addContactCubit = ContactCubit(ContactRepository());
     fetchGroupData();
     getTeamMembers(0,"");
     super.initState();
@@ -64,12 +72,63 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
     getGroupCubit?.apiGetMyGroups();
   }
 
+  Future<void> requestPermissions() async {
+    PermissionStatus permission = await Permission.contacts.request();
+    if (!permission.isGranted) {
+      // Handle the case where the user denies permission
+    }
+  }
+
+
+  Future<void> addContact(firstName, lastName, mobileNumber) async {
+    // Make sure permissions are granted
+    if (await FlutterContacts.requestPermission()) {
+      // Create a new contact
+      final newContact = contact.Contact()
+        ..name.first = firstName
+        ..name.last = lastName
+        ..phones = [Phone(mobileNumber)]; // Add the phone number here
+
+      try {
+        await FlutterContacts.insertContact(newContact);
+        Utility().showFlushBar(
+          context: context, message:  AppLocalizations.of(context)
+            .translate('contactAddSuccessfully'),);
+      } catch (e) {
+        print('Error adding contact: $e');
+      }
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return  MultiBlocListener(
       listeners: [
+        BlocListener<ContactCubit, ResponseState>(
+    bloc: _addContactCubit,
+    listener: (context, state) {
+      if (state is ResponseStateLoading) {
+      } else if (state is ResponseStateEmpty) {
+        Utility.hideLoader(context);
+        Utility().showFlushBar(
+            context: context, message: state.message, isError: true);
+      } else if (state is ResponseStateNoInternet) {
+        Utility.hideLoader(context);
+        Utility().showFlushBar(
+            context: context, message: state.message, isError: true);
+      } else if (state is ResponseStateError) {
+        Utility.hideLoader(context);
+        Utility().showFlushBar(
+            context: context, message: state.errorMessage, isError: true);
+      } else if (state is ResponseStateSuccess) {
+        Utility.hideLoader(context);
+        var dto = state.data as UtilityDto;
+        Utility()
+            .showFlushBar(context: context, message: dto.message ?? "");
+      }
+      setState(() {});
+    }),
         BlocListener<GroupCubit, ResponseState>(
           bloc: getGroupCubit,
           listener: (context, state) {
@@ -257,37 +316,64 @@ class _TeamMemberContactState extends State<TeamMemberContact> {
                   ),
                   trailing: InkWell(
                       onTap: (){
-                      if(teamMember[index]
-                          .cardId != null && teamMember[index]
-                          .cardId!.toString().isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (builder) =>
-                                OtherCardDetails(
-                                  cardId: teamMember[index]
-                                      .cardId
-                                      .toString() ??
-                                      "",
-                                  isOtherCard: true,
+                        if(teamMember[index]
+                            .cardId != null && teamMember[index]
+                            .cardId!.toString().isNotEmpty)
+                          showModalBottomSheet(
+                            context: context,
+                            useSafeArea: true,
+                            isScrollControlled: false,
+                            constraints: BoxConstraints(maxHeight: MediaQuery
+                                .of(context)
+                                .size
+                                .height - 100, minHeight: 10),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            builder: (context) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                  title:  Text(
+                                    AppLocalizations.of(context).translate('exportToContactsApp'),
+                                    style: TextStyle(color: Colors.black, fontSize: 14),
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    requestPermissions().then((value) {
+                                      addContact(teamMember[index].firstName ?? "",
+                                          teamMember[index].lastName ?? "",
+                                          teamMember[index].phoneNumber.toString());
+                                    },); // Add functionality here
+                                  },
                                 ),
-                          ),
-                        );
-                      }else{
-                        Utility().showFlushBar(context: context, message: AppLocalizations.of(context)
-                            .translate('thisUserDoesnt'),);
-                      }
-                      //   showModalBottomSheet(
-                      //   context: context,
-                      //   shape: const RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.vertical(
-                      //       top: Radius.circular(25.0),
-                      //     ),
-                      //   ),
-                      //   builder: (context) {
-                      //     return buildContactBottomSheetContent(context,myContactList[index].id,index);
-                      //   },
-                      // );
+                                  if(teamMember[index]
+                                      .cardId != null && teamMember[index]
+                                      .cardId!.toString().isNotEmpty)     const Divider(
+                                  color: Colors.grey,
+                                ),
+                                  if(teamMember[index]
+                                      .cardId != null && teamMember[index]
+                                      .cardId!.toString().isNotEmpty)     ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                  title:  Text(
+                                    AppLocalizations.of(context).translate('addPrivate'),
+                                    style: TextStyle(color: Colors.black, fontSize: 14),
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Utility.showLoader(context);
+                                    Map<String, dynamic> data = {
+                                      "card_id": teamMember[index].cardId,
+                                    };
+                                    _addContactCubit?.apiAddContact(data);
+                                  },
+                                ),
+                              ],);
+                            });
                       },
                       child: const Icon(Icons.more_vert)),
                   onTap: () {
