@@ -300,8 +300,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   // }
   Future<void> _getIAPStoreProductsDetail(Set<String> productIds) async {
     print("freee>>>>>>>>>>>>>$productIds");
-    ProductDetailsResponse response =
-    await _iap!.queryProductDetails(productIds);
+    ProductDetailsResponse response;
+    if(Platform.isIOS) {
+       response =
+      await _iap!.queryProductDetails({"com.mydicard.mydicard.individual.annual","com.mydicard.mydicard.individual.monthly","com.mydicard.mydicard.team.monthly","com.mydicard.mydicard.team.annual"});
+    }else{
+       response =
+      await _iap!.queryProductDetails(productIds);
+    }
+    // ProductDetailsResponse response =
+    // await _iap!.queryProductDetails({"com.mydicard.mydicard.individual.annual","com.mydicard.mydicard.individual.monthly","com.mydicard.mydicard.team.monthly","com.mydicard.mydicard.team.annual"});
     setState(() {
       print("response.productDetails${response.productDetails}>>${response.productDetails.length}");
       _products.addAll(response.productDetails);

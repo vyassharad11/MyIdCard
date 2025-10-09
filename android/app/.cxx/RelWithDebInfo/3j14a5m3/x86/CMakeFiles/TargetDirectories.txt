@@ -1,0 +1,2 @@
+/Users/sharadvyas/Documents/MyIdCard/android/app/.cxx/RelWithDebInfo/3j14a5m3/x86/CMakeFiles/edit_cache.dir
+/Users/sharadvyas/Documents/MyIdCard/android/app/.cxx/RelWithDebInfo/3j14a5m3/x86/CMakeFiles/rebuild_cache.dir

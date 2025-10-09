@@ -1,0 +1,2 @@
+/Users/sharadvyas/Documents/MyIdCard/android/app/.cxx/RelWithDebInfo/3j14a5m3/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/sharadvyas/Documents/MyIdCard/android/app/.cxx/RelWithDebInfo/3j14a5m3/armeabi-v7a/CMakeFiles/rebuild_cache.dir
