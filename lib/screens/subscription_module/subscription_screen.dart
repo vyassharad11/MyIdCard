@@ -316,6 +316,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       for (var e in response.productDetails) {
         symbolForAllCounty = e.currencySymbol ?? "";
         print("storeproduct ====  11111ssss ${e.id}");
+        print("storeproduct ====  11111ssss ${e.toString()}");
+
         print("storeproduct ====  11111 ${e.currencySymbol}");
         print("storeproduct ====  11111 ${e.price}");
         if(e.id == "com.mydicard.mydicard.individual" || e.id == "com.mydicard.mydicard.individual.monthly") {
@@ -618,7 +620,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                   title: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? yearlyPlanList[index].planName ?? ""
                                       : yearlyPlanList[index].frPlanName ?? "",
-                                  price: index == 0?  "0${symbolForAllCounty}" :"${index == 1?yearlyPriceIndividual.toString():yearlyPriceTeam}",
+                                  price: index == 0?  "${symbolForAllCounty}0" :"${index == 1?yearlyPriceIndividual.toString():yearlyPriceTeam}",
                                   isChecked: planId == yearlyPlanList[index].id,
                                   description: Provider.of<LocalizationNotifier>(context).appLocal == const Locale("en")
                                       ? yearlyPlanList[index].discription ?? ""

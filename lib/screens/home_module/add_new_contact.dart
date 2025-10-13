@@ -542,7 +542,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             final value = await imageCropperFunc(pickedFile.path);
@@ -567,7 +567,7 @@ class _ScanQrCodeBottomSheetState extends State<ScanQrCodeBottomSheet> {
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             final value = await imageCropperFunc(pickedFile.path);

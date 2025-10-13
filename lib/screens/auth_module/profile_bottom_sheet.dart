@@ -537,7 +537,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
       if (permissionStatus.isGranted) {
         try {
           final XFile? pickedFile = await _picker.pickImage(
-              source: source, preferredCameraDevice: CameraDevice.front);
+              source: source, preferredCameraDevice: CameraDevice.rear);
           if (pickedFile != null) {
             final value = await imageCropperFunc(pickedFile.path,isCircle: true);
             setState(() {
@@ -559,7 +559,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
       if (permissionStatus.isGranted) {
         try {
           final XFile? pickedFile = await _picker.pickImage(
-              source: source, preferredCameraDevice: CameraDevice.front);
+              source: source, preferredCameraDevice: CameraDevice.rear);
           if (pickedFile != null) {
             final value = await imageCropperFunc(pickedFile.path,isCircle: true);
             setState(() {

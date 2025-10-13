@@ -651,7 +651,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             final value = await imageCropperFunc(pickedFile.path,isCircle: true);
@@ -676,7 +676,7 @@ class _EditTeamPageState extends State<EditTeamPage> {
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             final value = await imageCropperFunc(pickedFile.path,isCircle: true);

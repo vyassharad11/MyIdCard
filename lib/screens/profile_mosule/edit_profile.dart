@@ -539,7 +539,7 @@ String selectedLanguage = "";
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             final value = await imageCroperFunc(pickedFile.path);
@@ -564,7 +564,7 @@ String selectedLanguage = "";
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             final value = await imageCroperFunc(pickedFile.path);

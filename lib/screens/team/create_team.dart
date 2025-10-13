@@ -398,7 +398,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             // setState(() {
@@ -426,7 +426,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
         try {
           final XFile? pickedFile = await _picker.pickImage(
             source: source,
-            preferredCameraDevice: CameraDevice.front,
+            preferredCameraDevice: CameraDevice.rear,
           );
           if (pickedFile != null) {
             // setState(() {
